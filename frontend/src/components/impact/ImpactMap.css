@@ -45,6 +45,24 @@
   background: var(--cream);
 }
 
+.impact-map--preview .impact-map__marker {
+  width: 28px;
+  height: 28px;
+  margin: -14px 0 0 -14px;
+}
+
+.impact-map--preview .impact-map__marker-dot {
+  width: 9px;
+  height: 9px;
+  margin: -4.5px 0 0 -4.5px;
+}
+
+.impact-map--preview .impact-map__marker-pulse {
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+}
+
 /* ─── Impact page interactive map ─── */
 .impact-map--interactive {
   background: var(--cream);
@@ -368,6 +386,22 @@
 }
 
 @media (max-width: 480px) {
+  .impact-map--preview .impact-map__marker {
+    width: 22px;
+    height: 22px;
+    margin: -11px 0 0 -11px;
+  }
+
+  .impact-map--preview .impact-map__marker-dot {
+    width: 8px;
+    height: 8px;
+    margin: -4px 0 0 -4px;
+  }
+
+  .impact-map--preview .impact-map__marker-pulse {
+    display: none;
+  }
+
   .impact-map--interactive .impact-map__filters-inner label {
     min-width: 100%;
     flex: 1 1 100%;

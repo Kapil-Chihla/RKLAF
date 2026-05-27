@@ -89,34 +89,44 @@
 }
 
 @media (max-width: 768px) {
+  .ww-home__stage {
+    display: flex;
+    flex-direction: column;
+  }
+
   .ww-home__copy {
+    position: relative;
+    left: auto;
     top: auto;
-    bottom: 0;
+    bottom: auto;
     transform: none;
     width: 100%;
     max-width: none;
-    padding: 1.5rem 1.25rem 1.25rem;
-    background: linear-gradient(
-      0deg,
-      rgba(244, 239, 231, 0.95) 0%,
-      rgba(244, 239, 231, 0.75) 45%,
-      transparent 100%
-    );
+    padding: 1.5rem 1.25rem 1rem;
+    background: transparent;
+    order: -1;
+    pointer-events: auto;
   }
 
   .ww-home__title {
-    font-size: clamp(2rem, 8vw, 2.75rem);
+    font-size: clamp(1.9rem, 8vw, 2.6rem);
   }
 
   .ww-home__desc {
     max-width: none;
     margin-bottom: 1rem;
+    line-height: 1.55;
+    text-shadow: none;
   }
 
   .ww-home__cta {
     width: 100%;
     text-align: center;
     box-sizing: border-box;
+  }
+
+  .ww-home__stage .impact-map--preview .impact-map__frame {
+    border-top: 1px solid rgba(44, 67, 89, 0.1);
   }
 }
 

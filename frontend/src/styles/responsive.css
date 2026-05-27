@@ -53,6 +53,10 @@ body {
     align-items: center;
     justify-content: center;
   }
+
+  .donate-sticky {
+    display: none;
+  }
 }
 
 /* Prevent iOS zoom on focus */
