@@ -440,14 +440,30 @@
 }
 
 @media (max-width: 992px) {
+  .home-split__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .impact-grid,
+  .camp-grid,
+  .pillar-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
   .impact-grid,
   .camp-grid,
   .pillar-grid {
     grid-template-columns: 1fr;
   }
 
-  .home-split__grid {
-    grid-template-columns: 1fr;
+  .home-split__panel {
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+  }
+
+  .camp-card__visual {
+    height: clamp(160px, 40vw, 200px);
   }
 }
 
@@ -455,5 +471,14 @@
   .home-section-head {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .home-blogs__inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .home-pillars__links {
+    justify-content: flex-start;
   }
 }

@@ -157,14 +157,15 @@
 
 .impact-map__marker {
   position: absolute;
-  width: 28px;
-  height: 28px;
-  margin: -14px 0 0 -14px;
+  width: 44px;
+  height: 44px;
+  margin: -22px 0 0 -22px;
   padding: 0;
   border: none;
   background: transparent;
   cursor: pointer;
   z-index: 5;
+  touch-action: manipulation;
 }
 
 .impact-map__marker-dot {
@@ -339,17 +340,36 @@
 }
 
 @media (max-width: 768px) {
+  .impact-map--interactive .impact-map__filters-inner {
+    width: calc(100% - var(--container-pad, 1.25rem) * 2);
+  }
+
   .impact-map--interactive .impact-map__filters-inner label {
     min-width: calc(50% - 0.4rem);
+    flex: 1 1 calc(50% - 0.4rem);
   }
 
   .impact-map__clear {
     width: 100%;
+    align-self: stretch;
   }
 
   .impact-map__popup {
     left: 0.75rem;
     right: 0.75rem;
     max-width: none;
+    top: auto;
+    bottom: 0.75rem;
+  }
+
+  .impact-map__hint {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .impact-map--interactive .impact-map__filters-inner label {
+    min-width: 100%;
+    flex: 1 1 100%;
   }
 }

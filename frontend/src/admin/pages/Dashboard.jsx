@@ -40,7 +40,7 @@ export default function Dashboard() {
         </div>
       )}
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
+      <div className="admin-dashboard-grid">
         {links.map((item) => (
           <Link key={item.to} to={item.to} className="admin-card" style={{ display: 'block', textDecoration: 'none' }}>
             <h2 style={{ fontSize: '1.1rem' }}>{item.label}</h2>

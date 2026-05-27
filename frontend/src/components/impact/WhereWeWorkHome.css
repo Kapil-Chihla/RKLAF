@@ -112,4 +112,20 @@
     max-width: none;
     margin-bottom: 1rem;
   }
+
+  .ww-home__cta {
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 380px) {
+  .ww-home__copy {
+    padding: 1.25rem 1rem 1rem;
+  }
+
+  .ww-home__title {
+    font-size: 1.85rem;
+  }
 }
