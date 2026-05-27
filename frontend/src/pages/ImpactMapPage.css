@@ -1,0 +1,138 @@
+/* CFJ-inspired Where We Work page — https://cfj.org/our-work/where-we-work/ */
+
+.impact-page {
+  background: var(--cream);
+  overflow-x: hidden;
+}
+
+/* ─── Hero: world.webp + title ─── */
+.impact-page__hero {
+  position: relative;
+  width: 100%;
+  min-height: clamp(320px, 55vh, 520px);
+  max-height: 560px;
+  background-color: #3d342c;
+  background-size: cover;
+  background-position: center 45%;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1.25rem 3.5rem;
+}
+
+.impact-page__hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(30, 51, 71, 0.35) 0%,
+    rgba(30, 51, 71, 0.2) 50%,
+    rgba(30, 51, 71, 0.45) 100%
+  );
+  pointer-events: none;
+}
+
+.impact-page__hero-title {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(2.75rem, 7vw, 4.5rem);
+  font-weight: 400;
+  color: var(--ivory);
+  text-align: center;
+  letter-spacing: 0.02em;
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+}
+
+.impact-page__torn {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  z-index: 2;
+  color: var(--cream);
+}
+
+/* ─── Intro copy (two columns like CFJ) ─── */
+.impact-page__intro {
+  background: var(--cream);
+  padding: clamp(2.5rem, 5vw, 3.5rem) 0;
+}
+
+.impact-page__intro-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 4vw, 3.5rem);
+  align-items: start;
+}
+
+.impact-page__intro-lead {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+  line-height: 1.45;
+  color: var(--slate-deep);
+  font-weight: 600;
+}
+
+.impact-page__intro-body p {
+  margin: 0 0 1.25rem;
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: var(--text);
+}
+
+.impact-page__intro-body p:last-child {
+  margin-bottom: 0;
+}
+
+/* ─── Interactive map zone: full viewport width (CFJ-style) ─── */
+.impact-page__map-zone {
+  background: var(--cream);
+  padding: 0 0 clamp(1rem, 2vw, 1.5rem);
+  overflow-x: hidden;
+  width: 100%;
+}
+
+.impact-page__map-zone .impact-map--interactive {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.impact-page__map-zone .impact-map--interactive .impact-map__filters-inner {
+  padding: 0 clamp(1rem, 2vw, 1.25rem);
+}
+
+.impact-page__cta-band {
+  background: var(--ivory);
+  border-top: 1px solid var(--sand);
+  padding: clamp(2.5rem, 5vw, 3.5rem) 0;
+}
+
+.impact-page__cta-inner h2 {
+  font-family: var(--font-serif);
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  color: var(--slate-deep);
+  margin-bottom: 0.5rem;
+}
+
+.impact-page__cta-inner p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  line-height: 1.65;
+}
+
+@media (max-width: 900px) {
+  .impact-page__intro-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .impact-page__hero {
+    min-height: 280px;
+    padding-bottom: 3rem;
+  }
+}

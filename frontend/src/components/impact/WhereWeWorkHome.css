@@ -1,0 +1,115 @@
+/* Homepage “Where We Work” — full-bleed map + overlaid copy */
+
+.ww-home {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  background: var(--cream);
+}
+
+.ww-home__stage {
+  position: relative;
+  width: 100%;
+  max-width: 100vw;
+  margin: 0 auto;
+}
+
+/* Map fills the stage edge-to-edge */
+.ww-home__stage .ww-home__map,
+.ww-home__stage .impact-map--preview {
+  width: 100%;
+  display: block;
+}
+
+.ww-home__stage .impact-map--preview .impact-map__frame {
+  width: 100%;
+  max-width: none;
+  min-height: 0;
+  height: auto;
+  max-height: none;
+  border-radius: 0;
+}
+
+/* Copy sits on top of the map (left), CFJ-style */
+.ww-home__copy {
+  position: absolute;
+  z-index: 5;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: min(100%, 420px);
+  padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1.25rem, 5vw, 4rem);
+  pointer-events: none;
+}
+
+.ww-home__copy a,
+.ww-home__copy button {
+  pointer-events: auto;
+}
+
+.ww-home__title {
+  margin: 0 0 1rem;
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  line-height: 1.05;
+  color: var(--wine-deep);
+  font-weight: 400;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.ww-home__desc {
+  margin: 0 0 1.5rem;
+  font-size: clamp(1rem, 1.8vw, 1.15rem);
+  line-height: 1.65;
+  color: var(--slate-deep);
+  max-width: 360px;
+  text-shadow: 0 1px 12px rgba(244, 239, 231, 0.85);
+}
+
+.ww-home__cta {
+  display: inline-block;
+  padding: 0.75rem 1.35rem;
+  background: var(--wine);
+  color: var(--ivory);
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border: 2px dashed rgba(251, 249, 246, 0.95);
+  outline: 2px dashed var(--wine);
+  outline-offset: 3px;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.ww-home__cta:hover {
+  background: var(--wine-deep);
+  color: var(--ivory);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .ww-home__copy {
+    top: auto;
+    bottom: 0;
+    transform: none;
+    width: 100%;
+    max-width: none;
+    padding: 1.5rem 1.25rem 1.25rem;
+    background: linear-gradient(
+      0deg,
+      rgba(244, 239, 231, 0.95) 0%,
+      rgba(244, 239, 231, 0.75) 45%,
+      transparent 100%
+    );
+  }
+
+  .ww-home__title {
+    font-size: clamp(2rem, 8vw, 2.75rem);
+  }
+
+  .ww-home__desc {
+    max-width: none;
+    margin-bottom: 1rem;
+  }
+}
