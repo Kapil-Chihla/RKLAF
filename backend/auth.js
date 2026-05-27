@@ -1,10 +1,10 @@
 const jwt = require('jsonwebtoken');
-const store = require('./dataStore');
+const { User } = require('./models');
 
 const ROLES = {
   SUPER_ADMIN: 'super_admin',
   ADMIN: 'admin',
-  EDITOR: 'editor'
+  EDITOR: 'editor',
 };
 
 const protect = async (req, res, next) => {
@@ -16,7 +16,7 @@ const protect = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'dev-secret');
-    const user = store.users.find((u) => u.id === decoded.id);
+    const user = await User.findOne({ id: decoded.id }).lean();
     if (!user || user.status === 'disabled') {
       return res.status(401).json({ message: 'Account inactive or not found' });
     }
@@ -24,7 +24,7 @@ const protect = async (req, res, next) => {
       id: user.id,
       name: user.name,
       email: user.email,
-      role: user.role
+      role: user.role,
     };
     next();
   } catch {
@@ -43,7 +43,6 @@ const superAdminOnly = requireRoles(ROLES.SUPER_ADMIN);
 const contentManagers = requireRoles(ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.EDITOR);
 const adminOrSuper = requireRoles(ROLES.SUPER_ADMIN, ROLES.ADMIN);
 
-// Legacy alias
 const adminOnly = adminOrSuper;
 
 module.exports = {
@@ -53,5 +52,5 @@ module.exports = {
   superAdminOnly,
   contentManagers,
   adminOrSuper,
-  adminOnly
+  adminOnly,
 };

@@ -1,6 +1,6 @@
 const express = require('express');
-const store = require('../dataStore');
-const { persist } = require('../dataStore');
+const { MapLocation } = require('../models');
+const generateId = require('../lib/generateId');
 const { protect, contentManagers, adminOrSuper } = require('../auth');
 const { latLngToMapPercent } = require('../utils/geo');
 
@@ -17,15 +17,15 @@ function parseWorkItems(raw) {
   }
 }
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   const activeOnly = req.query.active !== 'false';
-  let list = store.mapLocations || [];
-  if (activeOnly) list = list.filter((l) => l.active !== false);
+  const filter = activeOnly ? { active: { $ne: false } } : {};
+  const list = await MapLocation.find(filter).sort({ createdAt: -1 }).lean();
   res.json(list);
 });
 
-router.get('/filters', (req, res) => {
-  const list = (store.mapLocations || []).filter((l) => l.active !== false);
+router.get('/filters', async (req, res) => {
+  const list = await MapLocation.find({ active: { $ne: false } }).lean();
   const uniq = (key) => [...new Set(list.map((l) => l[key]).filter(Boolean))].sort();
   res.json({
     regions: uniq('region'),
@@ -34,7 +34,7 @@ router.get('/filters', (req, res) => {
   });
 });
 
-router.post('/', protect, contentManagers, (req, res) => {
+router.post('/', protect, contentManagers, async (req, res) => {
   const {
     name,
     country,
@@ -60,8 +60,8 @@ router.post('/', protect, contentManagers, (req, res) => {
     return res.status(400).json({ message: 'Provide latitude/longitude or map X/Y (0–100)' });
   }
 
-  const location = {
-    id: `map-${Date.now()}`,
+  const location = await MapLocation.create({
+    id: generateId('map'),
     name,
     country: country || '',
     region: region || '',
@@ -76,21 +76,16 @@ router.post('/', protect, contentManagers, (req, res) => {
     active: active !== false,
     createdBy: req.user.id,
     createdAt: new Date().toISOString(),
-  };
+  });
 
-  if (!store.mapLocations) store.mapLocations = [];
-  store.mapLocations.unshift(location);
-  persist();
-  res.status(201).json(location);
+  res.status(201).json(location.toObject());
 });
 
-router.put('/:id', protect, contentManagers, (req, res) => {
-  const idx = (store.mapLocations || []).findIndex((l) => l.id === req.params.id);
-  if (idx === -1) return res.status(404).json({ message: 'Location not found' });
+router.put('/:id', protect, contentManagers, async (req, res) => {
+  const current = await MapLocation.findOne({ id: req.params.id });
+  if (!current) return res.status(404).json({ message: 'Location not found' });
 
-  const current = store.mapLocations[idx];
   const body = req.body;
-
   let mapX = body.mapX != null ? Number(body.mapX) : current.mapX;
   let mapY = body.mapY != null ? Number(body.mapY) : current.mapY;
   const lat = body.lat != null ? Number(body.lat) : current.lat;
@@ -102,32 +97,27 @@ router.put('/:id', protect, contentManagers, (req, res) => {
     mapY = coords.mapY;
   }
 
-  store.mapLocations[idx] = {
-    ...current,
-    name: body.name ?? current.name,
-    country: body.country ?? current.country,
-    region: body.region ?? current.region,
-    workType: body.workType ?? current.workType,
-    lat,
-    lng,
-    mapX,
-    mapY,
-    summary: body.summary ?? current.summary,
-    workItems: body.workItems != null ? parseWorkItems(body.workItems) : current.workItems,
-    overviewUrl: body.overviewUrl ?? current.overviewUrl,
-    active: body.active != null ? body.active !== false : current.active,
-    updatedAt: new Date().toISOString(),
-  };
+  current.name = body.name ?? current.name;
+  current.country = body.country ?? current.country;
+  current.region = body.region ?? current.region;
+  current.workType = body.workType ?? current.workType;
+  current.lat = lat;
+  current.lng = lng;
+  current.mapX = mapX;
+  current.mapY = mapY;
+  current.summary = body.summary ?? current.summary;
+  current.workItems = body.workItems != null ? parseWorkItems(body.workItems) : current.workItems;
+  current.overviewUrl = body.overviewUrl ?? current.overviewUrl;
+  current.active = body.active != null ? body.active !== false : current.active;
+  current.updatedAt = new Date().toISOString();
 
-  persist();
-  res.json(store.mapLocations[idx]);
+  await current.save();
+  res.json(current.toObject());
 });
 
-router.delete('/:id', protect, adminOrSuper, (req, res) => {
-  const idx = (store.mapLocations || []).findIndex((l) => l.id === req.params.id);
-  if (idx === -1) return res.status(404).json({ message: 'Location not found' });
-  store.mapLocations.splice(idx, 1);
-  persist();
+router.delete('/:id', protect, adminOrSuper, async (req, res) => {
+  const result = await MapLocation.deleteOne({ id: req.params.id });
+  if (result.deletedCount === 0) return res.status(404).json({ message: 'Location not found' });
   res.json({ message: 'Location removed' });
 });
 

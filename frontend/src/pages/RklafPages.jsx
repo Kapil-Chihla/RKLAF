@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import PageShell from '../components/layout/PageShell';
+import { faqs } from '../data/faqs';
 import './RklafPages.css';
 
 const promise = [
@@ -466,6 +467,21 @@ export function KnowYourRightsPage() {
         <p style={{ marginTop: '1.5rem' }}>
           <Link to="/contact" className="btn btn-primary">Request legal support</Link>
         </p>
+      </section>
+
+      <section id="faqs" className="page-subsection">
+        <h2 className="page-subsection__title">Frequently Asked Questions</h2>
+        <p className="page-subsection__lead">
+          Quick answers to common questions about requesting help and our areas of work.
+        </p>
+        <dl className="faq-list">
+          {faqs.map((faq) => (
+            <div className="faq-item" key={faq.id}>
+              <dt>{faq.question}</dt>
+              <dd>{faq.answer}</dd>
+            </div>
+          ))}
+        </dl>
       </section>
 
       <section id="noted-judgments" className="page-subsection">

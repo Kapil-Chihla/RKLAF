@@ -1,28 +1,27 @@
 const express = require('express');
-const store = require('../dataStore');
-const { persist } = require('../dataStore');
-const { protect, contentManagers, adminOrSuper } = require('../auth');
+const { Report } = require('../models');
+const generateId = require('../lib/generateId');
+const { protect, contentManagers } = require('../auth');
 const { uploadPDF } = require('../upload');
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  res.json(store.reports.slice(0, 2));
+router.get('/', async (req, res) => {
+  const reports = await Report.find().sort({ createdAt: -1 }).limit(2).lean();
+  res.json(reports);
 });
 
-router.post('/', protect, contentManagers, uploadPDF('reports').single('file'), (req, res) => {
+router.post('/', protect, contentManagers, uploadPDF('reports').single('file'), async (req, res) => {
   const { title, year } = req.body;
   if (!title || !req.file) return res.status(400).json({ message: 'Title and PDF file are required' });
-  const report = {
-    id: `report-${Date.now()}`,
+  const report = await Report.create({
+    id: generateId('report'),
     title,
     year: year || '',
     file: `/uploads/reports/${req.file.filename}`,
-    createdAt: new Date().toISOString()
-  };
-  store.reports.unshift(report);
-  persist();
-  res.status(201).json(report);
+    createdAt: new Date().toISOString(),
+  });
+  res.status(201).json(report.toObject());
 });
 
 module.exports = router;

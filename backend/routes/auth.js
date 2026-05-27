@@ -1,15 +1,15 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
-const store = require('../dataStore');
-const { persist } = require('../dataStore');
+const { User, Invite } = require('../models');
+const generateId = require('../lib/generateId');
 const { ROLES, protect } = require('../auth');
 const { signToken } = require('../utils/tokens');
 
 const router = express.Router();
 
-router.get('/setup-status', (req, res) => {
-  const hasSuperAdmin = store.users.some((u) => u.role === ROLES.SUPER_ADMIN);
-  res.json({ needsSetup: !hasSuperAdmin, hasSuperAdmin });
+router.get('/setup-status', async (req, res) => {
+  const hasSuperAdmin = await User.exists({ role: ROLES.SUPER_ADMIN });
+  res.json({ needsSetup: !hasSuperAdmin, hasSuperAdmin: Boolean(hasSuperAdmin) });
 });
 
 router.post('/setup-super-admin', async (req, res) => {
@@ -17,31 +17,29 @@ router.post('/setup-super-admin', async (req, res) => {
   if (!name || !email || !password) {
     return res.status(400).json({ message: 'Name, email and password are required' });
   }
-  if (store.users.some((u) => u.role === ROLES.SUPER_ADMIN)) {
+  if (await User.exists({ role: ROLES.SUPER_ADMIN })) {
     return res.status(403).json({ message: 'Super admin already exists. Only one is allowed.' });
   }
-  if (store.users.some((u) => u.email === email.toLowerCase())) {
+  if (await User.exists({ email: email.toLowerCase() })) {
     return res.status(409).json({ message: 'Email already registered' });
   }
 
   const hashed = await bcrypt.hash(password, 10);
-  const user = {
-    id: `u-${Date.now()}`,
+  const user = await User.create({
+    id: generateId('u'),
     name,
     email: email.toLowerCase(),
     password: hashed,
     role: ROLES.SUPER_ADMIN,
     status: 'active',
     createdAt: new Date().toISOString(),
-    createdBy: 'system'
-  };
-  store.users.push(user);
-  persist();
+    createdBy: 'system',
+  });
 
   const token = signToken({ id: user.id, email: user.email, role: user.role });
   res.status(201).json({
     token,
-    user: { id: user.id, name: user.name, email: user.email, role: user.role }
+    user: { id: user.id, name: user.name, email: user.email, role: user.role },
   });
 });
 
@@ -51,43 +49,45 @@ router.post('/register', async (req, res) => {
     return res.status(400).json({ message: 'Name, email, password and invite token are required' });
   }
 
-  const invite = store.invites.find(
-    (i) => i.token === inviteToken && i.status === 'pending' && new Date(i.expiresAt) > new Date()
-  );
+  const invite = await Invite.findOne({
+    token: inviteToken,
+    status: 'pending',
+    expiresAt: { $gt: new Date().toISOString() },
+  });
   if (!invite) {
     return res.status(400).json({ message: 'Invalid or expired invite. Ask your super admin for a new link.' });
   }
-  if (store.users.some((u) => u.email === email.toLowerCase())) {
+  if (await User.exists({ email: email.toLowerCase() })) {
     return res.status(409).json({ message: 'Email already registered' });
   }
 
   const hashed = await bcrypt.hash(password, 10);
-  const user = {
-    id: `u-${Date.now()}`,
+  const user = await User.create({
+    id: generateId('u'),
     name,
     email: email.toLowerCase(),
     password: hashed,
     role: invite.role,
     status: 'active',
     createdAt: new Date().toISOString(),
-    createdBy: invite.createdBy
-  };
-  store.users.push(user);
+    createdBy: invite.createdBy,
+  });
+
   invite.status = 'used';
   invite.usedAt = new Date().toISOString();
   invite.usedBy = user.id;
-  persist();
+  await invite.save();
 
   const token = signToken({ id: user.id, email: user.email, role: user.role });
   res.status(201).json({
     token,
-    user: { id: user.id, name: user.name, email: user.email, role: user.role }
+    user: { id: user.id, name: user.name, email: user.email, role: user.role },
   });
 });
 
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
-  const user = store.users.find((u) => u.email === email?.toLowerCase());
+  const user = await User.findOne({ email: email?.toLowerCase() }).lean();
   if (!user) return res.status(401).json({ message: 'Invalid credentials' });
   if (user.status === 'disabled') return res.status(403).json({ message: 'Account has been disabled' });
 
@@ -102,12 +102,12 @@ router.post('/login', async (req, res) => {
   const token = signToken({ id: user.id, email: user.email, role: user.role });
   res.json({
     token,
-    user: { id: user.id, name: user.name, email: user.email, role: user.role }
+    user: { id: user.id, name: user.name, email: user.email, role: user.role },
   });
 });
 
-router.get('/me', protect, (req, res) => {
-  const user = store.users.find((u) => u.id === req.user.id);
+router.get('/me', protect, async (req, res) => {
+  const user = await User.findOne({ id: req.user.id }).lean();
   if (!user) return res.status(404).json({ message: 'User not found' });
   res.json({
     id: user.id,
@@ -115,7 +115,7 @@ router.get('/me', protect, (req, res) => {
     email: user.email,
     role: user.role,
     status: user.status,
-    createdAt: user.createdAt
+    createdAt: user.createdAt,
   });
 });
 

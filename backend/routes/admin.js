@@ -1,20 +1,43 @@
 const express = require('express');
-const store = require('../dataStore');
+const {
+  Blog,
+  Case,
+  Camp,
+  Article,
+  Report,
+  TeamMember,
+  User,
+  Invite,
+  MapLocation,
+} = require('../models');
 const { protect, contentManagers } = require('../auth');
 
 const router = express.Router();
 
-router.get('/stats', protect, contentManagers, (req, res) => {
+router.get('/stats', protect, contentManagers, async (req, res) => {
+  const [blogs, cases, camps, articles, reports, team, users, pendingInvites, mapLocations] =
+    await Promise.all([
+      Blog.countDocuments(),
+      Case.countDocuments(),
+      Camp.countDocuments(),
+      Article.countDocuments(),
+      Report.countDocuments(),
+      TeamMember.countDocuments(),
+      User.countDocuments(),
+      Invite.countDocuments({ status: 'pending' }),
+      MapLocation.countDocuments(),
+    ]);
+
   res.json({
-    blogs: store.blogs.length,
-    cases: store.cases.length,
-    camps: store.camps.length,
-    articles: store.articles.length,
-    reports: store.reports.length,
-    team: store.team.length,
-    users: store.users.length,
-    pendingInvites: store.invites.filter((i) => i.status === 'pending').length,
-    mapLocations: (store.mapLocations || []).length
+    blogs,
+    cases,
+    camps,
+    articles,
+    reports,
+    team,
+    users,
+    pendingInvites,
+    mapLocations,
   });
 });
 

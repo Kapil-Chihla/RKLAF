@@ -1,19 +1,22 @@
 const express = require('express');
 const slugify = require('slugify');
-const store = require('../dataStore');
-const { persist } = require('../dataStore');
+const { Blog } = require('../models');
+const generateId = require('../lib/generateId');
 const { protect, contentManagers, adminOrSuper } = require('../auth');
 const { uploadImage } = require('../upload');
 
 const router = express.Router();
 
-router.get('/', (req, res) => res.json(store.blogs));
+router.get('/', async (req, res) => {
+  const blogs = await Blog.find().sort({ createdAt: -1 }).lean();
+  res.json(blogs);
+});
 
-router.post('/', protect, contentManagers, uploadImage('blogs').single('image'), (req, res) => {
+router.post('/', protect, contentManagers, uploadImage('blogs').single('image'), async (req, res) => {
   const { title, excerpt, content, author } = req.body;
   if (!title || !content) return res.status(400).json({ message: 'Title and content are required' });
-  const blog = {
-    id: `blog-${Date.now()}`,
+  const blog = await Blog.create({
+    id: generateId('blog'),
     title,
     slug: slugify(title, { lower: true, strict: true }),
     excerpt: excerpt || '',
@@ -21,18 +24,14 @@ router.post('/', protect, contentManagers, uploadImage('blogs').single('image'),
     author: author || req.user.name,
     image: req.file ? `/uploads/blogs/${req.file.filename}` : null,
     createdBy: req.user.id,
-    createdAt: new Date().toISOString()
-  };
-  store.blogs.unshift(blog);
-  persist();
-  res.status(201).json(blog);
+    createdAt: new Date().toISOString(),
+  });
+  res.status(201).json(blog.toObject());
 });
 
-router.delete('/:id', protect, adminOrSuper, (req, res) => {
-  const idx = store.blogs.findIndex((b) => b.id === req.params.id);
-  if (idx === -1) return res.status(404).json({ message: 'Blog not found' });
-  store.blogs.splice(idx, 1);
-  persist();
+router.delete('/:id', protect, adminOrSuper, async (req, res) => {
+  const result = await Blog.deleteOne({ id: req.params.id });
+  if (result.deletedCount === 0) return res.status(404).json({ message: 'Blog not found' });
   res.json({ message: 'Blog deleted' });
 });
 

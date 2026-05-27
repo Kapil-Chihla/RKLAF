@@ -66,7 +66,7 @@ export default function App() {
           <Route path="noted-judgments" element={<Navigate to="/know-your-rights#noted-judgments" replace />} />
           <Route path="knowledge-hub/articles-research" element={<Navigate to="/blogs" replace />} />
           <Route path="knowledge-hub/emergency-contacts" element={<Navigate to="/contact" replace />} />
-          <Route path="knowledge-hub/faqs" element={<Navigate to="/know-your-rights" replace />} />
+          <Route path="knowledge-hub/faqs" element={<Navigate to="/know-your-rights#faqs" replace />} />
         </Route>
       </Routes>
     </BrowserRouter>

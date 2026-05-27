@@ -5,9 +5,9 @@ This project has two parts:
 | Part | Host | Why |
 |------|------|-----|
 | **Frontend** (React + Vite) | [Vercel](https://vercel.com) | Fast CDN, free tier, great for SPAs |
-| **Backend** (Express + `db.json`) | [Render](https://render.com) | Needs a real Node server and writable disk for data/uploads |
+| **Backend** (Express + MongoDB) | [Render](https://render.com) or [Railway](https://railway.app) | Node API; data in MongoDB Atlas; uploads still on server disk |
 
-Vercel alone cannot run this Express API with file storage — the API must live elsewhere.
+Vercel alone cannot run this Express API — the API must live elsewhere. Set **MONGODB_URI** on the API host (e.g. [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) free tier).
 
 ---
 
@@ -19,7 +19,7 @@ Vercel alone cannot run this Express API with file storage — the API must live
 2. Go to [Render Dashboard](https://dashboard.render.com) → **New** → **Blueprint**.
 3. Connect the repo; Render reads `render.yaml` and creates **legal-aid-api**.
 4. Set **FRONTEND_URL** after you have your Vercel URL, e.g. `https://your-project.vercel.app`
-5. Add optional env vars from `backend/.env.example` (Razorpay, SMTP).
+5. Set **MONGODB_URI** (Atlas connection string) and optional env vars from `backend/.env.example` (Razorpay, SMTP).
 6. Wait for deploy; copy the service URL, e.g. `https://legal-aid-api.onrender.com`.
 
 ### Option B — Manual web service
@@ -29,6 +29,7 @@ Vercel alone cannot run this Express API with file storage — the API must live
 3. **Build Command:** `npm install`
 4. **Start Command:** `npm start`
 5. **Environment variables:**
+   - `MONGODB_URI` = your MongoDB Atlas connection string
    - `FRONTEND_URL` = your Vercel site URL (set after step 2)
    - `JWT_SECRET` = long random string
    - `PORT` is set automatically by Render
@@ -40,7 +41,7 @@ Vercel alone cannot run this Express API with file storage — the API must live
 1. Visit `https://your-vercel-app.vercel.app/admin/setup` and create the super admin.
 2. Or use invite flow from `/admin/users` after login.
 
-> **Note:** On Render’s free tier, the filesystem can reset on redeploys. For production, plan a database (e.g. MongoDB Atlas) or Render persistent disk.
+> **Note:** Content lives in **MongoDB** (required). Uploaded images/PDFs still use the server `uploads/` folder — on free tiers that folder can reset on redeploy; use S3 or similar for production file storage if needed.
 
 ---
 
@@ -132,6 +133,7 @@ Use that repo for both Vercel and Render.
 | CORS errors | Set `FRONTEND_URL` on Render to exact Vercel origin; redeploy API |
 | 404 on refresh | Ensure `frontend/vercel.json` is deployed (root = `frontend`) |
 | API sleeps (free Render) | First request after idle can take ~30s; upgrade or use a cron ping |
+| API won’t start | Missing or invalid `MONGODB_URI`; check Atlas IP allowlist (0.0.0.0/0 for Render) |
 | Uploads lost | Free tier disk is ephemeral; use cloud storage for production |
 
 ---
@@ -141,6 +143,7 @@ Use that repo for both Vercel and Render.
 ```bash
 # Terminal 1 — API
 cd backend && cp .env.example .env && npm install && npm run dev
+# Set MONGODB_URI in .env (local MongoDB or Atlas)
 
 # Terminal 2 — site
 cd frontend && cp .env.example .env.local && npm install && npm run dev
