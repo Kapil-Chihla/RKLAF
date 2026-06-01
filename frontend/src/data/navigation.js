@@ -32,8 +32,9 @@ export const navItems = [
       { label: 'Policy Reports', path: '/our-work/policy-reports' },
     ],
   },
-  { label: 'Know Your Rights', path: '/know-your-rights' },
-  { label: 'Blogs & Research', path: '/blogs' },
+  { label: 'Know Your Rights', shortLabel: 'Rights', path: '/know-your-rights' },
+  { label: 'Noted Judgments', shortLabel: 'Judgments', path: '/noted-judgments' },
+  { label: 'Blogs & Research', shortLabel: 'Blogs', path: '/blogs' },
   { label: 'Contact Us', path: '/contact' },
 ];
 
@@ -49,9 +50,11 @@ export const footerColumns = [
   {
     title: 'Know Your Rights',
     links: [
-      { label: 'Your Rights', path: '/know-your-rights' },
-      { label: 'Intake Procedure', path: '/know-your-rights#intake' },
-      { label: 'Noted Judgments', path: '/know-your-rights#noted-judgments' },
+      { label: 'Downloadable Guides', path: '/know-your-rights#guides' },
+      { label: 'Legal Glossary', path: '/know-your-rights#glossary' },
+      { label: 'Emergency Contacts', path: '/know-your-rights#emergency' },
+      { label: 'Intake Procedure', path: '/contact#intake' },
+      { label: 'Noted Judgments', path: '/noted-judgments' },
     ],
   },
 ];

@@ -1,11 +1,11 @@
 import { useId, useState } from 'react';
 
-export default function FaqAccordion({ items }) {
+export default function FaqAccordion({ items, className = '', defaultOpen = null }) {
   const baseId = useId();
-  const [openId, setOpenId] = useState(items[0]?.id ?? null);
+  const [openId, setOpenId] = useState(defaultOpen ?? items[0]?.id ?? null);
 
   return (
-    <div className="faq-accordion">
+    <div className={`faq-accordion ${className}`.trim()}>
       {items.map((faq) => {
         const isOpen = openId === faq.id;
         const panelId = `${baseId}-${faq.id}`;

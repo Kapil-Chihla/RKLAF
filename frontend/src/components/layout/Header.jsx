@@ -24,14 +24,32 @@ export default function Header() {
 
   return (
     <header className="site-header">
-      <div className="header-inner container">
-        <Brand onNavigate={closeMenu} />
+      <div className="header-bar container">
+        <Brand variant="header" compact onNavigate={closeMenu} />
+
+        <nav
+          id="main-navigation"
+          className={`main-nav ${menuOpen ? 'is-open' : ''}`}
+          aria-label="Main navigation"
+        >
+          <div className="nav-links">
+            {navItems.map((item) => (
+              <NavDropdown key={item.label} item={item} onNavigate={closeMenu} />
+            ))}
+          </div>
+          <div className="nav-mobile-footer">
+            <SocialLinks className="nav-social nav-social--mobile" />
+            <Link to="/donate" className="btn btn-donate btn-donate--mobile" onClick={closeMenu}>
+              Donate
+            </Link>
+          </div>
+        </nav>
 
         <div className="header-actions">
-          <SocialLinks className="nav-social nav-social--desktop" />
           <Link to="/donate" className="btn btn-donate header-donate">
             Donate
           </Link>
+          <SocialLinks className="nav-social nav-social--desktop" />
           <button
             type="button"
             className={`menu-toggle ${menuOpen ? 'is-active' : ''}`}
@@ -55,24 +73,6 @@ export default function Header() {
           onClick={closeMenu}
         />
       )}
-
-      <nav
-        id="main-navigation"
-        className={`main-nav ${menuOpen ? 'is-open' : ''}`}
-        aria-label="Main navigation"
-      >
-        <div className="nav-links">
-          {navItems.map((item) => (
-            <NavDropdown key={item.label} item={item} onNavigate={closeMenu} />
-          ))}
-        </div>
-        <div className="nav-mobile-footer">
-          <SocialLinks className="nav-social nav-social--mobile" />
-          <Link to="/donate" className="btn btn-donate btn-donate--mobile" onClick={closeMenu}>
-            Donate
-          </Link>
-        </div>
-      </nav>
     </header>
   );
 }

@@ -31,7 +31,10 @@ export default function NavDropdown({ item, onNavigate }) {
         className={`nav-link ${location.pathname === item.path ? 'active' : ''}`}
         onClick={onNavigate}
       >
-        {item.label}
+        <span className="nav-label nav-label--full">{item.label}</span>
+        {item.shortLabel && (
+          <span className="nav-label nav-label--short">{item.shortLabel}</span>
+        )}
       </Link>
     );
   }
@@ -53,7 +56,10 @@ export default function NavDropdown({ item, onNavigate }) {
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
       >
-        {item.label}
+        <span className="nav-label nav-label--full">{item.label}</span>
+        {item.shortLabel && (
+          <span className="nav-label nav-label--short">{item.shortLabel}</span>
+        )}
         <span className="chevron" aria-hidden="true" />
       </button>
       <div className="nav-dropdown-menu">

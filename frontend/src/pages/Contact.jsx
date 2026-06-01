@@ -1,13 +1,17 @@
 import { useState } from 'react';
 import axios from 'axios';
 import PageShell from '../components/layout/PageShell';
+import { intakeSteps } from '../data/legalResources';
 import { WHATSAPP_DISPLAY, WHATSAPP_URL } from '../data/navigation';
+import useReveal from '../hooks/useReveal';
+import './Contact.css';
 
 const API = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
 
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' });
   const [status, setStatus] = useState('');
+  const [intakeRef, intakeVisible] = useReveal();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -61,7 +65,9 @@ export default function Contact() {
               onChange={(e) => setForm({ ...form, message: e.target.value })}
             />
           </label>
-          <button type="submit" className="btn btn-primary">Send Message</button>
+          <button type="submit" className="btn btn-primary">
+            Send Message
+          </button>
           {status && <p className="form-status">{status}</p>}
         </form>
         <aside className="contact-aside">
@@ -76,6 +82,32 @@ export default function Contact() {
           </a>
         </aside>
       </div>
+
+      <section
+        id="intake"
+        ref={intakeRef}
+        className={`contact-intake kyr-reveal ${intakeVisible ? 'is-visible' : ''}`}
+      >
+        <div className="contact-intake__head">
+          <p className="contact-intake__eyebrow">How we help</p>
+          <h2>Intake procedure</h2>
+          <p>
+            How RKLAF evaluates requests and routes matters to the right support — from first contact
+            through representation or referral.
+          </p>
+        </div>
+        <ol className="contact-intake__timeline">
+          {intakeSteps.map((step, index) => (
+            <li key={step.title} style={{ '--step-i': index }}>
+              <span className="contact-intake__num">{index + 1}</span>
+              <div>
+                <h3>{step.title}</h3>
+                <p>{step.description}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
     </PageShell>
   );
 }

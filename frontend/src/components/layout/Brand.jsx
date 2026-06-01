@@ -1,13 +1,14 @@
 import { Link } from 'react-router-dom';
 import logo from '../../assets/logo.jpeg';
 
-export default function Brand({ variant = 'header', onNavigate }) {
+export default function Brand({ variant = 'header', compact = false, onNavigate }) {
   const isFooter = variant === 'footer';
+  const isHeader = variant === 'header';
 
   return (
     <Link
       to="/"
-      className={`brand ${isFooter ? 'brand--footer' : ''}`}
+      className={`brand ${isFooter ? 'brand--footer' : ''} ${compact && isHeader ? 'brand--header' : ''}`}
       onClick={onNavigate}
     >
       <img

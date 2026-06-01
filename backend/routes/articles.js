@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', protect, contentManagers, uploadAny('articles').single('file'), async (req, res) => {
-  const { title, summary, body } = req.body;
+  const { title, summary, body, category } = req.body;
   if (!title) return res.status(400).json({ message: 'Title is required' });
   const article = await Article.create({
     id: generateId('article'),
@@ -21,6 +21,7 @@ router.post('/', protect, contentManagers, uploadAny('articles').single('file'),
     slug: slugify(title, { lower: true, strict: true }),
     summary: summary || '',
     body: body || '',
+    category: category || 'General',
     file: req.file ? `/uploads/articles/${req.file.filename}` : null,
     createdBy: req.user.id,
     createdAt: new Date().toISOString(),

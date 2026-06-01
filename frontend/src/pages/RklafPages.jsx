@@ -1,7 +1,5 @@
 import { Link } from 'react-router-dom';
 import PageShell from '../components/layout/PageShell';
-import { faqs } from '../data/faqs';
-import FaqAccordion from '../components/FaqAccordion';
 import './RklafPages.css';
 
 const promise = [
@@ -131,15 +129,6 @@ const joinPaths = [
     audience: 'Donors & partners',
     body: 'Fund PILs, legal defense, mobile clinics, research, and infrastructure for communities that cannot afford representation.'
   }
-];
-
-const rightsCards = [
-  'Bail and fair trial safeguards',
-  'Rights of undertrial prisoners',
-  'Child safety and POCSO compliance',
-  'Disability reservation and equal opportunity',
-  'RTI filing and public accountability',
-  'How to approach legal aid'
 ];
 
 function HeroStatement({ eyebrow, title, children, actions }) {
@@ -398,63 +387,15 @@ export function JoinPage() {
   );
 }
 
-export function KnowYourRightsPage() {
+export function NotedJudgmentsPage() {
   return (
     <PageShell
-      title="Know Your Rights"
-      subtitle="Practical legal literacy, intake guidance, and important case law — all in one place."
+      title="Noted Judgments"
+      subtitle="Important case law and legal developments relevant to public-interest advocacy."
     >
-      <section className="page-subsection">
-        <h2 className="page-subsection__title">Your Legal Rights</h2>
-        <p className="page-subsection__lead">
-          Plain-language resources for people navigating courts, institutions, and public systems.
-        </p>
-        <div className="rights-grid">
-          {rightsCards.map((right) => (
-            <article className="rights-card" key={right}>
-              <h3>{right}</h3>
-              <p>Plain-language resources, FAQs, multilingual notes, and downloadable explainers can be added here.</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section id="intake" className="page-subsection">
-        <h2 className="page-subsection__title">Intake Procedure</h2>
-        <p className="page-subsection__lead">
-          How RKLAF evaluates requests and routes matters to the right support.
-        </p>
-        <div className="process-steps">
-          {['Reach out', 'Initial screening', 'Document review', 'Legal strategy', 'Representation or referral'].map((step, index) => (
-            <article className="process-step" key={step}>
-              <span>{index + 1}</span>
-              <h3>{step}</h3>
-              <p>Our team gathers essential facts, assesses urgency, and identifies the most effective legal pathway.</p>
-            </article>
-          ))}
-        </div>
-        <p style={{ marginTop: '1.5rem' }}>
-          <Link to="/contact" className="btn btn-primary">Request legal support</Link>
-        </p>
-      </section>
-
-      <section id="faqs" className="page-subsection">
-        <h2 className="page-subsection__title">Frequently Asked Questions</h2>
-        <p className="page-subsection__lead">
-          Quick answers to common questions about requesting help and our areas of work.
-        </p>
-        <FaqAccordion items={faqs} />
-      </section>
-
-      <section id="noted-judgments" className="page-subsection">
-        <h2 className="page-subsection__title">Noted Judgments</h2>
-        <p className="page-subsection__lead">
-          Important case law and legal developments relevant to public-interest advocacy.
-        </p>
-        <p className="placeholder-text">
-          Judgment notes, legal summaries, and downloadable case briefs can be published here.
-        </p>
-      </section>
+      <p className="placeholder-text">
+        Judgment notes, legal summaries, and downloadable case briefs can be published here.
+      </p>
     </PageShell>
   );
 }

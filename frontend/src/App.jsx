@@ -9,12 +9,13 @@ import {
   AboutPage,
   ProgramsPage,
   JoinPage,
-  KnowYourRightsPage,
+  NotedJudgmentsPage,
   MediaCoveragePage,
   AnnualReportsPage,
   PolicyReportsPage,
 } from './pages/RklafPages';
 import ImpactMapPage from './pages/ImpactMapPage';
+import KnowYourRights from './pages/KnowYourRights';
 
 export default function App() {
   return (
@@ -37,7 +38,8 @@ export default function App() {
           <Route path="our-work/policy-reports" element={<PolicyReportsPage />} />
 
           {/* Know Your Rights — single page */}
-          <Route path="know-your-rights" element={<KnowYourRightsPage />} />
+          <Route path="know-your-rights" element={<KnowYourRights />} />
+          <Route path="noted-judgments" element={<NotedJudgmentsPage />} />
 
           {/* Get involved & resources */}
           <Route path="join" element={<JoinPage />} />
@@ -61,7 +63,7 @@ export default function App() {
           <Route path="our-work/achievements" element={<Navigate to="/our-work/impact" replace />} />
           <Route path="our-work/annual-report" element={<Navigate to="/our-work/annual-reports" replace />} />
           <Route path="know-your-rights/intake" element={<Navigate to="/know-your-rights#intake" replace />} />
-          <Route path="noted-judgments" element={<Navigate to="/know-your-rights#noted-judgments" replace />} />
+          <Route path="know-your-rights/noted-judgments" element={<Navigate to="/noted-judgments" replace />} />
           <Route path="knowledge-hub/articles-research" element={<Navigate to="/blogs" replace />} />
           <Route path="knowledge-hub/emergency-contacts" element={<Navigate to="/contact" replace />} />
           <Route path="knowledge-hub/faqs" element={<Navigate to="/know-your-rights#faqs" replace />} />

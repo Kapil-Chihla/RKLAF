@@ -7,6 +7,7 @@ const articleSchema = new mongoose.Schema(
     slug: { type: String, required: true },
     summary: { type: String, default: '' },
     body: { type: String, default: '' },
+    category: { type: String, default: 'General' },
     file: { type: String, default: null },
     createdBy: { type: String, required: true },
     createdAt: { type: String, required: true },

@@ -21,6 +21,8 @@ Remove intrusive WhatsApp float, clean up header nav (remove Media/Join Us, sing
 - Mobile responsive slide-out nav
 
 ## Progress
+- Header single-row grid: brand | nav | donate + social (right); compact brand; short labels 993–1320px
+- Noted Judgments promoted to top-level header nav (`/noted-judgments`); removed from Know Your Rights page
 - Removed floating WhatsApp icon
 - Header nav trimmed and restyled
 - Fixed motionless JSX typos

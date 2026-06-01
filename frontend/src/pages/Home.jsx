@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import WhereWeWorkSection from '../components/impact/WhereWeWorkSection';
+import heroImage from '../assets/hero.jpeg';
 import './Home.css';
 
 const impactStats = [
@@ -29,9 +30,15 @@ export default function Home() {
   return (
     <div className="home">
       <section className="home-hero">
-        <div className="home-hero__texture" aria-hidden="true" />
+        <div className="home-hero__media" aria-hidden="true">
+          <img src={heroImage} alt="" className="home-hero__bg" />
+        </div>
+        <div className="home-hero__overlay" aria-hidden="true" />
         <div className="container home-hero__inner">
-          <p className="home-label">Radhey Krishna Legal Aid Foundation</p>
+          <p className="home-label">
+            <span className="home-label__line">Radhey Krishna</span>
+            <span className="home-label__line">Legal Aid Foundation</span>
+          </p>
           <h1 className="home-hero__title">WITH YOU. FOR YOU. NYAYA TAK.</h1>
           <p className="home-hero__mission">
             Our mandate is to democratize access to justice — pro-bono legal support, rights
@@ -127,8 +134,10 @@ export default function Home() {
             <h2>Learn. Research. Act.</h2>
             <ul className="home-quick-links">
               <li><Link to="/know-your-rights">Know Your Rights</Link></li>
-              <li><Link to="/know-your-rights#intake">Intake Procedure</Link></li>
-              <li><Link to="/know-your-rights#noted-judgments">Noted Judgments</Link></li>
+              <li><Link to="/know-your-rights#guides">Downloadable Guides</Link></li>
+              <li><Link to="/know-your-rights#emergency">Emergency Contacts</Link></li>
+              <li><Link to="/contact#intake">Intake Procedure</Link></li>
+              <li><Link to="/noted-judgments">Noted Judgments</Link></li>
               <li><Link to="/blogs">Blogs & Research</Link></li>
               <li><Link to="/join">Join the Fight for Justice</Link></li>
             </ul>
