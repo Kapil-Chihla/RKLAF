@@ -167,29 +167,56 @@ function PromiseGrid() {
   );
 }
 
+const aboutPageSections = [
+  { id: 'mandate', label: 'Our Mandate & Vision' },
+  { id: 'heritage', label: 'Our Heritage' },
+  { id: 'team', label: 'Our Team' },
+];
+
 export function AboutPage() {
   return (
     <PageShell
-      title="About RKLAF"
-      subtitle="Our mandate is to democratize access to justice."
+      title="About Us"
+      subtitle="Our mandate, heritage, and the people behind Radhey Krishna Legal Aid Foundation."
     >
+      <nav className="about-page-nav" aria-label="On this page">
+        {aboutPageSections.map((section) => (
+          <a key={section.id} href={`#${section.id}`}>
+            {section.label}
+          </a>
+        ))}
+      </nav>
+
       <div className="editorial-page">
-        <HeroStatement eyebrow="Our Mandate & Vision" title="The law should be a shield, not an insurmountable barrier.">
-          <p>
-            Navigating the legal system should not be a privilege reserved for the few. At the
-            Radhey Krishna Legal Aid Foundation, we are a dedicated coalition of legal professionals
-            and advocates committed to protecting constitutional rights regardless of background or
-            financial standing.
-          </p>
-          <p>
-            Our ethos is captured in a promise to the communities we serve: <strong>With You. For You. Nyaya Tak.</strong>
-          </p>
-        </HeroStatement>
-        <PromiseGrid />
-        <section className="content-hero-panel">
-          <p className="eyebrow">Our Heritage</p>
-          <h2>RKLAF is a living tribute to family, empathy, and doing what is right.</h2>
-          <div className="content-hero-panel__text">
+        <section id="mandate" className="about-section about-section--first">
+          <HeroStatement eyebrow="Our Mandate & Vision" title="The law should be a shield, not an insurmountable barrier.">
+            <p>
+              Navigating the legal system should not be a privilege reserved for the few. At the
+              Radhey Krishna Legal Aid Foundation, we are a dedicated coalition of legal professionals
+              and advocates committed to protecting constitutional rights regardless of background or
+              financial standing.
+            </p>
+            <p>
+              Our ethos is captured in a promise to the communities we serve:{' '}
+              <strong>With You. For You. Nyaya Tak.</strong>
+            </p>
+          </HeroStatement>
+          <PromiseGrid />
+          <section className="story-band">
+            <div>
+              <p className="eyebrow">Strategic Advocacy</p>
+              <h2>On-ground impact with courtroom depth.</h2>
+            </div>
+            <div className="story-list">
+              <p><strong>Protecting civil liberties:</strong> pro-bono defense for undertrials at Delhi Central Jail, Tihar.</p>
+              <p><strong>Enforcing accountability:</strong> RTI filings and advocacy for child-safety compliance.</p>
+              <p><strong>Advancing disability rights:</strong> litigation for reservations and equal opportunity in public employment.</p>
+            </div>
+          </section>
+        </section>
+
+        <section id="heritage" className="about-section two-column-story">
+          <HeroStatement eyebrow="Our Heritage" title="A living tribute to family, empathy, and doing what is right.">
             <p>
               The Foundation was established as a registered Charitable Trust on November 25, 2016,
               to honor the memory and life&apos;s work of Late Sh. R.S. Garg (Advocate) and his wife,
@@ -197,99 +224,40 @@ export function AboutPage() {
             </p>
             <p>
               Sh. R.S. Garg began his career as a respected Judicial Officer in Haryana before
-              transitioning into one of Delhi&apos;s leading legal practitioners at the District and High
-              Courts. His true legacy was boundless compassion: countless hours of pro-bono legal
-              aid for the poor, the needy, and the disabled.
+              becoming one of Delhi&apos;s leading legal practitioners at the District and High Courts.
+              His true legacy was compassion: countless hours of pro-bono legal aid for the poor, the
+              needy, and the disabled, always supported by Smt. Krishna Garg.
             </p>
+          </HeroStatement>
+          <aside className="heritage-card">
+            <span>Today</span>
+            <h3>Led by Adv. Ajay Garg</h3>
             <p>
-              Today, under the leadership of Adv. Ajay Garg, RKLAF carries that legacy forward as a
-              permanent public resource for accessible, fearless advocacy.
+              RKLAF carries that spirit forward, ensuring accessible and fearless advocacy remains a
+              permanent public resource for every citizen who needs it.
             </p>
-          </div>
+          </aside>
         </section>
-        <section className="story-band">
-          <div>
-            <p className="eyebrow">Strategic Advocacy</p>
-            <h2>On-ground impact with courtroom depth.</h2>
-          </div>
-          <div className="story-list">
-            <p><strong>Protecting civil liberties:</strong> pro-bono defense for undertrials at Delhi Central Jail, Tihar.</p>
-            <p><strong>Enforcing accountability:</strong> RTI filings and advocacy for child-safety compliance.</p>
-            <p><strong>Advancing disability rights:</strong> litigation for reservations and equal opportunity in public employment.</p>
-          </div>
-        </section>
-        <section className="content-hero-panel">
-          <p className="eyebrow">Our Team</p>
-          <h2>A robust pursuit of justice requires a formidable network.</h2>
-          <div className="content-hero-panel__text">
+
+        <section id="team" className="about-section">
+          <HeroStatement eyebrow="Our Team" title="Justice needs a formidable alliance.">
             <p>
-              RKLAF&apos;s impact is amplified by an active alliance of leading legal minds alongside
-              dedicated law students and community advocates. Whether someone is seeking seasoned
-              legal intervention or looking to contribute expertise to a critical cause, RKLAF is a
-              platform for justice.
+              RKLAF&apos;s impact is amplified by leading legal minds, dedicated law students, and community
+              advocates. Whether someone is seeking seasoned legal intervention or looking to contribute
+              expertise to a critical cause, RKLAF is a platform for justice.
             </p>
             <p><strong>Stand with us. Let us pursue justice, together.</strong></p>
+          </HeroStatement>
+          <div className="team-grid">
+            {['Leadership', 'Advocates', 'Law Students', 'Community Volunteers'].map((role) => (
+              <article className="team-card" key={role}>
+                <div className="team-card__avatar">{role.charAt(0)}</div>
+                <h3>{role}</h3>
+                <p>Profile photos, roles, and short biographies can be published from the admin panel later.</p>
+              </article>
+            ))}
           </div>
         </section>
-      </div>
-    </PageShell>
-  );
-}
-
-export function HeritagePage() {
-  return (
-    <PageShell
-      title="Our Heritage"
-      subtitle="A living tribute to family, empathy, and doing what is right."
-    >
-      <div className="editorial-page two-column-story">
-        <HeroStatement eyebrow="Established November 25, 2016" title="Carrying forward a legacy of fearless advocacy.">
-          <p>
-            RKLAF was established as a registered Charitable Trust to honor Late Sh. R.S. Garg
-            (Advocate) and Late Smt. Krishna Garg. Sh. R.S. Garg began as a respected Judicial
-            Officer in Haryana before becoming one of Delhi&apos;s leading legal practitioners at the
-            District and High Courts.
-          </p>
-          <p>
-            His true legacy was compassion: countless hours of pro-bono legal aid for the poor, the
-            needy, and the disabled, always supported by Smt. Krishna Garg.
-          </p>
-        </HeroStatement>
-        <aside className="heritage-card">
-          <span>Today</span>
-          <h3>Led by Adv. Ajay Garg</h3>
-          <p>
-            RKLAF carries that spirit forward, ensuring accessible and fearless advocacy remains a
-            permanent public resource.
-          </p>
-        </aside>
-      </div>
-    </PageShell>
-  );
-}
-
-export function TeamPage() {
-  return (
-    <PageShell
-      title="Our Team"
-      subtitle="A network of leading legal minds, students, and community advocates."
-    >
-      <div className="editorial-page">
-        <HeroStatement eyebrow="Network of Excellence" title="Justice needs a formidable alliance.">
-          <p>
-            RKLAF&apos;s impact is amplified by leading legal minds, dedicated law students, and community
-            advocates. Team photos and detailed profiles can be added here as soon as they are ready.
-          </p>
-        </HeroStatement>
-        <div className="team-grid">
-          {['Leadership', 'Advocates', 'Law Students', 'Community Volunteers'].map((role) => (
-            <article className="team-card" key={role}>
-              <div className="team-card__avatar">{role.charAt(0)}</div>
-              <h3>{role}</h3>
-              <p>Profile photos, roles, and short biographies can be published from the admin panel later.</p>
-            </article>
-          ))}
-        </div>
       </div>
     </PageShell>
   );

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { footerColumns, socialLinks, WHATSAPP_URL } from '../../data/navigation';
 import SocialIcon from '../icons/SocialIcons';
+import Brand from './Brand';
 import SocialLinks from './SocialLinks';
 
 function FooterColumn({ title, links }) {
@@ -23,13 +24,7 @@ export default function Footer() {
     <footer className="site-footer">
       <div className="footer-top container">
         <div className="footer-brand">
-          <Link to="/" className="brand brand--footer">
-            <span className="brand-mark">RK</span>
-            <span className="brand-text">
-              <strong>RKLAF</strong>
-              <small>Radhey Krishna Legal Aid Foundation</small>
-            </span>
-          </Link>
+          <Brand variant="footer" />
           <p>
             With You. For You. Nyaya Tak. Democratizing access to justice for every citizen.
           </p>

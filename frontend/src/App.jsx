@@ -7,8 +7,6 @@ import Contact from './pages/Contact';
 import PaymentGateway from './pages/PaymentGateway';
 import {
   AboutPage,
-  HeritagePage,
-  TeamPage,
   ProgramsPage,
   JoinPage,
   KnowYourRightsPage,
@@ -27,10 +25,10 @@ export default function App() {
         <Route element={<Layout />}>
           <Route index element={<Home />} />
 
-          {/* About Us */}
+          {/* About Us — single scrollable page */}
           <Route path="about" element={<AboutPage />} />
-          <Route path="about/heritage" element={<HeritagePage />} />
-          <Route path="about/team" element={<TeamPage />} />
+          <Route path="about/heritage" element={<Navigate to="/about#heritage" replace />} />
+          <Route path="about/team" element={<Navigate to="/about#team" replace />} />
 
           {/* Our Work */}
           <Route path="our-work/programs" element={<ProgramsPage />} />
@@ -52,8 +50,8 @@ export default function App() {
           {/* Legacy URL redirects */}
           <Route path="our-story/about-us" element={<Navigate to="/about" replace />} />
           <Route path="our-story/vision" element={<Navigate to="/about" replace />} />
-          <Route path="our-story/inspiration" element={<Navigate to="/about/heritage" replace />} />
-          <Route path="our-story/our-team" element={<Navigate to="/about/team" replace />} />
+          <Route path="our-story/inspiration" element={<Navigate to="/about#heritage" replace />} />
+          <Route path="our-story/our-team" element={<Navigate to="/about#team" replace />} />
           <Route path="about/future-roadmap" element={<Navigate to="/about" replace />} />
           <Route path="our-work/our-cases" element={<Navigate to="/our-work/impact" replace />} />
           <Route path="our-work/our-camps" element={<Navigate to="/our-work/programs" replace />} />

@@ -1,5 +1,51 @@
 /* RKLAF editorial page styles */
 
+.about-page-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+  margin-bottom: 2rem;
+  padding: 0.85rem 1rem;
+  background: var(--cream);
+  border: 1px solid var(--sand);
+  border-radius: var(--radius);
+  position: sticky;
+  top: calc(var(--header-h) + 8px);
+  z-index: 5;
+}
+
+.about-page-nav a {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--slate-mid);
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  background: var(--ivory);
+  border: 1px solid var(--sand);
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+
+.about-page-nav a:hover {
+  color: var(--wine);
+  border-color: var(--wine-light);
+}
+
+.about-section {
+  scroll-margin-top: calc(var(--header-h) + 56px);
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--sand);
+}
+
+.about-section--first {
+  padding-top: 0;
+  border-top: none;
+  scroll-margin-top: calc(var(--header-h) + 56px);
+}
+
+.about-section--first .story-band {
+  margin-top: 1.5rem;
+}
+
 .editorial-page {
   display: grid;
   gap: 1.5rem;

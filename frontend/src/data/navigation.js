@@ -5,20 +5,23 @@ export const socialLinks = [
   { name: 'Spotify', href: 'https://open.spotify.com/user/31weviexrzxc6u4wzye6k6h55jwy?si=803a04082325439a', icon: 'spotify' },
 ];
 
-export const WHATSAPP_URL = 'https://wa.me/919999999999';
+/** Organization WhatsApp (India +91) — used site-wide */
+const WHATSAPP_PREFILL =
+  'Hello, I am contacting Radhey Krishna Legal Aid Foundation from your website.';
+export const WHATSAPP_URL = `https://wa.me/917043031263?text=${encodeURIComponent(WHATSAPP_PREFILL)}`;
+export const WHATSAPP_DISPLAY = '+91 70430 31263';
+
+/** About page section anchors (footer quick links) */
+export const aboutSectionLinks = [
+  { label: 'Our Mandate & Vision', path: '/about#mandate' },
+  { label: 'Our Heritage', path: '/about#heritage' },
+  { label: 'Our Team', path: '/about#team' },
+];
 
 /** Full RKLAF site map — used in header & footer */
 export const navItems = [
   { label: 'Home', path: '/' },
-  {
-    label: 'About Us',
-    path: '/about',
-    children: [
-      { label: 'Our Mandate & Vision', path: '/about' },
-      { label: 'Our Heritage', path: '/about/heritage' },
-      { label: 'Our Team', path: '/about/team' },
-    ],
-  },
+  { label: 'About Us', path: '/about' },
   {
     label: 'Our Work',
     path: '/our-work/programs',
@@ -37,7 +40,7 @@ export const navItems = [
 export const footerColumns = [
   {
     title: 'About Us',
-    links: navItems.find((n) => n.label === 'About Us').children,
+    links: aboutSectionLinks,
   },
   {
     title: 'Our Work',

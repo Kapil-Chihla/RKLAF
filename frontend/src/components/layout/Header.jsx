@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { navItems } from '../../data/navigation';
+import Brand from './Brand';
 import NavDropdown from './NavDropdown';
 import SocialLinks from './SocialLinks';
 
@@ -14,33 +15,17 @@ export default function Header() {
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
+    return () => {
+      document.body.style.overflow = '';
+    };
   }, [menuOpen]);
+
+  const closeMenu = () => setMenuOpen(false);
 
   return (
     <header className="site-header">
       <div className="header-inner container">
-        <Link to="/" className="brand" onClick={() => setMenuOpen(false)}>
-          <span className="brand-mark">RK</span>
-          <span className="brand-text">
-            <strong>RKLAF</strong>
-            <small>Legal Aid Foundation</small>
-          </span>
-        </Link>
-
-        <nav className={`main-nav ${menuOpen ? 'is-open' : ''}`} aria-label="Main navigation">
-          <div className="nav-links">
-            {navItems.map((item) => (
-              <NavDropdown key={item.label} item={item} onNavigate={() => setMenuOpen(false)} />
-            ))}
-          </div>
-          <div className="nav-mobile-footer">
-            <SocialLinks className="nav-social nav-social--mobile" />
-            <Link to="/donate" className="btn btn-donate btn-donate--mobile" onClick={() => setMenuOpen(false)}>
-              Donate
-            </Link>
-          </div>
-        </nav>
+        <Brand onNavigate={closeMenu} />
 
         <div className="header-actions">
           <SocialLinks className="nav-social nav-social--desktop" />
@@ -50,8 +35,9 @@ export default function Header() {
           <button
             type="button"
             className={`menu-toggle ${menuOpen ? 'is-active' : ''}`}
-            aria-label="Toggle menu"
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={menuOpen}
+            aria-controls="main-navigation"
             onClick={() => setMenuOpen((v) => !v)}
           >
             <span />
@@ -66,9 +52,27 @@ export default function Header() {
           type="button"
           className="nav-backdrop"
           aria-label="Close menu"
-          onClick={() => setMenuOpen(false)}
+          onClick={closeMenu}
         />
       )}
+
+      <nav
+        id="main-navigation"
+        className={`main-nav ${menuOpen ? 'is-open' : ''}`}
+        aria-label="Main navigation"
+      >
+        <div className="nav-links">
+          {navItems.map((item) => (
+            <NavDropdown key={item.label} item={item} onNavigate={closeMenu} />
+          ))}
+        </div>
+        <div className="nav-mobile-footer">
+          <SocialLinks className="nav-social nav-social--mobile" />
+          <Link to="/donate" className="btn btn-donate btn-donate--mobile" onClick={closeMenu}>
+            Donate
+          </Link>
+        </div>
+      </nav>
     </header>
   );
 }

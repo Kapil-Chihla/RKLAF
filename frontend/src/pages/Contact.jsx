@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import PageShell from '../components/layout/PageShell';
+import { WHATSAPP_DISPLAY, WHATSAPP_URL } from '../data/navigation';
 
 const API = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
 
@@ -66,8 +67,11 @@ export default function Contact() {
         <aside className="contact-aside">
           <h3>Other ways to connect</h3>
           <p>Email: info@legalaid.org</p>
-          <p>Phone: +91 99999 99999</p>
-          <a href="https://wa.me/919999999999" className="btn btn-maroon" target="_blank" rel="noopener noreferrer">
+          <p>
+            Phone / WhatsApp:{' '}
+            <a href="tel:+917043031263">{WHATSAPP_DISPLAY}</a>
+          </p>
+          <a href={WHATSAPP_URL} className="btn btn-maroon" target="_blank" rel="noopener noreferrer">
             WhatsApp Us
           </a>
         </aside>
