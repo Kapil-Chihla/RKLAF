@@ -132,6 +132,95 @@
   align-items: start;
 }
 
+.heritage-portraits {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin-top: 2rem;
+}
+
+.heritage-portrait {
+  background: var(--ivory);
+  border: 1px solid var(--sand);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+
+.heritage-portrait:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+}
+
+.heritage-portrait--featured {
+  border-color: rgba(131, 66, 86, 0.45);
+  box-shadow: var(--shadow);
+}
+
+.heritage-portrait__frame {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: var(--sand);
+}
+
+.heritage-portrait__frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 55%, rgba(30, 51, 71, 0.35) 100%);
+  pointer-events: none;
+}
+
+.heritage-portrait__photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+.heritage-portrait__body {
+  padding: 1.25rem 1.35rem 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.heritage-portrait__honorific {
+  margin: 0;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--wine);
+}
+
+.heritage-portrait__body h3 {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  color: var(--slate-deep);
+  margin: 0;
+  line-height: 1.25;
+}
+
+.heritage-portrait__role {
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--slate-mid);
+}
+
+.heritage-portrait__caption {
+  margin: 0.35rem 0 0;
+  font-size: 0.86rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
 .heritage-card {
   background: var(--wine-deep);
   color: var(--ivory);
@@ -435,6 +524,12 @@
   .promise-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .heritage-portraits {
+    grid-template-columns: 1fr;
+    max-width: 22rem;
+    margin-inline: auto;
+  }
 }
 
 @media (max-width: 768px) {
@@ -442,6 +537,10 @@
   .story-band,
   .two-column-story {
     grid-template-columns: 1fr;
+  }
+
+  .heritage-portraits {
+    max-width: none;
   }
 
   .story-band,

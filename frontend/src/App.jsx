@@ -5,8 +5,8 @@ import Home from './pages/Home';
 import Blogs from './pages/Blogs';
 import Contact from './pages/Contact';
 import PaymentGateway from './pages/PaymentGateway';
+import About from './pages/About';
 import {
-  AboutPage,
   ProgramsPage,
   JoinPage,
   NotedJudgmentsPage,
@@ -27,7 +27,7 @@ export default function App() {
           <Route index element={<Home />} />
 
           {/* About Us — single scrollable page */}
-          <Route path="about" element={<AboutPage />} />
+          <Route path="about" element={<About />} />
           <Route path="about/heritage" element={<Navigate to="/about#heritage" replace />} />
           <Route path="about/team" element={<Navigate to="/about#team" replace />} />
 

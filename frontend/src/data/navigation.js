@@ -13,7 +13,7 @@ export const WHATSAPP_DISPLAY = '+91 70430 31263';
 
 /** About page section anchors (footer quick links) */
 export const aboutSectionLinks = [
-  { label: 'Our Mandate & Vision', path: '/about#mandate' },
+  { label: 'Our Mission', path: '/about#mission' },
   { label: 'Our Heritage', path: '/about#heritage' },
   { label: 'Our Team', path: '/about#team' },
 ];
