@@ -1,0 +1,99 @@
+/* Site-wide scroll reveals & micro-interactions */
+
+.reveal {
+  opacity: 0;
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+.reveal--up {
+  transform: translateY(32px);
+}
+
+.reveal--down {
+  transform: translateY(-24px);
+}
+
+.reveal--left {
+  transform: translateX(-40px);
+}
+
+.reveal--right {
+  transform: translateX(40px);
+}
+
+.reveal--scale {
+  transform: scale(0.96);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Buttons — subtle lift */
+.btn {
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Cards & panels — shared hover polish */
+.home-why-card,
+.home-about__photo,
+.about-heritage-card,
+.about-value-card,
+.home-work-area,
+.camp-card,
+.pillar-card {
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s ease;
+}
+
+/* Page content stagger children */
+.page-content-inner[data-reveal-children] > * {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.55s ease,
+    transform 0.55s ease;
+}
+
+.page-content-inner[data-reveal-children].is-visible > *:nth-child(1) { transition-delay: 0ms; }
+.page-content-inner[data-reveal-children].is-visible > *:nth-child(2) { transition-delay: 80ms; }
+.page-content-inner[data-reveal-children].is-visible > *:nth-child(3) { transition-delay: 160ms; }
+.page-content-inner[data-reveal-children].is-visible > *:nth-child(4) { transition-delay: 240ms; }
+.page-content-inner[data-reveal-children].is-visible > *:nth-child(n+5) { transition-delay: 320ms; }
+
+.page-content-inner[data-reveal-children].is-visible > * {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .page-content-inner[data-reveal-children] > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .btn:hover:not(:disabled) {
+    transform: none;
+  }
+}

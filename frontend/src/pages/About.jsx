@@ -62,7 +62,7 @@ const leadership = {
 export default function About() {
   return (
     <div className="about-page">
-      <header className="about-page-head">
+      <header className="about-page-head" data-reveal="up">
         <div className="container">
           <p className="about-kicker">About Us</p>
           <h1>Our heritage, mission, and team</h1>
@@ -84,7 +84,7 @@ export default function About() {
       </nav>
 
       <div className="about-body">
-        <section id="mission" className="about-section">
+        <section id="mission" className="about-section" data-reveal="up">
           <div className="container">
             <header className="about-section__head">
               <p className="about-kicker">Our Mandate</p>
@@ -107,7 +107,7 @@ export default function About() {
           </div>
         </section>
 
-        <section className="about-advocacy">
+        <section className="about-advocacy" data-reveal="up">
           <div className="container about-advocacy__grid">
             <div className="about-advocacy__intro">
               <p className="about-kicker about-kicker--light">What we do</p>
@@ -131,7 +131,7 @@ export default function About() {
           </div>
         </section>
 
-        <section id="heritage" className="about-section about-section--heritage">
+        <section id="heritage" className="about-section about-section--heritage" data-reveal="up">
           <div className="container">
             <header className="about-section__head about-section__head--center">
               <p className="about-kicker">Our Heritage</p>
@@ -160,7 +160,7 @@ export default function About() {
           </div>
         </section>
 
-        <section id="team" className="about-section">
+        <section id="team" className="about-section" data-reveal="up">
           <div className="container">
             <header className="about-section__head">
               <p className="about-kicker">Our Team</p>
@@ -193,7 +193,7 @@ export default function About() {
           </div>
         </section>
 
-        <section className="about-cta">
+        <section className="about-cta" data-reveal="scale">
           <div className="container about-cta__inner">
             <h2>Stand with us in the fight for justice.</h2>
             <p>

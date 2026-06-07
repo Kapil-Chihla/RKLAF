@@ -23,7 +23,7 @@ export default function ImpactMapPage() {
         <TornEdge className="impact-page__torn" />
       </header>
 
-      <section className="impact-page__intro">
+      <section className="impact-page__intro" data-reveal="up">
         <div className="container impact-page__intro-grid">
           <p className="impact-page__intro-lead">
             Radhey Krishna Legal Aid Foundation advances justice by providing pro-bono legal
@@ -44,11 +44,11 @@ export default function ImpactMapPage() {
         </div>
       </section>
 
-      <section className="impact-page__map-zone" aria-label="Interactive map of our work">
+      <section className="impact-page__map-zone" aria-label="Interactive map of our work" data-reveal="scale">
         <ImpactMap variant="interactive" initialLocationId={locationId} />
       </section>
 
-      <section className="impact-page__cta-band">
+      <section className="impact-page__cta-band" data-reveal="up">
         <div className="container impact-page__cta-inner">
           <h2>Impact stories</h2>
           <p>

@@ -1,5 +1,6 @@
 @import './styles/palettes.css';
 @import './styles/responsive.css';
+@import './styles/interactive.css';
 
 :root {
   /* Heritage Legal — refined beige / blue / white / maroon */

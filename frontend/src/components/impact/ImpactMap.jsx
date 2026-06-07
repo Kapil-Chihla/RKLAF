@@ -8,6 +8,13 @@ const API = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
 
 const EMPTY_FILTERS = { region: '', country: '', workType: '' };
 
+/** Shown on the homepage when the API is unavailable */
+const PREVIEW_FALLBACK_LOCATIONS = [
+  { id: 'delhi', name: 'Delhi NCR', workType: 'Legal aid camps', mapX: 62, mapY: 42 },
+  { id: 'mumbai', name: 'Mumbai', workType: 'Rights education', mapX: 58, mapY: 52 },
+  { id: 'rural', name: 'Rural outreach', workType: 'Community camps', mapX: 55, mapY: 48 },
+];
+
 export default function ImpactMap({
   variant = 'interactive',
   initialLocationId = null,
@@ -20,6 +27,7 @@ export default function ImpactMap({
   const [filters, setFilters] = useState(EMPTY_FILTERS);
   const [selected, setSelected] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [imageError, setImageError] = useState(false);
 
   const isPreview = variant === 'preview';
   const isInteractive = variant === 'interactive';
@@ -40,11 +48,11 @@ export default function ImpactMap({
         });
       }
     } catch {
-      setLocations([]);
+      setLocations(isPreview ? PREVIEW_FALLBACK_LOCATIONS : []);
     } finally {
       setLoading(false);
     }
-  }, [isInteractive]);
+  }, [isInteractive, isPreview]);
 
   useEffect(() => {
     loadData();
@@ -135,7 +143,19 @@ export default function ImpactMap({
         onClick={isPreview ? handleFrameClick : undefined}
         onKeyDown={isPreview ? (e) => e.key === 'Enter' && handleFrameClick() : undefined}
       >
-        <img src={mapImage} alt="Map of RKLAF work locations" className="impact-map__image" draggable={false} />
+        <img
+          src={mapImage}
+          alt="Map of RKLAF work locations"
+          className="impact-map__image"
+          draggable={false}
+          width={3000}
+          height={1705}
+          onError={() => setImageError(true)}
+        />
+
+        {imageError && (
+          <p className="impact-map__loading">Map image unavailable</p>
+        )}
 
         {overlay && (
           <div className="impact-map__overlay" onClick={(e) => e.stopPropagation()}>
