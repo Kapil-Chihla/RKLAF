@@ -3,6 +3,8 @@ import AdminRoutes from './admin/AdminRoutes';
 import Layout from './components/layout/Layout';
 import Home from './pages/Home';
 import Blogs from './pages/Blogs';
+import BlogDetail from './pages/BlogDetail';
+import CampDetail from './pages/CampDetail';
 import Contact from './pages/Contact';
 import PaymentGateway from './pages/PaymentGateway';
 import About from './pages/About';
@@ -33,6 +35,7 @@ export default function App() {
 
           {/* Our Work */}
           <Route path="our-work/programs" element={<ProgramsPage />} />
+          <Route path="our-work/programs/camps/:slug" element={<CampDetail />} />
           <Route path="our-work/impact" element={<ImpactMapPage />} />
           <Route path="our-work/annual-reports" element={<AnnualReportsPage />} />
           <Route path="our-work/policy-reports" element={<PolicyReportsPage />} />
@@ -45,6 +48,7 @@ export default function App() {
           <Route path="join" element={<JoinPage />} />
           <Route path="media" element={<MediaCoveragePage />} />
           <Route path="blogs" element={<Blogs />} />
+          <Route path="blogs/:slug" element={<BlogDetail />} />
           <Route path="contact" element={<Contact />} />
           <Route path="donate" element={<PaymentGateway />} />
           <Route path="payment-gateway" element={<Navigate to="/donate" replace />} />

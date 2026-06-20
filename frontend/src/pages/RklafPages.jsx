@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import PageShell from '../components/layout/PageShell';
+import CampsGallerySection from '../components/camps/CampsGallerySection';
 import './RklafPages.css';
 
 const promise = [
@@ -99,15 +100,6 @@ const achievementStats = [
   { value: 'Tihar', label: 'Ongoing undertrial support at Delhi Central Jail' },
 ];
 
-const galleryItems = [
-  'Legal Camp',
-  'RTI Drive',
-  'Student Audit',
-  'Community Clinic',
-  'Tihar Support',
-  'Policy Session',
-];
-
 const joinPaths = [
   {
     title: 'Pro-Bono Legal Network',
@@ -175,20 +167,7 @@ export function ProgramsPage() {
         ))}
       </div>
 
-      <section id="gallery" className="page-subsection">
-        <h2 className="page-subsection__title">Our Camps & Gallery</h2>
-        <p className="page-subsection__lead">
-          Photos from legal camps, RTI drives, student audits, community clinics, and outreach events.
-        </p>
-        <div className="gallery-grid">
-          {galleryItems.map((item) => (
-            <figure className="gallery-tile" key={item}>
-              <div>{item.charAt(0)}</div>
-              <figcaption>{item}</figcaption>
-            </figure>
-          ))}
-        </div>
-      </section>
+      <CampsGallerySection />
     </PageShell>
   );
 }

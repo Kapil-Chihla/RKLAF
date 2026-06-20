@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import mapImage from '../../assets/map.webp';
+import MapLocationModal from './MapLocationModal';
 import './ImpactMap.css';
 
 const API = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
@@ -22,10 +23,11 @@ export default function ImpactMap({
   className = '',
 }) {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [locations, setLocations] = useState([]);
   const [filterOptions, setFilterOptions] = useState({ regions: [], countries: [], workTypes: [] });
   const [filters, setFilters] = useState(EMPTY_FILTERS);
-  const [selected, setSelected] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [imageError, setImageError] = useState(false);
 
@@ -61,7 +63,7 @@ export default function ImpactMap({
   useEffect(() => {
     if (!initialLocationId || !locations.length) return;
     const match = locations.find((l) => l.id === initialLocationId);
-    if (match) setSelected(match);
+    if (match) setSelectedId(match.id);
   }, [initialLocationId, locations]);
 
   const filtered = useMemo(() => {
@@ -73,19 +75,44 @@ export default function ImpactMap({
     });
   }, [locations, filters]);
 
+  const selectedLocation = useMemo(
+    () => locations.find((loc) => loc.id === selectedId) ?? null,
+    [locations, selectedId],
+  );
+
   const clearFilters = () => setFilters(EMPTY_FILTERS);
 
-  const handleMarkerClick = (loc, e) => {
-    e.stopPropagation();
-    if (isPreview) {
-      navigate(`/our-work/impact?location=${loc.id}`);
+  const closeLocation = useCallback(() => {
+    setSelectedId(null);
+    if (isInteractive && searchParams.has('location')) {
+      setSearchParams({}, { replace: true });
+    }
+  }, [isInteractive, searchParams, setSearchParams]);
+
+  const openLocation = useCallback((id) => {
+    setSelectedId(id);
+    if (isInteractive) {
+      setSearchParams({ location: id }, { replace: true });
+    }
+  }, [isInteractive, setSearchParams]);
+
+  const handleMarkerClick = (loc, event) => {
+    event.stopPropagation();
+    if (selectedId === loc.id) {
+      closeLocation();
       return;
     }
-    setSelected(loc);
+    openLocation(loc.id);
   };
 
   const handleFrameClick = () => {
-    if (isPreview) navigate('/our-work/impact');
+    if (selectedId) {
+      closeLocation();
+      return;
+    }
+    if (isPreview) {
+      navigate('/our-work/impact');
+    }
   };
 
   const filtersBar = isInteractive ? (
@@ -140,7 +167,7 @@ export default function ImpactMap({
         className="impact-map__frame"
         role={isPreview ? 'button' : undefined}
         tabIndex={isPreview ? 0 : undefined}
-        onClick={isPreview ? handleFrameClick : undefined}
+        onClick={handleFrameClick}
         onKeyDown={isPreview ? (e) => e.key === 'Enter' && handleFrameClick() : undefined}
       >
         <img
@@ -165,73 +192,43 @@ export default function ImpactMap({
 
         {loading && <p className="impact-map__loading">Loading locations…</p>}
 
-        {!loading && filtered.map((loc) => (
-          <button
-            key={loc.id}
-            type="button"
-            className={`impact-map__marker ${selected?.id === loc.id ? 'is-active' : ''}`}
-            style={{ left: `${loc.mapX}%`, top: `${loc.mapY}%` }}
-            title={loc.name}
-            aria-label={`${loc.name}: ${loc.workType}`}
-            onClick={(e) => handleMarkerClick(loc, e)}
-          >
-            <span className="impact-map__marker-pulse" aria-hidden="true" />
-            <span className="impact-map__marker-dot" aria-hidden="true" />
-          </button>
-        ))}
+        {!loading && filtered.map((loc) => {
+          const isSelected = selectedId === loc.id;
 
-        {isInteractive && selected && (
-          <div
-            className="impact-map__popup"
-            role="dialog"
-            aria-labelledby="impact-popup-title"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              type="button"
-              className="impact-map__popup-close"
-              aria-label="Close"
-              onClick={() => setSelected(null)}
+          return (
+            <div
+              key={loc.id}
+              className={`impact-map__marker-group ${isSelected ? 'is-active is-pinned' : ''}`}
+              style={{ left: `${loc.mapX}%`, top: `${loc.mapY}%` }}
             >
-              ×
-            </button>
-            <h3 id="impact-popup-title">{selected.name}</h3>
-            <p className="impact-map__popup-type">{selected.workType}</p>
-            {selected.summary && <p className="impact-map__popup-summary">{selected.summary}</p>}
-            {selected.workItems?.length > 0 && (
-              <div className="impact-map__popup-work">
-                <strong>Our work:</strong>
-                <ul>
-                  {selected.workItems.map((item) => (
-                    <li key={item.title}>
-                      {item.url ? (
-                        <Link to={item.url} onClick={() => setSelected(null)}>
-                          {item.title}
-                        </Link>
-                      ) : (
-                        item.title
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            {selected.overviewUrl && (
-              <Link to={selected.overviewUrl} className="impact-map__popup-link">
-                Read our overview of {selected.country || selected.name} →
-              </Link>
-            )}
-          </div>
-        )}
+              <button
+                type="button"
+                className="impact-map__marker"
+                aria-label={`${loc.name}: ${loc.workType}`}
+                aria-expanded={isSelected}
+                onClick={(event) => handleMarkerClick(loc, event)}
+              >
+                <span className="impact-map__marker-pulse" aria-hidden="true" />
+                <span className="impact-map__marker-dot" aria-hidden="true" />
+              </button>
+            </div>
+          );
+        })}
 
         {isPreview && !loading && filtered.length > 0 && (
-          <p className="impact-map__hint">Click a pin · Tap map for full view</p>
+          <p className="impact-map__hint">Click a pin for details · Tap map for full view</p>
+        )}
+
+        {isInteractive && !loading && filtered.length > 0 && (
+          <p className="impact-map__hint impact-map__hint--interactive">Click a pin for details</p>
         )}
       </div>
 
       {isInteractive && !loading && filtered.length === 0 && (
         <p className="impact-map__empty container">No locations match your filters.</p>
       )}
+
+      <MapLocationModal loc={selectedLocation} onClose={closeLocation} />
     </div>
   );
 }

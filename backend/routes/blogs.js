@@ -4,6 +4,7 @@ const { Blog } = require('../models');
 const generateId = require('../lib/generateId');
 const { protect, contentManagers, adminOrSuper } = require('../auth');
 const { uploadImage } = require('../upload');
+const { uploadBuffer } = require('../lib/cloudinaryUpload');
 
 const router = express.Router();
 
@@ -12,9 +13,20 @@ router.get('/', async (req, res) => {
   res.json(blogs);
 });
 
-router.post('/', protect, contentManagers, uploadImage('blogs').single('image'), async (req, res) => {
+router.get('/:slugOrId', async (req, res) => {
+  const { slugOrId } = req.params;
+  const blog = await Blog.findOne({
+    $or: [{ slug: slugOrId }, { id: slugOrId }],
+  }).lean();
+  if (!blog) return res.status(404).json({ message: 'Blog not found' });
+  res.json(blog);
+});
+
+router.post('/', protect, contentManagers, uploadImage.single('image'), async (req, res) => {
   const { title, excerpt, content, author } = req.body;
   if (!title || !content) return res.status(400).json({ message: 'Title and content are required' });
+  let image = null;
+  if (req.file) image = await uploadBuffer(req.file, 'blogs');
   const blog = await Blog.create({
     id: generateId('blog'),
     title,
@@ -22,7 +34,7 @@ router.post('/', protect, contentManagers, uploadImage('blogs').single('image'),
     excerpt: excerpt || '',
     content,
     author: author || req.user.name,
-    image: req.file ? `/uploads/blogs/${req.file.filename}` : null,
+    image,
     createdBy: req.user.id,
     createdAt: new Date().toISOString(),
   });

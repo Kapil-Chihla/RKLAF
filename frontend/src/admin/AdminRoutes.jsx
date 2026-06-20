@@ -6,7 +6,6 @@ import Register from './pages/Register';
 import SetupSuperAdmin from './pages/SetupSuperAdmin';
 import Dashboard from './pages/Dashboard';
 import BlogsManage from './pages/BlogsManage';
-import CasesManage from './pages/CasesManage';
 import CampsManage from './pages/CampsManage';
 import ArticlesManage from './pages/ArticlesManage';
 import MapLocationsManage from './pages/MapLocationsManage';
@@ -22,7 +21,6 @@ export default function AdminRoutes() {
         <Route element={<AdminLayout />}>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="blogs" element={<BlogsManage />} />
-          <Route path="cases" element={<CasesManage />} />
           <Route path="camps" element={<CampsManage />} />
           <Route path="articles" element={<ArticlesManage />} />
           <Route path="map" element={<MapLocationsManage />} />

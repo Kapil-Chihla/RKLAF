@@ -1,4 +1,4 @@
-/** Filter chips for downloadable guides (admin uploads use matching category) */
+/** @deprecated Use /api/guide-categories/published on Know Your Rights page */
 export const guideCategories = [
   'All',
   'General',

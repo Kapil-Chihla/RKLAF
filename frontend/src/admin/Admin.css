@@ -444,3 +444,64 @@
     padding: 0.55rem;
   }
 }
+
+.admin-camp-thumb {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 6px;
+  display: block;
+}
+
+.admin-camp-previews {
+  margin: 0.5rem 0 1rem;
+}
+
+.admin-camp-previews__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.admin-camp-preview {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.35rem;
+  border: 2px solid var(--border, #ddd);
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  text-align: center;
+}
+
+.admin-camp-preview.is-cover {
+  border-color: #834256;
+  box-shadow: 0 0 0 2px rgba(131, 66, 86, 0.15);
+}
+
+.admin-camp-preview img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.admin-camp-preview span {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #5a6f82;
+}
+
+.admin-camp-hero-preview {
+  margin: 0.5rem 0 1rem;
+}
+
+.admin-camp-hero-preview img {
+  display: block;
+  width: min(100%, 320px);
+  max-height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid rgba(44, 67, 89, 0.12);
+}

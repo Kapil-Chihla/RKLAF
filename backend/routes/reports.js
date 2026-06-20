@@ -3,6 +3,7 @@ const { Report } = require('../models');
 const generateId = require('../lib/generateId');
 const { protect, contentManagers } = require('../auth');
 const { uploadPDF } = require('../upload');
+const { uploadBuffer } = require('../lib/cloudinaryUpload');
 
 const router = express.Router();
 
@@ -11,14 +12,15 @@ router.get('/', async (req, res) => {
   res.json(reports);
 });
 
-router.post('/', protect, contentManagers, uploadPDF('reports').single('file'), async (req, res) => {
+router.post('/', protect, contentManagers, uploadPDF.single('file'), async (req, res) => {
   const { title, year } = req.body;
   if (!title || !req.file) return res.status(400).json({ message: 'Title and PDF file are required' });
+  const file = await uploadBuffer(req.file, 'reports');
   const report = await Report.create({
     id: generateId('report'),
     title,
     year: year || '',
-    file: `/uploads/reports/${req.file.filename}`,
+    file,
     createdAt: new Date().toISOString(),
   });
   res.status(201).json(report.toObject());

@@ -1,7 +1,6 @@
 const express = require('express');
 const {
   Blog,
-  Case,
   Camp,
   Article,
   Report,
@@ -15,10 +14,9 @@ const { protect, contentManagers } = require('../auth');
 const router = express.Router();
 
 router.get('/stats', protect, contentManagers, async (req, res) => {
-  const [blogs, cases, camps, articles, reports, team, users, pendingInvites, mapLocations] =
+  const [blogs, camps, articles, reports, team, users, pendingInvites, mapLocations] =
     await Promise.all([
       Blog.countDocuments(),
-      Case.countDocuments(),
       Camp.countDocuments(),
       Article.countDocuments(),
       Report.countDocuments(),
@@ -30,7 +28,6 @@ router.get('/stats', protect, contentManagers, async (req, res) => {
 
   res.json({
     blogs,
-    cases,
     camps,
     articles,
     reports,

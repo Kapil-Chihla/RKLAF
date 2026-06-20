@@ -2,12 +2,15 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 require('dotenv').config();
 
 const connectDB = require('./config/database');
+const { configureCloudinary } = require('./config/cloudinary');
 const seedMapLocationsIfEmpty = require('./seed/mapLocations');
+const seedGuideCategoriesIfEmpty = require('./seed/guideCategories');
 
 const app = express();
 
@@ -53,8 +56,8 @@ app.use('/api/users', require('./routes/users'));
 app.use('/api/admin', require('./routes/admin'));
 app.use('/api/blogs', require('./routes/blogs'));
 app.use('/api/articles', require('./routes/articles'));
+app.use('/api/guide-categories', require('./routes/guideCategories'));
 app.use('/api/reports', require('./routes/reports'));
-app.use('/api/cases', require('./routes/cases'));
 app.use('/api/camps', require('./routes/camps'));
 app.use('/api/contact', require('./routes/contact'));
 app.use('/api/payment', require('./routes/payment'));
@@ -63,7 +66,17 @@ app.use('/api/map-locations', require('./routes/mapLocations'));
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok', message: 'Server running' }));
 
-const uploadFolders = ['blogs', 'articles', 'reports', 'team', 'general'];
+app.use((err, req, res, next) => {
+  if (err instanceof multer.MulterError) {
+    return res.status(400).json({ message: err.code === 'LIMIT_FILE_SIZE' ? 'File too large' : err.message });
+  }
+  if (err.message?.includes('files allowed')) {
+    return res.status(400).json({ message: err.message });
+  }
+  next(err);
+});
+
+const uploadFolders = ['blogs', 'articles', 'reports', 'team', 'camps', 'general'];
 uploadFolders.forEach((folder) => {
   const fullPath = path.join(__dirname, 'uploads', folder);
   if (!fs.existsSync(fullPath)) {
@@ -74,8 +87,10 @@ uploadFolders.forEach((folder) => {
 const PORT = process.env.PORT || 5000;
 
 async function start() {
+  configureCloudinary();
   await connectDB();
   await seedMapLocationsIfEmpty();
+  await seedGuideCategoriesIfEmpty();
   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 }
 

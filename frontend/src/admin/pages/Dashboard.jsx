@@ -5,8 +5,7 @@ import { useAuth } from '../AuthContext';
 
 const links = [
   { to: '/admin/blogs', label: 'Upload blogs', desc: 'Publish stories and updates' },
-  { to: '/admin/cases', label: 'Manage cases', desc: 'Add legal cases to Our Work' },
-  { to: '/admin/camps', label: 'Manage camps', desc: 'Add outreach camp records' },
+  { to: '/admin/camps', label: 'Manage camps', desc: 'Add outreach camp records & photos' },
   { to: '/admin/articles', label: 'Knowledge hub', desc: 'Articles and research uploads' },
   { to: '/admin/map', label: 'Impact map', desc: 'Add locations shown on the world map' },
 ];
@@ -27,7 +26,6 @@ export default function Dashboard() {
       {stats && (
         <div className="admin-stats">
           <div className="admin-stat"><strong>{stats.blogs}</strong><span>Blogs</span></div>
-          <div className="admin-stat"><strong>{stats.cases}</strong><span>Cases</span></div>
           <div className="admin-stat"><strong>{stats.camps}</strong><span>Camps</span></div>
           <div className="admin-stat"><strong>{stats.articles}</strong><span>Articles</span></div>
           <div className="admin-stat"><strong>{stats.mapLocations ?? 0}</strong><span>Map locations</span></div>

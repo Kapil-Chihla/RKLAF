@@ -4,7 +4,7 @@ import axios from 'axios';
 import FaqAccordion from '../components/FaqAccordion';
 import { API_BASE, assetUrl } from '../lib/api';
 import { faqs } from '../data/faqs';
-import { emergencyContacts, guideCategories, legalGlossary } from '../data/legalResources';
+import { emergencyContacts, legalGlossary } from '../data/legalResources';
 import useReveal from '../hooks/useReveal';
 import heroImage from '../assets/knowyourrights.png';
 import './KnowYourRights.css';
@@ -46,16 +46,25 @@ function GuideSkeleton() {
 
 export default function KnowYourRights() {
   const [guides, setGuides] = useState([]);
+  const [categories, setCategories] = useState(['All']);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('All');
   const [heroRef, heroVisible] = useReveal(0.05);
 
   useEffect(() => {
-    axios
-      .get(`${API_BASE}/articles`)
-      .then((r) => setGuides(r.data.filter((a) => a.file)))
-      .catch(() => setGuides([]))
+    Promise.all([
+      axios.get(`${API_BASE}/articles`),
+      axios.get(`${API_BASE}/guide-categories/published`),
+    ])
+      .then(([articlesRes, categoriesRes]) => {
+        setGuides(articlesRes.data.filter((a) => a.file));
+        setCategories(['All', ...categoriesRes.data.map((c) => c.name)]);
+      })
+      .catch(() => {
+        setGuides([]);
+        setCategories(['All']);
+      })
       .finally(() => setLoading(false));
   }, []);
 
@@ -141,7 +150,7 @@ export default function KnowYourRights() {
                 />
               </label>
               <div className="kyr-chips kyr-chips--guides" role="tablist" aria-label="Filter guides by topic">
-                {guideCategories.map((cat) => (
+                {categories.map((cat) => (
                   <button
                     key={cat}
                     type="button"

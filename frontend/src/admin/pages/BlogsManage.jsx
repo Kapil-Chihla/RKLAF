@@ -58,11 +58,12 @@ export default function BlogsManage() {
         <h2>Published blogs ({items.length})</h2>
         <div className="admin-table-wrap">
           <table className="admin-table">
-            <thead><tr><th>Title</th><th>Date</th>{canDelete && <th>Actions</th>}</tr></thead>
+            <thead><tr><th>Title</th><th>Author</th><th>Date</th>{canDelete && <th>Actions</th>}</tr></thead>
             <tbody>
               {items.map((b) => (
                 <tr key={b.id}>
                   <td>{b.title}</td>
+                  <td>{b.author || '—'}</td>
                   <td>{new Date(b.createdAt).toLocaleDateString()}</td>
                   {canDelete && <td><button type="button" className="admin-btn admin-btn--danger" onClick={() => remove(b.id)}>Delete</button></td>}
                 </tr>

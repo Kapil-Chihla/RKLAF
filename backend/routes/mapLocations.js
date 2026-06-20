@@ -53,7 +53,15 @@ router.post('/', protect, contentManagers, async (req, res) => {
   if (!name) return res.status(400).json({ message: 'Location name is required' });
 
   let coords = { mapX: Number(mapX), mapY: Number(mapY) };
-  if (lat != null && lng != null && !Number.isNaN(Number(lat)) && !Number.isNaN(Number(lng))) {
+  const hasManualMap =
+    mapX != null && mapY != null && !Number.isNaN(Number(mapX)) && !Number.isNaN(Number(mapY));
+  if (
+    !hasManualMap &&
+    lat != null &&
+    lng != null &&
+    !Number.isNaN(Number(lat)) &&
+    !Number.isNaN(Number(lng))
+  ) {
     coords = latLngToMapPercent(lat, lng);
   }
   if (Number.isNaN(coords.mapX) || Number.isNaN(coords.mapY)) {
@@ -91,7 +99,13 @@ router.put('/:id', protect, contentManagers, async (req, res) => {
   const lat = body.lat != null ? Number(body.lat) : current.lat;
   const lng = body.lng != null ? Number(body.lng) : current.lng;
 
-  if (body.lat != null && body.lng != null) {
+  const hasManualMap =
+    body.mapX != null &&
+    body.mapY != null &&
+    !Number.isNaN(Number(body.mapX)) &&
+    !Number.isNaN(Number(body.mapY));
+
+  if (!hasManualMap && body.lat != null && body.lng != null) {
     const coords = latLngToMapPercent(lat, lng);
     mapX = coords.mapX;
     mapY = coords.mapY;
