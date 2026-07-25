@@ -1,212 +1,332 @@
-import { Link } from 'react-router-dom';
-import dadaPhoto from '../assets/dada.jpeg';
-import dadiPhoto from '../assets/dadi.jpeg';
-import fatherPhoto from '../assets/father.jpeg';
+import { useState } from 'react';
+import Reveal from '../components/motion/Reveal';
 import './About.css';
 
-const navSections = [
-  { id: 'mission', label: 'Mission' },
-  { id: 'heritage', label: 'Heritage' },
-  { id: 'team', label: 'Team' },
-];
-
-const values = [
+const team = [
   {
-    num: '01',
-    title: 'With You',
-    body: 'We stand alongside communities through every step — from first consultation to courtroom strategy.',
+    name: 'Adv. Ajay Garg',
+    role: 'Founder & Managing Trustee',
+    blurb: 'Leads case strategy and the Foundation’s courtroom mandate.',
   },
   {
-    num: '02',
-    title: 'For You',
-    body: 'Our expertise, resources, and advocacy networks are deployed entirely in the public interest.',
+    name: 'Trustee — Desk Lead',
+    role: 'Senior Citizens Desk',
+    blurb: 'Maintenance, property protection, and elder-abuse matters.',
   },
   {
-    num: '03',
-    title: 'Nyaya Tak',
-    body: 'Relentless pursuit of justice until rights are secured, no matter how long the process takes.',
-  },
-];
-
-const advocacyPoints = [
-  { title: 'Protecting civil liberties', text: 'Pro-bono defense for undertrials at Delhi Central Jail, Tihar.' },
-  { title: 'Enforcing accountability', text: 'RTI filings and advocacy for child-safety compliance nationwide.' },
-  { title: 'Advancing disability rights', text: 'Litigation for reservations and equal opportunity in public employment.' },
-];
-
-const heritagePortraits = [
-  {
-    name: 'Late Sh. R.S. Garg',
-    role: 'Advocate & Judicial Officer',
-    caption:
-      'A respected judicial officer in Haryana and leading Delhi practitioner whose pro-bono work inspired this Foundation.',
-    image: dadaPhoto,
+    name: 'Trustee — Outreach',
+    role: 'Camps & Helpline',
+    blurb: 'Runs on-ground camps and first-response triage.',
   },
   {
-    name: 'Late Smt. Krishna Garg',
-    role: 'Partner in service',
-    caption:
-      'Steadfast companion in decades of compassionate legal aid and community outreach.',
-    image: dadiPhoto,
+    name: 'Volunteer Cohort',
+    role: 'Law Students & Fellows',
+    blurb: 'RTI drives, research desks, and clinic support.',
   },
 ];
 
-const leadership = {
-  name: 'Adv. Ajay Garg',
-  role: 'Chief Trustee, RKLAF',
-  caption:
-    'Leading the Foundation today — ensuring accessible, fearless advocacy for every citizen who needs it.',
-  image: fatherPhoto,
-};
+const journey = [
+  {
+    year: '2014',
+    icon: 'sprout',
+    label: 'First clinic seeds',
+    title: 'The idea takes root',
+    desc: 'Informal aid desks and family-led counsel begin shaping what would become the Foundation.',
+    visual: 'Field notebook',
+  },
+  {
+    year: '2016',
+    icon: 'scroll',
+    label: 'Trust deed signing day',
+    title: 'Registered as a charitable trust',
+    desc: 'The work gets a name and a legal form: the Radhey Krishna Legal Aid Foundation, a tribute carried into a mandate.',
+    visual: 'Trust deed signing day',
+  },
+  {
+    year: '2018',
+    icon: 'desk',
+    label: 'Senior citizens desk',
+    title: 'Flagship protection desk opens',
+    desc: 'A dedicated desk for elders — maintenance, property, and abuse under the 2007 Act.',
+    visual: 'Desk at the tribunal',
+  },
+  {
+    year: '2021',
+    icon: 'grad',
+    label: 'Student cohort',
+    title: 'National RTI & campus clinics',
+    desc: 'Law students join structured drives unlocking pensions, ration, and scheme entitlements.',
+    visual: 'Campus clinic day',
+  },
+  {
+    year: '2024',
+    icon: 'globe',
+    label: 'Wider map',
+    title: 'Camps across more districts',
+    desc: 'Outreach widens — village rights camps, diaspora queries, and deeper public-interest work.',
+    visual: 'District camp map',
+  },
+  {
+    year: '2026',
+    icon: 'court',
+    label: 'Still showing up',
+    title: 'A decade into the mandate',
+    desc: 'The same sentence still holds: nobody loses a case because they could not afford to fight it.',
+    visual: 'Courthouse steps',
+  },
+];
+
+function JourneyIcon({ name }) {
+  if (name === 'sprout') {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+        <path d="M12 20V10M12 10c0-4 3-7 7-7-1 4-4 7-7 7zm0 0c0-4-3-7-7-7 1 4 4 7 7 7z" />
+      </svg>
+    );
+  }
+  if (name === 'scroll') {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+        <path d="M6 5h10a2 2 0 012 2v12H8a2 2 0 01-2-2V5zm0 0H5a2 2 0 00-2 2v1h3M18 19h1a2 2 0 002-2v-1h-3M9 10h6M9 14h4" />
+      </svg>
+    );
+  }
+  if (name === 'desk') {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+        <circle cx="12" cy="9" r="3" />
+        <path d="M5 19c1.5-3 4-5 7-5s5.5 2 7 5" />
+      </svg>
+    );
+  }
+  if (name === 'grad') {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+        <path d="M3 10l9-5 9 5-9 5-9-5zm3 4v4l6 3 6-3v-4" />
+      </svg>
+    );
+  }
+  if (name === 'globe') {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+        <circle cx="12" cy="12" r="8" />
+        <path d="M4 12h16M12 4c2.5 2.5 2.5 13.5 0 16M12 4c-2.5 2.5-2.5 13.5 0 16" />
+      </svg>
+    );
+  }
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+      <path d="M4 20h16M6 20V10l6-4 6 4v10M10 20v-5h4v5" />
+    </svg>
+  );
+}
+
+function SectionLabel({ children }) {
+  return (
+    <div className="about-label" aria-hidden="false">
+      <span className="about-label__rule" />
+      <span className="about-label__star" aria-hidden="true">✦</span>
+      <span className="about-label__text">{children}</span>
+      <span className="about-label__star" aria-hidden="true">✦</span>
+      <span className="about-label__rule" />
+    </div>
+  );
+}
 
 export default function About() {
+  const [activeYear, setActiveYear] = useState(1);
+  const current = journey[activeYear];
+
+  const goPrev = () => setActiveYear((i) => (i - 1 + journey.length) % journey.length);
+  const goNext = () => setActiveYear((i) => (i + 1) % journey.length);
+
   return (
-    <div className="about-page">
-      <header className="about-page-head" data-reveal="up">
+    <div className="about about--v2">
+      {/* Mandate */}
+      <section id="mandate" className="about-mandate">
         <div className="container">
-          <p className="about-kicker">About Us</p>
-          <h1>Our heritage, mission, and team</h1>
-          <p className="about-page-head__lead">
-            Established in 2016 to honor a family legacy of fearless advocacy — and to carry it forward
-            for every citizen who needs it.
-          </p>
-        </div>
-      </header>
-
-      <nav className="about-nav" aria-label="On this page">
-        <div className="container about-nav__inner">
-          {navSections.map((s) => (
-            <a key={s.id} href={`#${s.id}`}>
-              {s.label}
-            </a>
-          ))}
-        </div>
-      </nav>
-
-      <div className="about-body">
-        <section id="mission" className="about-section" data-reveal="up">
-          <div className="container">
-            <header className="about-section__head">
-              <p className="about-kicker">Our Mandate</p>
-              <h2>The law should be a shield, not an insurmountable barrier.</h2>
-              <p>
-                We democratize access to justice through pro-bono legal support, rights education,
-                and fearless advocacy — standing with every citizen who cannot afford private counsel.
-              </p>
-            </header>
-
-            <div className="about-values">
-              {values.map((v) => (
-                <article className="about-value-card" key={v.title}>
-                  <span className="about-value-card__num">{v.num}</span>
-                  <h3>{v.title}</h3>
-                  <p>{v.body}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="about-advocacy" data-reveal="up">
-          <div className="container about-advocacy__grid">
-            <div className="about-advocacy__intro">
-              <p className="about-kicker about-kicker--light">What we do</p>
-              <h2>On-ground impact with courtroom depth.</h2>
-              <p>
-                From prison visits to public-interest litigation, RKLAF combines direct legal aid with
-                systemic reform — so individual relief and lasting change go hand in hand.
-              </p>
-              <Link to="/our-work/programs" className="btn btn-outline about-advocacy__link">
-                Explore our programs
-              </Link>
-            </div>
-            <ul className="about-advocacy__list">
-              {advocacyPoints.map((item) => (
-                <li key={item.title}>
-                  <h3>{item.title}</h3>
-                  <p>{item.text}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-
-        <section id="heritage" className="about-section about-section--heritage" data-reveal="up">
-          <div className="container">
-            <header className="about-section__head about-section__head--center">
-              <p className="about-kicker">Our Heritage</p>
-              <h2>A living tribute to family, empathy, and doing what is right.</h2>
-              <p>
-                Established on November 25, 2016, RKLAF honors Late Sh. R.S. Garg and Late Smt. Krishna
-                Garg — whose decades of pro-bono service for the poor, needy, and disabled inspire
-                everything we do today.
-              </p>
-            </header>
-
-            <div className="about-heritage-grid about-heritage-grid--two">
-              {heritagePortraits.map((person) => (
-                <article className="about-heritage-card" key={person.name}>
-                  <div className="about-heritage-card__photo-wrap">
-                    <img src={person.image} alt={person.name} loading="lazy" />
-                  </div>
-                  <div className="about-heritage-card__body">
-                    <h3>{person.name}</h3>
-                    <p className="about-heritage-card__role">{person.role}</p>
-                    <p>{person.caption}</p>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section id="team" className="about-section" data-reveal="up">
-          <div className="container">
-            <header className="about-section__head">
-              <p className="about-kicker">Our Team</p>
-              <h2>Justice needs a formidable alliance.</h2>
-              <p>
-                RKLAF is amplified by leading legal minds and advocates — a platform for anyone
-                who wants to pursue justice together.
-              </p>
-            </header>
-
-            <div className="about-team-layout">
-              <article className="about-leadership">
-                <div className="about-leadership__photo">
-                  <img src={leadership.image} alt={leadership.name} loading="lazy" />
-                </div>
-                <div className="about-leadership__body">
-                  <p className="about-kicker">Leadership</p>
-                  <h3>{leadership.name}</h3>
-                  <p className="about-leadership__role">{leadership.role}</p>
-                  <p>{leadership.caption}</p>
-                </div>
-              </article>
-
-              <article className="about-team-card about-team-card--solo">
-                <span className="about-team-card__icon" aria-hidden="true">A</span>
-                <h3>Advocates</h3>
-                <p>Courtroom representation and legal strategy across civil liberties, criminal defense, and public-interest matters.</p>
-              </article>
-            </div>
-          </div>
-        </section>
-
-        <section className="about-cta" data-reveal="scale">
-          <div className="container about-cta__inner">
-            <h2>Stand with us in the fight for justice.</h2>
-            <p>
-              Your support funds pro-bono representation, legal camps, and advocacy that reaches
-              communities who need it most.
+          <Reveal as="div" className="about-mandate__copy" variant="up">
+            <SectionLabel>Our mandate</SectionLabel>
+            <h1 className="about-mandate__title">
+              Nobody loses a case because they{' '}
+              <em>could not afford</em> to fight it.
+            </h1>
+            <p className="about-mandate__lead">
+              That single sentence is our entire mission. Everything else — the camps, the helpline,
+              the podcast, the classrooms — exists to keep it true across every district we serve.
+              Free legal aid, plain-language education, and representation carried through to the final order.
             </p>
-            <div className="about-cta__actions">
-              <Link to="/donate" className="btn btn-primary">Donate today</Link>
-              <Link to="/join" className="btn btn-secondary">Join the mission</Link>
+            <div className="about-mandate__seal" aria-hidden="true">
+              <span className="about-mandate__seal-ring">
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M24 8v32M14 14h20M16 14l-5 14h10L16 14zm16 0l-5 14h10L32 14z" />
+                </svg>
+              </span>
             </div>
+          </Reveal>
+
+          <Reveal as="div" className="about-media" variant="up" delay={120}>
+            <div className="about-film">
+              <span className="about-film__badge">Film · 4 min</span>
+              <div className="about-film__center">
+                <p className="about-film__ph-label">
+                  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.6">
+                    <path d="M4 7h11l2-2h3v14H4V7zM9 11h4M9 15h6" />
+                  </svg>
+                  Video placeholder
+                </p>
+                <button type="button" className="about-film__play" aria-label="Play film (coming soon)" disabled>
+                  <span className="about-film__play-ring" aria-hidden="true" />
+                  <span className="about-film__play-tri" aria-hidden="true" />
+                </button>
+              </div>
+              <p className="about-film__caption">
+                The founder in the first one-room clinic, telling the story to camera.
+                Warm, unhurried, subtitled in Hindi &amp; English.
+              </p>
+            </div>
+
+            <aside className="about-quote-card">
+              <span className="about-quote-card__marks" aria-hidden="true">“</span>
+              <p>
+                My grandfather queued outside a court for eleven years and never once sat before a judge.
+                This foundation carries his name so that no one else’s story ends in the queue.
+              </p>
+              <footer>
+                <strong>Adv. Ajay Garg</strong>
+                <span className="about-quote-card__role">Founder &amp; Managing Trustee</span>
+                <a href="#mandate" className="about-quote-card__link">Watch the film →</a>
+              </footer>
+            </aside>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Heritage */}
+      <section id="heritage" className="about-heritage">
+        <div className="container">
+          <Reveal as="div" className="about-heritage__panel" variant="up">
+            <div className="about-heritage__top">
+              <p className="about-heritage__eyebrow">Our heritage</p>
+              <h2 className="about-heritage__title">In their name</h2>
+              <p className="about-heritage__intro">
+                The foundation is a tribute before it is an organisation. These are the people whose lives,
+                and whose waits, opened this door for everyone who walks through it now.
+              </p>
+            </div>
+
+            <div className="about-heritage__grid">
+              <div className="about-polaroids">
+                <figure className="about-polaroid about-polaroid--a">
+                  <div className="about-polaroid__tape" />
+                  <div className="about-polaroid__frame">
+                    <span className="about-polaroid__tag">Archival portrait</span>
+                    <small>Late Shri Radhey Krishna ji, c. 1968</small>
+                  </div>
+                  <figcaption>Shri Radhey Krishna ji</figcaption>
+                </figure>
+                <figure className="about-polaroid about-polaroid--b">
+                  <div className="about-polaroid__tape" />
+                  <div className="about-polaroid__frame">
+                    <span className="about-polaroid__tag">Archival photo</span>
+                    <small>The family outside the district court, c. 1974</small>
+                  </div>
+                  <figcaption>The eleven-year queue, 1974</figcaption>
+                </figure>
+              </div>
+
+              <div className="about-heritage__right">
+                <p>
+                  He was a farmer who believed the courthouse belonged to every citizen — not only those
+                  who could pay to wait inside it. Eleven years in a queue outside a district court became
+                  the story this foundation refuses to repeat.
+                </p>
+                <p>
+                  Families who walk into our camps still add names to the tribute register. Each name is a
+                  reminder that the mandate is personal before it is institutional.
+                </p>
+                <p className="about-heritage__names">
+                  Radhey Krishna ji · Smt. Kaushalya Devi · and the elders of every camp
+                </p>
+                <div className="about-heritage__diyas" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M6 16c0 2 2.5 3.5 6 3.5s6-1.5 6-3.5c0-2-2-3-3.5-4.5C13 10 12 8 12 8s-1 2-2.5 3.5C8 13 6 14 6 16z" fill="#c46a3a"/><path d="M5 17.5c1 2.2 3.5 3.5 7 3.5s6-1.3 7-3.5" fill="none" stroke="#e8dcc8" strokeWidth="1.4"/></svg>
+                  <svg viewBox="0 0 24 24"><path d="M6 16c0 2 2.5 3.5 6 3.5s6-1.5 6-3.5c0-2-2-3-3.5-4.5C13 10 12 8 12 8s-1 2-2.5 3.5C8 13 6 14 6 16z" fill="#c46a3a"/><path d="M5 17.5c1 2.2 3.5 3.5 7 3.5s6-1.3 7-3.5" fill="none" stroke="#e8dcc8" strokeWidth="1.4"/></svg>
+                  <svg viewBox="0 0 24 24"><path d="M6 16c0 2 2.5 3.5 6 3.5s6-1.5 6-3.5c0-2-2-3-3.5-4.5C13 10 12 8 12 8s-1 2-2.5 3.5C8 13 6 14 6 16z" fill="#c46a3a"/><path d="M5 17.5c1 2.2 3.5 3.5 7 3.5s6-1.3 7-3.5" fill="none" stroke="#e8dcc8" strokeWidth="1.4"/></svg>
+                </div>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Team */}
+      <section id="team" className="about-team">
+        <div className="container">
+          <Reveal as="header" className="about-team__head" variant="up">
+            <p className="about-eyebrow">The team</p>
+            <h2 className="about-display">The people who show up</h2>
+          </Reveal>
+
+          <div className="about-team__grid">
+            {team.map((member, i) => (
+              <Reveal as="article" className="about-person" key={member.name} variant="up" delay={i * 70}>
+                <div className="about-person__avatar" aria-hidden="true">
+                  <span>{member.name.split(' ').slice(-1)[0].slice(0, 1)}</span>
+                </div>
+                <h3>{member.name}</h3>
+                <p className="about-person__role">{member.role}</p>
+                <p className="about-person__blurb">{member.blurb}</p>
+              </Reveal>
+            ))}
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
+
+      {/* Journey */}
+      <section id="journey" className="about-journey">
+        <div className="container">
+          <Reveal as="header" className="about-journey__head" variant="up">
+            <p className="about-eyebrow">The journey</p>
+            <h2 className="about-display">A decade, year by year</h2>
+            <p className="about-journey__hint">Click a year to travel</p>
+          </Reveal>
+
+          <div className="about-timeline" role="tablist" aria-label="Decade timeline">
+            <div className="about-timeline__line" aria-hidden="true" />
+            {journey.map((item, i) => (
+              <button
+                key={item.year}
+                type="button"
+                role="tab"
+                aria-selected={i === activeYear}
+                className={`about-timeline__node ${i === activeYear ? 'is-active' : ''}`}
+                onClick={() => setActiveYear(i)}
+              >
+                <span className="about-timeline__icon" aria-hidden="true">
+                  <JourneyIcon name={item.icon} />
+                </span>
+                <span className="about-timeline__year">{item.year}</span>
+              </button>
+            ))}
+          </div>
+
+          <Reveal as="article" className="about-year-card" variant="up" key={current.year}>
+            <div className="about-year-card__visual">
+              <span>{current.visual}</span>
+              <small>{current.label}</small>
+            </div>
+            <div className="about-year-card__body">
+              <p className="about-year-card__year">{current.year}</p>
+              <h3>{current.title}</h3>
+              <p>{current.desc}</p>
+              <div className="about-year-card__nav">
+                <button type="button" onClick={goPrev} aria-label="Previous year">←</button>
+                <button type="button" onClick={goNext} aria-label="Next year">→</button>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
     </div>
   );
 }

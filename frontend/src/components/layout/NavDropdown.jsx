@@ -5,7 +5,30 @@ export default function NavDropdown({ item, onNavigate }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
   const location = useLocation();
-  const isActive = item.children?.some((child) => location.pathname === child.path);
+  const isActive =
+    item.path === '/'
+      ? location.pathname === '/'
+      : item.path === '/about'
+        ? location.pathname.startsWith('/about')
+        : item.path === '/our-work'
+          ? location.pathname.startsWith('/our-work')
+          : item.path === '/know-your-rights'
+            ? location.pathname.startsWith('/know-your-rights')
+            : item.path === '/impact'
+              ? location.pathname.startsWith('/impact')
+              : item.path === '/library'
+                ? location.pathname.startsWith('/library')
+                : item.path === '/academics'
+                  ? location.pathname.startsWith('/academics')
+                  : item.path === '/contact'
+                    ? location.pathname.startsWith('/contact')
+                    : item.path === '/join-us'
+                      ? location.pathname.startsWith('/join-us')
+                      : Boolean(
+                          item.children?.some(
+                            (child) => child.path.startsWith('/') && !child.path.includes('#') && location.pathname === child.path,
+                          ),
+                        );
 
   useEffect(() => {
     setOpen(false);
@@ -25,10 +48,17 @@ export default function NavDropdown({ item, onNavigate }) {
   };
 
   if (!item.children) {
+    const linkActive =
+      item.path === '/'
+        ? location.pathname === '/'
+        : item.path.startsWith('/') && !item.path.includes('#')
+          ? location.pathname === item.path || location.pathname.startsWith(`${item.path}/`)
+          : false;
+
     return (
       <Link
         to={item.path}
-        className={`nav-link ${location.pathname === item.path ? 'active' : ''}`}
+        className={`nav-link ${linkActive ? 'active' : ''}`}
         onClick={onNavigate}
       >
         <span className="nav-label nav-label--full">{item.label}</span>

@@ -1,183 +1,320 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import WhereWeWorkSection from '../components/impact/WhereWeWorkSection';
+import HeroSketch from '../components/home/HeroSketch';
 import Reveal from '../components/motion/Reveal';
-import heroImage from '../assets/probono3.jpeg';
-import father2Photo from '../assets/father2.jpeg';
-import probonoPhoto from '../assets/probono2-card.jpeg';
-import rightsEducationPhoto from '../assets/rightseducation.jpeg';
-import publicInterestPhoto from '../assets/publicinterest.jpeg';
-import communityOutreachPhoto from '../assets/comunityoutreach.jpeg';
+import { WHATSAPP_DISPLAY, WHATSAPP_URL } from '../data/navigation';
 import './Home.css';
 
 const introStats = [
-  { value: '2016', label: 'Registered as a Charitable Trust' },
-  { value: '3,100+', label: 'People engaged through camps & outreach' },
-  { value: '40+', label: 'On-ground legal aid camps' },
-  { value: '80+', label: 'Law students in national RTI drives' },
+  { value: '2016', label: 'Registered as a Charitable Trust', icon: 'people' },
+  { value: '3,100+', label: 'People engaged through camps', icon: 'heart' },
+  { value: '40+', label: 'On-ground legal aid camps', icon: 'scales' },
+  { value: '80+', label: 'Law students in RTI drives', icon: 'gavel' },
 ];
 
-const whyItems = [
-  {
-    id: 'probono',
-    tag: 'Legal Aid',
-    title: 'Pro-Bono Legal Aid',
-    summary: 'Civil and criminal casework, prison visits, and courtroom representation for those who cannot afford private counsel.',
-    image: probonoPhoto,
-    alt: 'Pro-bono legal aid and courtroom support',
-    objectPosition: 'center 68%',
-    accent: '#834256',
-    points: ['Civil & criminal casework', 'Prison visits & undertrial support', 'Courtroom representation'],
-  },
-  {
-    id: 'rights',
-    tag: 'Education',
-    title: 'Rights Education',
-    summary: 'Know Your Rights resources, downloadable legal guides, and community awareness camps across India.',
-    image: rightsEducationPhoto,
-    alt: 'Rights education and community awareness',
-    objectPosition: 'center center',
-    accent: '#2c4359',
-    points: ['Know Your Rights resources', 'Downloadable legal guides', 'Community awareness camps'],
-  },
-  {
-    id: 'advocacy',
-    tag: 'Advocacy',
-    title: 'Public-Interest Advocacy',
-    summary: 'RTI drives, disability rights litigation, and systemic reform through fearless public-interest advocacy.',
-    image: publicInterestPhoto,
-    alt: 'Public-interest litigation and advocacy',
-    objectPosition: 'center 22%',
-    accent: '#a3566a',
-    points: ['RTI & accountability drives', 'Disability rights litigation', 'Systemic reform'],
-  },
-  {
-    id: 'outreach',
-    tag: 'Outreach',
-    title: 'Community Outreach',
-    summary: 'On-ground legal aid camps, law student partnerships, and nationwide collaborations reaching citizens where they live.',
-    image: communityOutreachPhoto,
-    alt: 'Community legal aid outreach camps',
-    objectPosition: 'center 35%',
-    accent: '#4a6580',
-    points: ['On-ground legal aid camps', 'Law student partnerships', 'Nationwide collaborations'],
-  },
+const sideNav = [
+  { id: 'who-we-are', label: 'Who We Are' },
+  { id: 'impact', label: 'Impact' },
+  { id: 'expertise', label: 'Expertise' },
+  { id: 'resources', label: 'Resources' },
+  { id: 'join-help', label: 'Join Us & Help' },
+  { id: 'contact-home', label: 'Contact' },
 ];
 
-const practiceAreas = [
-  { title: 'Civil Law', desc: 'Property, family, and contractual disputes.', icon: 'C' },
-  { title: 'Criminal Defense', desc: 'Fair representation and procedural guidance.', icon: 'D' },
-  { title: 'Human Rights', desc: 'Protection of dignity, liberty, and equality.', icon: 'H' },
-];
-
-const programPillars = [
+const programmes = [
   {
     num: '01',
-    title: 'Legal Aid Camps',
-    desc: 'Free on-ground consultations and rights awareness — reaching citizens where they live.',
+    tag: 'Flagship · Since 2018',
+    title: 'Senior Citizens Protection Desk',
+    desc: '400+ elders protected through maintenance, property, and abuse cases.',
+    visual: 'Elder with advocate',
+    caption: 'At the tribunal steps',
   },
   {
     num: '02',
-    title: 'Pro-Bono Casework',
-    desc: 'Representation and guidance for those who cannot afford private counsel.',
+    tag: 'Camps · Nationwide',
+    title: 'Legal Aid Camps',
+    desc: '40+ on-ground camps bringing free counsel to villages and city wards.',
+    visual: 'Camp intake desk',
+    caption: 'Walking in together',
   },
   {
     num: '03',
-    title: 'Advocacy & Education',
-    desc: 'RTI drives, public-interest litigation, and Know Your Rights outreach.',
+    tag: 'Rights · Education',
+    title: 'Know Your Rights Drives',
+    desc: 'Plain-language guides, workshops, and school clinics on constitutional rights.',
+    visual: 'Rights workshop',
+    caption: 'Rights class, Faridabad',
+  },
+  {
+    num: '04',
+    tag: 'Accountability · RTI',
+    title: 'RTI & Public Interest',
+    desc: '80+ law students unlocking pensions, ration, and scheme entitlements.',
+    visual: 'RTI filing desk',
+    caption: 'Order copy in hand',
   },
 ];
 
-export default function Home() {
+const snapshots = [
+  { label: 'Campus clinic', caption: 'Intake desk, DU' },
+  { label: 'First hearing', caption: 'Walking in together' },
+  { label: 'Door to door', caption: 'Pension rights walk' },
+  { label: 'Order copy', caption: 'Maintenance in hand' },
+  { label: 'Workshop', caption: 'Rights class, Faridabad' },
+  { label: 'Helpline', caption: 'Senior citizens’ sabha' },
+];
+
+const stories = [
+  {
+    tag: 'Senior Citizens',
+    title: 'Kamla Devi, 74, gets her home back',
+    desc: 'Coerced gift deed cancelled, possession restored, ₹8,000 monthly maintenance in 63 days.',
+    visual: 'Portrait',
+    caption: 'Kamla Devi at her home',
+  },
+  {
+    tag: 'Labour Rights',
+    title: '42 workers recover 6 months of unpaid wages',
+    desc: 'Wage claims reconstructed from screenshots and recovered with interest.',
+    visual: 'Group photo',
+    caption: 'Construction workers at site',
+  },
+  {
+    tag: 'Family Law',
+    title: 'Ruksana wins custody and a safe home',
+    desc: 'Protection orders secured and full custody granted after a six-month fight.',
+    visual: 'Portrait',
+    caption: 'Leaving court with relief',
+  },
+];
+
+const expertise = [
+  { title: 'Senior Citizens', desc: 'Maintenance, property protection and elder abuse under the 2007 Act' },
+  { title: 'Family & Women', desc: 'Domestic violence, custody, maintenance and safe separation' },
+  { title: 'Labour & Wages', desc: 'Unpaid wages, wrongful termination and injury claims' },
+  { title: 'Property & Tenancy', desc: 'Illegal possession, tenancy disputes and title guidance' },
+  { title: 'Consumer Rights', desc: 'Defective goods, insurance rejections and service failures' },
+  { title: 'RTI & Govt Schemes', desc: 'Pensions, ration cards and entitlements unlocked' },
+  { title: 'Diaspora & NRI', desc: 'Cross-border property and family matters for Indians abroad' },
+  { title: 'Noted Judgments', desc: 'The rulings we argue by, annotated in plain words' },
+];
+
+const resourceShelves = [
+  {
+    title: 'Academics',
+    sub: 'Blogs · Research · Papers',
+    icon: 'grad',
+    preview: 'Latest piece preview',
+    links: ['Field notes from camps', 'Research & papers', 'Policy briefs'],
+    cta: 'Open Academics',
+    href: '/academics',
+  },
+  {
+    title: 'Know Your Rights',
+    sub: 'Guides · Glossary · Videos',
+    icon: 'shield',
+    preview: 'Latest guide preview',
+    links: ['Downloadable guides', 'Legal glossary', 'Emergency contacts'],
+    cta: 'Open Rights Desk',
+    href: '/know-your-rights',
+  },
+  {
+    title: 'Library',
+    sub: 'Podcast · Films · Socials',
+    icon: 'books',
+    preview: 'Latest episode art',
+    links: ['Noted judgments', 'Media coverage', 'Annual reports'],
+    cta: 'Open Library',
+    href: '/library',
+  },
+];
+
+function StatIcon({ name }) {
+  if (name === 'heart') {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path fill="currentColor" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+      </svg>
+    );
+  }
+  if (name === 'scales') {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+        <path d="M12 3v18M5 7h14M7 7l-3 8h6L7 7zm10 0l-3 8h6l-3-8zM8 21h8" />
+      </svg>
+    );
+  }
+  if (name === 'gavel') {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+        <path d="M14 4l6 6M10 8l6 6M3 21h10M8 14l-5 5" />
+      </svg>
+    );
+  }
   return (
-    <div className="home">
-      {/* Hero — full photo + left ivory gradient overlay (reference) */}
-      <section className="home-hero">
-        <div className="home-hero__body">
-          <div className="home-hero__stage">
-            <div className="home-hero__backdrop" aria-hidden="true">
-              <img src={heroImage} alt="" className="home-hero__backdrop-img" />
-              <div className="home-hero__backdrop-fade" />
-            </div>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+      <circle cx="9" cy="8" r="3" />
+      <circle cx="16" cy="9" r="2.5" />
+      <path d="M3 19c1.5-3 4-4.5 6-4.5S13.5 16 15 19M13 19c.8-2 2.2-3 3.5-3s2.4.8 3.5 3" />
+    </svg>
+  );
+}
 
-            <div className="container home-hero__content">
-              <div className="home-hero__copy">
-                <p className="home-hero__kicker">Radhey Krishna Legal Aid Foundation</p>
-                <h1 className="home-hero__title">
-                  Justice should never be a{' '}
-                  <span className="home-hero__accent">privilege</span> reserved for the{' '}
-                  <span className="home-hero__accent">few.</span>
-                </h1>
-                <p className="home-hero__lead">
-                  A coalition of legal professionals and advocates protecting constitutional
-                  rights — regardless of background or financial standing.
-                </p>
-                <div className="home-hero__actions">
-                  <Link to="/donate" className="btn btn-primary btn-lg home-hero__btn-primary">
-                    Support our work
-                  </Link>
-                  <Link to="/contact" className="btn btn-outline btn-lg home-hero__btn-outline">
-                    Get in touch
-                  </Link>
+function ShelfIcon({ name }) {
+  if (name === 'shield') {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+        <path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z" />
+      </svg>
+    );
+  }
+  if (name === 'books') {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+        <path d="M4 5h6a2 2 0 012 2v12H6a2 2 0 01-2-2V5zm10 0h6v12a2 2 0 01-2 2h-4V7a2 2 0 012-2z" />
+      </svg>
+    );
+  }
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+      <path d="M4 19v-9l8-4 8 4v9M4 10l8 4 8-4" />
+    </svg>
+  );
+}
+
+function MediaPlaceholder({ label, caption, ratio = '4 / 3' }) {
+  return (
+    <div className="home-ph" style={{ '--ph-ratio': ratio }}>
+      <span className="home-ph__label">{label}</span>
+      {caption ? <small className="home-ph__caption">{caption}</small> : null}
+    </div>
+  );
+}
+
+export default function Home() {
+  const [activeSection, setActiveSection] = useState('who-we-are');
+
+  useEffect(() => {
+    const nodes = sideNav
+      .map((item) => document.getElementById(item.id))
+      .filter(Boolean);
+
+    if (!nodes.length) return undefined;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible?.target?.id) setActiveSection(visible.target.id);
+      },
+      { rootMargin: '-35% 0px -45% 0px', threshold: [0.1, 0.35, 0.6] },
+    );
+
+    nodes.forEach((n) => observer.observe(n));
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div className="home home--v2">
+      <section className="home-hero" aria-label="Home hero">
+        <div className="home-hero__stage">
+          <HeroSketch className="home-hero__sketch" />
+          <h1 className="home-hero__tagline">
+            <span className="home-hero__with">With You.</span>{' '}
+            <span className="home-hero__for">For You.</span>{' '}
+            <span className="home-hero__nyay">Nyay Tak.</span>
+          </h1>
+        </div>
+
+        <Reveal as="div" className="home-hero__stats" variant="up" delay={120}>
+          <div className="container home-hero__stats-row">
+            {introStats.map((stat) => (
+              <article className="home-stat" key={stat.label}>
+                <span className="home-stat__icon" aria-hidden="true">
+                  <StatIcon name={stat.icon} />
+                </span>
+                <div>
+                  <strong className="home-stat__value">{stat.value}</strong>
+                  <span className="home-stat__label">{stat.label}</span>
                 </div>
-                <p className="home-hero__tagline">
-                  With You. For You.{' '}
-                  <span className="home-hero__accent">Nyaya Tak.</span>
-                </p>
-              </div>
-            </div>
+              </article>
+            ))}
           </div>
+        </Reveal>
+      </section>
 
-          <Reveal as="div" className="home-hero__stats" variant="up" delay={200}>
-            <div className="container home-hero__stats-row">
-              {introStats.map((stat) => (
-                <article className="home-hero__stat" key={stat.label}>
-                  <strong className="home-hero__stat-value">{stat.value}</strong>
-                  <span className="home-hero__stat-label">{stat.label}</span>
-                </article>
-              ))}
+      <nav className="home-rail" aria-label="Page sections">
+        {sideNav.map((item) => (
+          <a
+            key={item.id}
+            href={`#${item.id}`}
+            className={`home-rail__item ${activeSection === item.id ? 'is-active' : ''}`}
+          >
+            <span className="home-rail__dot" aria-hidden="true" />
+            <span className="home-rail__label">{item.label}</span>
+          </a>
+        ))}
+      </nav>
+
+      <section id="who-we-are" className="home-who">
+        <div className="container home-who__grid">
+          <Reveal as="div" className="home-who__copy" variant="up">
+            <p className="home-eyebrow">Who we are</p>
+            <h2 className="home-display">A people’s law foundation, since 2016</h2>
+            <p>
+              Radhey Krishna Legal Aid Foundation removes the barriers that keep justice out of reach —
+              paperwork, fees, fear, and distance from the courthouse.
+            </p>
+            <p>
+              We stand with elders, workers, women, and families who cannot afford private counsel —
+              from first consultation to the order that changes a life.
+            </p>
+            <a href="/about" className="home-text-link">
+              Read our full story →
+            </a>
+          </Reveal>
+
+          <Reveal as="div" className="home-who__media" variant="up" delay={120}>
+            <div className="home-film">
+              <div className="home-film__frame">
+                <MediaPlaceholder label="Film still" caption="The first clinic, the founder at the table" ratio="16 / 10" />
+                <span className="home-film__badge">Film · 3 min</span>
+                <button type="button" className="home-film__play" aria-label="Play film (coming soon)" disabled>
+                  <span />
+                </button>
+              </div>
+              <p className="home-film__caption">The first clinic, told in three minutes.</p>
+              <aside className="home-film__quote">
+                “No one else’s story ends in the queue.”
+              </aside>
             </div>
           </Reveal>
         </div>
       </section>
 
-      {/* Why choose us — bento grid */}
-      <section className="home-why">
+      <section id="impact" className="home-impact">
         <div className="container">
-          <Reveal as="header" className="home-section-head">
-            <p className="home-kicker">Why choose us</p>
-            <h2 className="home-section-title">
-              Accessible justice is what every citizen deserves
-            </h2>
-            <p className="home-section-lead">
-              Four pillars of fearless advocacy — from courtroom representation to grassroots outreach.
-            </p>
-          </Reveal>
+          <header className="home-section-head">
+            <div>
+              <p className="home-eyebrow">Impact</p>
+              <h2 className="home-display">Programmes &amp; Initiatives</h2>
+            </div>
+            <Link to="/impact" className="home-pill">View full impact →</Link>
+          </header>
 
-          <div className="home-why__grid">
-            {whyItems.map((item, index) => (
-              <Reveal
-                key={item.id}
-                as="article"
-                className="home-why-card"
-                variant="up"
-                delay={index * 90}
-              >
-                <div className="home-why-card__clip">
-                  <div
-                    className="home-why-card__visual"
-                    style={{ '--photo-pos': item.objectPosition }}
-                  >
-                    <img src={item.image} alt={item.alt} loading="lazy" />
-                  </div>
-                  <div className="home-why-card__footer">
-                    <h3>{item.title}</h3>
-                    <span className="home-why-card__footer-line" aria-hidden="true" />
-                  </div>
-                  <div className="home-why-card__hover-panel">
-                    <h3>{item.title}</h3>
-                    <span className="home-why-card__hover-line" aria-hidden="true" />
-                    <p>{item.summary}</p>
-                  </div>
+          <div className="home-impact__grid">
+            {programmes.map((item, i) => (
+              <Reveal as="article" className="home-card" key={item.num} variant="up" delay={i * 80}>
+                <div className="home-card__visual">
+                  <MediaPlaceholder label={item.visual} caption={item.caption} />
+                  <span className="home-card__num">{item.num}</span>
+                </div>
+                <div className="home-card__body">
+                  <span className="home-card__tag">{item.tag}</span>
+                  <h3>{item.title}</h3>
+                  <p>{item.desc}</p>
                 </div>
               </Reveal>
             ))}
@@ -185,142 +322,194 @@ export default function Home() {
         </div>
       </section>
 
-      {/* About — dark editorial */}
-      <Reveal as="section" className="home-about" variant="up">
-        <div className="container">
-          <div className="home-about__layout">
-            <div className="home-about__visual">
-              <div className="home-about__photo-ring" aria-hidden="true" />
-              <div className="home-about__photo">
-                <img src={father2Photo} alt="Adv. Ajay Garg, Chief Trustee, RKLAF" loading="lazy" />
-              </div>
-              <div className="home-about__badge">
-                <span className="home-about__badge-num">2016</span>
-                <span className="home-about__badge-text">Est.</span>
-              </div>
-            </div>
-
-            <div className="home-about__copy">
-              <p className="home-kicker home-kicker--light">About us</p>
-              <h2 className="home-about__title">Rooted in service, driven by fearless advocacy</h2>
-              <blockquote className="home-about__quote">
-                <p>
-                  We stand alongside every citizen who cannot afford private counsel — from first
-                  consultation to courtroom strategy.
-                </p>
-                <footer>
-                  <span className="home-about__role">Chief Trustee, RKLAF</span>
-                  Adv. Ajay Garg
-                </footer>
-              </blockquote>
-              <div className="home-about__actions">
-                <Link to="/about#heritage" className="btn btn-primary">Explore our story</Link>
-                <Link to="/about#team" className="btn btn-outline home-about__outline">Meet our team</Link>
-              </div>
-            </div>
+      <section id="stories" className="home-stories-wrap">
+        <div className="home-snapshots" aria-label="Field snapshots">
+          <div className="home-snapshots__track">
+            {[...snapshots, ...snapshots].map((shot, i) => (
+              <figure className={`home-polaroid home-polaroid--${(i % 3) + 1}`} key={`${shot.label}-${i}`}>
+                <MediaPlaceholder label={shot.label} />
+                <figcaption>{shot.caption}</figcaption>
+              </figure>
+            ))}
           </div>
         </div>
-      </Reveal>
 
-      {/* What we do */}
-      <Reveal as="section" className="home-work" variant="up">
         <div className="container">
-          <header className="home-section-head home-section-head--center">
-            <p className="home-kicker">What we do</p>
-            <h2 className="home-section-title">Programs, outreach, and the areas we serve</h2>
-            <p className="home-section-lead">
-              From grassroots camps to courtroom representation — building a fairer legal landscape for every citizen.
-            </p>
+          <header className="home-section-head">
+            <div>
+              <p className="home-eyebrow">Success stories</p>
+              <h2 className="home-display">Real people. Real orders. Real relief.</h2>
+            </div>
+            <a href="#stories" className="home-pill">View all stories →</a>
           </header>
 
-          <div className="home-work__stage">
-            <div className="home-work__programs">
-              <div className="home-work__panel-head">
-                <span className="home-work__panel-line" aria-hidden="true" />
-                <h3>Our programs</h3>
-              </div>
-              <ol className="home-work__timeline">
-                {programPillars.map((item) => (
-                  <li key={item.title} className="home-work__timeline-item">
-                    <span className="home-work__num">{item.num}</span>
-                    <div className="home-work__timeline-body">
-                      <h4>{item.title}</h4>
-                      <p>{item.desc}</p>
-                    </div>
-                  </li>
-                ))}
-              </ol>
-              <Link to="/our-work/programs#gallery" className="home-work__cta btn btn-light">
-                Programs &amp; camp gallery
-                <span className="home-work__cta-arrow" aria-hidden="true">→</span>
-              </Link>
-            </div>
+          <div className="home-stories__grid">
+            {stories.map((story, i) => (
+              <Reveal as="article" className="home-story" key={story.title} variant="up" delay={i * 90}>
+                <MediaPlaceholder label={story.visual} caption={story.caption} ratio="16 / 11" />
+                <div className="home-story__body">
+                  <span className="home-story__tag">{story.tag}</span>
+                  <h3>{story.title}</h3>
+                  <p>{story.desc}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
 
-            <div className="home-work__areas">
-              <div className="home-work__panel-head home-work__panel-head--light">
-                <span className="home-work__panel-line" aria-hidden="true" />
-                <h3>Areas we serve</h3>
-              </div>
-              <div className="home-work__areas-grid">
-                {practiceAreas.map((area) => (
-                  <article key={area.title} className="home-work-area">
-                    <span className="home-work-area__icon" aria-hidden="true">{area.icon}</span>
-                    <div className="home-work-area__text">
-                      <h4>{area.title}</h4>
-                      <p>{area.desc}</p>
-                    </div>
-                  </article>
-                ))}
-              </div>
+      <section id="expertise" className="home-expertise">
+        <div className="container home-expertise__grid">
+          <Reveal as="div" className="home-expertise__intro" variant="up">
+            <p className="home-eyebrow">Expertise</p>
+            <h2 className="home-display">Where we can step in</h2>
+            <p>
+              Eight areas of practice, each with its own desk, its own guides, and its own case record.
+            </p>
+          </Reveal>
+
+          <ul className="home-expertise__list">
+            {expertise.map((item, i) => (
+              <li key={item.title}>
+                <a href="#expertise" className="home-expertise__row">
+                  <span className="home-expertise__num">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="home-expertise__title">{item.title}</span>
+                  <span className="home-expertise__desc">{item.desc}</span>
+                  <span className="home-expertise__arrow" aria-hidden="true">→</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section id="resources" className="home-resources">
+        <div className="container">
+          <header className="home-resources__head">
+            <p className="home-eyebrow">Resources</p>
+            <h2 className="home-display">Three shelves, always open.</h2>
+          </header>
+
+          <div className="home-resources__grid">
+            {resourceShelves.map((shelf, i) => (
+              <Reveal as="article" className="home-shelf" key={shelf.title} variant="up" delay={i * 80}>
+                <header className="home-shelf__head">
+                  <span className="home-shelf__icon" aria-hidden="true">
+                    <ShelfIcon name={shelf.icon} />
+                  </span>
+                  <div>
+                    <h3>{shelf.title}</h3>
+                    <p>{shelf.sub}</p>
+                  </div>
+                </header>
+                <MediaPlaceholder label={shelf.preview} ratio="16 / 8" />
+                <ul className="home-shelf__links">
+                  {shelf.links.map((label) => (
+                    <li key={label}>
+                      <a href={shelf.href}>
+                        <span aria-hidden="true">↗</span> {label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+                <a href={shelf.href} className="home-pill home-pill--block">
+                  {shelf.cta} →
+                </a>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="join-help" className="home-cta-band">
+        <div className="container home-cta-band__grid">
+          <article className="home-cta home-cta--dark">
+            <svg className="home-cta__mark" viewBox="0 0 64 64" aria-hidden="true">
+              <path fill="currentColor" d="M32 10c-6 8-14 14-14 24a14 14 0 0028 0c0-10-8-16-14-24z" opacity=".18" />
+            </svg>
+            <h2 className="home-display">Need help now?</h2>
+            <p>Call, message or walk into a camp. A volunteer triages every request within 24 hours.</p>
+            <div className="home-cta__actions">
+              <a href="tel:+917043031263" className="home-pill home-pill--light">Call helpline</a>
+              <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="home-pill home-pill--light">
+                WhatsApp us
+              </a>
+            </div>
+          </article>
+
+          <article className="home-cta home-cta--tan">
+            <svg className="home-cta__mark" viewBox="0 0 64 64" aria-hidden="true">
+              <path fill="none" stroke="currentColor" strokeWidth="2" d="M18 34c4-8 10-12 14-12s10 4 14 12M22 38h20" opacity=".35" />
+            </svg>
+            <h2 className="home-display">Join us</h2>
+            <p>
+              Volunteer from 2 hours a week, intern in a 4 to 12 week cohort, or become a member from ₹500 a month.
+            </p>
+            <Link to="/join-us" className="home-pill home-pill--dark">Get involved →</Link>
+          </article>
+        </div>
+
+        <div className="container">
+          <article id="donate" className="home-donate">
+            <div>
+              <h2 className="home-display">Your donation funds someone’s day in court</h2>
+              <p>
+                ₹1,500 covers one full case filing. ₹500 runs a village rights camp for an hour.
+                Every rupee is accounted for in our public ledger.
+              </p>
+            </div>
+            <a href="#join-help" className="home-pill home-pill--light home-donate__btn">
+              <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                <path fill="currentColor" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+              </svg>
+              Donate now →
+            </a>
+          </article>
+        </div>
+      </section>
+
+      <section id="contact-home" className="home-contact">
+        <div className="container home-contact__grid">
+          <a href="tel:+917043031263" className="home-contact__item">
+            <span className="home-contact__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M6 3h4l2 5-3 2a12 12 0 006 6l2-3 5 2v4a2 2 0 01-2 2A16 16 0 014 5a2 2 0 012-2z" /></svg>
+            </span>
+            <div>
+              <strong>Helpline</strong>
+              <span>{WHATSAPP_DISPLAY}</span>
+              <small>Mon to Sat, 9 to 6</small>
+            </div>
+          </a>
+          <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="home-contact__item">
+            <span className="home-contact__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M4 5h16v10H8l-4 4V5z" /></svg>
+            </span>
+            <div>
+              <strong>WhatsApp</strong>
+              <span>{WHATSAPP_DISPLAY}</span>
+            </div>
+          </a>
+          <a href="mailto:help@rklaf.org" className="home-contact__item">
+            <span className="home-contact__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 7l9 7 9-7" /></svg>
+            </span>
+            <div>
+              <strong>Email</strong>
+              <span>help@rklaf.org</span>
+            </div>
+          </a>
+          <div className="home-contact__item">
+            <span className="home-contact__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M12 21s7-5.5 7-11a7 7 0 10-14 0c0 5.5 7 11 7 11z" /><circle cx="12" cy="10" r="2.5" /></svg>
+            </span>
+            <div>
+              <strong>Head office</strong>
+              <span>Sector 14, Gurgaon</span>
+              <small>Walk-in Tue &amp; Thu</small>
             </div>
           </div>
         </div>
-      </Reveal>
-
-      <WhereWeWorkSection />
-
-      {/* Resources + blog */}
-      <Reveal as="section" className="home-dual" variant="up">
-        <div className="container home-dual__grid">
-          <article className="home-dual__panel home-dual__panel--dark">
-            <div className="home-dual__panel-inner">
-              <p className="home-kicker home-kicker--light">Resources</p>
-              <h2>Learn. Research. Act.</h2>
-              <ul className="home-dual__links">
-                <li><Link to="/know-your-rights">Know Your Rights</Link></li>
-                <li><Link to="/know-your-rights#guides">Downloadable Guides</Link></li>
-                <li><Link to="/know-your-rights#emergency">Emergency Contacts</Link></li>
-                <li><Link to="/contact#intake">Intake Procedure</Link></li>
-                <li><Link to="/noted-judgments">Noted Judgments</Link></li>
-                <li><Link to="/join">Join the Fight for Justice</Link></li>
-              </ul>
-            </div>
-          </article>
-          <article className="home-dual__panel home-dual__panel--accent">
-            <div className="home-dual__panel-inner">
-              <p className="home-kicker">From our blog</p>
-              <h2>Stories from the field</h2>
-              <p>Legal updates, camp recaps, and voices from advocates on the ground.</p>
-              <Link to="/blogs" className="btn btn-secondary home-dual__blog-btn">
-                View all blogs
-              </Link>
-            </div>
-          </article>
-        </div>
-      </Reveal>
-
-      <Reveal as="section" className="home-donate" variant="scale">
-        <div className="home-donate__pattern" aria-hidden="true" />
-        <div className="container home-donate__inner">
-          <p className="home-kicker home-kicker--light">Support RKLAF</p>
-          <h2>Stand with us for equal access to justice</h2>
-          <p>Your contribution funds camps, casework, and free legal resources.</p>
-          <div className="home-donate__actions">
-            <Link to="/donate" className="btn btn-light btn-lg">Donate Now</Link>
-            <Link to="/contact" className="btn btn-outline-light btn-lg">Get in touch</Link>
-          </div>
-        </div>
-      </Reveal>
+      </section>
     </div>
   );
 }

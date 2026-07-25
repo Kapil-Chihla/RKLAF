@@ -1,17 +1,18 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { navItems } from '../../data/navigation';
+import { navItems, socialLinks } from '../../data/navigation';
 import Brand from './Brand';
 import NavDropdown from './NavDropdown';
-import SocialLinks from './SocialLinks';
+import SocialIcon from '../icons/SocialIcons';
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
     setMenuOpen(false);
-  }, [location.pathname]);
+  }, [location.pathname, location.hash]);
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : '';
@@ -20,12 +21,19 @@ export default function Header() {
     };
   }, [menuOpen]);
 
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   const closeMenu = () => setMenuOpen(false);
 
   return (
-    <header className="site-header">
+    <header className={`site-header site-header--v2 ${scrolled ? 'is-scrolled' : ''}`}>
       <div className="header-bar container">
-        <Brand variant="header" compact onNavigate={closeMenu} />
+        <Brand variant="header" onNavigate={closeMenu} />
 
         <nav
           id="main-navigation"
@@ -38,18 +46,48 @@ export default function Header() {
             ))}
           </div>
           <div className="nav-mobile-footer">
-            <SocialLinks className="nav-social nav-social--mobile" />
-            <Link to="/donate" className="btn btn-donate btn-donate--mobile" onClick={closeMenu}>
-              Donate
+            <div className="header-social header-social--mobile">
+              {socialLinks.map((link) => (
+                <a
+                  key={link.icon}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={link.name}
+                  className="header-social__btn"
+                >
+                  <SocialIcon name={link.icon} />
+                </a>
+              ))}
+            </div>
+            <Link to="/contact" className="btn-header-touch" onClick={closeMenu}>
+              Get in touch
             </Link>
           </div>
         </nav>
 
         <div className="header-actions">
-          <Link to="/donate" className="btn btn-donate header-donate">
-            Donate
-          </Link>
-          <SocialLinks className="nav-social nav-social--desktop" />
+          <div className="header-social header-social--desktop" aria-label="Social links">
+            {socialLinks.map((link) => (
+              <a
+                key={link.icon}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={link.name}
+                className="header-social__btn"
+              >
+                <SocialIcon name={link.icon} />
+              </a>
+            ))}
+            <a href="#who-we-are" className="header-social__btn" aria-label="Search page sections">
+              <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="11" cy="11" r="6.5" />
+                <path d="M16.5 16.5L21 21" />
+              </svg>
+            </a>
+          </div>
+
           <button
             type="button"
             className={`menu-toggle ${menuOpen ? 'is-active' : ''}`}

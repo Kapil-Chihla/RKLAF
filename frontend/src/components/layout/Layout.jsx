@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
 import ScrollToTop from './ScrollToTop';
-import DonateSticky from './DonateSticky';
+import SideTabs from './SideTabs';
 import WhatsAppFloating from './WhatsAppFloating';
 import useAutoReveal from '../../hooks/useAutoReveal';
 
@@ -10,15 +10,17 @@ export default function Layout() {
   useAutoReveal();
 
   return (
-    <div className="site-wrapper">
+    <div className="site-wrapper site-wrapper--v2">
       <ScrollToTop />
-      <DonateSticky />
+      <SideTabs />
       <WhatsAppFloating />
-      <Header />
-      <main className="site-main">
-        <Outlet />
-      </main>
-      <Footer />
+      <div className="site-shell">
+        <Header />
+        <main className="site-main">
+          <Outlet />
+        </main>
+        <Footer />
+      </div>
     </div>
   );
 }

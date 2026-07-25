@@ -1,74 +1,130 @@
 import { Link } from 'react-router-dom';
-import { footerColumns, socialLinks, WHATSAPP_URL } from '../../data/navigation';
-import SocialIcon from '../icons/SocialIcons';
+import { navItems, socialLinks, WHATSAPP_DISPLAY, WHATSAPP_URL } from '../../data/navigation';
 import Brand from './Brand';
-import SocialLinks from './SocialLinks';
+import SocialIcon from '../icons/SocialIcons';
 
-function FooterColumn({ title, links }) {
+function FooterNavLink({ item }) {
+  if (item.children?.length) {
+    return (
+      <li>
+        <a href={item.path}>{item.label}</a>
+        <ul className="footer-v2__sub">
+          {item.children.map((child) => (
+            <li key={child.path + child.label}>
+              <a href={child.path}>{child.label}</a>
+            </li>
+          ))}
+        </ul>
+      </li>
+    );
+  }
+
+  if (item.path === '/') {
+    return (
+      <li>
+        <Link to="/">{item.label}</Link>
+      </li>
+    );
+  }
+
+  if (item.path.startsWith('/') && !item.path.includes('#')) {
+    return (
+      <li>
+        <Link to={item.path}>{item.label}</Link>
+      </li>
+    );
+  }
+
   return (
-    <div className="footer-col">
-      <h4>{title}</h4>
-      <ul>
-        {links.map((link) => (
-          <li key={link.path}>
-            <Link to={link.path}>{link.label}</Link>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <li>
+      <a href={item.path}>{item.label}</a>
+    </li>
   );
 }
 
 export default function Footer() {
   return (
-    <footer className="site-footer">
-      <div className="footer-top container">
-        <div className="footer-brand">
+    <footer className="site-footer site-footer--v2">
+      <div className="container footer-v2">
+        <div className="footer-v2__brand">
           <Brand variant="footer" />
-          <p>
-            With You. For You. Nyaya Tak. Democratizing access to justice for every citizen.
+          <p className="footer-v2__tagline">With You. For You. Nyay Tak.</p>
+          <p className="footer-v2__blurb">
+            Democratizing access to justice for every citizen — from first consultation to the order that changes a life.
           </p>
-          <SocialLinks />
+          <div className="footer-v2__social" aria-label="Social links">
+            {socialLinks.map((link) => (
+              <a
+                key={link.icon}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={link.name}
+                className="footer-v2__social-btn"
+              >
+                <SocialIcon name={link.icon} />
+              </a>
+            ))}
+          </div>
         </div>
 
-        <div className="footer-grid">
-          {footerColumns.map((col) => (
-            <FooterColumn key={col.title} title={col.title} links={col.links} />
-          ))}
-          <div className="footer-col">
-            <h4>Quick Links</h4>
-            <ul>
-              <li><Link to="/join">Join the Fight for Justice</Link></li>
-              <li><Link to="/media">Media Coverage</Link></li>
-              <li><Link to="/donate">Donate</Link></li>
-              <li><Link to="/contact">Contact Us</Link></li>
-            </ul>
-            <h4 className="footer-subheading">Connect</h4>
-            <ul className="footer-social-list">
-              {socialLinks.map((link) => (
-                <li key={link.icon}>
-                  <a href={link.href} target="_blank" rel="noopener noreferrer">
-                    <SocialIcon name={link.icon} />
-                    {link.name}
-                  </a>
-                </li>
-              ))}
-              <li>
-                <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
-                  WhatsApp
-                </a>
-              </li>
-            </ul>
-          </div>
+        <div className="footer-v2__col">
+          <h4>Explore</h4>
+          <ul>
+            {navItems.map((item) => (
+              <FooterNavLink key={item.label} item={item} />
+            ))}
+          </ul>
+        </div>
+
+        <div className="footer-v2__col">
+          <h4>Get involved</h4>
+          <ul>
+            <li><Link to="/our-work">Our Work</Link></li>
+            <li><Link to="/our-work#reports">Annual reports</Link></li>
+            <li><a href="/#donate">Donate</a></li>
+            <li><Link to="/join-us">Volunteer &amp; intern</Link></li>
+            <li><Link to="/join-us#member">Membership</Link></li>
+          </ul>
+        </div>
+
+        <div className="footer-v2__col footer-v2__col--contact">
+          <h4>Contact</h4>
+          <ul>
+            <li>
+              <span className="footer-v2__label">Helpline</span>
+              <a href="tel:+917043031263">{WHATSAPP_DISPLAY}</a>
+              <small>Mon to Sat, 9 to 6</small>
+            </li>
+            <li>
+              <span className="footer-v2__label">WhatsApp</span>
+              <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">{WHATSAPP_DISPLAY}</a>
+            </li>
+            <li>
+              <span className="footer-v2__label">Email</span>
+              <a href="mailto:help@rklaf.org">help@rklaf.org</a>
+            </li>
+            <li>
+              <span className="footer-v2__label">Head office</span>
+              <span>Sector 14, Gurgaon</span>
+              <small>Walk-in Tue &amp; Thu</small>
+            </li>
+          </ul>
         </div>
       </div>
 
-      <div className="footer-bottom container">
-        <p>&copy; {new Date().getFullYear()} Radhey Krishna Legal Aid Foundation. All rights reserved.</p>
-        <div className="footer-bottom-links">
-          <Link to="/contact">Contact</Link>
-          <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">WhatsApp</a>
-          <Link to="/admin/login">Admin Login</Link>
+      <div className="footer-v2__bottom">
+        <div className="container footer-v2__bottom-inner">
+          <p>© {new Date().getFullYear()} · Registered charitable trust · 80G certified</p>
+          <div className="footer-v2__legal">
+            <a href="#contact-home">Privacy</a>
+            <span aria-hidden="true">·</span>
+            <a href="#contact-home">Terms</a>
+            <span aria-hidden="true">·</span>
+            <a href="#donate">Public ledger</a>
+            <span aria-hidden="true">·</span>
+            <Link to="/admin/login">Admin</Link>
+          </div>
         </div>
       </div>
     </footer>

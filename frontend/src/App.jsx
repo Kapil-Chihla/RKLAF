@@ -2,23 +2,19 @@ import { BrowserRouter, Navigate, Routes, Route } from 'react-router-dom';
 import AdminRoutes from './admin/AdminRoutes';
 import Layout from './components/layout/Layout';
 import Home from './pages/Home';
-import Blogs from './pages/Blogs';
-import BlogDetail from './pages/BlogDetail';
-import CampDetail from './pages/CampDetail';
-import Contact from './pages/Contact';
-import PaymentGateway from './pages/PaymentGateway';
 import About from './pages/About';
-import {
-  ProgramsPage,
-  JoinPage,
-  NotedJudgmentsPage,
-  MediaCoveragePage,
-  AnnualReportsPage,
-  PolicyReportsPage,
-} from './pages/RklafPages';
-import ImpactMapPage from './pages/ImpactMapPage';
+import OurWork from './pages/OurWork';
 import KnowYourRights from './pages/KnowYourRights';
+import Academics from './pages/Academics';
+import Library from './pages/Library';
+import Impact from './pages/Impact';
+import JoinUs from './pages/JoinUs';
+import Contact from './pages/Contact';
 
+/**
+ * Clean-slate routing: redesigned pages only.
+ * Contact stays at /contact (Get in Touch); Join Us is in main nav.
+ */
 export default function App() {
   return (
     <BrowserRouter>
@@ -27,51 +23,24 @@ export default function App() {
 
         <Route element={<Layout />}>
           <Route index element={<Home />} />
-
-          {/* About Us — single scrollable page */}
           <Route path="about" element={<About />} />
-          <Route path="about/heritage" element={<Navigate to="/about#heritage" replace />} />
-          <Route path="about/team" element={<Navigate to="/about#team" replace />} />
-
-          {/* Our Work */}
-          <Route path="our-work/programs" element={<ProgramsPage />} />
-          <Route path="our-work/programs/camps/:slug" element={<CampDetail />} />
-          <Route path="our-work/impact" element={<ImpactMapPage />} />
-          <Route path="our-work/annual-reports" element={<AnnualReportsPage />} />
-          <Route path="our-work/policy-reports" element={<PolicyReportsPage />} />
-
-          {/* Know Your Rights — single page */}
+          <Route path="our-work" element={<OurWork />} />
+          <Route path="our-work/*" element={<Navigate to="/our-work" replace />} />
           <Route path="know-your-rights" element={<KnowYourRights />} />
-          <Route path="noted-judgments" element={<NotedJudgmentsPage />} />
-
-          {/* Get involved & resources */}
-          <Route path="join" element={<JoinPage />} />
-          <Route path="media" element={<MediaCoveragePage />} />
-          <Route path="blogs" element={<Blogs />} />
-          <Route path="blogs/:slug" element={<BlogDetail />} />
+          <Route path="know-your-rights/*" element={<Navigate to="/know-your-rights" replace />} />
+          <Route path="impact" element={<Impact />} />
+          <Route path="impact/*" element={<Navigate to="/impact" replace />} />
+          <Route path="library" element={<Library />} />
+          <Route path="library/*" element={<Navigate to="/library" replace />} />
+          <Route path="academics" element={<Academics />} />
+          <Route path="academics/*" element={<Navigate to="/academics" replace />} />
+          <Route path="join-us" element={<JoinUs />} />
+          <Route path="join-us/*" element={<Navigate to="/join-us" replace />} />
           <Route path="contact" element={<Contact />} />
-          <Route path="donate" element={<PaymentGateway />} />
-          <Route path="payment-gateway" element={<Navigate to="/donate" replace />} />
-
-          {/* Legacy URL redirects */}
-          <Route path="our-story/about-us" element={<Navigate to="/about" replace />} />
-          <Route path="our-story/vision" element={<Navigate to="/about" replace />} />
-          <Route path="our-story/inspiration" element={<Navigate to="/about#heritage" replace />} />
-          <Route path="our-story/our-team" element={<Navigate to="/about#team" replace />} />
-          <Route path="about/future-roadmap" element={<Navigate to="/about" replace />} />
-          <Route path="our-work/our-cases" element={<Navigate to="/our-work/impact" replace />} />
-          <Route path="our-work/our-camps" element={<Navigate to="/our-work/programs" replace />} />
-          <Route path="our-work/gallery" element={<Navigate to="/our-work/programs#gallery" replace />} />
-          <Route path="our-work/areas-covered" element={<Navigate to="/our-work/impact" replace />} />
-          <Route path="our-work/areas-dealing-in" element={<Navigate to="/our-work/impact" replace />} />
-          <Route path="our-work/achievements" element={<Navigate to="/our-work/impact" replace />} />
-          <Route path="our-work/annual-report" element={<Navigate to="/our-work/annual-reports" replace />} />
-          <Route path="know-your-rights/intake" element={<Navigate to="/know-your-rights#intake" replace />} />
-          <Route path="know-your-rights/noted-judgments" element={<Navigate to="/noted-judgments" replace />} />
-          <Route path="knowledge-hub/articles-research" element={<Navigate to="/blogs" replace />} />
-          <Route path="knowledge-hub/emergency-contacts" element={<Navigate to="/contact" replace />} />
-          <Route path="knowledge-hub/faqs" element={<Navigate to="/know-your-rights#faqs" replace />} />
+          <Route path="contact/*" element={<Navigate to="/contact" replace />} />
         </Route>
+
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   );
