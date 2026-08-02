@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Reveal from '../components/motion/Reveal';
 import publicApi from '../lib/publicApi';
 import { assetUrl } from '../lib/api';
+import { cloudinaryPdfAttachmentUrl } from '../lib/pdfDownload';
 import './Academics.css';
 
 const CATEGORIES = [
@@ -111,12 +112,12 @@ function PdfShelf({ title, docs }) {
                 <p>{doc.meta || 'PDF document'}</p>
                 {doc.file ? (
                   <a
-                    href={assetUrl(doc.file)}
+                    href={cloudinaryPdfAttachmentUrl(assetUrl(doc.file), `${doc.title || 'document'}.pdf`)}
                     className="acad-pdf__dl"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Download ↓
+                    Download PDF ↓
                   </a>
                 ) : (
                   <span className="acad-pdf__dl">Coming soon</span>

@@ -87,12 +87,12 @@ export default function ArticlesManage() {
             <textarea value={form.body} onChange={(e) => setForm({ ...form, body: e.target.value })} />
           </label>
           <label>
-            Cover image
-            <input type="file" accept="image/*" onChange={(e) => setCover(e.target.files?.[0] || null)} />
+            PDF (required)
+            <input type="file" accept="application/pdf,.pdf" required onChange={(e) => setFile(e.target.files?.[0] || null)} />
           </label>
           <label>
-            PDF
-            <input type="file" accept=".pdf" onChange={(e) => setFile(e.target.files?.[0] || null)} />
+            Cover image
+            <input type="file" accept="image/*" onChange={(e) => setCover(e.target.files?.[0] || null)} />
           </label>
           <button type="submit" className="admin-btn admin-btn--primary">
             Upload guide

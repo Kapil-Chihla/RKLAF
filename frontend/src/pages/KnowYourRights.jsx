@@ -6,6 +6,7 @@ import mapImage from '../assets/map.webp';
 import worldGlobe from '../assets/world.webp';
 import publicApi from '../lib/publicApi';
 import { assetUrl } from '../lib/api';
+import { guidePdfDownloadUrl } from '../lib/pdfDownload';
 import './KnowYourRights.css';
 
 const GUIDE_TONES = ['plum', 'cream', 'ink', 'sage', 'gold', 'clay', 'olive'];
@@ -223,7 +224,8 @@ export default function KnowYourRights() {
             title: a.title,
             cover: a.summary || a.category || 'Practical guide',
             tone: GUIDE_TONES[i % GUIDE_TONES.length],
-            href: a.file ? assetUrl(a.file) : '#',
+            href: a.file ? guidePdfDownloadUrl(a.id) : '#',
+            hasPdf: Boolean(a.file),
             coverImage: a.coverImage ? assetUrl(a.coverImage) : null,
           })),
         );
@@ -366,20 +368,25 @@ export default function KnowYourRights() {
                 <h3 className="kyr-pdf__title" title={g.title}>
                   {g.title}
                 </h3>
-                <a
-                  className="kyr-pdf__dl"
-                  href={g.href}
-                  target={g.href !== '#' ? '_blank' : undefined}
-                  rel={g.href !== '#' ? 'noopener noreferrer' : undefined}
-                  download={g.href !== '#' ? true : undefined}
-                  aria-label={`Download ${g.title}`}
-                >
-                  <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8">
-                    <path d="M12 4v10M8 10l4 4 4-4" />
-                    <path d="M5 18h14" />
-                  </svg>
-                  Download
-                </a>
+                {g.hasPdf !== false && g.href !== '#' ? (
+                  <a
+                    className="kyr-pdf__dl"
+                    href={g.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Download ${g.title} as PDF`}
+                  >
+                    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8">
+                      <path d="M12 4v10M8 10l4 4 4-4" />
+                      <path d="M5 18h14" />
+                    </svg>
+                    Download PDF
+                  </a>
+                ) : (
+                  <span className="kyr-pdf__dl kyr-pdf__dl--disabled" aria-disabled="true">
+                    PDF coming soon
+                  </span>
+                )}
               </Reveal>
             ))}
           </div>

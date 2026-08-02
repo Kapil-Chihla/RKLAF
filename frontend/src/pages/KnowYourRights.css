@@ -507,6 +507,12 @@
   flex-shrink: 0;
 }
 
+.kyr-pdf__dl--disabled {
+  opacity: 0.45;
+  pointer-events: none;
+  border-style: dashed;
+}
+
 /* ─── Videos ─── */
 .kyr-videos {
   padding: clamp(2.5rem, 5vw, 4rem) 0;

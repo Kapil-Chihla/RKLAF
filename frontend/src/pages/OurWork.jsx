@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Reveal from '../components/motion/Reveal';
 import publicApi from '../lib/publicApi';
 import { assetUrl } from '../lib/api';
+import { cloudinaryPdfAttachmentUrl } from '../lib/pdfDownload';
 import './OurWork.css';
 
 export const FALLBACK_DESK = [
@@ -312,7 +313,7 @@ export default function OurWork() {
                   </div>
                   {pdfHref ? (
                     <a
-                      href={pdfHref}
+                      href={cloudinaryPdfAttachmentUrl(pdfHref, `${r.title || `annual-report-${r.year}`}.pdf`)}
                       className="work-report__pdf"
                       target="_blank"
                       rel="noopener noreferrer"
