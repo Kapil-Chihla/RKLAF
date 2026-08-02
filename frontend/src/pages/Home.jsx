@@ -66,6 +66,22 @@ const snapshots = [
   { label: 'Helpline', caption: 'Senior citizens’ sabha' },
 ];
 
+const snapshotsRow2 = [
+  { label: 'Tribunal day', caption: 'Elder at the steps' },
+  { label: 'Camp intake', caption: 'Village ward desk' },
+  { label: 'RTI drive', caption: 'Students filing forms' },
+  { label: 'Legal literacy', caption: 'School rights clinic' },
+  { label: 'Relief order', caption: 'Copy in her hands' },
+  { label: 'Night helpline', caption: 'Volunteer on shift' },
+];
+
+/** Duplicate until the strip is wider than the viewport (avoids empty cream gaps). */
+function marqueeSet(items, minCards = 14) {
+  const set = [];
+  while (set.length < minCards) set.push(...items);
+  return set;
+}
+
 const stories = [
   {
     tag: 'Senior Citizens',
@@ -345,14 +361,33 @@ export default function Home() {
 
       <section id="stories" className="home-stories-wrap">
         <div className="home-snapshots" aria-label="Field snapshots">
-          <div className="home-snapshots__track">
-            {[...snapshots, ...snapshots].map((shot, i) => (
-              <figure className={`home-polaroid home-polaroid--${(i % 3) + 1}`} key={`${shot.label}-${i}`}>
-                <MediaPlaceholder label={shot.label} />
-                <figcaption>{shot.caption}</figcaption>
-              </figure>
-            ))}
-          </div>
+          {[
+            { items: marqueeSet(snapshots), reverse: false, tilt: 0 },
+            { items: marqueeSet(snapshotsRow2), reverse: true, tilt: 1 },
+          ].map((row, rowIndex) => (
+            <div
+              key={rowIndex}
+              className={`home-snapshots__row${row.reverse ? ' home-snapshots__row--reverse' : ''}`}
+            >
+              {[0, 1].map((copy) => (
+                <div
+                  key={copy}
+                  className="home-snapshots__group"
+                  aria-hidden={copy === 1 ? true : undefined}
+                >
+                  {row.items.map((shot, i) => (
+                    <figure
+                      className={`home-polaroid home-polaroid--${((i + row.tilt) % 3) + 1}`}
+                      key={`${rowIndex}-${copy}-${shot.label}-${i}`}
+                    >
+                      <MediaPlaceholder label={shot.label} />
+                      <figcaption>{shot.caption}</figcaption>
+                    </figure>
+                  ))}
+                </div>
+              ))}
+            </div>
+          ))}
         </div>
 
         <div className="container">

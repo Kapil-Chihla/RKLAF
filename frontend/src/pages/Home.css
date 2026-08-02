@@ -270,7 +270,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .home-hero__tagline { animation: none; }
-  .home-snapshots__track { animation: none !important; }
+  .home-snapshots__row { animation: none !important; }
 }
 
 .home-hero__stats {
@@ -598,17 +598,32 @@
 .home-snapshots {
   margin-bottom: clamp(2.25rem, 4vw, 3.25rem);
   overflow: hidden;
-}
-
-.home-snapshots__track {
   display: flex;
-  gap: 1rem;
-  width: max-content;
-  padding: 0.5rem 4vw 1.1rem;
-  animation: home-snap-drift 48s linear infinite;
+  flex-direction: column;
+  gap: 0.45rem;
 }
 
-@keyframes home-snap-drift {
+.home-snapshots__row {
+  display: flex;
+  width: max-content;
+  padding: 0.5rem 0 0.35rem;
+  animation: home-snap-marquee 55s linear infinite;
+}
+
+.home-snapshots__row--reverse {
+  padding-bottom: 1rem;
+  animation-direction: reverse;
+  animation-duration: 60s;
+}
+
+.home-snapshots__group {
+  display: flex;
+  flex-shrink: 0;
+  gap: 1rem;
+  padding-right: 1rem;
+}
+
+@keyframes home-snap-marquee {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
 }
