@@ -10,6 +10,7 @@ export default function UsersManage() {
   const [inviteForm, setInviteForm] = useState({ email: '', role: 'editor' });
   const [lastInvite, setLastInvite] = useState('');
   const [msg, setMsg] = useState('');
+  const [copiedId, setCopiedId] = useState('');
 
   const load = () => {
     api.get('/users').then((r) => setUsers(r.data)).catch(() => {});
@@ -37,6 +38,16 @@ export default function UsersManage() {
   const updateUser = async (id, patch) => {
     await api.patch(`/users/${id}`, patch);
     load();
+  };
+
+  const copyLink = async (id, link) => {
+    try {
+      await navigator.clipboard.writeText(link);
+      setCopiedId(id);
+      setTimeout(() => setCopiedId(''), 2000);
+    } catch {
+      setMsg('Could not copy — select the link manually.');
+    }
   };
 
   return (
@@ -72,59 +83,74 @@ export default function UsersManage() {
 
       <div className="admin-card" style={{ marginTop: '1.5rem' }}>
         <h2>Team members</h2>
-        <table className="admin-table">
-          <thead>
-            <tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr>
-          </thead>
-          <tbody>
-            {users.map((u) => (
-              <tr key={u.id}>
-                <td>{u.name}</td>
-                <td>{u.email}</td>
-                <td>{u.role}</td>
-                <td>{u.status}</td>
-                <td>
-                  {u.role !== 'super_admin' && (
-                    <>
-                      <select
-                        value={u.role}
-                        onChange={(e) => updateUser(u.id, { role: e.target.value })}
-                        style={{ marginRight: '0.5rem' }}
-                      >
-                        <option value="editor">editor</option>
-                        <option value="admin">admin</option>
-                      </select>
-                      <button
-                        type="button"
-                        className="admin-btn admin-btn--ghost"
-                        onClick={() => updateUser(u.id, { status: u.status === 'active' ? 'disabled' : 'active' })}
-                      >
-                        {u.status === 'active' ? 'Disable' : 'Enable'}
-                      </button>
-                    </>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div className="admin-table-wrap">
+          <table className="admin-table">
+            <thead>
+              <tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr>
+            </thead>
+            <tbody>
+              {users.map((u) => (
+                <tr key={u.id}>
+                  <td>{u.name}</td>
+                  <td>{u.email}</td>
+                  <td>{u.role}</td>
+                  <td>{u.status}</td>
+                  <td>
+                    {u.role !== 'super_admin' && (
+                      <div className="admin-table-actions">
+                        <select
+                          value={u.role}
+                          onChange={(e) => updateUser(u.id, { role: e.target.value })}
+                          aria-label={`Role for ${u.name}`}
+                        >
+                          <option value="editor">editor</option>
+                          <option value="admin">admin</option>
+                        </select>
+                        <button
+                          type="button"
+                          className="admin-btn admin-btn--ghost"
+                          onClick={() => updateUser(u.id, { status: u.status === 'active' ? 'disabled' : 'active' })}
+                        >
+                          {u.status === 'active' ? 'Disable' : 'Enable'}
+                        </button>
+                      </div>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <div className="admin-card" style={{ marginTop: '1.5rem' }}>
         <h2>Pending invites</h2>
-        <table className="admin-table">
-          <thead><tr><th>Email</th><th>Role</th><th>Expires</th><th>Link</th></tr></thead>
-          <tbody>
-            {invites.filter((i) => i.status === 'pending').map((i) => (
-              <tr key={i.id}>
-                <td>{i.email}</td>
-                <td>{i.role}</td>
-                <td>{new Date(i.expiresAt).toLocaleDateString()}</td>
-                <td style={{ fontSize: '0.75rem', maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis' }}>{i.inviteLink}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div className="admin-table-wrap">
+          <table className="admin-table">
+            <thead><tr><th>Email</th><th>Role</th><th>Expires</th><th>Link</th></tr></thead>
+            <tbody>
+              {invites.filter((i) => i.status === 'pending').map((i) => (
+                <tr key={i.id}>
+                  <td>{i.email}</td>
+                  <td>{i.role}</td>
+                  <td>{new Date(i.expiresAt).toLocaleDateString()}</td>
+                  <td>
+                    <div className="admin-invite-cell">
+                      <span className="admin-invite-cell__link" title={i.inviteLink}>{i.inviteLink}</span>
+                      <button
+                        type="button"
+                        className="admin-btn admin-btn--ghost"
+                        onClick={() => copyLink(i.id, i.inviteLink)}
+                      >
+                        {copiedId === i.id ? 'Copied' : 'Copy'}
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

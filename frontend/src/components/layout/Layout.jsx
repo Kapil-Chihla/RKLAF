@@ -4,6 +4,7 @@ import Footer from './Footer';
 import ScrollToTop from './ScrollToTop';
 import SideTabs from './SideTabs';
 import WhatsAppFloating from './WhatsAppFloating';
+import GoogleTranslateHost from './GoogleTranslateHost';
 import useAutoReveal from '../../hooks/useAutoReveal';
 
 export default function Layout() {
@@ -12,6 +13,7 @@ export default function Layout() {
   return (
     <div className="site-wrapper site-wrapper--v2">
       <ScrollToTop />
+      <GoogleTranslateHost />
       <SideTabs />
       <WhatsAppFloating />
       <div className="site-shell">

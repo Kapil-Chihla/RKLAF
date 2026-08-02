@@ -91,17 +91,24 @@ export default function AdminSidebar({ open, onClose }) {
   );
 }
 
-export function AdminTopBar({ onMenu }) {
+export function AdminTopBar({ onMenu, menuOpen }) {
   return (
     <header className="admin-topbar">
-      <button type="button" className="admin-menu-toggle" aria-label="Open menu" onClick={onMenu}>
+      <button
+        type="button"
+        className={`admin-menu-toggle${menuOpen ? ' is-open' : ''}`}
+        aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+        aria-expanded={menuOpen ? 'true' : 'false'}
+        onClick={onMenu}
+      >
         <span />
         <span />
         <span />
       </button>
       <p className="admin-topbar__title">Upload & manage site content</p>
       <Link to="/" className="admin-topbar__site" target="_blank" rel="noreferrer">
-        View site →
+        <span className="admin-topbar__site-full">View site →</span>
+        <span className="admin-topbar__site-short" aria-hidden="true">Site</span>
       </Link>
     </header>
   );

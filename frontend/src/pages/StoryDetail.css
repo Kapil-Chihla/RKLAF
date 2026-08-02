@@ -137,3 +137,33 @@
 .story-detail__empty h1 {
   font-family: var(--font-serif);
 }
+
+@media (max-width: 640px) {
+  .story-detail__hero {
+    min-height: 220px;
+    padding: 2rem 0 1.75rem;
+  }
+
+  .story-detail__body {
+    padding: 2rem 1rem 3.5rem;
+  }
+
+  .story-detail__body p {
+    font-size: 1rem;
+  }
+
+  .story-detail__par {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 380px) {
+  .story-detail__hero h1 {
+    font-size: 1.65rem;
+  }
+
+  .story-detail__loading,
+  .story-detail__empty {
+    padding: 3rem 1rem;
+  }
+}

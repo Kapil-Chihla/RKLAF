@@ -101,41 +101,43 @@ export default function ArticlesManage() {
       </div>
       <div className="admin-card" style={{ marginTop: '1.5rem' }}>
         <h2>Guides ({items.length})</h2>
-        <table className="admin-table">
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Category</th>
-              <th>Cover</th>
-              <th>PDF</th>
-              {canDelete && <th>Actions</th>}
-            </tr>
-          </thead>
-          <tbody>
-            {items.map((a) => (
-              <tr key={a.id}>
-                <td>{a.title}</td>
-                <td>{a.category || 'General'}</td>
-                <td>{a.coverImage ? 'Yes' : '—'}</td>
-                <td>{a.file ? 'Yes' : '—'}</td>
-                {canDelete && (
-                  <td>
-                    <button
-                      type="button"
-                      className="admin-btn admin-btn--danger"
-                      onClick={async () => {
-                        await api.delete(`/articles/${a.id}`);
-                        load();
-                      }}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                )}
+        <div className="admin-table-wrap">
+          <table className="admin-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Cover</th>
+                <th>PDF</th>
+                {canDelete && <th>Actions</th>}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {items.map((a) => (
+                <tr key={a.id}>
+                  <td>{a.title}</td>
+                  <td>{a.category || 'General'}</td>
+                  <td>{a.coverImage ? 'Yes' : '—'}</td>
+                  <td>{a.file ? 'Yes' : '—'}</td>
+                  {canDelete && (
+                    <td>
+                      <button
+                        type="button"
+                        className="admin-btn admin-btn--danger"
+                        onClick={async () => {
+                          await api.delete(`/articles/${a.id}`);
+                          load();
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

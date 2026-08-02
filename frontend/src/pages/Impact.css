@@ -595,6 +595,10 @@ a.impact-story:hover {
 }
 
 @media (max-width: 640px) {
+  .impact-stories__scroll {
+    mask-image: linear-gradient(to right, #000 88%, transparent);
+  }
+
   .impact-stories__track {
     width: calc(var(--story-cols) * 100%);
   }

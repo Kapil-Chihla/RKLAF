@@ -30,8 +30,11 @@
   position: sticky;
   top: 0;
   height: 100vh;
+  height: 100dvh;
   overflow-y: auto;
   z-index: 100;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 .admin-sidebar__brand {
@@ -126,6 +129,7 @@
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem 1rem;
+  padding-top: calc(0.75rem + env(safe-area-inset-top, 0px));
   background: #1e3347;
   color: #fbf9f6;
   border-bottom: 3px solid #834256;
@@ -137,8 +141,12 @@
 .admin-topbar__title {
   margin: 0;
   flex: 1;
+  min-width: 0;
   font-size: 0.9rem;
   font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .admin-topbar__site {
@@ -147,6 +155,11 @@
   font-weight: 600;
   text-decoration: none;
   white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.admin-topbar__site-short {
+  display: none;
 }
 
 .admin-role-badge {
@@ -209,9 +222,10 @@
 
 .admin-card__meta {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: baseline;
-  gap: 0.75rem;
+  gap: 0.5rem 0.75rem;
   margin-bottom: 0.5rem;
 }
 
@@ -219,13 +233,13 @@
   margin: 0;
   font-size: 1.1rem;
   color: #1e3347;
+  min-width: 0;
 }
 
 .admin-card__meta span {
   font-size: 0.75rem;
   font-weight: 600;
   color: #834256;
-  white-space: nowrap;
 }
 
 .admin-card--link p {
@@ -439,11 +453,14 @@
 
 .admin-table-wrap {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   margin-top: 1.5rem;
+  max-width: 100%;
 }
 
 .admin-table {
   width: 100%;
+  min-width: 32rem;
   border-collapse: collapse;
   font-size: 0.9rem;
 }
@@ -453,11 +470,43 @@
   padding: 0.75rem;
   text-align: left;
   border-bottom: 1px solid #e6ddd0;
+  vertical-align: middle;
 }
 
 .admin-table th {
   color: #2c4359;
   font-weight: 600;
+  white-space: nowrap;
+}
+
+.admin-table-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.admin-table-actions select {
+  max-width: 7.5rem;
+  min-height: 2.5rem;
+}
+
+.admin-invite-cell {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  max-width: 18rem;
+}
+
+.admin-invite-cell__link {
+  display: block;
+  min-width: 0;
+  flex: 1 1 8rem;
+  font-size: 0.75rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .admin-auth-page {
@@ -603,6 +652,7 @@
 
   .admin-main {
     padding: 1.25rem clamp(1rem, 3vw, 1.5rem);
+    padding-bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
   }
 
   .admin-card {
@@ -622,12 +672,14 @@
   .admin-footer {
     flex-direction: column;
     text-align: center;
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
   }
 
   .admin-auth-page {
     padding: 1rem;
     align-items: flex-start;
-    padding-top: 2rem;
+    padding-top: max(2rem, env(safe-area-inset-top, 0px));
+    padding-bottom: max(1rem, env(safe-area-inset-bottom, 0px));
   }
 
   .admin-auth-card {
@@ -641,6 +693,23 @@
   .admin-table th,
   .admin-table td {
     padding: 0.55rem;
+  }
+
+  .admin-topbar__title {
+    font-size: 0.8rem;
+  }
+
+  .admin-topbar__site-full {
+    display: none;
+  }
+
+  .admin-topbar__site-short {
+    display: inline;
+  }
+
+  .admin-main {
+    padding: 1rem 0.85rem;
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
   }
 }
 

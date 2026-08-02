@@ -939,12 +939,12 @@
 
 @media (max-width: 640px) {
   .kyr-doors__grid,
-  .kyr-emergency__grid {
+  .kyr-emergency__grid,
+  .kyr-guides__cards {
     grid-template-columns: 1fr;
   }
 
   .kyr-guides__cards {
-    grid-template-columns: 1fr 1fr;
     gap: 0.75rem;
   }
 
@@ -955,11 +955,5 @@
 
   .kyr-ask__actions .kyr-pill {
     justify-content: center;
-  }
-}
-
-@media (max-width: 420px) {
-  .kyr-guides__cards {
-    grid-template-columns: 1fr;
   }
 }

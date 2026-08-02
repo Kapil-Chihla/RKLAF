@@ -138,40 +138,42 @@ export default function DeskStoriesManage() {
       </div>
       <div className="admin-card" style={{ marginTop: '1.5rem' }}>
         <h2>Desk stories ({items.length})</h2>
-        <table className="admin-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Title</th>
-              <th>Kicker</th>
-              {canDelete && <th>Actions</th>}
-            </tr>
-          </thead>
-          <tbody>
-            {items.map((s) => (
-              <tr key={s.id}>
-                <td>{String(s.number).padStart(2, '0')}</td>
-                <td>{s.title}</td>
-                <td>{s.kicker}</td>
-                {canDelete && (
-                  <td>
-                    <button
-                      type="button"
-                      className="admin-btn admin-btn--danger"
-                      onClick={async () => {
-                        if (!confirm('Delete?')) return;
-                        await api.delete(`/desk-stories/${s.id}`);
-                        load();
-                      }}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                )}
+        <div className="admin-table-wrap">
+          <table className="admin-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th>Kicker</th>
+                {canDelete && <th>Actions</th>}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {items.map((s) => (
+                <tr key={s.id}>
+                  <td>{String(s.number).padStart(2, '0')}</td>
+                  <td>{s.title}</td>
+                  <td>{s.kicker}</td>
+                  {canDelete && (
+                    <td>
+                      <button
+                        type="button"
+                        className="admin-btn admin-btn--danger"
+                        onClick={async () => {
+                          if (!confirm('Delete?')) return;
+                          await api.delete(`/desk-stories/${s.id}`);
+                          load();
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

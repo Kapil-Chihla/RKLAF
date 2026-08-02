@@ -642,6 +642,10 @@
     margin-top: 0.5rem;
   }
 
+  .work-prog__stats {
+    grid-template-columns: 1fr;
+  }
+
   .work-desk__body {
     grid-template-columns: 1fr;
     margin-top: clamp(1.25rem, 3vw, 2rem);
@@ -649,9 +653,9 @@
   }
 
   .work-desk__photos {
-    min-height: 280px;
+    min-height: 240px;
     order: -1;
-    margin-top: clamp(-4rem, -8vw, -2.5rem);
+    margin-top: 0;
   }
 
   .work-desk__num {
@@ -661,11 +665,15 @@
   .work-frame--lg {
     transform: none;
     margin-inline: auto;
+    max-width: min(100%, 22rem);
   }
 
   .work-frame--sm {
-    left: 1rem;
-    bottom: 0;
+    position: static;
+    left: auto;
+    bottom: auto;
+    width: min(100%, 14rem);
+    margin: -2.5rem auto 0 1.5rem;
   }
 
   .work-reports__grid {
@@ -674,7 +682,15 @@
 }
 
 @media (max-width: 640px) {
-  .work-prog__stats {
-    grid-template-columns: 1fr;
+  .work-desk__photos {
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .work-frame--sm {
+    margin: -1.75rem 0 0 auto;
   }
 }

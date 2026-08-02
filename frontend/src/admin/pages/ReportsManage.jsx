@@ -90,40 +90,42 @@ export default function ReportsManage() {
         <p style={{ color: '#5a6f82', fontSize: '0.9rem' }}>
           Public site uses the top two by year. Older uploads stay here for archive.
         </p>
-        <table className="admin-table">
-          <thead>
-            <tr>
-              <th>Year</th>
-              <th>Title</th>
-              <th>PDF</th>
-              {canDelete && <th>Actions</th>}
-            </tr>
-          </thead>
-          <tbody>
-            {items.map((r) => (
-              <tr key={r.id}>
-                <td>{r.year}</td>
-                <td>{r.title}</td>
-                <td>{r.file ? 'Yes' : '—'}</td>
-                {canDelete && (
-                  <td>
-                    <button
-                      type="button"
-                      className="admin-btn admin-btn--danger"
-                      onClick={async () => {
-                        if (!confirm('Delete this report?')) return;
-                        await api.delete(`/reports/${r.id}`);
-                        load();
-                      }}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                )}
+        <div className="admin-table-wrap">
+          <table className="admin-table">
+            <thead>
+              <tr>
+                <th>Year</th>
+                <th>Title</th>
+                <th>PDF</th>
+                {canDelete && <th>Actions</th>}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {items.map((r) => (
+                <tr key={r.id}>
+                  <td>{r.year}</td>
+                  <td>{r.title}</td>
+                  <td>{r.file ? 'Yes' : '—'}</td>
+                  {canDelete && (
+                    <td>
+                      <button
+                        type="button"
+                        className="admin-btn admin-btn--danger"
+                        onClick={async () => {
+                          if (!confirm('Delete this report?')) return;
+                          await api.delete(`/reports/${r.id}`);
+                          load();
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

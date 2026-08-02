@@ -22,7 +22,7 @@ function PhoneIcon() {
 /** Left-edge vertical tabs from the revised home design */
 export default function SideTabs() {
   return (
-    <div className="side-tabs" aria-label="Quick actions">
+    <div className="side-tabs notranslate" aria-label="Quick actions" translate="no">
       <Link to="/donate" className="side-tabs__tab side-tabs__tab--donate">
         <span className="side-tabs__icon side-tabs__icon--heart" aria-hidden="true">
           <HeartIcon />

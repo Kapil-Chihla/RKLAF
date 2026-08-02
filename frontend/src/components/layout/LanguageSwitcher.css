@@ -1,0 +1,199 @@
+.lang-switch {
+  position: relative;
+  flex-shrink: 0;
+  z-index: 40;
+}
+
+.lang-switch__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  max-width: 9.5rem;
+  padding: 0.4rem 0.65rem;
+  border: 1px solid rgba(31, 28, 25, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--ink, #1f1c19);
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  line-height: 1.2;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.lang-switch__btn:hover {
+  background: #fff;
+  border-color: rgba(176, 138, 60, 0.45);
+}
+
+.lang-switch__icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  color: var(--accent, #b08a3c);
+}
+
+.lang-switch__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.lang-switch__chev {
+  font-size: 0.65rem;
+  opacity: 0.65;
+  flex-shrink: 0;
+}
+
+.lang-switch__menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.4rem);
+  margin: 0;
+  padding: 0.4rem;
+  list-style: none;
+  min-width: 12.5rem;
+  max-height: min(70vh, 22rem);
+  overflow-y: auto;
+  background: #faf8f4;
+  border: 1px solid rgba(31, 28, 25, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 16px 40px rgba(26, 21, 16, 0.12);
+}
+
+.lang-switch__menu button {
+  display: flex;
+  width: 100%;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.55rem 0.65rem;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  text-align: left;
+  color: var(--ink, #1f1c19);
+}
+
+.lang-switch__menu button:hover,
+.lang-switch__menu button.is-active {
+  background: rgba(176, 138, 60, 0.12);
+}
+
+.lang-switch__native {
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.lang-switch__en {
+  font-size: 0.72rem;
+  color: var(--muted, #6a635c);
+  flex-shrink: 0;
+}
+
+/* ── Hide Google Translate chrome (keeps layout intact) ── */
+#google_translate_element,
+.goog-te-banner-frame,
+.goog-te-balloon-frame,
+#goog-gt-tt,
+.goog-te-balloon-frame,
+.goog-tooltip,
+.goog-tooltip:hover {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  width: 0 !important;
+  overflow: hidden !important;
+}
+
+.goog-te-gadget,
+.goog-logo-link,
+.goog-te-combo {
+  display: none !important;
+}
+
+body {
+  top: 0 !important;
+}
+
+/* Skiptranslate banner wrapper Google injects */
+.skiptranslate iframe,
+body > .skiptranslate {
+  display: none !important;
+}
+
+/*
+  When Google marks the page as translated, switch to multi-script
+  Noto fonts and safer wrapping so Indic scripts don't overflow.
+*/
+html.translated-ltr,
+html.translated-rtl {
+  --font-serif: 'Noto Sans', 'Noto Sans Devanagari', 'Noto Sans Bengali', 'Noto Sans Tamil',
+    'Noto Sans Telugu', 'Noto Sans Gujarati', 'Noto Sans Kannada', 'Noto Sans Malayalam',
+    'Noto Sans Gurmukhi', 'Noto Sans Oriya', system-ui, sans-serif;
+  --font-body: var(--font-serif);
+  --font-sans: var(--font-serif);
+}
+
+html.translated-ltr body,
+html.translated-rtl body {
+  line-height: 1.7;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+html.translated-ltr h1,
+html.translated-ltr h2,
+html.translated-ltr h3,
+html.translated-ltr h4,
+html.translated-rtl h1,
+html.translated-rtl h2,
+html.translated-rtl h3,
+html.translated-rtl h4 {
+  line-height: 1.35;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+html.translated-ltr .nav-label,
+html.translated-ltr .btn,
+html.translated-ltr .work-pill,
+html.translated-ltr .impact-story__body h3,
+html.translated-rtl .nav-label,
+html.translated-rtl .btn,
+html.translated-rtl .work-pill {
+  overflow-wrap: break-word;
+  white-space: normal;
+  line-height: 1.35;
+}
+
+html.translated-ltr .main-nav .nav-links,
+html.translated-rtl .main-nav .nav-links {
+  gap: 0.15rem;
+}
+
+html.translated-ltr .nav-dropdown-trigger,
+html.translated-rtl .nav-dropdown-trigger {
+  max-width: 9.5rem;
+  white-space: normal;
+  text-align: center;
+  line-height: 1.25;
+  padding-inline: 0.35rem;
+}
+
+@media (max-width: 1024px) {
+  .lang-switch__label {
+    max-width: 4.5rem;
+  }
+
+  .lang-switch__menu {
+    right: 0;
+    left: auto;
+  }
+}

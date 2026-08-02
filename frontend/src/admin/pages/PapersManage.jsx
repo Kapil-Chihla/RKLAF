@@ -76,40 +76,42 @@ export default function PapersManage() {
       </div>
       <div className="admin-card" style={{ marginTop: '1.5rem' }}>
         <h2>Papers ({items.length})</h2>
-        <table className="admin-table">
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Kind</th>
-              <th>File</th>
-              {canDelete && <th>Actions</th>}
-            </tr>
-          </thead>
-          <tbody>
-            {items.map((p) => (
-              <tr key={p.id}>
-                <td>{p.title}</td>
-                <td>{p.kind}</td>
-                <td>{p.file ? 'Yes' : '—'}</td>
-                {canDelete && (
-                  <td>
-                    <button
-                      type="button"
-                      className="admin-btn admin-btn--danger"
-                      onClick={async () => {
-                        if (!confirm('Delete?')) return;
-                        await api.delete(`/papers/${p.id}`);
-                        load();
-                      }}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                )}
+        <div className="admin-table-wrap">
+          <table className="admin-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Kind</th>
+                <th>File</th>
+                {canDelete && <th>Actions</th>}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {items.map((p) => (
+                <tr key={p.id}>
+                  <td>{p.title}</td>
+                  <td>{p.kind}</td>
+                  <td>{p.file ? 'Yes' : '—'}</td>
+                  {canDelete && (
+                    <td>
+                      <button
+                        type="button"
+                        className="admin-btn admin-btn--danger"
+                        onClick={async () => {
+                          if (!confirm('Delete?')) return;
+                          await api.delete(`/papers/${p.id}`);
+                          load();
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

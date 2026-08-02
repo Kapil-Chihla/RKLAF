@@ -21,7 +21,8 @@ export default function WhatsAppFloating() {
     return (
       <a
         href={WHATSAPP_URL}
-        className={className}
+        className={`${className} notranslate`}
+        translate="no"
         target="_blank"
         rel="noopener noreferrer"
         aria-label={label}
@@ -33,7 +34,7 @@ export default function WhatsAppFloating() {
   }
 
   return (
-    <button type="button" className={className} aria-label={label} title={label}>
+    <button type="button" className={`${className} notranslate`} translate="no" aria-label={label} title={label}>
       <WhatsAppIcon />
     </button>
   );

@@ -130,38 +130,40 @@ export default function SuccessStoriesManage() {
       </div>
       <div className="admin-card" style={{ marginTop: '1.5rem' }}>
         <h2>Success stories ({items.length})</h2>
-        <table className="admin-table">
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Tag</th>
-              {canDelete && <th>Actions</th>}
-            </tr>
-          </thead>
-          <tbody>
-            {items.map((s) => (
-              <tr key={s.id}>
-                <td>{s.title}</td>
-                <td>{s.tag}</td>
-                {canDelete && (
-                  <td>
-                    <button
-                      type="button"
-                      className="admin-btn admin-btn--danger"
-                      onClick={async () => {
-                        if (!confirm('Delete?')) return;
-                        await api.delete(`/success-stories/${s.id}`);
-                        load();
-                      }}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                )}
+        <div className="admin-table-wrap">
+          <table className="admin-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Tag</th>
+                {canDelete && <th>Actions</th>}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {items.map((s) => (
+                <tr key={s.id}>
+                  <td>{s.title}</td>
+                  <td>{s.tag}</td>
+                  {canDelete && (
+                    <td>
+                      <button
+                        type="button"
+                        className="admin-btn admin-btn--danger"
+                        onClick={async () => {
+                          if (!confirm('Delete?')) return;
+                          await api.delete(`/success-stories/${s.id}`);
+                          load();
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

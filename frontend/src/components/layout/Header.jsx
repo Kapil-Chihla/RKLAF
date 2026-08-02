@@ -4,6 +4,7 @@ import { navItems, socialLinks } from '../../data/navigation';
 import Brand from './Brand';
 import NavDropdown from './NavDropdown';
 import SocialIcon from '../icons/SocialIcons';
+import LanguageSwitcher from './LanguageSwitcher';
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -46,6 +47,9 @@ export default function Header() {
             ))}
           </div>
           <div className="nav-mobile-footer">
+            <div className="nav-mobile-footer__lang">
+              <LanguageSwitcher />
+            </div>
             <div className="header-social header-social--mobile">
               {socialLinks.map((link) => (
                 <a
@@ -67,6 +71,9 @@ export default function Header() {
         </nav>
 
         <div className="header-actions">
+          <div className="header-actions__lang header-actions__lang--desktop">
+            <LanguageSwitcher />
+          </div>
           <div className="header-social header-social--desktop" aria-label="Social links">
             {socialLinks.map((link) => (
               <a

@@ -18,8 +18,12 @@
   }
 
   .brand {
-    max-width: min(11.5rem, 52vw);
+    max-width: none;
     gap: 0.45rem;
+  }
+
+  .brand-text {
+    display: none;
   }
 
   .brand-mark {
@@ -33,12 +37,8 @@
 }
 
 @media (max-width: 380px) {
-  .brand-text {
-    display: none;
-  }
-
-  .brand {
-    max-width: none;
+  :root {
+    --header-h: 60px;
   }
 }
 

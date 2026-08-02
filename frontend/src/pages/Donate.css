@@ -494,6 +494,16 @@
   .donate__submit {
     min-height: 48px;
   }
+
+  .donate__trust {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 380px) {
+  .donate__amounts {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

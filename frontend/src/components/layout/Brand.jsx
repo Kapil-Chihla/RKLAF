@@ -5,8 +5,9 @@ export default function Brand({ variant = 'header', onNavigate }) {
   return (
     <Link
       to="/"
-      className={`brand brand--${variant}`}
+      className={`brand brand--${variant} notranslate`}
       onClick={onNavigate}
+      translate="no"
       aria-label="Radhey Krishna Legal Aid Foundation — Home"
     >
       <span className="brand-mark">

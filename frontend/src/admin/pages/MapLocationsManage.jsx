@@ -271,48 +271,51 @@ export default function MapLocationsManage() {
 
       <div className="admin-card" style={{ marginTop: '1.5rem' }}>
         <h2>Locations ({items.length})</h2>
-        <table className="admin-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Region</th>
-              <th>Work type</th>
-              <th>Map</th>
-              <th>Active</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {items.map((loc) => (
-              <tr key={loc.id}>
-                <td>{loc.name}</td>
-                <td>{loc.region}</td>
-                <td>{loc.workType}</td>
-                <td>{loc.mapX}%, {loc.mapY}%</td>
-                <td>{loc.active !== false ? 'Yes' : 'No'}</td>
-                <td>
-                  <button type="button" className="admin-btn admin-btn--ghost" onClick={() => startEdit(loc)}>
-                    Edit
-                  </button>
-                  {canDelete && (
-                    <button
-                      type="button"
-                      className="admin-btn admin-btn--danger"
-                      style={{ marginLeft: '0.35rem' }}
-                      onClick={async () => {
-                        if (!window.confirm('Remove this map location?')) return;
-                        await api.delete(`/map-locations/${loc.id}`);
-                        load();
-                      }}
-                    >
-                      Delete
-                    </button>
-                  )}
-                </td>
+        <div className="admin-table-wrap">
+          <table className="admin-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Region</th>
+                <th>Work type</th>
+                <th>Map</th>
+                <th>Active</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {items.map((loc) => (
+                <tr key={loc.id}>
+                  <td>{loc.name}</td>
+                  <td>{loc.region}</td>
+                  <td>{loc.workType}</td>
+                  <td>{loc.mapX}%, {loc.mapY}%</td>
+                  <td>{loc.active !== false ? 'Yes' : 'No'}</td>
+                  <td>
+                    <div className="admin-table-actions">
+                      <button type="button" className="admin-btn admin-btn--ghost" onClick={() => startEdit(loc)}>
+                        Edit
+                      </button>
+                      {canDelete && (
+                        <button
+                          type="button"
+                          className="admin-btn admin-btn--danger"
+                          onClick={async () => {
+                            if (!window.confirm('Remove this map location?')) return;
+                            await api.delete(`/map-locations/${loc.id}`);
+                            load();
+                          }}
+                        >
+                          Delete
+                        </button>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
