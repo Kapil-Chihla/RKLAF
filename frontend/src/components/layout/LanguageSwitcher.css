@@ -9,6 +9,7 @@
   align-items: center;
   gap: 0.35rem;
   max-width: 9.5rem;
+  min-height: 40px;
   padding: 0.4rem 0.65rem;
   border: 1px solid rgba(31, 28, 25, 0.14);
   border-radius: 999px;
@@ -57,10 +58,12 @@
   min-width: 12.5rem;
   max-height: min(70vh, 22rem);
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   background: #faf8f4;
   border: 1px solid rgba(31, 28, 25, 0.1);
   border-radius: 12px;
   box-shadow: 0 16px 40px rgba(26, 21, 16, 0.12);
+  z-index: 50;
 }
 
 .lang-switch__menu button {
@@ -95,6 +98,16 @@
   font-size: 0.72rem;
   color: var(--muted, #6a635c);
   flex-shrink: 0;
+}
+
+.lang-switch--compact .lang-switch__btn {
+  max-width: 7.25rem;
+  padding: 0.35rem 0.55rem;
+  gap: 0.28rem;
+}
+
+.lang-switch--compact .lang-switch__label {
+  max-width: 3.6rem;
 }
 
 /* ── Hide Google Translate chrome (keeps layout intact) ── */
@@ -187,13 +200,51 @@ html.translated-rtl .nav-dropdown-trigger {
   padding-inline: 0.35rem;
 }
 
-@media (max-width: 1024px) {
-  .lang-switch__label {
-    max-width: 4.5rem;
+/* Mobile: language lives in the sticky header — sheet dropdown under the bar */
+@media (max-width: 992px) {
+  .header-actions .lang-switch {
+    z-index: 260;
   }
 
-  .lang-switch__menu {
-    right: 0;
-    left: auto;
+  .header-actions .lang-switch__menu {
+    position: fixed;
+    top: calc(var(--header-h, 72px) + env(safe-area-inset-top, 0px) + 0.35rem);
+    left: max(0.75rem, env(safe-area-inset-left, 0px));
+    right: max(0.75rem, env(safe-area-inset-right, 0px));
+    width: auto;
+    min-width: 0;
+    max-height: min(68vh, 26rem);
+    border-radius: 14px;
+    padding: 0.5rem;
+    box-shadow: 0 20px 48px rgba(26, 21, 16, 0.18);
+    z-index: 270;
+  }
+
+  .header-actions .lang-switch__menu button {
+    padding: 0.7rem 0.75rem;
+    min-height: 44px;
+  }
+
+  .lang-switch--compact .lang-switch__btn {
+    max-width: 6.5rem;
+  }
+
+  .lang-switch--compact .lang-switch__label {
+    max-width: 3rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .lang-switch--compact .lang-switch__label,
+  .lang-switch--compact .lang-switch__chev {
+    display: none;
+  }
+
+  .lang-switch--compact .lang-switch__btn {
+    max-width: none;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    justify-content: center;
   }
 }

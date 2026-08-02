@@ -429,7 +429,7 @@ ul {
   flex-shrink: 0;
 }
 
-.header-actions__lang--desktop {
+.header-actions__lang {
   display: block;
 }
 
@@ -670,12 +670,9 @@ ul {
     display: flex;
   }
 
-  .header-actions__lang--desktop {
-    display: none;
-  }
-
-  .nav-mobile-footer__lang {
-    display: block;
+  /* Keep socials in the slide-out menu only — never beside the logo */
+  .header-actions .header-social--desktop {
+    display: none !important;
   }
 
   .header-donate {
@@ -1424,27 +1421,31 @@ ul {
   }
 }
 
-@media (max-width: 380px) {
-  :root {
-    --header-h: 64px;
-  }
-
-  .header-bar {
-    min-height: var(--header-h);
-    gap: 0.5rem;
-  }
-
-  .brand-logo {
-    width: 42px;
-    height: 42px;
+@media (max-width: 768px) {
+  .brand {
+    max-width: min(11.5rem, 48vw);
   }
 
   .brand-name-line {
-    font-size: 0.66rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .brand-text {
+    display: none;
   }
 
-  .brand-name-line--sub {
-    font-size: 0.6rem;
+  .brand {
+    max-width: none;
+  }
+
+  .brand-mark {
+    width: 42px;
+    height: 42px;
   }
 }
 

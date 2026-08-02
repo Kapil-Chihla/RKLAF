@@ -47,9 +47,6 @@ export default function Header() {
             ))}
           </div>
           <div className="nav-mobile-footer">
-            <div className="nav-mobile-footer__lang">
-              <LanguageSwitcher />
-            </div>
             <div className="header-social header-social--mobile">
               {socialLinks.map((link) => (
                 <a
@@ -71,8 +68,9 @@ export default function Header() {
         </nav>
 
         <div className="header-actions">
-          <div className="header-actions__lang header-actions__lang--desktop">
-            <LanguageSwitcher />
+          {/* Always visible — including mobile home — so language isn’t buried in the menu */}
+          <div className="header-actions__lang">
+            <LanguageSwitcher compact />
           </div>
           <div className="header-social header-social--desktop" aria-label="Social links">
             {socialLinks.map((link) => (

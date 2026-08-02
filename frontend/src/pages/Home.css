@@ -636,6 +636,7 @@
   border-radius: 4px;
   box-shadow: 0 10px 24px rgba(26, 21, 16, 0.08);
   transform: rotate(-1.4deg);
+  flex-shrink: 0;
 }
 
 .home-polaroid--2 { transform: rotate(1.6deg) translateY(10px); }
@@ -1053,6 +1054,66 @@
   }
 }
 
+@media (max-width: 768px) {
+  .home-snapshots {
+    gap: 0.55rem;
+    margin-bottom: clamp(1.5rem, 5vw, 2.25rem);
+  }
+
+  .home-snapshots__row {
+    padding: 0.45rem 0 0.35rem;
+    animation-duration: 40s;
+  }
+
+  .home-snapshots__row--reverse {
+    padding-bottom: 1rem;
+    animation-duration: 44s;
+  }
+
+  .home-snapshots__group {
+    gap: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  /* ~2 cards visible per row (+ peek) — keeps both lines without looking tiny */
+  .home-polaroid,
+  .home-polaroid--2,
+  .home-polaroid--3 {
+    width: min(46vw, 200px);
+    padding: 0.55rem 0.55rem 0.7rem;
+    box-shadow: 0 10px 22px rgba(26, 21, 16, 0.1);
+  }
+
+  .home-polaroid {
+    transform: rotate(-1deg);
+  }
+
+  .home-polaroid--2 {
+    transform: rotate(1.2deg) translateY(6px);
+  }
+
+  .home-polaroid--3 {
+    transform: rotate(-0.6deg) translateY(-4px);
+  }
+
+  .home-polaroid .home-ph {
+    aspect-ratio: 1 / 1;
+    padding: 0.65rem 0.45rem;
+  }
+
+  .home-polaroid .home-ph__label {
+    font-size: clamp(0.68rem, 2.8vw, 0.82rem);
+    letter-spacing: 0.08em;
+    line-height: 1.2;
+  }
+
+  .home-polaroid figcaption {
+    margin-top: 0.45rem;
+    font-size: clamp(0.78rem, 2.8vw, 0.9rem);
+    line-height: 1.3;
+  }
+}
+
 @media (max-width: 640px) {
   .home-impact__grid { grid-template-columns: 1fr; }
   .home-cta__actions {
@@ -1066,6 +1127,24 @@
     width: 100%;
     text-align: center;
     justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) and (max-width: 768px) {
+  .home-snapshots {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+  }
+
+  .home-snapshots__row {
+    animation: none !important;
+    padding-inline: 1rem;
+  }
+
+  .home-polaroid {
+    scroll-snap-align: center;
   }
 }
 
