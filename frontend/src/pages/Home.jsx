@@ -493,11 +493,11 @@ export default function Home() {
         <div className="container home-contact__grid">
           <a href={CONTACT_PHONE_TEL} className="home-contact__item">
             <span className="home-contact__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.81.36 1.6.7 2.35a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.75.34 1.54.57 2.35.7A2 2 0 0122 16.92z" />
               </svg>
             </span>
-            <div>
+            <div className="home-contact__body">
               <strong>Helpline</strong>
               <span>{WHATSAPP_DISPLAY}</span>
               <small>Mon to Sat, 9 to 6</small>
@@ -505,35 +505,35 @@ export default function Home() {
           </a>
           <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="home-contact__item">
             <span className="home-contact__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" />
               </svg>
             </span>
-            <div>
+            <div className="home-contact__body">
               <strong>WhatsApp</strong>
               <span>{WHATSAPP_DISPLAY}</span>
             </div>
           </a>
           <a href={CONTACT_MAILTO} className="home-contact__item">
             <span className="home-contact__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="3" y="5" width="18" height="14" rx="2" />
                 <path d="M3 7l9 7 9-7" />
               </svg>
             </span>
-            <div>
+            <div className="home-contact__body">
               <strong>Email</strong>
               <span>{CONTACT_EMAIL}</span>
             </div>
           </a>
           <div className="home-contact__item">
             <span className="home-contact__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M12 21s7-5.5 7-11a7 7 0 10-14 0c0 5.5 7 11 7 11z" />
                 <circle cx="12" cy="10" r="2.5" />
               </svg>
             </span>
-            <div>
+            <div className="home-contact__body">
               <strong>Head office</strong>
               <span>Sector 14, Gurgaon</span>
               <small>Walk-in Tue &amp; Thu</small>

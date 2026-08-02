@@ -53,10 +53,14 @@
 }
 
 img,
-svg,
 video {
   max-width: 100%;
   height: auto;
+}
+
+/* Do not force height:auto on svg — it breaks icon centering in flex circles */
+svg {
+  max-width: 100%;
 }
 
 /* ─── Home ─── */

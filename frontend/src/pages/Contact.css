@@ -85,12 +85,13 @@ a.contact__channel:hover strong {
 }
 
 .contact__channel-icon {
+  position: relative;
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 50%;
   border: 1px solid var(--line, rgba(31, 28, 25, 0.12));
   background: #fff;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
@@ -99,9 +100,12 @@ a.contact__channel:hover strong {
 }
 
 .contact__channel-icon svg {
-  width: 1.1rem;
-  height: 1.1rem;
+  width: 1.15rem !important;
+  height: 1.15rem !important;
+  max-width: 1.15rem !important;
+  max-height: 1.15rem !important;
   display: block;
+  margin: 0;
 }
 
 .contact__channel-text {
