@@ -362,8 +362,8 @@ export default function Home() {
       <section id="stories" className="home-stories-wrap">
         <div className="home-snapshots" aria-label="Field snapshots">
           {[
-            { items: marqueeSet(snapshots), reverse: false, tilt: 0 },
-            { items: marqueeSet(snapshotsRow2), reverse: true, tilt: 1 },
+            { items: marqueeSet(snapshots, 14), reverse: false, tilt: 0 },
+            { items: marqueeSet(snapshotsRow2, 14), reverse: true, tilt: 1 },
           ].map((row, rowIndex) => (
             <div
               key={rowIndex}

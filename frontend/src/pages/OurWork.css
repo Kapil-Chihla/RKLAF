@@ -631,15 +631,20 @@
     grid-template-columns: 1fr;
   }
 
-  .work-prog--flip .work-prog__copy,
+  /* Number first on mobile so 01 / 02 / 03 / 04 lead each programme */
+  .work-prog__num,
   .work-prog--flip .work-prog__num {
-    order: initial;
-  }
-
-  .work-prog__num {
+    order: -1;
     text-align: left;
     font-size: clamp(5rem, 22vw, 7rem);
-    margin-top: 0.5rem;
+    margin-top: 0;
+    margin-bottom: 0.15rem;
+    line-height: 0.85;
+  }
+
+  .work-prog__copy,
+  .work-prog--flip .work-prog__copy {
+    order: 1;
   }
 
   .work-prog__stats {
