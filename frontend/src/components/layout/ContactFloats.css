@@ -1,0 +1,84 @@
+.contact-floats {
+  position: fixed;
+  right: clamp(12px, 2.2vw, 22px);
+  bottom: clamp(14px, 2.6vw, 26px);
+  z-index: 285;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.contact-float {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 24px rgba(17, 24, 39, 0.22);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  text-decoration: none;
+  line-height: 0;
+}
+
+.contact-float svg {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+.contact-float--mail {
+  background: #1f1c19;
+  color: #faf8f4;
+}
+
+.contact-float--mail:hover {
+  background: #3a342e;
+  color: #fff;
+  transform: translateY(-2px) scale(1.03);
+}
+
+.contact-float--wa {
+  background: #25d366;
+  color: #fff;
+}
+
+.contact-float--wa svg {
+  width: 28px;
+  height: 28px;
+}
+
+.contact-float--wa:hover {
+  background: #1fbe5a;
+  color: #fff;
+  transform: translateY(-2px) scale(1.03);
+}
+
+.contact-float:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+@media (max-width: 480px) {
+  .contact-floats {
+    right: calc(10px + env(safe-area-inset-right, 0px));
+    bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+    gap: 0.55rem;
+  }
+
+  .contact-float {
+    width: 48px;
+    height: 48px;
+  }
+
+  .contact-float svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .contact-float--wa svg {
+    width: 26px;
+    height: 26px;
+  }
+}

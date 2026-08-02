@@ -1,6 +1,13 @@
 import { useState } from 'react';
 import Reveal from '../components/motion/Reveal';
-import { WHATSAPP_DISPLAY, WHATSAPP_URL } from '../data/navigation';
+import {
+  WHATSAPP_DISPLAY,
+  WHATSAPP_URL,
+  CONTACT_EMAIL,
+  CONTACT_MAILTO,
+  CONTACT_PHONE_TEL,
+  CONTACT_PHONE_E164,
+} from '../data/navigation';
 import './Contact.css';
 
 const channels = [
@@ -9,7 +16,7 @@ const channels = [
     icon: 'phone',
     title: 'Helpline',
     detail: `${WHATSAPP_DISPLAY} · Mon to Sat, 9am to 6pm · Hindi, English & Braj`,
-    href: 'tel:+917043031263',
+    href: CONTACT_PHONE_TEL,
   },
   {
     id: 'whatsapp',
@@ -23,8 +30,8 @@ const channels = [
     id: 'email',
     icon: 'mail',
     title: 'Email',
-    detail: 'help@rklaf.org · replies within one working day',
-    href: 'mailto:help@rklaf.org',
+    detail: `${CONTACT_EMAIL} · replies within one working day`,
+    href: CONTACT_MAILTO,
   },
   {
     id: 'office',
@@ -38,28 +45,28 @@ const channels = [
 function ChannelIcon({ name }) {
   if (name === 'phone') {
     return (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
-        <path d="M8 3h3l1.5 4.5-2 1.5a12 12 0 006 6l1.5-2L22 14v3a2 2 0 01-2 2A15 15 0 015 5a2 2 0 012-2h1z" />
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.81.36 1.6.7 2.35a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.75.34 1.54.57 2.35.7A2 2 0 0122 16.92z" />
       </svg>
     );
   }
   if (name === 'chat') {
     return (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
-        <path d="M5 6a3 3 0 013-3h8a3 3 0 013 3v7a3 3 0 01-3 3H10l-4 3v-3H8a3 3 0 01-3-3V6z" />
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" />
       </svg>
     );
   }
   if (name === 'mail') {
     return (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <rect x="3" y="5" width="18" height="14" rx="2" />
         <path d="M3 7l9 7 9-7" />
       </svg>
     );
   }
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M12 21s7-5.2 7-11a7 7 0 10-14 0c0 5.8 7 11 7 11z" />
       <circle cx="12" cy="10" r="2.5" />
     </svg>
@@ -83,7 +90,7 @@ export default function Contact() {
       .filter(Boolean)
       .join('\n');
     window.open(
-      `https://wa.me/917043031263?text=${encodeURIComponent(text)}`,
+      `https://wa.me/${CONTACT_PHONE_E164}?text=${encodeURIComponent(text)}`,
       '_blank',
       'noopener,noreferrer',
     );

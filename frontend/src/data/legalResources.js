@@ -58,5 +58,5 @@ export const emergencyContacts = [
   { title: 'Child Helpline', number: '1098', availability: '24/7' },
   { title: 'Police Emergency', number: '100', availability: '24/7' },
   { title: 'Legal Aid Helpline', number: '15100', availability: '24/7' },
-  { title: 'RKLAF Helpline', number: '+91 70430 31263', availability: 'Mon–Sat, 9am–6pm', href: 'tel:+917043031263' },
+  { title: 'RKLAF Helpline', number: '+91 98111 09663', availability: 'Mon–Sat, 9am–6pm', href: 'tel:+919811109663' },
 ];

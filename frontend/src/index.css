@@ -964,6 +964,10 @@ ul {
   align-items: center;
   font-size: 0.8rem;
   color: rgba(255, 255, 255, 0.4);
+  /* Clear stacked mail + WhatsApp FABs so Admin stays clickable */
+  padding-right: calc(4.5rem + env(safe-area-inset-right, 0px));
+  max-width: min(100%, 28rem);
+  justify-content: flex-end;
 }
 
 .footer-v2__legal a {
@@ -999,6 +1003,9 @@ ul {
 
   .footer-v2__legal {
     flex-wrap: wrap;
+    padding-right: calc(4.75rem + env(safe-area-inset-right, 0px));
+    justify-content: flex-start;
+    max-width: 100%;
   }
 }
 
@@ -1580,43 +1587,9 @@ ul {
   display: block;
 }
 
-/* Bottom-right WhatsApp floating action button */
+/* Bottom-right WhatsApp floating action button (legacy — use .contact-floats) */
 .whatsapp-float {
-  position: fixed;
-  right: clamp(12px, 2.2vw, 22px);
-  bottom: clamp(14px, 2.6vw, 26px);
-  width: 56px;
-  height: 56px;
-  padding: 0;
-  border: none;
-  border-radius: 50%;
-  background: #25d366;
-  color: #fff;
-  font: inherit;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 10px 24px rgba(17, 24, 39, 0.24);
-  z-index: 285;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-}
-
-.whatsapp-float svg {
-  width: 30px;
-  height: 30px;
-}
-
-.whatsapp-float:hover {
-  background: #1fbe5a;
-  color: #fff;
-  transform: translateY(-2px) scale(1.03);
-  box-shadow: 0 14px 28px rgba(17, 24, 39, 0.28);
-}
-
-.whatsapp-float:focus-visible {
-  outline: 3px solid #fff;
-  outline-offset: 3px;
+  display: none;
 }
 
 @media (max-width: 480px) {
@@ -1637,17 +1610,5 @@ ul {
   .donate-sticky__icon {
     width: 18px;
     height: 18px;
-  }
-
-  .whatsapp-float {
-    width: 52px;
-    height: 52px;
-    right: calc(10px + env(safe-area-inset-right, 0px));
-    bottom: calc(10px + env(safe-area-inset-bottom, 0px));
-  }
-
-  .whatsapp-float svg {
-    width: 27px;
-    height: 27px;
   }
 }

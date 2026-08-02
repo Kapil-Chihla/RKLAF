@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { navItems, socialLinks, WHATSAPP_DISPLAY, WHATSAPP_URL } from '../../data/navigation';
+import { navItems, socialLinks, WHATSAPP_DISPLAY, WHATSAPP_URL, CONTACT_EMAIL, CONTACT_MAILTO, CONTACT_PHONE_TEL } from '../../data/navigation';
 import Brand from './Brand';
 import SocialIcon from '../icons/SocialIcons';
 
@@ -93,7 +93,7 @@ export default function Footer() {
           <ul>
             <li>
               <span className="footer-v2__label">Helpline</span>
-              <a href="tel:+917043031263">{WHATSAPP_DISPLAY}</a>
+              <a href={CONTACT_PHONE_TEL}>{WHATSAPP_DISPLAY}</a>
               <small>Mon to Sat, 9 to 6</small>
             </li>
             <li>
@@ -102,7 +102,7 @@ export default function Footer() {
             </li>
             <li>
               <span className="footer-v2__label">Email</span>
-              <a href="mailto:help@rklaf.org">help@rklaf.org</a>
+              <a href={CONTACT_MAILTO}>{CONTACT_EMAIL}</a>
             </li>
             <li>
               <span className="footer-v2__label">Head office</span>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Reveal from '../components/motion/Reveal';
 import FaqAccordion from '../components/FaqAccordion';
-import { WHATSAPP_DISPLAY, WHATSAPP_URL } from '../data/navigation';
+import { WHATSAPP_DISPLAY, WHATSAPP_URL, CONTACT_PHONE_TEL, CONTACT_PHONE_E164 } from '../data/navigation';
 import mapImage from '../assets/map.webp';
 import worldGlobe from '../assets/world.webp';
 import publicApi from '../lib/publicApi';
@@ -132,7 +132,7 @@ const emergency = [
   {
     number: '1800-XXX',
     label: 'RKLAF free legal helpline · Mon to Sat, 9 to 6',
-    href: 'tel:+917043031263',
+    href: CONTACT_PHONE_TEL,
     featured: true,
   },
   { number: '112', label: 'National emergency number, all services', href: 'tel:112' },
@@ -241,7 +241,7 @@ export default function KnowYourRights() {
       .filter(Boolean)
       .join('\n');
     window.open(
-      `https://wa.me/917043031263?text=${encodeURIComponent(text || 'Hello from Know Your Rights')}`,
+      `https://wa.me/${CONTACT_PHONE_E164}?text=${encodeURIComponent(text || 'Hello from Know Your Rights')}`,
       '_blank',
       'noopener,noreferrer',
     );
@@ -471,7 +471,7 @@ export default function KnowYourRights() {
                 <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="kyr-pill">
                   WhatsApp us
                 </a>
-                <a href={`tel:+917043031263`} className="kyr-pill kyr-pill--ghost">
+                <a href={CONTACT_PHONE_TEL} className="kyr-pill kyr-pill--ghost">
                   Call the helpline
                 </a>
               </div>

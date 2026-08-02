@@ -6,10 +6,17 @@ export const socialLinks = [
   { name: 'Spotify', href: 'https://open.spotify.com/', icon: 'spotify' },
 ];
 
+/** Canonical contact — use these everywhere (tel / WhatsApp / mailto). */
+export const CONTACT_PHONE_E164 = '919811109663';
+export const CONTACT_PHONE_TEL = '+919811109663';
+export const CONTACT_PHONE_DISPLAY = '+91 98111 09663';
+export const CONTACT_EMAIL = 'radheykrishnalegalaid@gmail.com';
+export const CONTACT_MAILTO = `mailto:${CONTACT_EMAIL}`;
+
 const WHATSAPP_PREFILL =
   'Hello, I am contacting Radhey Krishna Legal Aid Foundation from your website.';
-export const WHATSAPP_URL = `https://wa.me/917043031263?text=${encodeURIComponent(WHATSAPP_PREFILL)}`;
-export const WHATSAPP_DISPLAY = '+91 70430 31263';
+export const WHATSAPP_URL = `https://wa.me/${CONTACT_PHONE_E164}?text=${encodeURIComponent(WHATSAPP_PREFILL)}`;
+export const WHATSAPP_DISPLAY = CONTACT_PHONE_DISPLAY;
 
 /** Header + footer Explore — Contact lives via Get in Touch → /contact */
 export const navItems = [
