@@ -2,16 +2,16 @@ import { useEffect, useRef, useState } from 'react';
 import sketchSrc from '../../assets/herosketch.jpeg';
 
 /**
- * Reliable draw-on-load: crisp JPEG revealed L→R via CSS mask.
- * No ghost/blur image. No canvas threshold (which failed on light grey ink).
- * Survives React Strict Mode remounts via a generation token.
+ * Sketch reveal that always looks like a drawing in progress:
+ * the real illustration is unveiled left → right with a soft pencil edge.
+ * Never scattered fragments (those came from broken path-tracing).
  */
 export default function HeroSketch({
   className = '',
   alt = 'Line sketch of advocates and community members in conversation',
 }) {
   const wrapRef = useRef(null);
-  const [phase, setPhase] = useState('idle'); // idle | drawing | done
+  const [phase, setPhase] = useState('idle');
   const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
@@ -34,20 +34,20 @@ export default function HeroSketch({
 
     let alive = true;
     let raf = 0;
-    const duration = 2800;
+    const duration = 4200;
     let start = 0;
 
     el.style.setProperty('--draw', '0%');
     setPhase('drawing');
 
+    // Ease-out: starts deliberate, then covers ground — like a hand sketching
+    const ease = (t) => 1 - (1 - t) ** 2.6;
+
     const tick = (now) => {
       if (!alive) return;
       if (!start) start = now;
       const t = Math.min(1, (now - start) / duration);
-      // Ease-out so early strokes feel faster
-      const eased = 1 - (1 - t) ** 3;
-      const pct = `${(eased * 100).toFixed(2)}%`;
-      el.style.setProperty('--draw', pct);
+      el.style.setProperty('--draw', `${(ease(t) * 100).toFixed(2)}%`);
 
       if (t < 1) {
         raf = requestAnimationFrame(tick);
@@ -57,17 +57,15 @@ export default function HeroSketch({
       }
     };
 
-    // Double rAF: wait until after layout/paint (fixes Strict Mode + first-frame races)
     raf = requestAnimationFrame(() => {
       raf = requestAnimationFrame(tick);
     });
 
-    // Safety: never leave a half-drawn state
     const failSafe = window.setTimeout(() => {
       if (!alive) return;
       el.style.setProperty('--draw', '100%');
       setPhase('done');
-    }, duration + 800);
+    }, duration + 700);
 
     return () => {
       alive = false;

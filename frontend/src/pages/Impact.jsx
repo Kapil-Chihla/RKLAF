@@ -1,5 +1,8 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Reveal from '../components/motion/Reveal';
+import publicApi from '../lib/publicApi';
+import { assetUrl } from '../lib/api';
 import './Impact.css';
 
 const regions = [
@@ -63,6 +66,17 @@ const stories = [
 ];
 
 export default function Impact() {
+  const [storyList, setStoryList] = useState(stories);
+
+  useEffect(() => {
+    publicApi
+      .get('/success-stories')
+      .then((r) => {
+        if (Array.isArray(r.data) && r.data.length) setStoryList(r.data);
+      })
+      .catch(() => {});
+  }, []);
+
   return (
     <div className="impact">
       {/* Hero */}
@@ -169,33 +183,73 @@ export default function Impact() {
             <h2>Success stories</h2>
           </Reveal>
 
-          <div className="impact-stories__grid">
-            {stories.map((story, i) => (
-              <Reveal key={story.title} as="article" className="impact-story" variant="up" delay={i * 50}>
-                <div className="impact-story__photo" aria-hidden="true">
-                  <span className="impact-story__ph-label">{story.photo}</span>
-                  <p className="impact-story__caption">{story.caption}</p>
-                </div>
-                <div className="impact-story__body">
-                  <p className="impact-story__tag">{story.tag}</p>
-                  <h3>{story.title}</h3>
-                  <dl>
-                    <div>
-                      <dt>Problem</dt>
-                      <dd>{story.problem}</dd>
+          {/*
+            Viewport always shows 3 columns × 2 rows.
+            Extra stories widen the track; both rows scroll horizontally together.
+          */}
+          <div className="impact-stories__scroll">
+            <div
+              className="impact-stories__track"
+              style={{
+                '--story-cols': String(Math.max(3, Math.ceil(storyList.length / 2))),
+              }}
+            >
+              {storyList.map((story, i) => {
+                const cols = Math.max(3, Math.ceil(storyList.length / 2));
+                const row = Math.floor(i / cols) + 1;
+                const col = (i % cols) + 1;
+                const href = story.slug ? `/impact/stories/${story.slug}` : null;
+                const photo = story.heroImage ? assetUrl(story.heroImage) : null;
+                const Card = href ? Link : 'article';
+                const cardProps = href
+                  ? { to: href, className: 'impact-story' }
+                  : { className: 'impact-story' };
+
+                return (
+                  <Card
+                    key={story.id || story.title}
+                    {...cardProps}
+                    style={{ gridColumn: col, gridRow: row }}
+                  >
+                    <div
+                      className="impact-story__photo"
+                      style={
+                        photo
+                          ? {
+                              backgroundImage: `url(${photo})`,
+                              backgroundSize: 'cover',
+                              backgroundPosition: 'center',
+                            }
+                          : undefined
+                      }
+                    >
+                      {!photo ? (
+                        <span className="impact-story__ph-label">{story.photo || 'Portrait'}</span>
+                      ) : null}
+                      {story.caption ? <p className="impact-story__caption">{story.caption}</p> : null}
                     </div>
-                    <div>
-                      <dt>Action</dt>
-                      <dd>{story.action}</dd>
+                    <div className="impact-story__body">
+                      <p className="impact-story__tag">{story.tag}</p>
+                      <h3>{story.title}</h3>
+                      <dl>
+                        <div>
+                          <dt>Problem</dt>
+                          <dd>{story.problem}</dd>
+                        </div>
+                        <div>
+                          <dt>Action</dt>
+                          <dd>{story.action}</dd>
+                        </div>
+                        <div>
+                          <dt>Result</dt>
+                          <dd>{story.result}</dd>
+                        </div>
+                      </dl>
                     </div>
-                    <div>
-                      <dt>Result</dt>
-                      <dd>{story.result}</dd>
-                    </div>
-                  </dl>
-                </div>
-              </Reveal>
-            ))}
+                  </Card>
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>

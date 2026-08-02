@@ -1,10 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Reveal from '../components/motion/Reveal';
 import FaqAccordion from '../components/FaqAccordion';
 import { WHATSAPP_DISPLAY, WHATSAPP_URL } from '../data/navigation';
 import mapImage from '../assets/map.webp';
 import worldGlobe from '../assets/world.webp';
+import publicApi from '../lib/publicApi';
+import { assetUrl } from '../lib/api';
 import './KnowYourRights.css';
+
+const GUIDE_TONES = ['plum', 'cream', 'ink', 'sage', 'gold', 'clay', 'olive'];
 
 const doors = [
   {
@@ -52,28 +56,60 @@ const glossaryPills = [
 
 const guides = [
   {
-    num: '01',
-    title: 'Your children cannot throw you out',
-    sub: 'Maintenance & property under the Senior Citizens Act',
-    mins: '6 min',
+    id: 'inquiry',
+    title: 'Handbook on Inquiry Procedure',
+    cover: 'Inquiry procedure · plain language',
+    tone: 'plum',
+    href: '#',
   },
   {
-    num: '02',
-    title: 'Filing an FIR that gets registered',
-    sub: 'Zero FIR, refusals, and your right to a free copy',
-    mins: '5 min',
+    id: 'jagriti',
+    title: 'Jagriti — Rights at a Glance',
+    cover: 'Monthly rights digest',
+    tone: 'cream',
+    href: '#',
   },
   {
-    num: '03',
-    title: 'Recovering unpaid wages in 3 steps',
-    sub: 'Labour commissioner route with real timelines',
-    mins: '7 min',
+    id: 'stalking',
+    title: 'Stalking — Know Your Protections',
+    cover: 'Protection orders & remedies',
+    tone: 'ink',
+    href: '#',
   },
   {
-    num: '04',
-    title: 'Protection orders under the DV Act',
-    sub: 'What relief you can get tonight versus next month',
-    mins: '8 min',
+    id: 'mansik',
+    title: 'Mansik Shakti — Mental Health Rights',
+    cover: 'Care, consent & legal options',
+    tone: 'sage',
+    href: '#',
+  },
+  {
+    id: 'seniors',
+    title: 'Your Children Cannot Throw You Out',
+    cover: 'Senior Citizens Act guide',
+    tone: 'gold',
+    href: '#',
+  },
+  {
+    id: 'fir',
+    title: 'Filing an FIR That Gets Registered',
+    cover: 'Zero FIR & free copy rights',
+    tone: 'clay',
+    href: '#',
+  },
+  {
+    id: 'wages',
+    title: 'Recovering Unpaid Wages in 3 Steps',
+    cover: 'Labour commissioner route',
+    tone: 'olive',
+    href: '#',
+  },
+  {
+    id: 'dv',
+    title: 'Protection Orders under the DV Act',
+    cover: 'Relief tonight vs next month',
+    tone: 'rose',
+    href: '#',
   },
 ];
 
@@ -174,6 +210,26 @@ export default function KnowYourRights() {
   const [question, setQuestion] = useState('');
   const [contact, setContact] = useState('');
   const [sent, setSent] = useState(false);
+  const [guideList, setGuideList] = useState(guides);
+
+  useEffect(() => {
+    publicApi
+      .get('/articles')
+      .then((r) => {
+        if (!Array.isArray(r.data) || !r.data.length) return;
+        setGuideList(
+          r.data.map((a, i) => ({
+            id: a.id,
+            title: a.title,
+            cover: a.summary || a.category || 'Practical guide',
+            tone: GUIDE_TONES[i % GUIDE_TONES.length],
+            href: a.file ? assetUrl(a.file) : '#',
+            coverImage: a.coverImage ? assetUrl(a.coverImage) : null,
+          })),
+        );
+      })
+      .catch(() => {});
+  }, []);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -279,47 +335,53 @@ export default function KnowYourRights() {
         </div>
       </section>
 
-      {/* Practical guides */}
+      {/* Practical guides — PDF card grid */}
       <section id="guides" className="kyr-guides">
-        <div className="container kyr-guides__grid">
-          <Reveal as="div" className="kyr-guides__visual" variant="left" aria-hidden="true">
-            <div className="kyr-orbs">
-              <div className="kyr-orb kyr-orb--lg">
-                <span>Elder reading a guide at camp</span>
-              </div>
-              <div className="kyr-orb kyr-orb--md">
-                <span>Helpline volunteer</span>
-              </div>
-              <div className="kyr-orb kyr-orb--sm">
-                <span>Guide booklet</span>
-              </div>
-              <div className="kyr-orb kyr-orb--xs" />
-              <span className="kyr-orb-dot kyr-orb-dot--a" />
-              <span className="kyr-orb-dot kyr-orb-dot--b" />
-              <span className="kyr-orb-dot kyr-orb-dot--c" />
-            </div>
+        <div className="container">
+          <Reveal as="header" className="kyr-guides__head" variant="up">
+            <span className="kyr-rule" aria-hidden="true" />
+            <h2>Practical guides, one situation at a time</h2>
+            <p>Downloadable PDF handbooks — cover, title, and a one-click download.</p>
           </Reveal>
 
-          <div className="kyr-guides__list">
-            <Reveal as="header" variant="up">
-              <span className="kyr-rule" aria-hidden="true" />
-              <h2>Practical guides, one situation at a time</h2>
-            </Reveal>
-
-            <ul>
-              {guides.map((g, i) => (
-                <Reveal key={g.num} as="li" variant="up" delay={i * 40}>
-                  <a href="#ask" className="kyr-guide">
-                    <span className="kyr-guide__num">{g.num}</span>
-                    <span className="kyr-guide__text">
-                      <strong>{g.title}</strong>
-                      <small>{g.sub}</small>
-                    </span>
-                    <span className="kyr-guide__mins">{g.mins}</span>
-                  </a>
-                </Reveal>
-              ))}
-            </ul>
+          <div className="kyr-guides__cards">
+            {guideList.map((g, i) => (
+              <Reveal key={g.id} as="article" className="kyr-pdf" variant="up" delay={i * 40}>
+                <div
+                  className={`kyr-pdf__cover kyr-pdf__cover--${g.tone}`}
+                  style={
+                    g.coverImage
+                      ? {
+                          backgroundImage: `linear-gradient(rgba(20,16,12,0.35), rgba(20,16,12,0.55)), url(${g.coverImage})`,
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center',
+                        }
+                      : undefined
+                  }
+                  aria-hidden="true"
+                >
+                  <span className="kyr-pdf__badge">PDF</span>
+                  <strong>{g.cover}</strong>
+                </div>
+                <h3 className="kyr-pdf__title" title={g.title}>
+                  {g.title}
+                </h3>
+                <a
+                  className="kyr-pdf__dl"
+                  href={g.href}
+                  target={g.href !== '#' ? '_blank' : undefined}
+                  rel={g.href !== '#' ? 'noopener noreferrer' : undefined}
+                  download={g.href !== '#' ? true : undefined}
+                  aria-label={`Download ${g.title}`}
+                >
+                  <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8">
+                    <path d="M12 4v10M8 10l4 4 4-4" />
+                    <path d="M5 18h14" />
+                  </svg>
+                  Download
+                </a>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>

@@ -32,20 +32,41 @@ export default function Login() {
     <div className="admin-auth-page">
       <div className="admin-auth-card">
         <h1>Admin Login</h1>
-        <p>Sign in with your organization account. Team access is invite-only.</p>
+        <p>Sign in to upload Desk stories, success stories, KYR guides, blogs, and papers.</p>
+        <div className="admin-alert admin-alert--success" style={{ fontSize: '0.9rem' }}>
+          <strong>Test login</strong>
+          <br />
+          Email: <code>admin@rklaf.test</code>
+          <br />
+          Password: <code>Admin@12345</code>
+          <br />
+          <span style={{ opacity: 0.85 }}>(seeded when the backend starts)</span>
+        </div>
         {needsSetup && (
           <p>
-            First time? <Link to="/admin/setup">Create super admin account</Link>
+            Or first-time setup: <Link to="/admin/setup">Create super admin account</Link>
           </p>
         )}
         <form className="admin-form" onSubmit={handleSubmit}>
           <label>
             Email
-            <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+            <input
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="admin@rklaf.test"
+            />
           </label>
           <label>
             Password
-            <input type="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
+            <input
+              type="password"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Admin@12345"
+            />
           </label>
           {error && <div className="admin-alert admin-alert--error">{error}</div>}
           <button type="submit" className="admin-btn admin-btn--primary">Sign in</button>

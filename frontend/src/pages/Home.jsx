@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import HeroSketch from '../components/home/HeroSketch';
+import CountUp from '../components/motion/CountUp';
 import Reveal from '../components/motion/Reveal';
 import { WHATSAPP_DISPLAY, WHATSAPP_URL } from '../data/navigation';
 import './Home.css';
 
 const introStats = [
-  { value: '2016', label: 'Registered as a Charitable Trust', icon: 'people' },
-  { value: '3,100+', label: 'People engaged through camps', icon: 'heart' },
-  { value: '40+', label: 'On-ground legal aid camps', icon: 'scales' },
-  { value: '80+', label: 'Law students in RTI drives', icon: 'gavel' },
+  { end: 2016, suffix: '', label: 'Registered as a Charitable Trust', icon: 'people', duration: 2200 },
+  { end: 3100, suffix: '+', label: 'People engaged through camps', icon: 'heart', duration: 2000 },
+  { end: 40, suffix: '+', label: 'On-ground legal aid camps', icon: 'scales', duration: 1400 },
+  { end: 80, suffix: '+', label: 'Law students in RTI drives', icon: 'gavel', duration: 1600 },
 ];
 
 const sideNav = [
@@ -131,29 +132,40 @@ const resourceShelves = [
 ];
 
 function StatIcon({ name }) {
+  const common = {
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: '1.6',
+    strokeLinecap: 'round',
+    strokeLinejoin: 'round',
+    'aria-hidden': true,
+    className: 'home-stat__svg',
+  };
+
   if (name === 'heart') {
     return (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path fill="currentColor" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+      <svg {...common}>
+        <path d="M12 20.5s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10.5c0 5.6-7 10-7 10z" />
       </svg>
     );
   }
   if (name === 'scales') {
     return (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+      <svg {...common}>
         <path d="M12 3v18M5 7h14M7 7l-3 8h6L7 7zm10 0l-3 8h6l-3-8zM8 21h8" />
       </svg>
     );
   }
   if (name === 'gavel') {
     return (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+      <svg {...common}>
         <path d="M14 4l6 6M10 8l6 6M3 21h10M8 14l-5 5" />
       </svg>
     );
   }
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+    <svg {...common}>
       <circle cx="9" cy="8" r="3" />
       <circle cx="16" cy="9" r="2.5" />
       <path d="M3 19c1.5-3 4-4.5 6-4.5S13.5 16 15 19M13 19c.8-2 2.2-3 3.5-3s2.4.8 3.5 3" />
@@ -230,13 +242,22 @@ export default function Home() {
 
         <Reveal as="div" className="home-hero__stats" variant="up" delay={120}>
           <div className="container home-hero__stats-row">
-            {introStats.map((stat) => (
-              <article className="home-stat" key={stat.label}>
+            {introStats.map((stat, i) => (
+              <article
+                className="home-stat"
+                key={stat.label}
+                style={{ '--stat-delay': `${i * 120}ms` }}
+              >
                 <span className="home-stat__icon" aria-hidden="true">
                   <StatIcon name={stat.icon} />
                 </span>
                 <div>
-                  <strong className="home-stat__value">{stat.value}</strong>
+                  <CountUp
+                    className="home-stat__value"
+                    end={stat.end}
+                    suffix={stat.suffix}
+                    duration={stat.duration}
+                  />
                   <span className="home-stat__label">{stat.label}</span>
                 </div>
               </article>
@@ -458,12 +479,12 @@ export default function Home() {
                 Every rupee is accounted for in our public ledger.
               </p>
             </div>
-            <a href="#join-help" className="home-pill home-pill--light home-donate__btn">
+            <Link to="/donate" className="home-pill home-pill--light home-donate__btn">
               <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
                 <path fill="currentColor" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
               </svg>
               Donate now →
-            </a>
+            </Link>
           </article>
         </div>
       </section>

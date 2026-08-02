@@ -330,21 +330,19 @@
   color: #fff;
 }
 
-/* ─── Guides ─── */
+/* ─── Guides (PDF card grid) ─── */
 .kyr-guides {
   padding: clamp(2.5rem, 5vw, 4rem) 0;
   background: var(--paper);
 }
 
-.kyr-guides__grid {
-  display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-  gap: clamp(1.5rem, 4vw, 3rem);
-  align-items: center;
+.kyr-guides__head {
+  max-width: 36rem;
+  margin-bottom: clamp(1.5rem, 3vw, 2rem);
 }
 
-.kyr-guides__list h2 {
-  margin: 0 0 1.35rem;
+.kyr-guides__head h2 {
+  margin: 0 0 0.55rem;
   font-family: var(--font-serif);
   font-size: clamp(1.75rem, 3vw, 2.35rem);
   font-weight: 700;
@@ -352,140 +350,162 @@
   color: var(--ink);
 }
 
-.kyr-guides__list ul {
-  list-style: none;
+.kyr-guides__head p {
   margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  font-size: 0.98rem;
+  line-height: 1.55;
+  color: var(--muted);
 }
 
-.kyr-guide {
+.kyr-guides__cards {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.kyr-pdf {
+  display: flex;
+  flex-direction: column;
   gap: 0.85rem;
-  align-items: center;
-  padding: 1rem 1.1rem;
+  padding: 0.85rem;
   background: #fff;
   border: 1px solid var(--line);
   border-radius: 14px;
-  color: inherit;
+  box-shadow: 0 8px 22px rgba(26, 21, 16, 0.04);
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.kyr-guide:hover {
-  border-color: rgba(176, 138, 60, 0.45);
-  box-shadow: 0 8px 24px rgba(26, 21, 16, 0.06);
-  color: inherit;
+.kyr-pdf:hover {
+  border-color: rgba(176, 138, 60, 0.4);
+  box-shadow: 0 12px 28px rgba(26, 21, 16, 0.07);
 }
 
-.kyr-guide__num {
-  font-family: var(--font-serif);
-  font-size: 1.35rem;
-  font-weight: 700;
-  color: var(--accent);
-  line-height: 1;
-}
-
-.kyr-guide__text {
+.kyr-pdf__cover {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  border-radius: 10px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
-  min-width: 0;
+  justify-content: flex-end;
+  padding: 1rem 0.9rem;
+  color: #fff;
+  background: linear-gradient(160deg, #c4b29a, #8a7358);
 }
 
-.kyr-guide__text strong {
-  font-size: 0.98rem;
-  color: var(--ink);
-}
-
-.kyr-guide__text small {
-  font-size: 0.82rem;
-  color: var(--muted);
-  line-height: 1.4;
-}
-
-.kyr-guide__mins {
-  flex-shrink: 0;
-  padding: 0.3rem 0.55rem;
-  border-radius: 999px;
-  background: var(--cream);
-  font-size: 0.68rem;
+.kyr-pdf__cover strong {
+  font-family: var(--font-serif);
+  font-size: clamp(0.95rem, 1.4vw, 1.15rem);
   font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--muted);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
 }
 
-.kyr-orbs {
-  position: relative;
-  min-height: 320px;
-  max-width: 360px;
-  margin-inline: auto;
-}
-
-.kyr-orb {
+.kyr-pdf__badge {
   position: absolute;
-  border-radius: 50%;
-  background: linear-gradient(145deg, #e4d7c2, #cbb99a 55%, #a89070);
-  border: 1.5px dashed rgba(176, 138, 60, 0.35);
-  display: grid;
-  place-items: center;
-  text-align: center;
-  padding: 1rem;
+  top: 0.65rem;
+  left: 0.65rem;
+  padding: 0.2rem 0.45rem;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.92);
   color: var(--ink);
   font-size: 0.58rem;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.1em;
-  text-transform: uppercase;
+}
+
+.kyr-pdf__cover--plum {
+  background:
+    radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.18), transparent 40%),
+    linear-gradient(165deg, #6b4f7a, #3d2a48);
+}
+
+.kyr-pdf__cover--cream {
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 20% 80%, rgba(176, 138, 60, 0.25), transparent 45%),
+    linear-gradient(160deg, #f3ebe0, #d9cbb6);
+}
+
+.kyr-pdf__cover--cream strong {
+  text-shadow: none;
+}
+
+.kyr-pdf__cover--ink {
+  background:
+    radial-gradient(circle at 70% 30%, rgba(176, 138, 60, 0.35), transparent 40%),
+    linear-gradient(165deg, #2b2621, #1a1510);
+}
+
+.kyr-pdf__cover--sage {
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.2), transparent 40%),
+    linear-gradient(165deg, #6e7d5f, #3f4a36);
+}
+
+.kyr-pdf__cover--gold {
+  background:
+    radial-gradient(circle at 75% 25%, rgba(255, 255, 255, 0.22), transparent 42%),
+    linear-gradient(165deg, #c4a45a, #8a6a2e);
+}
+
+.kyr-pdf__cover--clay {
+  background:
+    radial-gradient(circle at 25% 30%, rgba(255, 255, 255, 0.15), transparent 40%),
+    linear-gradient(165deg, #a67a5c, #6b4634);
+}
+
+.kyr-pdf__cover--olive {
+  background:
+    radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.12), transparent 40%),
+    linear-gradient(165deg, #7a8458, #454b30);
+}
+
+.kyr-pdf__cover--rose {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.18), transparent 40%),
+    linear-gradient(165deg, #9a6a6a, #5c3838);
+}
+
+.kyr-pdf__title {
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 700;
   line-height: 1.35;
-  box-shadow: 0 12px 30px rgba(26, 21, 16, 0.08);
+  color: var(--ink);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 2.4em;
 }
 
-.kyr-orb--lg {
-  width: min(72%, 240px);
-  aspect-ratio: 1;
-  top: 8%;
-  left: 4%;
+.kyr-pdf__dl {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  align-self: flex-start;
+  margin-top: auto;
+  padding: 0.45rem 0.75rem;
+  border: 1.5px solid var(--line);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink);
+  font-size: 0.78rem;
+  font-weight: 600;
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
 }
 
-.kyr-orb--md {
-  width: min(42%, 140px);
-  aspect-ratio: 1;
-  top: 48%;
-  right: 2%;
-  background: linear-gradient(145deg, #d4c4a8, #9aab7a);
+.kyr-pdf__dl:hover {
+  border-color: var(--accent);
+  background: rgba(176, 138, 60, 0.08);
+  color: var(--ink);
 }
 
-.kyr-orb--sm {
-  width: min(34%, 110px);
-  aspect-ratio: 1;
-  bottom: 6%;
-  left: 28%;
-  background: linear-gradient(145deg, #cbb99a, #8a7460);
+.kyr-pdf__dl svg {
+  flex-shrink: 0;
 }
-
-.kyr-orb--xs {
-  width: 48px;
-  height: 48px;
-  top: 18%;
-  right: 22%;
-  background: linear-gradient(145deg, #efeae2, #d4c4a8);
-  border-style: solid;
-  border-color: rgba(43, 34, 26, 0.08);
-}
-
-.kyr-orb-dot {
-  position: absolute;
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 50%;
-}
-
-.kyr-orb-dot--a { top: 4%; right: 30%; background: var(--accent); }
-.kyr-orb-dot--b { bottom: 28%; left: 8%; background: #5a6b42; }
-.kyr-orb-dot--c { top: 40%; left: 0; background: #8a6a3c; width: 0.35rem; height: 0.35rem; }
 
 /* ─── Videos ─── */
 .kyr-videos {
@@ -888,6 +908,10 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .kyr-guides__cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .kyr-emergency__grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -895,7 +919,6 @@
 
 @media (max-width: 960px) {
   .kyr-hero__grid,
-  .kyr-guides__grid,
   .kyr-ask__panel {
     grid-template-columns: 1fr;
   }
@@ -909,12 +932,8 @@
     grid-template-columns: 1fr;
   }
 
-  .kyr-guides__visual {
-    order: -1;
-  }
-
-  .kyr-orbs {
-    min-height: 260px;
+  .kyr-guides__cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -922,6 +941,11 @@
   .kyr-doors__grid,
   .kyr-emergency__grid {
     grid-template-columns: 1fr;
+  }
+
+  .kyr-guides__cards {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
   }
 
   .kyr-ask__actions {
@@ -932,19 +956,10 @@
   .kyr-ask__actions .kyr-pill {
     justify-content: center;
   }
+}
 
-  .kyr-guide {
-    grid-template-columns: auto 1fr;
-    grid-template-areas:
-      'num text'
-      'num mins';
-  }
-
-  .kyr-guide__num { grid-area: num; }
-  .kyr-guide__text { grid-area: text; }
-  .kyr-guide__mins {
-    grid-area: mins;
-    justify-self: start;
-    margin-top: 0.25rem;
+@media (max-width: 420px) {
+  .kyr-guides__cards {
+    grid-template-columns: 1fr;
   }
 }

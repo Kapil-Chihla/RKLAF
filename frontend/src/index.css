@@ -1,6 +1,7 @@
 @import './styles/palettes.css';
 @import './styles/responsive.css';
 @import './styles/interactive.css';
+@import './styles/site-responsive.css';
 
 :root {
   /* Revised design — cream / ink / gold */
@@ -34,6 +35,7 @@
   --shell-gutter: 0.75rem;
   --font-sans: 'DM Sans', system-ui, sans-serif;
   --font-serif: 'Playfair Display', Georgia, serif;
+  --font-body: 'Source Serif 4', Georgia, 'Times New Roman', serif;
   --font-script: 'Great Vibes', cursive;
 }
 
@@ -49,10 +51,12 @@ html {
 
 body {
   margin: 0;
-  font-family: var(--font-sans);
+  font-family: var(--font-body);
   color: var(--text);
   background: var(--cream);
-  line-height: 1.6;
+  line-height: 1.65;
+  font-weight: 400;
+  font-optical-sizing: auto;
 }
 
 a {
@@ -65,8 +69,9 @@ img {
   display: block;
 }
 
-h1, h2, h3, h4 {
+h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-serif);
+  font-weight: 700;
   line-height: 1.2;
   margin: 0 0 0.75rem;
   color: var(--blue);
@@ -74,6 +79,7 @@ h1, h2, h3, h4 {
 
 p {
   margin: 0 0 1rem;
+  font-family: var(--font-body);
   color: var(--text-muted);
 }
 
@@ -93,6 +99,7 @@ ul {
   gap: 0.5rem;
   padding: 0.85rem 1.5rem;
   border-radius: 999px;
+  font-family: var(--font-sans);
   font-weight: 600;
   font-size: 0.95rem;
   border: 2px solid transparent;
@@ -218,11 +225,12 @@ ul {
 /* ─── Shell (rounded paper card on cream) ─── */
 .site-wrapper--v2 {
   --shell-max: 1680px;
-  --shell-gutter: clamp(0.35rem, 1vw, 0.75rem);
+  --shell-gutter: clamp(0.25rem, 1vw, 0.75rem);
   min-height: 100vh;
   background: var(--cream);
   padding: var(--shell-gutter);
   padding-top: calc(var(--shell-gutter) + var(--safe-top, 0px));
+  overflow-x: clip;
 }
 
 .site-shell {
@@ -264,6 +272,7 @@ ul {
   writing-mode: vertical-rl;
   transform: rotate(180deg);
   padding: 0.95rem 0.55rem;
+  font-family: var(--font-sans);
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -303,6 +312,21 @@ ul {
 
 .side-tabs__icon--heart {
   color: #e4b84a;
+}
+
+/*
+  Keep full-bleed section backgrounds intact; only nudge readable content
+  (containers) clear of the fixed left tabs.
+*/
+@media (min-width: 721px) {
+  .site-wrapper--v2 {
+    --side-tabs-clearance: 1.5rem;
+  }
+
+  .site-wrapper--v2 .container {
+    padding-left: max(var(--safe-left, 0px), var(--side-tabs-clearance));
+    box-sizing: border-box;
+  }
 }
 
 @media (max-width: 720px) {
@@ -441,6 +465,7 @@ ul {
   border-radius: 999px;
   background: var(--text);
   color: #fff;
+  font-family: var(--font-sans);
   font-size: 0.78rem;
   font-weight: 600;
 }
@@ -496,7 +521,7 @@ ul {
   border: none;
   background: none;
   cursor: pointer;
-  font-family: inherit;
+  font-family: var(--font-sans);
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
@@ -646,12 +671,12 @@ ul {
 
   .main-nav {
     position: fixed;
-    top: var(--header-h);
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: 100%;
-    max-width: 100vw;
+    top: calc(var(--header-h) + var(--shell-gutter, 0px) + var(--safe-top, 0px));
+    left: var(--shell-gutter, 0px);
+    right: var(--shell-gutter, 0px);
+    bottom: var(--shell-gutter, 0px);
+    width: auto;
+    max-width: none;
     background: var(--ivory);
     flex-direction: column;
     align-items: stretch;
@@ -667,6 +692,7 @@ ul {
     transition: opacity 0.25s ease, visibility 0.25s ease;
     z-index: 200;
     box-shadow: none;
+    border-radius: 0 0 clamp(14px, 2vw, 24px) clamp(14px, 2vw, 24px);
   }
 
   .main-nav.is-open {
@@ -825,10 +851,10 @@ ul {
 
 .footer-v2__col h4 {
   margin: 0 0 0.9rem;
-  font-family: var(--font-sans);
-  font-size: 0.78rem;
+  font-family: var(--font-serif);
+  font-size: 0.85rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.92);
 }
@@ -923,6 +949,7 @@ ul {
 @media (max-width: 960px) {
   .footer-v2 {
     grid-template-columns: 1fr 1fr;
+    gap: 1.75rem;
   }
 
   .footer-v2__brand {
@@ -933,6 +960,17 @@ ul {
 @media (max-width: 560px) {
   .footer-v2 {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .footer-v2__bottom-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .footer-v2__legal {
+    flex-wrap: wrap;
   }
 }
 
@@ -1006,7 +1044,8 @@ ul {
 
 .hero-card h3 {
   color: var(--white);
-  font-family: var(--font-sans);
+  font-family: var(--font-serif);
+  font-weight: 700;
   font-size: 1.15rem;
 }
 
@@ -1097,7 +1136,8 @@ ul {
 }
 
 .feature-card h3 {
-  font-family: var(--font-sans);
+  font-family: var(--font-serif);
+  font-weight: 700;
   font-size: 1.15rem;
 }
 
@@ -1116,7 +1156,8 @@ ul {
 }
 
 .highlight-panel h3 {
-  font-family: var(--font-sans);
+  font-family: var(--font-serif);
+  font-weight: 700;
 }
 
 .link-list li {
@@ -1230,7 +1271,8 @@ ul {
 }
 
 .blog-card h3 {
-  font-family: var(--font-sans);
+  font-family: var(--font-serif);
+  font-weight: 700;
   font-size: 1.1rem;
 }
 

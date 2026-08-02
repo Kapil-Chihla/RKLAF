@@ -11,6 +11,7 @@ const connectDB = require('./config/database');
 const { configureCloudinary } = require('./config/cloudinary');
 const seedMapLocationsIfEmpty = require('./seed/mapLocations');
 const seedGuideCategoriesIfEmpty = require('./seed/guideCategories');
+const seedTestSuperAdmin = require('./seed/testSuperAdmin');
 
 const app = express();
 
@@ -57,6 +58,9 @@ app.use('/api/admin', require('./routes/admin'));
 app.use('/api/blogs', require('./routes/blogs'));
 app.use('/api/articles', require('./routes/articles'));
 app.use('/api/guide-categories', require('./routes/guideCategories'));
+app.use('/api/desk-stories', require('./routes/deskStories'));
+app.use('/api/success-stories', require('./routes/successStories'));
+app.use('/api/papers', require('./routes/papers'));
 app.use('/api/reports', require('./routes/reports'));
 app.use('/api/camps', require('./routes/camps'));
 app.use('/api/contact', require('./routes/contact'));
@@ -76,7 +80,7 @@ app.use((err, req, res, next) => {
   next(err);
 });
 
-const uploadFolders = ['blogs', 'articles', 'reports', 'team', 'camps', 'general'];
+const uploadFolders = ['blogs', 'articles', 'reports', 'team', 'camps', 'desk', 'success', 'papers', 'general'];
 uploadFolders.forEach((folder) => {
   const fullPath = path.join(__dirname, 'uploads', folder);
   if (!fs.existsSync(fullPath)) {
@@ -91,6 +95,7 @@ async function start() {
   await connectDB();
   await seedMapLocationsIfEmpty();
   await seedGuideCategoriesIfEmpty();
+  await seedTestSuperAdmin();
   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 }
 

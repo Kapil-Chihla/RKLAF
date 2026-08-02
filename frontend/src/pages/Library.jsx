@@ -291,9 +291,9 @@ export default function Library() {
             <p className="lib-donate__ph">
               Background photo placeholder · Studio microphone &amp; recorder, shallow depth
             </p>
-            <a href="/#donate" className="lib-pill lib-pill--light">
+            <Link to="/donate" className="lib-pill lib-pill--light">
               Donate to keep it free →
-            </a>
+            </Link>
           </Reveal>
         </div>
       </section>

@@ -99,7 +99,8 @@
 }
 
 .promise-card h3 {
-  font-family: var(--font-sans);
+  font-family: var(--font-serif);
+  font-weight: 700;
   font-size: 1.15rem;
   margin: 0.35rem 0 0.5rem;
 }
@@ -237,7 +238,8 @@
 
 .heritage-card h3 {
   color: var(--ivory);
-  font-family: var(--font-sans);
+  font-family: var(--font-serif);
+  font-weight: 700;
 }
 
 .heritage-card p {
@@ -399,7 +401,8 @@
 }
 
 .story-card h3 {
-  font-family: var(--font-sans);
+  font-family: var(--font-serif);
+  font-weight: 700;
   font-size: 1.15rem;
 }
 

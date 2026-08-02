@@ -80,12 +80,6 @@ export default function Header() {
                 <SocialIcon name={link.icon} />
               </a>
             ))}
-            <a href="#who-we-are" className="header-social__btn" aria-label="Search page sections">
-              <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="11" cy="11" r="6.5" />
-                <path d="M16.5 16.5L21 21" />
-              </svg>
-            </a>
           </div>
 
           <button

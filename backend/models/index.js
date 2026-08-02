@@ -9,4 +9,7 @@ module.exports = {
   Contact: require('./Contact'),
   MapLocation: require('./MapLocation'),
   GuideCategory: require('./GuideCategory'),
+  DeskStory: require('./DeskStory'),
+  SuccessStory: require('./SuccessStory'),
+  Paper: require('./Paper'),
 };

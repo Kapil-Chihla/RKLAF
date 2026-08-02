@@ -82,7 +82,7 @@ export default function Footer() {
           <ul>
             <li><Link to="/our-work">Our Work</Link></li>
             <li><Link to="/our-work#reports">Annual reports</Link></li>
-            <li><a href="/#donate">Donate</a></li>
+            <li><Link to="/donate">Donate</Link></li>
             <li><Link to="/join-us">Volunteer &amp; intern</Link></li>
             <li><Link to="/join-us#member">Membership</Link></li>
           </ul>
@@ -121,7 +121,7 @@ export default function Footer() {
             <span aria-hidden="true">·</span>
             <a href="#contact-home">Terms</a>
             <span aria-hidden="true">·</span>
-            <a href="#donate">Public ledger</a>
+            <Link to="/donate">Public ledger</Link>
             <span aria-hidden="true">·</span>
             <Link to="/admin/login">Admin</Link>
           </div>

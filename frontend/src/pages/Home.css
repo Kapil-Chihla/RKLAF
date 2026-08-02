@@ -181,13 +181,10 @@
   margin-inline: auto;
   overflow: visible;
   background: transparent;
-  /* draw progress — animated by HeroSketch */
   --draw: 0%;
 }
 
 .hero-sketch__img {
-  position: relative;
-  z-index: 1;
   display: block;
   width: 100%;
   height: auto;
@@ -195,21 +192,25 @@
   object-fit: contain;
   object-position: center center;
   background: transparent;
-  /* JPEG is black lines on pure white — multiply drops white into page cream */
   mix-blend-mode: multiply;
-  opacity: 1;
-  /* Pencil reveal: ink appears left → right */
+  /*
+    Soft left → right pencil edge.
+    Whatever is visible is always a connected part of the real sketch —
+    never random floating scraps.
+  */
   -webkit-mask-image: linear-gradient(
-    90deg,
+    92deg,
     #000 0%,
-    #000 max(0%, calc(var(--draw) - 6%)),
+    #000 max(0%, calc(var(--draw) - 12%)),
+    rgba(0, 0, 0, 0.55) max(0%, calc(var(--draw) - 4%)),
     transparent var(--draw),
     transparent 100%
   );
   mask-image: linear-gradient(
-    90deg,
+    92deg,
     #000 0%,
-    #000 max(0%, calc(var(--draw) - 6%)),
+    #000 max(0%, calc(var(--draw) - 12%)),
+    rgba(0, 0, 0, 0.55) max(0%, calc(var(--draw) - 4%)),
     transparent var(--draw),
     transparent 100%
   );
@@ -222,6 +223,13 @@
 .hero-sketch--done .hero-sketch__img {
   -webkit-mask-image: none;
   mask-image: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-sketch__img {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
 }
 
 .home-hero__tagline {
@@ -298,7 +306,26 @@
   color: var(--accent);
 }
 
-.home-stat__icon svg { width: 1.1rem; height: 1.1rem; }
+.home-stat__icon svg,
+.home-stat__svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+/* Icon doodle: stroke draws in when the stats row reveals */
+.home-stat__svg {
+  stroke-dasharray: 64;
+  stroke-dashoffset: 64;
+}
+
+.reveal.is-visible .home-stat__svg {
+  animation: home-stat-doodle 1.1s ease forwards;
+  animation-delay: var(--stat-delay, 0ms);
+}
+
+@keyframes home-stat-doodle {
+  to { stroke-dashoffset: 0; }
+}
 
 .home-stat__value {
   display: block;
@@ -306,6 +333,15 @@
   font-size: 1.3rem;
   font-weight: 700;
   line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+  min-width: 4.5ch;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-stat__svg {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
 }
 
 .home-stat__label {
@@ -977,5 +1013,27 @@
 
 @media (max-width: 640px) {
   .home-impact__grid { grid-template-columns: 1fr; }
-  .home-cta__actions .home-pill { flex: 1; }
+  .home-cta__actions {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  .home-cta__actions .home-pill { width: 100%; flex: none; }
+  .home-who__actions,
+  .home-section-head .home-pill {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 380px) {
+  .home-hero__stats-row {
+    gap: 0.75rem;
+  }
+
+  .home-stat strong,
+  .home-intro-stat strong {
+    font-size: 1.35rem;
+  }
 }

@@ -9,6 +9,7 @@ export default function ArticlesManage() {
   const [msg, setMsg] = useState('');
   const [form, setForm] = useState({ title: '', summary: '', body: '', category: 'General' });
   const [file, setFile] = useState(null);
+  const [cover, setCover] = useState(null);
   const canDelete = ['super_admin', 'admin'].includes(user?.role);
 
   const loadCategories = () =>
@@ -35,11 +36,13 @@ export default function ArticlesManage() {
     fd.append('body', form.body);
     fd.append('category', category);
     if (file) fd.append('file', file);
+    if (cover) fd.append('cover', cover);
     try {
       await api.post('/articles', fd, { headers: { 'Content-Type': 'multipart/form-data' } });
       setMsg('Guide uploaded.');
       setForm({ title: '', summary: '', body: '', category: 'General' });
       setFile(null);
+      setCover(null);
       load();
       loadCategories();
     } catch (err) {
@@ -50,14 +53,20 @@ export default function ArticlesManage() {
   return (
     <div>
       <div className="admin-card">
-        <h2>Know Your Rights — downloadable guides</h2>
+        <h2>Know Your Rights — practical guides</h2>
         <p style={{ color: '#5a6f82', marginTop: 0 }}>
-          PDFs uploaded here appear on the public Know Your Rights page. Pick an existing category or type a new one — it will be created automatically.
+          Cover image + PDF + title + description. Cards appear on the public Know Your Rights page.
         </p>
         {msg && <div className="admin-alert admin-alert--success">{msg}</div>}
         <form className="admin-form" onSubmit={handleSubmit}>
-          <label>Title<input required value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} /></label>
-          <label>Summary<input value={form.summary} onChange={(e) => setForm({ ...form, summary: e.target.value })} /></label>
+          <label>
+            Title
+            <input required value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
+          </label>
+          <label>
+            Description / summary
+            <input value={form.summary} onChange={(e) => setForm({ ...form, summary: e.target.value })} />
+          </label>
           <label>
             Category
             <input
@@ -73,22 +82,56 @@ export default function ArticlesManage() {
               ))}
             </datalist>
           </label>
-          <label>Body<textarea value={form.body} onChange={(e) => setForm({ ...form, body: e.target.value })} /></label>
-          <label>PDF / file attachment<input type="file" accept=".pdf,image/*" onChange={(e) => setFile(e.target.files?.[0] || null)} /></label>
-          <button type="submit" className="admin-btn admin-btn--primary">Upload guide</button>
+          <label>
+            Extra notes (optional)
+            <textarea value={form.body} onChange={(e) => setForm({ ...form, body: e.target.value })} />
+          </label>
+          <label>
+            Cover image
+            <input type="file" accept="image/*" onChange={(e) => setCover(e.target.files?.[0] || null)} />
+          </label>
+          <label>
+            PDF
+            <input type="file" accept=".pdf" onChange={(e) => setFile(e.target.files?.[0] || null)} />
+          </label>
+          <button type="submit" className="admin-btn admin-btn--primary">
+            Upload guide
+          </button>
         </form>
       </div>
       <div className="admin-card" style={{ marginTop: '1.5rem' }}>
         <h2>Guides ({items.length})</h2>
         <table className="admin-table">
-          <thead><tr><th>Title</th><th>Category</th><th>File</th>{canDelete && <th>Actions</th>}</tr></thead>
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Category</th>
+              <th>Cover</th>
+              <th>PDF</th>
+              {canDelete && <th>Actions</th>}
+            </tr>
+          </thead>
           <tbody>
             {items.map((a) => (
               <tr key={a.id}>
                 <td>{a.title}</td>
                 <td>{a.category || 'General'}</td>
+                <td>{a.coverImage ? 'Yes' : '—'}</td>
                 <td>{a.file ? 'Yes' : '—'}</td>
-                {canDelete && <td><button type="button" className="admin-btn admin-btn--danger" onClick={async () => { await api.delete(`/articles/${a.id}`); load(); }}>Delete</button></td>}
+                {canDelete && (
+                  <td>
+                    <button
+                      type="button"
+                      className="admin-btn admin-btn--danger"
+                      onClick={async () => {
+                        await api.delete(`/articles/${a.id}`);
+                        load();
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>

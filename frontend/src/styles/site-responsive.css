@@ -1,0 +1,381 @@
+/* Site-wide responsive polish — iPhone mini (375) → large desktop */
+
+/* Fluid type & shell on small phones */
+@media (max-width: 480px) {
+  .site-wrapper--v2 {
+    --shell-gutter: 0.2rem;
+    padding: var(--shell-gutter);
+    padding-top: calc(var(--shell-gutter) + var(--safe-top, 0px));
+  }
+
+  .site-shell {
+    border-radius: 14px;
+    min-height: calc(100vh - 2 * var(--shell-gutter));
+  }
+
+  .site-wrapper--v2 .container {
+    width: min(100%, calc(100% - 1rem));
+  }
+
+  .brand {
+    max-width: min(11.5rem, 52vw);
+    gap: 0.45rem;
+  }
+
+  .brand-mark {
+    width: 40px;
+    height: 40px;
+  }
+
+  .header-social--desktop {
+    display: none;
+  }
+}
+
+@media (max-width: 380px) {
+  .brand-text {
+    display: none;
+  }
+
+  .brand {
+    max-width: none;
+  }
+}
+
+/* Prevent horizontal bleed from absolute ornaments */
+.site-main {
+  overflow-x: clip;
+  max-width: 100%;
+}
+
+.site-main > * {
+  max-width: 100%;
+}
+
+img,
+svg,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ─── Home ─── */
+@media (max-width: 1100px) {
+  .home-rail {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .home--v2 {
+    --section-pad: clamp(2rem, 7vw, 3rem);
+  }
+
+  .home-hero__tagline {
+    font-size: clamp(1.65rem, 7vw, 2.4rem);
+  }
+
+  .home-display {
+    font-size: clamp(1.55rem, 6vw, 2.2rem);
+  }
+
+  .home-prog__stats,
+  .home-stories__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-hero {
+    padding-inline: 0;
+  }
+
+  .home-hero__sketch,
+  .hero-sketch {
+    max-height: min(46vh, 280px);
+    width: min(100%, 360px);
+  }
+
+  .home-pill,
+  .home-cta__actions {
+    width: 100%;
+  }
+
+  .home-cta__actions {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .home-contact__grid {
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .about-heritage__grid,
+  .about-team__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-journey {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* ─── Our Work ─── */
+@media (max-width: 640px) {
+  .work-banner {
+    min-height: 160px;
+  }
+
+  .work-prog__title {
+    font-size: clamp(1.35rem, 6vw, 1.7rem);
+  }
+
+  .work-desk__title,
+  .work-camps__title {
+    letter-spacing: 0.12em;
+    font-size: clamp(1.85rem, 8vw, 2.6rem);
+  }
+
+  .work-report {
+    flex-wrap: wrap;
+  }
+}
+
+/* ─── Know Your Rights ─── */
+@media (max-width: 640px) {
+  .kyr-hero__copy h1 {
+    font-size: clamp(1.85rem, 8vw, 2.4rem);
+  }
+
+  .kyr-mapframe {
+    min-height: 180px;
+  }
+
+  .kyr-mapframe__ghost,
+  .kyr-mapframe__dot {
+    display: none;
+  }
+
+  .kyr-pills {
+    justify-content: flex-start;
+  }
+
+  .kyr-pill-term {
+    font-size: 0.82rem;
+  }
+
+  .kyr-doors__grid,
+  .kyr-videos__grid,
+  .kyr-emergency__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .kyr-ask__panel {
+    padding: 1.15rem;
+  }
+}
+
+/* ─── Academics ─── */
+@media (max-width: 640px) {
+  .acad-banner h1 {
+    letter-spacing: 0.08em;
+    font-size: clamp(1.85rem, 8vw, 2.5rem);
+  }
+
+  .acad-browse__nav {
+    gap: 0.5rem 0.85rem;
+  }
+
+  .acad-featured__card h2 {
+    font-size: clamp(1.2rem, 5.5vw, 1.55rem);
+  }
+
+  .acad-pdf {
+    flex-direction: column;
+  }
+}
+
+/* ─── Library ─── */
+@media (max-width: 640px) {
+  .lib-hero {
+    padding-bottom: 4.5rem;
+  }
+
+  .lib-platforms {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .lib-platform {
+    justify-content: center;
+  }
+
+  .lib-player {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .lib-welcome__body {
+    font-size: 0.98rem;
+  }
+
+  .lib-drop {
+    font-size: 2.6rem;
+  }
+}
+
+/* ─── Impact ─── */
+@media (max-width: 640px) {
+  .impact-hero {
+    min-height: 360px;
+    padding-block: 2.5rem 3.5rem;
+  }
+
+  .impact-hero h1 {
+    font-size: clamp(2rem, 9vw, 2.75rem);
+  }
+
+  .impact-foot__map {
+    min-height: 360px;
+  }
+
+  .impact-node--1,
+  .impact-node--2,
+  .impact-node--3,
+  .impact-node--4 {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    margin: 0.65rem auto;
+  }
+
+  .impact-foot__lines {
+    display: none;
+  }
+
+  .impact-foot__map {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .impact-story__body dl > div {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+}
+
+/* ─── Join Us ─── */
+@media (max-width: 640px) {
+  .join-hero h1 {
+    font-size: clamp(1.85rem, 8vw, 2.5rem);
+  }
+
+  .join-hero__visual {
+    display: none;
+  }
+
+  .join-card {
+    padding: 1.25rem 1.1rem;
+  }
+
+  .join-card h3 {
+    font-size: 1.55rem;
+  }
+
+  .join-card__num {
+    font-size: 2.4rem;
+  }
+
+  .join-cta__band {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: left;
+  }
+
+  .join-cta__btn {
+    width: 100%;
+  }
+
+  .join-photo__frame {
+    min-height: 160px;
+  }
+}
+
+/* ─── Contact ─── */
+@media (max-width: 560px) {
+  .contact--v2 {
+    padding-block: 2rem 3rem;
+  }
+
+  .contact__intro h1 {
+    font-size: clamp(1.85rem, 8vw, 2.4rem);
+  }
+
+  .contact__form {
+    padding: 1.25rem;
+  }
+
+  .contact__submit {
+    min-height: 48px;
+  }
+}
+
+/* ─── Donate ─── */
+@media (max-width: 560px) {
+  .donate--v2 {
+    padding-block: 2rem 3rem;
+  }
+
+  .donate__intro h1 {
+    font-size: clamp(1.85rem, 8vw, 2.4rem);
+  }
+}
+
+/* Large desktop — keep prose comfortable, shell spacious */
+@media (min-width: 1440px) {
+  .site-wrapper--v2 {
+    --shell-gutter: clamp(0.75rem, 1.2vw, 1.25rem);
+  }
+
+  .site-wrapper--v2 .container {
+    width: min(1400px, calc(100% - var(--container-pad) * 2));
+  }
+}
+
+@media (min-width: 1800px) {
+  .site-wrapper--v2 .container {
+    width: min(1480px, calc(100% - 4rem));
+  }
+}
+
+/* Shared mobile CTA stretch */
+@media (max-width: 480px) {
+  .work-pill,
+  .kyr-pill,
+  .lib-pill,
+  .acad-btn,
+  .impact-play,
+  .join-card__cta,
+  .contact__submit,
+  .donate__submit {
+    width: 100%;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+
+  .lib-player__controls {
+    flex-wrap: wrap;
+  }
+
+  .lib-player__time {
+    width: 100%;
+    text-align: right;
+  }
+}

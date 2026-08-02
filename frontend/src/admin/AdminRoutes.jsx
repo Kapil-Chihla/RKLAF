@@ -6,9 +6,11 @@ import Register from './pages/Register';
 import SetupSuperAdmin from './pages/SetupSuperAdmin';
 import Dashboard from './pages/Dashboard';
 import BlogsManage from './pages/BlogsManage';
-import CampsManage from './pages/CampsManage';
 import ArticlesManage from './pages/ArticlesManage';
-import MapLocationsManage from './pages/MapLocationsManage';
+import DeskStoriesManage from './pages/DeskStoriesManage';
+import SuccessStoriesManage from './pages/SuccessStoriesManage';
+import PapersManage from './pages/PapersManage';
+import ReportsManage from './pages/ReportsManage';
 import UsersManage from './pages/UsersManage';
 
 export default function AdminRoutes() {
@@ -20,10 +22,12 @@ export default function AdminRoutes() {
         <Route path="setup" element={<SetupSuperAdmin />} />
         <Route element={<AdminLayout />}>
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="desk" element={<DeskStoriesManage />} />
+          <Route path="success-stories" element={<SuccessStoriesManage />} />
+          <Route path="reports" element={<ReportsManage />} />
           <Route path="blogs" element={<BlogsManage />} />
-          <Route path="camps" element={<CampsManage />} />
+          <Route path="papers" element={<PapersManage />} />
           <Route path="articles" element={<ArticlesManage />} />
-          <Route path="map" element={<MapLocationsManage />} />
           <Route path="users" element={<UsersManage />} />
         </Route>
         <Route path="*" element={<Navigate to="/admin/login" replace />} />

@@ -4,10 +4,11 @@ import { useAuth } from '../AuthContext';
 
 const nav = [
   { to: '/admin/dashboard', label: 'Dashboard' },
+  { to: '/admin/desk', label: 'The Desk' },
+  { to: '/admin/success-stories', label: 'Success Stories' },
   { to: '/admin/blogs', label: 'Blogs' },
-  { to: '/admin/camps', label: 'Camps' },
-  { to: '/admin/articles', label: 'Knowledge Hub' },
-  { to: '/admin/map', label: 'Impact Map' },
+  { to: '/admin/papers', label: 'Papers' },
+  { to: '/admin/articles', label: 'KYR Guides' },
 ];
 
 export default function AdminHeader() {

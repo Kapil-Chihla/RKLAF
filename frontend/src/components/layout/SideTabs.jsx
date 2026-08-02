@@ -23,12 +23,12 @@ function PhoneIcon() {
 export default function SideTabs() {
   return (
     <div className="side-tabs" aria-label="Quick actions">
-      <a href="/#donate" className="side-tabs__tab side-tabs__tab--donate">
+      <Link to="/donate" className="side-tabs__tab side-tabs__tab--donate">
         <span className="side-tabs__icon side-tabs__icon--heart" aria-hidden="true">
           <HeartIcon />
         </span>
         <span className="side-tabs__label">Donate</span>
-      </a>
+      </Link>
       <Link to="/contact" className="side-tabs__tab side-tabs__tab--touch">
         <span className="side-tabs__icon" aria-hidden="true">
           <PhoneIcon />

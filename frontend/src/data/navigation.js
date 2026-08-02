@@ -2,6 +2,8 @@ export const socialLinks = [
   { name: 'Instagram', href: 'https://www.instagram.com/rklegalaidfoundation', icon: 'instagram' },
   { name: 'Facebook', href: 'https://facebook.com/', icon: 'facebook' },
   { name: 'YouTube', href: 'https://www.youtube.com/@radheykrishnalegalaid', icon: 'youtube' },
+  { name: 'LinkedIn', href: 'https://www.linkedin.com/', icon: 'linkedin' },
+  { name: 'Spotify', href: 'https://open.spotify.com/', icon: 'spotify' },
 ];
 
 const WHATSAPP_PREFILL =
@@ -15,7 +17,6 @@ export const navItems = [
   { label: 'About Us', path: '/about' },
   { label: 'Our Work', path: '/our-work' },
   { label: 'Know Your Rights', shortLabel: 'Rights', path: '/know-your-rights' },
-  { label: 'Noted Judgments', shortLabel: 'Judgments', path: '/#expertise' },
   { label: 'Impact', path: '/impact' },
   { label: 'Library', path: '/library' },
   { label: 'Academics', path: '/academics' },

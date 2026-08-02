@@ -298,11 +298,56 @@
   gap: 1.15rem;
 }
 
+/* Scrollport: always shows 3 cards wide; track grows for more columns */
+.impact-stories__scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 0.65rem;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+}
+
+.impact-stories__scroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.impact-stories__scroll::-webkit-scrollbar-thumb {
+  background: rgba(43, 34, 26, 0.2);
+  border-radius: 999px;
+}
+
+/*
+  2 rows. Track width = (cols / 3) × scrollport so exactly 3 columns
+  fit on screen; columns 4+ scroll into view with both rows together.
+*/
+.impact-stories__track {
+  --story-cols: 3;
+  --story-gap: 1.15rem;
+  display: grid;
+  grid-template-columns: repeat(var(--story-cols), minmax(0, 1fr));
+  grid-template-rows: auto auto;
+  gap: var(--story-gap);
+  width: calc(var(--story-cols) / 3 * 100%);
+  min-width: 100%;
+}
+
 .impact-story {
+  display: block;
+  min-width: 0;
   background: #fff;
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 12px 32px rgba(26, 21, 16, 0.06);
+  text-decoration: none;
+  color: inherit;
+  height: 100%;
+  scroll-snap-align: start;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+a.impact-story:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 40px rgba(26, 21, 16, 0.1);
 }
 
 .impact-story__photo {
@@ -539,8 +584,19 @@
     grid-template-columns: 1fr;
   }
 
+  /* Tablet: 2 cards visible; same 2-row track scrolls horizontally */
+  .impact-stories__track {
+    width: calc(var(--story-cols) / 2 * 100%);
+  }
+
   .impact-foot__map {
     min-height: 420px;
+  }
+}
+
+@media (max-width: 640px) {
+  .impact-stories__track {
+    width: calc(var(--story-cols) * 100%);
   }
 
   .impact-hands__grid {

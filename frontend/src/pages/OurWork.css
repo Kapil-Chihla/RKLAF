@@ -418,6 +418,40 @@
   text-transform: uppercase;
 }
 
+.work-frame__img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.work-desk__entry {
+  padding-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+.work-desk__entry--flip .work-desk__body {
+  direction: rtl;
+}
+
+.work-desk__entry--flip .work-desk__body > * {
+  direction: ltr;
+}
+
+.work-desk__account {
+  padding-top: clamp(2.5rem, 5vw, 3.5rem);
+  padding-bottom: clamp(2rem, 4vw, 3rem);
+  text-align: center;
+}
+
+.work-desk__account .work-pill {
+  margin-top: 0.25rem;
+}
+
+.work-desk__lead-text .work-pill {
+  margin-top: 0.5rem;
+  display: inline-flex;
+}
+
 .work-frame--lg {
   width: min(100%, 340px);
   margin-left: auto;
@@ -584,6 +618,11 @@
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--accent);
+}
+
+.work-report__pdf--muted {
+  opacity: 0.4;
+  pointer-events: none;
 }
 
 @media (max-width: 960px) {

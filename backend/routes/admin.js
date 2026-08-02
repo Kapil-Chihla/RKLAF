@@ -8,23 +8,40 @@ const {
   User,
   Invite,
   MapLocation,
+  DeskStory,
+  SuccessStory,
+  Paper,
 } = require('../models');
 const { protect, contentManagers } = require('../auth');
 
 const router = express.Router();
 
 router.get('/stats', protect, contentManagers, async (req, res) => {
-  const [blogs, camps, articles, reports, team, users, pendingInvites, mapLocations] =
-    await Promise.all([
-      Blog.countDocuments(),
-      Camp.countDocuments(),
-      Article.countDocuments(),
-      Report.countDocuments(),
-      TeamMember.countDocuments(),
-      User.countDocuments(),
-      Invite.countDocuments({ status: 'pending' }),
-      MapLocation.countDocuments(),
-    ]);
+  const [
+    blogs,
+    camps,
+    articles,
+    reports,
+    team,
+    users,
+    pendingInvites,
+    mapLocations,
+    deskStories,
+    successStories,
+    papers,
+  ] = await Promise.all([
+    Blog.countDocuments(),
+    Camp.countDocuments(),
+    Article.countDocuments(),
+    Report.countDocuments(),
+    TeamMember.countDocuments(),
+    User.countDocuments(),
+    Invite.countDocuments({ status: 'pending' }),
+    MapLocation.countDocuments(),
+    DeskStory.countDocuments(),
+    SuccessStory.countDocuments(),
+    Paper.countDocuments(),
+  ]);
 
   res.json({
     blogs,
@@ -35,6 +52,9 @@ router.get('/stats', protect, contentManagers, async (req, res) => {
     users,
     pendingInvites,
     mapLocations,
+    deskStories,
+    successStories,
+    papers,
   });
 });
 
