@@ -67,7 +67,7 @@ export default function PapersManage() {
           </label>
           <label>
             PDF
-            <input type="file" accept=".pdf" required onChange={(e) => setFile(e.target.files?.[0] || null)} />
+            <input type="file" accept="application/pdf,.pdf" required onChange={(e) => setFile(e.target.files?.[0] || null)} />
           </label>
           <button type="submit" className="admin-btn admin-btn--primary">
             Upload paper

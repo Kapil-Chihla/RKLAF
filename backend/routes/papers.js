@@ -5,6 +5,7 @@ const generateId = require('../lib/generateId');
 const { protect, contentManagers, adminOrSuper } = require('../auth');
 const { uploadPDF } = require('../upload');
 const { uploadBuffer } = require('../lib/cloudinaryUpload');
+const { createPdfDownloadHandler, assertPdfUpload } = require('../lib/pdfDownload');
 
 const router = express.Router();
 
@@ -15,6 +16,8 @@ router.get('/', async (req, res) => {
   const items = await Paper.find(filter).sort({ createdAt: -1 }).lean();
   res.json(items);
 });
+
+router.get('/:id/download', createPdfDownloadHandler(Paper, { notFound: 'Paper not found' }));
 
 router.get('/:slugOrId', async (req, res) => {
   const { slugOrId } = req.params;
@@ -31,8 +34,10 @@ router.post('/', protect, contentManagers, uploadPDF.single('file'), async (req,
   if (!['research', 'white-paper'].includes(kind)) {
     return res.status(400).json({ message: 'kind must be research or white-paper' });
   }
-  let file = null;
-  if (req.file) file = await uploadBuffer(req.file, 'papers');
+  const pdfErr = assertPdfUpload(req.file);
+  if (pdfErr) return res.status(400).json({ message: pdfErr });
+
+  const file = await uploadBuffer(req.file, 'papers');
 
   const paper = await Paper.create({
     id: generateId('paper'),

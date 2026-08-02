@@ -2,8 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Reveal from '../components/motion/Reveal';
 import publicApi from '../lib/publicApi';
-import { assetUrl } from '../lib/api';
-import { cloudinaryPdfAttachmentUrl } from '../lib/pdfDownload';
+import { paperPdfDownloadUrl } from '../lib/pdfDownload';
 import './Academics.css';
 
 const CATEGORIES = [
@@ -112,7 +111,7 @@ function PdfShelf({ title, docs }) {
                 <p>{doc.meta || 'PDF document'}</p>
                 {doc.file ? (
                   <a
-                    href={cloudinaryPdfAttachmentUrl(assetUrl(doc.file), `${doc.title || 'document'}.pdf`)}
+                    href={paperPdfDownloadUrl(doc.id)}
                     className="acad-pdf__dl"
                     target="_blank"
                     rel="noopener noreferrer"

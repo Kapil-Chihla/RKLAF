@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Reveal from '../components/motion/Reveal';
 import publicApi from '../lib/publicApi';
 import { assetUrl } from '../lib/api';
-import { cloudinaryPdfAttachmentUrl } from '../lib/pdfDownload';
+import { reportPdfDownloadUrl } from '../lib/pdfDownload';
 import './OurWork.css';
 
 export const FALLBACK_DESK = [
@@ -298,7 +298,7 @@ export default function OurWork() {
 
           <div className="work-reports__grid">
             {annualReports.map((r) => {
-              const pdfHref = r.file ? assetUrl(r.file) : null;
+              const hasPdf = Boolean(r.file);
               return (
                 <article className="work-report" key={r.id || r.year}>
                   <span className="work-report__icon" aria-hidden="true">
@@ -311,9 +311,9 @@ export default function OurWork() {
                     <h3>{r.title || `Annual Report ${r.year}`}</h3>
                     <p>{r.summary || r.label || 'Impact, audited financials & ledger'}</p>
                   </div>
-                  {pdfHref ? (
+                  {hasPdf ? (
                     <a
-                      href={cloudinaryPdfAttachmentUrl(pdfHref, `${r.title || `annual-report-${r.year}`}.pdf`)}
+                      href={reportPdfDownloadUrl(r.id)}
                       className="work-report__pdf"
                       target="_blank"
                       rel="noopener noreferrer"

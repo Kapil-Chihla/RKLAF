@@ -4,6 +4,7 @@ const generateId = require('../lib/generateId');
 const { protect, contentManagers, adminOrSuper } = require('../auth');
 const { uploadPDF } = require('../upload');
 const { uploadBuffer } = require('../lib/cloudinaryUpload');
+const { createPdfDownloadHandler, assertPdfUpload } = require('../lib/pdfDownload');
 
 const router = express.Router();
 
@@ -31,10 +32,16 @@ router.get('/', async (req, res) => {
   res.json(all.slice(0, 2));
 });
 
+router.get(
+  '/:id/download',
+  createPdfDownloadHandler(Report, { titleField: 'year', notFound: 'Report not found' }),
+);
+
 router.post('/', protect, contentManagers, uploadPDF.single('file'), async (req, res) => {
   const { title, year, summary } = req.body;
   if (!year?.trim()) return res.status(400).json({ message: 'Year is required (e.g. 2025–26)' });
-  if (!req.file) return res.status(400).json({ message: 'PDF file is required' });
+  const pdfErr = assertPdfUpload(req.file);
+  if (pdfErr) return res.status(400).json({ message: pdfErr });
 
   const file = await uploadBuffer(req.file, 'reports');
   const report = await Report.create({

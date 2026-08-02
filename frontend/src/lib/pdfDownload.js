@@ -1,15 +1,25 @@
 import { API_BASE } from './api';
 
 /**
- * API endpoint that redirects to a Cloudinary URL with fl_attachment
- * so the browser downloads a real .pdf file (cross-origin `download` attr does not work).
+ * Backend download endpoints redirect to Cloudinary with fl_attachment
+ * so the browser saves a real .pdf (HTML download attr fails cross-origin).
  */
 export function guidePdfDownloadUrl(articleId) {
   if (!articleId) return '#';
   return `${API_BASE}/articles/${encodeURIComponent(articleId)}/download`;
 }
 
-/** Same pattern for annual reports / papers if file is already a Cloudinary URL */
+export function paperPdfDownloadUrl(paperId) {
+  if (!paperId) return '#';
+  return `${API_BASE}/papers/${encodeURIComponent(paperId)}/download`;
+}
+
+export function reportPdfDownloadUrl(reportId) {
+  if (!reportId) return '#';
+  return `${API_BASE}/reports/${encodeURIComponent(reportId)}/download`;
+}
+
+/** Fallback if you only have a raw Cloudinary URL (no API id). */
 export function cloudinaryPdfAttachmentUrl(fileUrl, filename = 'document.pdf') {
   if (!fileUrl) return '#';
   let name = String(filename).trim() || 'document.pdf';
