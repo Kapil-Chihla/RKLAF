@@ -5,7 +5,7 @@ import mapImage from '../../assets/map.webp';
 import MapLocationModal from './MapLocationModal';
 import './ImpactMap.css';
 
-const API = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+const API = import.meta.env.VITE_API_BASE_URL || 'https://rklaf.onrender.com/api';
 
 const EMPTY_FILTERS = { region: '', country: '', workType: '' };
 
