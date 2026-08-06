@@ -137,6 +137,37 @@
   gap: 0.5rem;
 }
 
+.story-detail__doc {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(176, 138, 60, 0.45);
+  border-radius: 6px;
+  color: var(--accent, #b08a3c);
+  font-weight: 600;
+  text-decoration: none;
+  background: #fff;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.story-detail__doc:hover {
+  border-color: var(--accent, #b08a3c);
+  background: rgba(176, 138, 60, 0.06);
+  text-decoration: none;
+}
+
+.story-detail__doc-name {
+  word-break: break-word;
+}
+
+.story-detail__doc-action {
+  flex-shrink: 0;
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+}
+
 .story-detail__docs a {
   color: var(--accent, #b08a3c);
   font-weight: 600;

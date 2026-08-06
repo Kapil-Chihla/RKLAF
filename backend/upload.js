@@ -12,7 +12,7 @@ const fileFilter = (allowed) => (req, file, cb) => {
 exports.uploadImage = multer({
   storage: memory,
   fileFilter: fileFilter(['.jpg', '.jpeg', '.png', '.webp']),
-  limits: { fileSize: 5 * 1024 * 1024 },
+  limits: { fileSize: 10 * 1024 * 1024 },
 });
 
 exports.uploadPDF = multer({

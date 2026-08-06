@@ -23,6 +23,7 @@ export default function CampsManage() {
   const [heroPreview, setHeroPreview] = useState(null);
   const [heroPickerIndex, setHeroPickerIndex] = useState(0);
   const [editing, setEditing] = useState(null);
+  const [keptImages, setKeptImages] = useState([]);
   const canDelete = ['super_admin', 'admin'].includes(user?.role);
 
   const load = () => api.get('/camps?all=true').then((r) => setItems(r.data)).catch(() => {});
@@ -49,7 +50,7 @@ export default function CampsManage() {
     return () => URL.revokeObjectURL(url);
   }, [heroFile]);
 
-  const existingImages = editing?.images || [];
+  const existingImages = keptImages;
 
   const pickerItems = useMemo(() => {
     const existing = existingImages.map((img, index) => ({
@@ -83,6 +84,7 @@ export default function CampsManage() {
     setHeroPreview(null);
     setHeroPickerIndex(0);
     setEditing(null);
+    setKeptImages([]);
   };
 
   const startEdit = (camp) => {
@@ -99,6 +101,7 @@ export default function CampsManage() {
     setPreviews([]);
     setHeroFile(null);
     setHeroPreview(null);
+    setKeptImages([...(camp.images || [])]);
     const heroUrl = camp.heroImage || camp.coverImage;
     const heroIdx = camp.images?.findIndex((img) => img.url === heroUrl);
     setHeroPickerIndex(heroIdx >= 0 ? heroIdx : 0);
@@ -132,12 +135,10 @@ export default function CampsManage() {
     files.forEach((file) => fd.append('images', file));
 
     try {
-      if (editing) {
-        if (existingImages.length) {
-          fd.append('imagesJson', JSON.stringify(existingImages));
-        }
-        appendHeroSelection(fd);
-        await api.put(`/camps/${editing.id}`, fd);
+        if (editing) {
+          fd.append('imagesJson', JSON.stringify(keptImages));
+          appendHeroSelection(fd);
+          await api.put(`/camps/${editing.id}`, fd);
         setMsg('Camp updated.');
       } else {
         if (!files.length && !heroFile) {
@@ -248,6 +249,31 @@ export default function CampsManage() {
             />
           </label>
 
+          {editing && keptImages.length > 0 && (
+            <div className="admin-existing-media">
+              <p className="admin-existing-media__title">
+                <strong>Current album</strong>
+                <span> — remove photos you no longer want</span>
+              </p>
+              <div className="admin-existing-media__grid">
+                {keptImages.map((img) => (
+                  <div key={img.id || img.url} className="admin-existing-media__card">
+                    <img src={assetUrl(img.url)} alt="" />
+                    <button
+                      type="button"
+                      className="admin-btn admin-btn--danger admin-btn--sm"
+                      onClick={() =>
+                        setKeptImages((prev) => prev.filter((item) => (item.id || item.url) !== (img.id || img.url)))
+                      }
+                    >
+                      Remove
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {!heroFile && pickerItems.length > 0 && (
             <div className="admin-camp-previews">
               <p><strong>Or pick hero from album</strong> — click a photo below</p>
@@ -270,9 +296,9 @@ export default function CampsManage() {
             </div>
           )}
 
-          {editing && existingImages.length > 0 && !files.length && (
+          {editing && keptImages.length > 0 && !files.length && (
             <p style={{ fontSize: '0.88rem', color: '#5a6f82' }}>
-              Existing album: {existingImages.length} photo(s). Upload more files above to add to this camp.
+              {keptImages.length} album photo(s) kept. Upload more files above to add.
             </p>
           )}
 

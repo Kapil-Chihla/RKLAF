@@ -23,5 +23,5 @@ export function deskStoryHref(story) {
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-|-$/g, '');
-  return slug ? `/desk/${slug}` : null;
+  return slug ? `/our-work/desk/${slug}` : null;
 }

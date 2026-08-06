@@ -4,7 +4,6 @@ import Layout from './components/layout/Layout';
 import Home from './pages/Home';
 import About from './pages/About';
 import OurWork from './pages/OurWork';
-import TheDesk from './pages/TheDesk';
 import DeskStoryDetail from './pages/DeskStoryDetail';
 import KnowYourRights from './pages/KnowYourRights';
 import Academics from './pages/Academics';
@@ -16,13 +15,13 @@ import JoinUs from './pages/JoinUs';
 import Contact from './pages/Contact';
 import Donate from './pages/Donate';
 
-function LegacyDeskRedirect() {
+function DeskSlugRedirect() {
   const { slug } = useParams();
-  return <Navigate to={`/desk/${slug}`} replace />;
+  return <Navigate to={`/our-work/desk/${slug}`} replace />;
 }
 
 /**
- * Clean-slate routing: redesigned pages + CMS detail routes.
+ * Desk listing lives on Our Work; full story is /our-work/desk/:slug.
  */
 export default function App() {
   return (
@@ -34,9 +33,9 @@ export default function App() {
           <Route index element={<Home />} />
           <Route path="about" element={<About />} />
           <Route path="our-work" element={<OurWork />} />
-          <Route path="desk" element={<TheDesk />} />
-          <Route path="desk/:slug" element={<DeskStoryDetail />} />
-          <Route path="our-work/desk/:slug" element={<LegacyDeskRedirect />} />
+          <Route path="our-work/desk/:slug" element={<DeskStoryDetail />} />
+          <Route path="desk" element={<Navigate to="/our-work#desk" replace />} />
+          <Route path="desk/:slug" element={<DeskSlugRedirect />} />
           <Route path="know-your-rights" element={<KnowYourRights />} />
           <Route path="impact" element={<Impact />} />
           <Route path="impact/stories/:slug" element={<SuccessStoryDetail />} />

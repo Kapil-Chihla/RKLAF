@@ -12,6 +12,7 @@ const NAV_GROUPS = [
     items: [
       { to: '/admin/desk', label: 'The Desk stories' },
       { to: '/admin/success-stories', label: 'Success stories' },
+      { to: '/admin/camps', label: 'Camp albums' },
       { to: '/admin/reports', label: 'Annual reports' },
     ],
   },

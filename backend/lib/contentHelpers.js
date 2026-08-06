@@ -48,4 +48,23 @@ function parseCaptions(raw, count) {
   return Array.from({ length: count }, (_, i) => captions[i] || '');
 }
 
-module.exports = { parseSections, parseCaptions };
+/**
+ * Parse a JSON array from multipart body (kept existing gallery/docs after removals).
+ * Returns { ok, value, error }.
+ */
+function parseJsonArray(raw, label = 'data') {
+  if (raw === undefined || raw === null || raw === '') {
+    return { ok: true, value: null };
+  }
+  try {
+    const parsed = typeof raw === 'string' ? JSON.parse(raw) : raw;
+    if (!Array.isArray(parsed)) {
+      return { ok: false, error: `Invalid ${label}: expected a JSON array` };
+    }
+    return { ok: true, value: parsed };
+  } catch {
+    return { ok: false, error: `Invalid ${label}` };
+  }
+}
+
+module.exports = { parseSections, parseCaptions, parseJsonArray };

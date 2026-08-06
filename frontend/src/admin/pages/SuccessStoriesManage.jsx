@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import api from '../api';
 import { useAuth } from '../AuthContext';
+import AdminExistingMedia from '../components/AdminExistingMedia';
 
 const emptyForm = {
   title: '',
@@ -22,6 +23,9 @@ export default function SuccessStoriesManage() {
   const [gallery, setGallery] = useState([]);
   const [documents, setDocuments] = useState([]);
   const [editing, setEditing] = useState(null);
+  const [keptGallery, setKeptGallery] = useState([]);
+  const [keptDocuments, setKeptDocuments] = useState([]);
+  const [clearHero, setClearHero] = useState(false);
   const canDelete = ['super_admin', 'admin'].includes(user?.role);
 
   const load = () => api.get('/success-stories?all=true').then((r) => setItems(r.data)).catch(() => {});
@@ -36,6 +40,9 @@ export default function SuccessStoriesManage() {
     setGallery([]);
     setDocuments([]);
     setEditing(null);
+    setKeptGallery([]);
+    setKeptDocuments([]);
+    setClearHero(false);
   };
 
   const startEdit = (story) => {
@@ -53,6 +60,9 @@ export default function SuccessStoriesManage() {
     setHero(null);
     setGallery([]);
     setDocuments([]);
+    setKeptGallery([...(story.gallery || [])]);
+    setKeptDocuments([...(story.documents || [])]);
+    setClearHero(false);
     setMsg('');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -69,6 +79,9 @@ export default function SuccessStoriesManage() {
     documents.forEach((f) => fd.append('documents', f));
     try {
       if (editing) {
+        fd.append('galleryJson', JSON.stringify(keptGallery));
+        fd.append('documentsJson', JSON.stringify(keptDocuments));
+        if (clearHero && !hero) fd.append('clearHero', 'true');
         await api.put(`/success-stories/${editing.id}`, fd, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
@@ -89,8 +102,8 @@ export default function SuccessStoriesManage() {
       <div className="admin-card">
         <h2>{editing ? 'Edit success story' : 'Impact — success stories'}</h2>
         <p style={{ color: '#5a6f82', marginTop: 0 }}>
-          Cards show tag, title, problem / action / result. Attach multiple images and PDF documents.
-          {editing ? ' New gallery images and PDFs append to existing ones.' : ''}
+          Cards show tag, title, problem / action / result. Multiple images and PDFs supported.
+          {editing ? ' Remove existing media below, or add more files.' : ''}
         </p>
         {msg && (
           <div
@@ -119,9 +132,27 @@ export default function SuccessStoriesManage() {
             Photo caption
             <input value={form.caption} onChange={(e) => setForm({ ...form, caption: e.target.value })} />
           </label>
+
+          {editing ? (
+            <AdminExistingMedia
+              title="Current hero"
+              kind="hero"
+              heroUrl={editing.heroImage}
+              clearHero={clearHero}
+              onClearHero={() => setClearHero(true)}
+            />
+          ) : null}
+
           <label>
             Hero / portrait image {editing ? '(leave empty to keep current)' : ''}
-            <input type="file" accept="image/*" onChange={(e) => setHero(e.target.files?.[0] || null)} />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                setHero(e.target.files?.[0] || null);
+                if (e.target.files?.[0]) setClearHero(false);
+              }}
+            />
           </label>
           <label>
             Problem
@@ -154,6 +185,16 @@ export default function SuccessStoriesManage() {
             Full story text
             <textarea rows={6} value={form.fullBody} onChange={(e) => setForm({ ...form, fullBody: e.target.value })} />
           </label>
+
+          {editing ? (
+            <AdminExistingMedia
+              title="Current gallery"
+              kind="image"
+              items={keptGallery}
+              onRemove={(id) => setKeptGallery((prev) => prev.filter((img) => (img.id || img.url) !== id))}
+            />
+          ) : null}
+
           <label>
             Extra story images — select multiple
             <input
@@ -163,12 +204,7 @@ export default function SuccessStoriesManage() {
               onChange={(e) => setGallery(Array.from(e.target.files || []))}
             />
             {gallery.length > 0 ? (
-              <small style={{ display: 'block', marginTop: 4 }}>{gallery.length} image(s) selected</small>
-            ) : null}
-            {editing?.gallery?.length ? (
-              <small style={{ display: 'block', marginTop: 4 }}>
-                Existing gallery: {editing.gallery.length} image(s)
-              </small>
+              <small style={{ display: 'block', marginTop: 4 }}>{gallery.length} new image(s) selected</small>
             ) : null}
           </label>
           <label>
@@ -179,6 +215,16 @@ export default function SuccessStoriesManage() {
               onChange={(e) => setForm({ ...form, galleryCaptions: e.target.value })}
             />
           </label>
+
+          {editing ? (
+            <AdminExistingMedia
+              title="Current PDF documents"
+              kind="document"
+              items={keptDocuments}
+              onRemove={(id) => setKeptDocuments((prev) => prev.filter((doc) => (doc.id || doc.url) !== id))}
+            />
+          ) : null}
+
           <label>
             PDF documents — select multiple
             <input
@@ -187,13 +233,12 @@ export default function SuccessStoriesManage() {
               multiple
               onChange={(e) => setDocuments(Array.from(e.target.files || []))}
             />
+            <small style={{ display: 'block', marginTop: 4, color: '#5a6f82' }}>
+              The public page shows each file&apos;s original name (e.g. ngo-2.pdf). Rename the file on your
+              computer before upload if you want a clearer label.
+            </small>
             {documents.length > 0 ? (
-              <small style={{ display: 'block', marginTop: 4 }}>{documents.length} PDF(s) selected</small>
-            ) : null}
-            {editing?.documents?.length ? (
-              <small style={{ display: 'block', marginTop: 4 }}>
-                Existing documents: {editing.documents.length}
-              </small>
+              <small style={{ display: 'block', marginTop: 4 }}>{documents.length} new PDF(s) selected</small>
             ) : null}
           </label>
           <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>

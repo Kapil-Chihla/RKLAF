@@ -11,6 +11,7 @@ import DeskStoriesManage from './pages/DeskStoriesManage';
 import SuccessStoriesManage from './pages/SuccessStoriesManage';
 import PapersManage from './pages/PapersManage';
 import ReportsManage from './pages/ReportsManage';
+import CampsManage from './pages/CampsManage';
 import UsersManage from './pages/UsersManage';
 
 export default function AdminRoutes() {
@@ -24,6 +25,7 @@ export default function AdminRoutes() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="desk" element={<DeskStoriesManage />} />
           <Route path="success-stories" element={<SuccessStoriesManage />} />
+          <Route path="camps" element={<CampsManage />} />
           <Route path="reports" element={<ReportsManage />} />
           <Route path="blogs" element={<BlogsManage />} />
           <Route path="papers" element={<PapersManage />} />

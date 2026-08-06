@@ -3,10 +3,10 @@ const path = require('path');
 const slugify = require('slugify');
 const { DeskStory } = require('../models');
 const generateId = require('../lib/generateId');
-const { parseCaptions } = require('../lib/contentHelpers');
+const { parseCaptions, parseJsonArray } = require('../lib/contentHelpers');
 const { protect, contentManagers, adminOrSuper } = require('../auth');
 const { uploadAny } = require('../upload');
-const { uploadBuffer } = require('../lib/cloudinaryUpload');
+const { uploadBuffer, cloudinaryAttachmentUrl } = require('../lib/cloudinaryUpload');
 
 const router = express.Router();
 
@@ -52,10 +52,38 @@ async function buildDocuments(files) {
   }));
 }
 
+/** Keep project numbers sequential 1..n after deletes / gaps. */
+async function renumberDeskStories() {
+  const items = await DeskStory.find({}).sort({ number: 1, createdAt: 1 });
+  await Promise.all(
+    items.map((item, index) => {
+      const next = index + 1;
+      if (item.number === next) return null;
+      item.number = next;
+      item.updatedAt = new Date().toISOString();
+      return item.save();
+    }),
+  );
+}
+
 router.get('/', async (req, res) => {
   const filter = req.query.all === 'true' ? {} : { published: { $ne: false } };
   const items = await DeskStory.find(filter).sort({ number: 1, createdAt: 1 }).lean();
   res.json(items);
+});
+
+/** Force a real PDF download (Cloudinary raw URLs often fail in-browser viewers). */
+router.get('/:slugOrId/documents/:docId/download', async (req, res) => {
+  const { slugOrId, docId } = req.params;
+  const story = await DeskStory.findOne({
+    $or: [{ slug: slugOrId }, { id: slugOrId }],
+    ...(req.query.all === 'true' ? {} : { published: { $ne: false } }),
+  }).lean();
+  if (!story) return res.status(404).json({ message: 'Desk story not found' });
+  const doc = (story.documents || []).find((d) => d.id === docId);
+  if (!doc?.url) return res.status(404).json({ message: 'Document not found' });
+  const filename = doc.name || 'document.pdf';
+  return res.redirect(302, cloudinaryAttachmentUrl(doc.url, filename));
 });
 
 router.post('/', protect, contentManagers, uploadDeskMedia, async (req, res) => {
@@ -83,12 +111,16 @@ router.post('/', protect, contentManagers, uploadDeskMedia, async (req, res) => 
     const documents = await buildDocuments(req.files?.documents);
 
     const count = await DeskStory.countDocuments();
-    const storyNumber = number ? parseInt(number, 10) : count + 1;
+    let storyNumber = count + 1;
+    if (number !== undefined && number !== '') {
+      const parsed = parseInt(number, 10);
+      if (!Number.isNaN(parsed) && parsed > 0) storyNumber = parsed;
+    }
 
     const story = await DeskStory.create({
       id: generateId('desk'),
       slug: slugify(title, { lower: true, strict: true }),
-      number: Number.isNaN(storyNumber) ? count + 1 : storyNumber,
+      number: storyNumber,
       kicker: kicker || 'Senior Citizens',
       title,
       listingDescription: listingDescription || '',
@@ -121,6 +153,9 @@ router.put('/:id', protect, contentManagers, uploadDeskMedia, async (req, res) =
       number,
       published,
       galleryCaptions,
+      galleryJson,
+      documentsJson,
+      clearHero,
     } = req.body;
 
     if (title) {
@@ -136,6 +171,32 @@ router.put('/:id', protect, contentManagers, uploadDeskMedia, async (req, res) =
       if (!Number.isNaN(n)) story.number = n;
     }
     if (published !== undefined) story.published = published === 'false' ? false : true;
+
+    const keptGallery = parseJsonArray(galleryJson, 'galleryJson');
+    if (!keptGallery.ok) return res.status(400).json({ message: keptGallery.error });
+    if (keptGallery.value) {
+      story.gallery = keptGallery.value.map((img, index) => ({
+        id: img.id || generateId('img'),
+        url: img.url,
+        caption: img.caption || '',
+        order: index,
+      }));
+    }
+
+    const keptDocs = parseJsonArray(documentsJson, 'documentsJson');
+    if (!keptDocs.ok) return res.status(400).json({ message: keptDocs.error });
+    if (keptDocs.value) {
+      story.documents = keptDocs.value.map((doc) => ({
+        id: doc.id || generateId('doc'),
+        url: doc.url,
+        name: doc.name || 'document.pdf',
+        createdAt: doc.createdAt || new Date().toISOString(),
+      }));
+    }
+
+    if (clearHero === 'true' || clearHero === true) {
+      story.heroImage = null;
+    }
 
     const heroFile = req.files?.hero?.[0];
     if (heroFile) {
@@ -163,6 +224,13 @@ router.put('/:id', protect, contentManagers, uploadDeskMedia, async (req, res) =
   }
 });
 
+/** Resequence project numbers 1..n (fixes leftovers like a lone “03”). */
+router.post('/renumber', protect, contentManagers, async (_req, res) => {
+  await renumberDeskStories();
+  const items = await DeskStory.find({}).sort({ number: 1, createdAt: 1 }).lean();
+  res.json(items);
+});
+
 router.get('/:slugOrId', async (req, res) => {
   const { slugOrId } = req.params;
   const item = await DeskStory.findOne({
@@ -176,6 +244,7 @@ router.get('/:slugOrId', async (req, res) => {
 router.delete('/:id', protect, adminOrSuper, async (req, res) => {
   const result = await DeskStory.deleteOne({ id: req.params.id });
   if (result.deletedCount === 0) return res.status(404).json({ message: 'Desk story not found' });
+  await renumberDeskStories();
   res.json({ message: 'Desk story deleted' });
 });
 

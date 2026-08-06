@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import api from '../api';
 import { useAuth } from '../AuthContext';
+import AdminExistingMedia from '../components/AdminExistingMedia';
 
 const emptyForm = {
   title: '',
@@ -21,9 +22,18 @@ export default function DeskStoriesManage() {
   const [gallery, setGallery] = useState([]);
   const [documents, setDocuments] = useState([]);
   const [editing, setEditing] = useState(null);
+  const [keptGallery, setKeptGallery] = useState([]);
+  const [keptDocuments, setKeptDocuments] = useState([]);
+  const [clearHero, setClearHero] = useState(false);
   const canDelete = ['super_admin', 'admin'].includes(user?.role);
 
-  const load = () => api.get('/desk-stories?all=true').then((r) => setItems(r.data)).catch(() => {});
+  const load = () =>
+    api
+      .post('/desk-stories/renumber')
+      .then((r) => setItems(r.data))
+      .catch(() =>
+        api.get('/desk-stories?all=true').then((r) => setItems(r.data)).catch(() => {}),
+      );
 
   useEffect(() => {
     load();
@@ -35,6 +45,9 @@ export default function DeskStoriesManage() {
     setGallery([]);
     setDocuments([]);
     setEditing(null);
+    setKeptGallery([]);
+    setKeptDocuments([]);
+    setClearHero(false);
   };
 
   const startEdit = (story) => {
@@ -51,6 +64,9 @@ export default function DeskStoriesManage() {
     setHero(null);
     setGallery([]);
     setDocuments([]);
+    setKeptGallery([...(story.gallery || [])]);
+    setKeptDocuments([...(story.documents || [])]);
+    setClearHero(false);
     setMsg('');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -67,6 +83,9 @@ export default function DeskStoriesManage() {
     documents.forEach((f) => fd.append('documents', f));
     try {
       if (editing) {
+        fd.append('galleryJson', JSON.stringify(keptGallery));
+        fd.append('documentsJson', JSON.stringify(keptDocuments));
+        if (clearHero && !hero) fd.append('clearHero', 'true');
         await api.put(`/desk-stories/${editing.id}`, fd, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
@@ -87,10 +106,8 @@ export default function DeskStoriesManage() {
       <div className="admin-card">
         <h2>{editing ? 'Edit desk story' : 'The Desk — case stories'}</h2>
         <p style={{ color: '#5a6f82', marginTop: 0 }}>
-          Stories appear on the Desk page. Add multiple gallery images and PDF documents.
-          {editing
-            ? ' New gallery images and PDFs append to existing ones.'
-            : ''}
+          Stories appear on Our Work → The Desk. Select multiple gallery images and PDFs.
+          {editing ? ' Remove existing media below, or add more files.' : ''}
         </p>
         {msg && (
           <div
@@ -129,9 +146,27 @@ export default function DeskStoriesManage() {
               onChange={(e) => setForm({ ...form, listingDescription: e.target.value })}
             />
           </label>
+
+          {editing ? (
+            <AdminExistingMedia
+              title="Current hero"
+              kind="hero"
+              heroUrl={editing.heroImage}
+              clearHero={clearHero}
+              onClearHero={() => setClearHero(true)}
+            />
+          ) : null}
+
           <label>
             Hero photo {editing ? '(leave empty to keep current)' : ''}
-            <input type="file" accept="image/*" onChange={(e) => setHero(e.target.files?.[0] || null)} />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                setHero(e.target.files?.[0] || null);
+                if (e.target.files?.[0]) setClearHero(false);
+              }}
+            />
           </label>
           <label>
             Full story header
@@ -149,6 +184,16 @@ export default function DeskStoriesManage() {
               onChange={(e) => setForm({ ...form, fullBody: e.target.value })}
             />
           </label>
+
+          {editing ? (
+            <AdminExistingMedia
+              title="Current gallery"
+              kind="image"
+              items={keptGallery}
+              onRemove={(id) => setKeptGallery((prev) => prev.filter((img) => (img.id || img.url) !== id))}
+            />
+          ) : null}
+
           <label>
             Story images (gallery) — select multiple
             <input
@@ -158,12 +203,7 @@ export default function DeskStoriesManage() {
               onChange={(e) => setGallery(Array.from(e.target.files || []))}
             />
             {gallery.length > 0 ? (
-              <small style={{ display: 'block', marginTop: 4 }}>{gallery.length} image(s) selected</small>
-            ) : null}
-            {editing?.gallery?.length ? (
-              <small style={{ display: 'block', marginTop: 4 }}>
-                Existing gallery: {editing.gallery.length} image(s)
-              </small>
+              <small style={{ display: 'block', marginTop: 4 }}>{gallery.length} new image(s) selected</small>
             ) : null}
           </label>
           <label>
@@ -174,6 +214,16 @@ export default function DeskStoriesManage() {
               onChange={(e) => setForm({ ...form, galleryCaptions: e.target.value })}
             />
           </label>
+
+          {editing ? (
+            <AdminExistingMedia
+              title="Current PDF documents"
+              kind="document"
+              items={keptDocuments}
+              onRemove={(id) => setKeptDocuments((prev) => prev.filter((doc) => (doc.id || doc.url) !== id))}
+            />
+          ) : null}
+
           <label>
             PDF documents — select multiple
             <input
@@ -182,13 +232,12 @@ export default function DeskStoriesManage() {
               multiple
               onChange={(e) => setDocuments(Array.from(e.target.files || []))}
             />
+            <small style={{ display: 'block', marginTop: 4, color: '#5a6f82' }}>
+              The public page shows each file&apos;s original name (e.g. ngo-2.pdf). Rename the file on your
+              computer before upload if you want a clearer label.
+            </small>
             {documents.length > 0 ? (
-              <small style={{ display: 'block', marginTop: 4 }}>{documents.length} PDF(s) selected</small>
-            ) : null}
-            {editing?.documents?.length ? (
-              <small style={{ display: 'block', marginTop: 4 }}>
-                Existing documents: {editing.documents.length}
-              </small>
+              <small style={{ display: 'block', marginTop: 4 }}>{documents.length} new PDF(s) selected</small>
             ) : null}
           </label>
           <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>

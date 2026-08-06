@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import publicApi from '../lib/publicApi';
 import { assetUrl } from '../lib/api';
 import Reveal from '../components/motion/Reveal';
+import { cloudinaryPdfAttachmentUrl } from '../lib/pdfDownload';
 import './StoryDetail.css';
 
 export default function SuccessStoryDetail() {
@@ -99,13 +100,23 @@ export default function SuccessStoryDetail() {
           <div className="story-detail__docs">
             <h2>Documents</h2>
             <ul>
-              {story.documents.map((doc) => (
-                <li key={doc.id}>
-                  <a href={assetUrl(doc.url)} target="_blank" rel="noopener noreferrer">
-                    {doc.name || 'Download PDF'}
-                  </a>
-                </li>
-              ))}
+              {story.documents.map((doc) => {
+                const label = doc.name || 'Document.pdf';
+                const href = cloudinaryPdfAttachmentUrl(doc.url, label);
+                return (
+                  <li key={doc.id}>
+                    <a
+                      href={href}
+                      className="story-detail__doc"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <span className="story-detail__doc-name">{label}</span>
+                      <span className="story-detail__doc-action">Download PDF ↓</span>
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         )}

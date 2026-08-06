@@ -22,15 +22,7 @@ export const WHATSAPP_DISPLAY = CONTACT_PHONE_DISPLAY;
 export const navItems = [
   { label: 'Home', path: '/' },
   { label: 'About Us', path: '/about' },
-  {
-    label: 'Our Work',
-    path: '/our-work',
-    children: [
-      { label: 'Programmes & Initiatives', path: '/our-work#programmes' },
-      { label: 'The Desk', path: '/desk' },
-      { label: 'Annual reports', path: '/our-work#reports' },
-    ],
-  },
+  { label: 'Our Work', path: '/our-work' },
   { label: 'Know Your Rights', shortLabel: 'Rights', path: '/know-your-rights' },
   { label: 'Impact', path: '/impact' },
   { label: 'Library', path: '/library' },

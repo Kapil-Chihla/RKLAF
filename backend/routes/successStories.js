@@ -3,10 +3,10 @@ const path = require('path');
 const slugify = require('slugify');
 const { SuccessStory } = require('../models');
 const generateId = require('../lib/generateId');
-const { parseCaptions } = require('../lib/contentHelpers');
+const { parseCaptions, parseJsonArray } = require('../lib/contentHelpers');
 const { protect, contentManagers, adminOrSuper } = require('../auth');
 const { uploadAny } = require('../upload');
-const { uploadBuffer } = require('../lib/cloudinaryUpload');
+const { uploadBuffer, cloudinaryAttachmentUrl } = require('../lib/cloudinaryUpload');
 
 const router = express.Router();
 
@@ -56,6 +56,20 @@ router.get('/', async (req, res) => {
   const filter = req.query.all === 'true' ? {} : { published: { $ne: false } };
   const items = await SuccessStory.find(filter).sort({ createdAt: -1 }).lean();
   res.json(items);
+});
+
+/** Force a real PDF download (Cloudinary raw URLs often fail in-browser viewers). */
+router.get('/:slugOrId/documents/:docId/download', async (req, res) => {
+  const { slugOrId, docId } = req.params;
+  const story = await SuccessStory.findOne({
+    $or: [{ slug: slugOrId }, { id: slugOrId }],
+    ...(req.query.all === 'true' ? {} : { published: { $ne: false } }),
+  }).lean();
+  if (!story) return res.status(404).json({ message: 'Success story not found' });
+  const doc = (story.documents || []).find((d) => d.id === docId);
+  if (!doc?.url) return res.status(404).json({ message: 'Document not found' });
+  const filename = doc.name || 'document.pdf';
+  return res.redirect(302, cloudinaryAttachmentUrl(doc.url, filename));
 });
 
 router.post('/', protect, contentManagers, uploadStoryMedia, async (req, res) => {
@@ -121,6 +135,9 @@ router.put('/:id', protect, contentManagers, uploadStoryMedia, async (req, res) 
       fullBody,
       published,
       galleryCaptions,
+      galleryJson,
+      documentsJson,
+      clearHero,
     } = req.body;
 
     if (title) {
@@ -134,6 +151,32 @@ router.put('/:id', protect, contentManagers, uploadStoryMedia, async (req, res) 
     if (result !== undefined) story.result = result;
     if (fullBody !== undefined) story.fullBody = fullBody;
     if (published !== undefined) story.published = published === 'false' ? false : true;
+
+    const keptGallery = parseJsonArray(galleryJson, 'galleryJson');
+    if (!keptGallery.ok) return res.status(400).json({ message: keptGallery.error });
+    if (keptGallery.value) {
+      story.gallery = keptGallery.value.map((img, index) => ({
+        id: img.id || generateId('img'),
+        url: img.url,
+        caption: img.caption || '',
+        order: index,
+      }));
+    }
+
+    const keptDocs = parseJsonArray(documentsJson, 'documentsJson');
+    if (!keptDocs.ok) return res.status(400).json({ message: keptDocs.error });
+    if (keptDocs.value) {
+      story.documents = keptDocs.value.map((doc) => ({
+        id: doc.id || generateId('doc'),
+        url: doc.url,
+        name: doc.name || 'document.pdf',
+        createdAt: doc.createdAt || new Date().toISOString(),
+      }));
+    }
+
+    if (clearHero === 'true' || clearHero === true) {
+      story.heroImage = null;
+    }
 
     const heroFile = req.files?.hero?.[0];
     if (heroFile) {
