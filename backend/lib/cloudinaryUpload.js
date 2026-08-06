@@ -47,13 +47,18 @@ function uploadBuffer(file, folder) {
 /**
  * Turn a Cloudinary delivery URL into a forced-download URL with a .pdf filename.
  * Cross-origin HTML `download` attributes are ignored by browsers — this is required.
+ *
+ * Important: periods in the fl_attachment filename MUST be %2E-encoded.
+ * `fl_attachment:ngo-2.pdf` → Cloudinary HTTP 400 (dot ends a transformation segment).
  */
 function cloudinaryAttachmentUrl(fileUrl, filename = 'document.pdf') {
   if (!fileUrl) return null;
   let name = String(filename).trim() || 'document.pdf';
   if (!name.toLowerCase().endsWith('.pdf')) name += '.pdf';
-  // Cloudinary fl_attachment value: keep it URL-safe
-  const safe = encodeURIComponent(name.replace(/[/\\?&#]+/g, '-'));
+  // Strip path junk, then encode; force `.` → `%2E` so Cloudinary keeps the extension
+  const safe = encodeURIComponent(name.replace(/[/\\?&#]+/g, '-')).replace(/\./g, '%2E');
+
+  if (/\/upload\/fl_attachment/.test(fileUrl)) return fileUrl;
 
   if (fileUrl.includes('/upload/')) {
     return fileUrl.replace('/upload/', `/upload/fl_attachment:${safe}/`);
