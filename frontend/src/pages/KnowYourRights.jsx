@@ -198,37 +198,52 @@ export default function KnowYourRights() {
 
   return (
     <div className="kyr kyr--v2">
+      {/* Hero — world map frame (map.webp), not the globe-only visual */}
       <header className="kyr-hero">
         <div className="container kyr-hero__grid">
           <Reveal as="div" className="kyr-hero__copy" variant="up">
-            <p className="kyr-label">Know Your Rights</p>
+            <span className="kyr-rule" aria-hidden="true" />
             <h1>
-              Rights you can
-              <br />
-              actually use
+              Rights begin where <em>confusion</em> ends
             </h1>
-            <p className="kyr-hero__lede">
-              A plain-language desk for the words, guides, and helplines people ask for at every camp —
-              so the next FIR, notice, or tribunal date feels less like a wall.
+            <p className="kyr-hero__lead">
+              Everything on this page is written for first-time readers: plain words, short reads, real
+              examples. Start anywhere. The law belongs to you.
             </p>
             <div className="kyr-hero__actions">
               <a href="#glossary" className="kyr-pill">
                 Open the glossary
               </a>
-              <a href="#emergency" className="kyr-pill kyr-pill--ghost">
+              <a href="#ask" className="kyr-pill kyr-pill--ghost">
                 <span className="kyr-pill__dot" aria-hidden="true" />
-                Save helplines
+                Get free legal aid
               </a>
             </div>
           </Reveal>
-          <Reveal as="div" className="kyr-hero__visual" variant="scale" delay={80} aria-hidden="true">
-            <img src={worldGlobe} alt="" />
+
+          <Reveal as="div" className="kyr-hero__visual" variant="scale" delay={80}>
+            <div className="kyr-mapframe" aria-hidden="true">
+              <span className="kyr-mapframe__dot kyr-mapframe__dot--a" />
+              <span className="kyr-mapframe__dot kyr-mapframe__dot--b" />
+              <span className="kyr-mapframe__dot kyr-mapframe__dot--c" />
+              <span className="kyr-mapframe__dot kyr-mapframe__dot--d" />
+              <div className="kyr-mapframe__board">
+                <img src={mapImage} alt="" className="kyr-mapframe__img" />
+                <div className="kyr-mapframe__wash" />
+              </div>
+              <img src={worldGlobe} alt="" className="kyr-mapframe__ghost" />
+            </div>
           </Reveal>
         </div>
       </header>
 
       <section id="doors" className="kyr-doors">
         <div className="container">
+          <Reveal as="header" className="kyr-center-head" variant="up">
+            <p className="kyr-label">How this hub helps</p>
+            <h2>Four doors into the law</h2>
+          </Reveal>
+
           <div className="kyr-doors__grid">
             {doors.map((d, i) => (
               <Reveal key={d.title} as="article" className="kyr-door" variant="up" delay={i * 50}>

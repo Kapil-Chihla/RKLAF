@@ -15,7 +15,7 @@ const introStats = [
 
 const sideNav = [
   { id: 'who-we-are', label: 'Who We Are' },
-  { id: 'impact', label: 'Impact' },
+  { id: 'stories', label: 'Impact' },
   { id: 'expertise', label: 'Expertise' },
   { id: 'resources', label: 'Resources' },
   { id: 'join-help', label: 'Join Us & Help' },
@@ -331,14 +331,74 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="impact" className="home-impact">
+      <section id="stories" className="home-stories-wrap">
         <div className="container">
           <header className="home-section-head">
             <div>
-              <p className="home-eyebrow">Impact</p>
+              <p className="home-eyebrow">Success stories</p>
+              <h2 className="home-display">Real people. Real orders. Real relief.</h2>
+            </div>
+            <Link to="/impact#stories" className="home-pill">
+              View all stories →
+            </Link>
+          </header>
+
+          <div className="home-stories__grid">
+            {stories.map((story, i) => (
+              <Reveal as="article" className="home-story" key={story.title} variant="up" delay={i * 90}>
+                <MediaPlaceholder label={story.visual} caption={story.caption} ratio="16 / 11" />
+                <div className="home-story__body">
+                  <span className="home-story__tag">{story.tag}</span>
+                  <h3>{story.title}</h3>
+                  <p>{story.desc}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Polaroids stay between success stories and programmes */}
+      <div className="home-snapshots" aria-label="Field snapshots">
+        {[
+          { items: marqueeSet(snapshots, 14), reverse: false, tilt: 0 },
+          { items: marqueeSet(snapshotsRow2, 14), reverse: true, tilt: 1 },
+        ].map((row, rowIndex) => (
+          <div
+            key={rowIndex}
+            className={`home-snapshots__row${row.reverse ? ' home-snapshots__row--reverse' : ''}`}
+          >
+            {[0, 1].map((copy) => (
+              <div
+                key={copy}
+                className="home-snapshots__group"
+                aria-hidden={copy === 1 ? true : undefined}
+              >
+                {row.items.map((shot, i) => (
+                  <figure
+                    className={`home-polaroid home-polaroid--${((i + row.tilt) % 3) + 1}`}
+                    key={`${rowIndex}-${copy}-${shot.label}-${i}`}
+                  >
+                    <MediaPlaceholder label={shot.label} />
+                    <figcaption>{shot.caption}</figcaption>
+                  </figure>
+                ))}
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+
+      <section id="programmes" className="home-impact">
+        <div className="container">
+          <header className="home-section-head">
+            <div>
+              <p className="home-eyebrow">Our Work</p>
               <h2 className="home-display">Programmes &amp; Initiatives</h2>
             </div>
-            <Link to="/impact" className="home-pill">View full impact →</Link>
+            <Link to="/our-work#programmes" className="home-pill">
+              View all programmes →
+            </Link>
           </header>
 
           <div className="home-impact__grid">
@@ -352,61 +412,6 @@ export default function Home() {
                   <span className="home-card__tag">{item.tag}</span>
                   <h3>{item.title}</h3>
                   <p>{item.desc}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="stories" className="home-stories-wrap">
-        <div className="home-snapshots" aria-label="Field snapshots">
-          {[
-            { items: marqueeSet(snapshots, 14), reverse: false, tilt: 0 },
-            { items: marqueeSet(snapshotsRow2, 14), reverse: true, tilt: 1 },
-          ].map((row, rowIndex) => (
-            <div
-              key={rowIndex}
-              className={`home-snapshots__row${row.reverse ? ' home-snapshots__row--reverse' : ''}`}
-            >
-              {[0, 1].map((copy) => (
-                <div
-                  key={copy}
-                  className="home-snapshots__group"
-                  aria-hidden={copy === 1 ? true : undefined}
-                >
-                  {row.items.map((shot, i) => (
-                    <figure
-                      className={`home-polaroid home-polaroid--${((i + row.tilt) % 3) + 1}`}
-                      key={`${rowIndex}-${copy}-${shot.label}-${i}`}
-                    >
-                      <MediaPlaceholder label={shot.label} />
-                      <figcaption>{shot.caption}</figcaption>
-                    </figure>
-                  ))}
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
-
-        <div className="container">
-          <header className="home-section-head">
-            <div>
-              <p className="home-eyebrow">Success stories</p>
-              <h2 className="home-display">Real people. Real orders. Real relief.</h2>
-            </div>
-            <a href="#stories" className="home-pill">View all stories →</a>
-          </header>
-
-          <div className="home-stories__grid">
-            {stories.map((story, i) => (
-              <Reveal as="article" className="home-story" key={story.title} variant="up" delay={i * 90}>
-                <MediaPlaceholder label={story.visual} caption={story.caption} ratio="16 / 11" />
-                <div className="home-story__body">
-                  <span className="home-story__tag">{story.tag}</span>
-                  <h3>{story.title}</h3>
-                  <p>{story.desc}</p>
                 </div>
               </Reveal>
             ))}
