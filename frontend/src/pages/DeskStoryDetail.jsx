@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import publicApi from '../lib/publicApi';
 import { assetUrl } from '../lib/api';
 import Reveal from '../components/motion/Reveal';
-import { FALLBACK_DESK } from './OurWork';
+import { FALLBACK_DESK } from '../data/deskStories';
 import './StoryDetail.css';
 
 export default function DeskStoryDetail() {
@@ -46,7 +46,7 @@ export default function DeskStoryDetail() {
       <div className="story-detail">
         <div className="container story-detail__empty">
           <h1>Story not found</h1>
-          <Link to="/our-work#desk">← Back to The Desk</Link>
+          <Link to="/desk">← Back to The Desk</Link>
         </div>
       </div>
     );
@@ -94,8 +94,23 @@ export default function DeskStoryDetail() {
           </div>
         )}
 
+        {story.documents?.length > 0 && (
+          <div className="story-detail__docs">
+            <h2>Documents</h2>
+            <ul>
+              {story.documents.map((doc) => (
+                <li key={doc.id}>
+                  <a href={assetUrl(doc.url)} target="_blank" rel="noopener noreferrer">
+                    {doc.name || 'Download PDF'}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
         <p className="story-detail__back">
-          <Link to="/our-work#desk">← Back to The Desk</Link>
+          <Link to="/desk">← Back to The Desk</Link>
         </p>
       </article>
     </div>

@@ -292,6 +292,119 @@
   background: var(--paper);
 }
 
+.kyr-glossary__count {
+  margin: 0.65rem 0 0;
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+
+.kyr-az {
+  margin-top: clamp(1.5rem, 3vw, 2.25rem);
+  max-width: 48rem;
+  margin-inline: auto;
+}
+
+.kyr-az__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem;
+  margin-bottom: 1.5rem;
+}
+
+.kyr-az__tab {
+  min-width: 2.15rem;
+  height: 2.15rem;
+  padding: 0 0.35rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.kyr-az__tab:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.kyr-az__tab.is-active {
+  background: var(--charcoal, #1f1c19);
+  border-color: var(--charcoal, #1f1c19);
+  color: #fff;
+}
+
+.kyr-az__tab:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.kyr-az__panel {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: clamp(1.25rem, 3vw, 1.85rem);
+}
+
+.kyr-az__heading {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin: 0 0 1.25rem;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.kyr-az__heading span {
+  font-family: var(--font-serif);
+  font-size: 2.4rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.kyr-az__list {
+  margin: 0;
+  display: grid;
+  gap: 1.15rem;
+}
+
+.kyr-az__item {
+  padding-bottom: 1.1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.kyr-az__item:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.kyr-az__item dt {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-serif);
+  font-size: 1.12rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.3;
+}
+
+.kyr-az__item dd {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.65;
+  color: var(--muted);
+}
+
 .kyr-pills {
   display: flex;
   flex-wrap: wrap;
@@ -615,7 +728,7 @@
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr));
   gap: 0.75rem;
 }
 

@@ -232,22 +232,27 @@
   }
 }
 
+/* Fixed, centred over the sketch — no entrance motion */
 .home-hero__tagline {
-  position: static;
-  transform: none;
-  width: min(94%, 720px);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(94%, 760px);
   margin: 0;
+  padding: 0 0.5rem;
   text-align: center;
   z-index: 3;
-  flex-shrink: 0;
-  animation: home-tagline-in 0.8s ease 1.4s both;
-  line-height: 1.15;
+  pointer-events: none;
+  line-height: 1.2;
+  animation: none;
 }
 
 .home-hero__with,
-.home-hero__for {
+.home-hero__for,
+.home-hero__nyay {
   font-family: var(--font-serif);
-  font-size: clamp(1.45rem, 3.4vw, 2.55rem);
+  font-size: clamp(1.55rem, 3.6vw, 2.75rem);
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--ink);
@@ -256,20 +261,10 @@
 .home-hero__for { color: var(--accent); }
 
 .home-hero__nyay {
-  font-family: var(--font-script);
-  font-size: clamp(1.65rem, 3.8vw, 2.85rem);
-  font-weight: 400;
   font-style: normal;
-  color: var(--ink);
-}
-
-@keyframes home-tagline-in {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .home-hero__tagline { animation: none; }
   .home-snapshots__row { animation: none !important; }
 }
 
@@ -330,9 +325,9 @@
 .home-stat__value {
   display: block;
   font-family: var(--font-serif);
-  font-size: 1.3rem;
+  font-size: clamp(1.85rem, 2.8vw, 2.55rem);
   font-weight: 700;
-  line-height: 1.1;
+  line-height: 1.05;
   font-variant-numeric: tabular-nums;
   min-width: 4.5ch;
 }
@@ -346,8 +341,8 @@
 
 .home-stat__label {
   display: block;
-  margin-top: 0.15rem;
-  font-size: 0.76rem;
+  margin-top: 0.2rem;
+  font-size: 0.82rem;
   line-height: 1.35;
   color: var(--muted);
 }

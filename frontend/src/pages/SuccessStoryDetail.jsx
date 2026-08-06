@@ -95,6 +95,21 @@ export default function SuccessStoryDetail() {
           </div>
         )}
 
+        {story.documents?.length > 0 && (
+          <div className="story-detail__docs">
+            <h2>Documents</h2>
+            <ul>
+              {story.documents.map((doc) => (
+                <li key={doc.id}>
+                  <a href={assetUrl(doc.url)} target="_blank" rel="noopener noreferrer">
+                    {doc.name || 'Download PDF'}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
         <p className="story-detail__back">
           <Link to="/impact#stories">← Back to success stories</Link>
         </p>

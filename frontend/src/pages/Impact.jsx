@@ -65,6 +65,84 @@ const stories = [
   },
 ];
 
+function StoriesSection({ storyList }) {
+  return (
+    <section id="stories" className="impact-stories">
+      <div className="container">
+        <Reveal as="header" variant="up">
+          <span className="impact-rule" aria-hidden="true" />
+          <h2>Success stories</h2>
+        </Reveal>
+
+        <div className="impact-stories__scroll">
+          <div
+            className="impact-stories__track"
+            style={{
+              '--story-cols': String(Math.max(3, Math.ceil(storyList.length / 2))),
+            }}
+          >
+            {storyList.map((story, i) => {
+              const cols = Math.max(3, Math.ceil(storyList.length / 2));
+              const row = Math.floor(i / cols) + 1;
+              const col = (i % cols) + 1;
+              const href = story.slug ? `/impact/stories/${story.slug}` : null;
+              const photo = story.heroImage ? assetUrl(story.heroImage) : null;
+              const Card = href ? Link : 'article';
+              const cardProps = href
+                ? { to: href, className: 'impact-story' }
+                : { className: 'impact-story' };
+
+              return (
+                <Card
+                  key={story.id || story.title}
+                  {...cardProps}
+                  style={{ gridColumn: col, gridRow: row }}
+                >
+                  <div
+                    className="impact-story__photo"
+                    style={
+                      photo
+                        ? {
+                            backgroundImage: `url(${photo})`,
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
+                          }
+                        : undefined
+                    }
+                  >
+                    {!photo ? (
+                      <span className="impact-story__ph-label">{story.photo || 'Portrait'}</span>
+                    ) : null}
+                    {story.caption ? <p className="impact-story__caption">{story.caption}</p> : null}
+                  </div>
+                  <div className="impact-story__body">
+                    <p className="impact-story__tag">{story.tag}</p>
+                    <h3>{story.title}</h3>
+                    <dl>
+                      <div>
+                        <dt>Problem</dt>
+                        <dd>{story.problem}</dd>
+                      </div>
+                      <div>
+                        <dt>Action</dt>
+                        <dd>{story.action}</dd>
+                      </div>
+                      <div>
+                        <dt>Result</dt>
+                        <dd>{story.result}</dd>
+                      </div>
+                    </dl>
+                  </div>
+                </Card>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function Impact() {
   const [storyList, setStoryList] = useState(stories);
 
@@ -79,7 +157,6 @@ export default function Impact() {
 
   return (
     <div className="impact">
-      {/* Hero */}
       <header className="impact-hero">
         <div className="impact-hero__photo" aria-hidden="true">
           <span>
@@ -103,7 +180,9 @@ export default function Impact() {
         <div className="impact-hero__wave" aria-hidden="true" />
       </header>
 
-      {/* Footprint */}
+      {/* Success stories first — programmes live on Our Work */}
+      <StoriesSection storyList={storyList} />
+
       <section id="footprint" className="impact-foot">
         <div className="container impact-foot__grid">
           <Reveal as="div" className="impact-foot__copy" variant="up">
@@ -149,7 +228,6 @@ export default function Impact() {
         </div>
       </section>
 
-      {/* Stats */}
       <section id="counted" className="impact-stats">
         <div className="container">
           <Reveal as="header" variant="up">
@@ -175,86 +253,6 @@ export default function Impact() {
         </div>
       </section>
 
-      {/* Success stories */}
-      <section id="stories" className="impact-stories">
-        <div className="container">
-          <Reveal as="header" variant="up">
-            <span className="impact-rule" aria-hidden="true" />
-            <h2>Success stories</h2>
-          </Reveal>
-
-          {/*
-            Viewport always shows 3 columns × 2 rows.
-            Extra stories widen the track; both rows scroll horizontally together.
-          */}
-          <div className="impact-stories__scroll">
-            <div
-              className="impact-stories__track"
-              style={{
-                '--story-cols': String(Math.max(3, Math.ceil(storyList.length / 2))),
-              }}
-            >
-              {storyList.map((story, i) => {
-                const cols = Math.max(3, Math.ceil(storyList.length / 2));
-                const row = Math.floor(i / cols) + 1;
-                const col = (i % cols) + 1;
-                const href = story.slug ? `/impact/stories/${story.slug}` : null;
-                const photo = story.heroImage ? assetUrl(story.heroImage) : null;
-                const Card = href ? Link : 'article';
-                const cardProps = href
-                  ? { to: href, className: 'impact-story' }
-                  : { className: 'impact-story' };
-
-                return (
-                  <Card
-                    key={story.id || story.title}
-                    {...cardProps}
-                    style={{ gridColumn: col, gridRow: row }}
-                  >
-                    <div
-                      className="impact-story__photo"
-                      style={
-                        photo
-                          ? {
-                              backgroundImage: `url(${photo})`,
-                              backgroundSize: 'cover',
-                              backgroundPosition: 'center',
-                            }
-                          : undefined
-                      }
-                    >
-                      {!photo ? (
-                        <span className="impact-story__ph-label">{story.photo || 'Portrait'}</span>
-                      ) : null}
-                      {story.caption ? <p className="impact-story__caption">{story.caption}</p> : null}
-                    </div>
-                    <div className="impact-story__body">
-                      <p className="impact-story__tag">{story.tag}</p>
-                      <h3>{story.title}</h3>
-                      <dl>
-                        <div>
-                          <dt>Problem</dt>
-                          <dd>{story.problem}</dd>
-                        </div>
-                        <div>
-                          <dt>Action</dt>
-                          <dd>{story.action}</dd>
-                        </div>
-                        <div>
-                          <dt>Result</dt>
-                          <dd>{story.result}</dd>
-                        </div>
-                      </dl>
-                    </div>
-                  </Card>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Hands */}
       <section id="hands" className="impact-hands">
         <div className="container">
           <Reveal as="header" className="impact-hands__head" variant="up">
@@ -293,7 +291,7 @@ export default function Impact() {
           </div>
 
           <p className="impact-hands__cta">
-            <Link to="/our-work">See the programmes behind these numbers →</Link>
+            <Link to="/our-work#programmes">See programmes &amp; initiatives →</Link>
           </p>
         </div>
       </section>

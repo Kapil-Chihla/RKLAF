@@ -71,8 +71,10 @@ svg {
     --section-pad: clamp(2rem, 7vw, 3rem);
   }
 
-  .home-hero__tagline {
-    font-size: clamp(1.65rem, 7vw, 2.4rem);
+  .home-hero__with,
+  .home-hero__for,
+  .home-hero__nyay {
+    font-size: clamp(1.35rem, 6.5vw, 2.2rem);
   }
 
   .home-display {

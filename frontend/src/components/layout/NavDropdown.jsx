@@ -11,7 +11,7 @@ export default function NavDropdown({ item, onNavigate }) {
       : item.path === '/about'
         ? location.pathname.startsWith('/about')
         : item.path === '/our-work'
-          ? location.pathname.startsWith('/our-work')
+          ? location.pathname.startsWith('/our-work') || location.pathname.startsWith('/desk')
           : item.path === '/know-your-rights'
             ? location.pathname.startsWith('/know-your-rights')
             : item.path === '/impact'

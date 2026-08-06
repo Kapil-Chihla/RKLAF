@@ -6,23 +6,6 @@ import { assetUrl } from '../lib/api';
 import { reportPdfDownloadUrl } from '../lib/pdfDownload';
 import './OurWork.css';
 
-export const FALLBACK_DESK = [
-  {
-    id: 'fallback-1',
-    slug: 'built-from-one-wave-of-evictions',
-    number: 1,
-    kicker: 'Senior Citizens',
-    title: 'Built from one wave of evictions',
-    listingDescription:
-      'In 2018 our helpline began ringing with the same story told in different voices: parents moved into storerooms of houses they built, gift deeds signed under pressure, patience mistaken for consent. The desk was built to answer that exact call, and it has never stopped.\n\nA single case officer stays with each elder from intake to compliance. Volunteers sit beside them at every hearing, so nobody faces a tribunal alone at seventy.',
-    heroImage: null,
-    fullHeader: 'Four hundred elders, one method',
-    fullBody:
-      'How the Senior Citizens Protection Desk works — from the first helpline call to the order that restores a home, and the volunteer who sits through every hearing.\n\nEach matter begins on the helpline. A case officer opens a file, gathers the deed papers, and stays with the elder through every tribunal date. Volunteers sit beside them so nobody faces the bench alone.\n\nOrders are followed through to compliance: possession restored, gift deeds cancelled, maintenance paid. That method — one officer, one volunteer, one file — is how four hundred elders have been protected since the desk opened.',
-    gallery: [],
-  },
-];
-
 const FALLBACK_REPORTS = [
   { id: 'fb-r1', year: '2025–26', title: 'Annual Report 2025–26', summary: 'Impact, audited financials & ledger', file: null },
   { id: 'fb-r2', year: '2024–25', title: 'Annual Report 2024–25', summary: 'Impact, audited financials & ledger', file: null },
@@ -40,7 +23,7 @@ const programmes = [
       { value: '47', label: 'days to first order' },
       { value: '94%', label: 'orders complied with' },
     ],
-    href: '#desk',
+    href: '/desk',
     flip: false,
   },
   {
@@ -68,7 +51,7 @@ const programmes = [
       { value: '12', label: 'partner law schools' },
       { value: '2', label: 'languages' },
     ],
-    href: '#full-account',
+    href: '/know-your-rights',
     flip: false,
   },
   {
@@ -88,6 +71,10 @@ const programmes = [
 ];
 
 function ProgrammeBlock({ item }) {
+  const isRoute = item.href?.startsWith('/');
+  const More = isRoute ? Link : 'a';
+  const moreProps = isRoute ? { to: item.href } : { href: item.href };
+
   return (
     <article className={`work-prog ${item.flip ? 'work-prog--flip' : ''}`} id={`prog-${item.num}`}>
       <div className="work-prog__copy">
@@ -102,7 +89,9 @@ function ProgrammeBlock({ item }) {
             </div>
           ))}
         </div>
-        <a href={item.href} className="work-prog__more">Learn more ↓</a>
+        <More {...moreProps} className="work-prog__more">
+          Learn more {isRoute ? '→' : '↓'}
+        </More>
       </div>
       <div className={`work-prog__num work-prog__num--${item.stripe}`} aria-hidden="true">
         {item.num}
@@ -111,110 +100,27 @@ function ProgrammeBlock({ item }) {
   );
 }
 
-function deskStoryHref(story) {
-  const slug =
-    story.slug ||
-    String(story.title || '')
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-|-$/g, '');
-  return slug ? `/our-work/desk/${slug}` : null;
-}
-
-function DeskEntry({ story, index }) {
-  const num = String(story.number || index + 1).padStart(2, '0');
-  const paras = (story.listingDescription || '')
-    .split(/\n+/)
-    .filter((p) => p.trim());
-  const hero = story.heroImage ? assetUrl(story.heroImage) : null;
-  const detail = story.gallery?.[0];
-  const flip = index % 2 === 1;
-  const storyHref = deskStoryHref(story);
-  const accountLead =
-    story.fullBody?.split(/\n+/)[0]?.trim() ||
-    'Open the full account — photos, timeline, and the complete story from the desk.';
-
-  return (
-    <Reveal as="div" className={`work-desk__entry ${flip ? 'work-desk__entry--flip' : ''}`} variant="up">
-      <div className="container work-desk__body">
-        <div className="work-desk__copy">
-          <div className="work-desk__lead">
-            <span className="work-desk__num" aria-hidden="true">
-              {num}
-            </span>
-            <div className="work-desk__lead-text">
-              <p className="work-desk__kicker">{story.kicker || 'The Desk'}</p>
-              <h3>{story.title}</h3>
-              {paras.map((p, i) => (
-                <p key={i}>{p}</p>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="work-desk__photos">
-          <figure className="work-frame work-frame--lg">
-            {hero ? (
-              <img className="work-frame__img" src={hero} alt="" />
-            ) : (
-              <div className="work-frame__ph">
-                <span>Photo · {story.title}</span>
-              </div>
-            )}
-          </figure>
-          {detail ? (
-            <figure className="work-frame work-frame--sm">
-              <img className="work-frame__img" src={assetUrl(detail.url)} alt={detail.caption || ''} />
-            </figure>
-          ) : null}
-        </div>
-      </div>
-
-      <div className="container work-account__inner work-desk__account">
-        <p className="work-account__label">The full account</p>
-        <h2 className="work-account__title">{story.fullHeader || story.title}</h2>
-        <p className="work-account__lead">{accountLead}</p>
-        {storyHref ? (
-          <Link to={storyHref} className="work-pill">
-            Full story →
-          </Link>
-        ) : null}
-      </div>
-    </Reveal>
-  );
-}
-
 export default function OurWork() {
-  const [deskStories, setDeskStories] = useState(FALLBACK_DESK);
   const [annualReports, setAnnualReports] = useState(FALLBACK_REPORTS);
+  const [deskCount, setDeskCount] = useState(0);
 
   useEffect(() => {
-    publicApi
-      .get('/desk-stories')
-      .then((r) => {
-        if (Array.isArray(r.data) && r.data.length) setDeskStories(r.data);
-      })
-      .catch(() => {});
     publicApi
       .get('/reports')
       .then((r) => {
         if (Array.isArray(r.data) && r.data.length) setAnnualReports(r.data.slice(0, 2));
       })
       .catch(() => {});
+    publicApi
+      .get('/desk-stories')
+      .then((r) => {
+        if (Array.isArray(r.data)) setDeskCount(r.data.length);
+      })
+      .catch(() => {});
   }, []);
-
-  const featured = deskStories[0];
-  const bannerStyle = featured?.heroImage
-    ? {
-        backgroundImage: `linear-gradient(rgba(26,21,16,0.55), rgba(26,21,16,0.78)), url(${assetUrl(featured.heroImage)})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }
-    : undefined;
 
   return (
     <div className="work work--v2">
-      {/* Banner */}
       <header className="work-banner">
         <div className="work-banner__ph" aria-hidden="true">
           <span>Banner photo · Legal aid camp under way, wide shot</span>
@@ -224,7 +130,6 @@ export default function OurWork() {
         </div>
       </header>
 
-      {/* Programmes */}
       <section id="programmes" className="work-programmes">
         <div className="container">
           <Reveal as="p" className="work-section-label" variant="up">
@@ -243,52 +148,39 @@ export default function OurWork() {
         </div>
       </section>
 
-      {/* Spotlights intro */}
-      <div className="container">
-        <p className="work-section-label work-section-label--spot">
-          <span className="work-section-label__rule" aria-hidden="true" />
-          Project spotlights
-        </p>
-      </div>
-
-      {/* The Desk */}
-      <section id="desk" className="work-desk">
-        <div className="work-desk__banner" style={bannerStyle}>
-          <div className="work-desk__banner-inner">
-            <h2 className="work-desk__title">The Desk</h2>
-            {!featured?.heroImage ? (
-              <p className="work-desk__ph">
-                Full-bleed photo · Elderly couple at the tribunal steps, cinematic wide
-              </p>
-            ) : null}
-            <p className="work-desk__sub">
-              <span aria-hidden="true">—</span>{' '}
-              {featured?.kicker || 'Senior Citizens'} · Project{' '}
-              {String(featured?.number || 1).padStart(2, '0')} <span aria-hidden="true">—</span>
+      {/* Desk teaser — full desk lives on /desk */}
+      <section id="desk" className="work-desk-teaser">
+        <div className="container work-desk-teaser__inner">
+          <Reveal as="div" variant="up">
+            <p className="work-section-label">
+              <span className="work-section-label__rule" aria-hidden="true" />
+              Project spotlights
             </p>
-            <span className="work-desk__star" aria-hidden="true">
-              ✦
-            </span>
-          </div>
+            <h2>The Desk</h2>
+            <p>
+              Case stories from our protection desks — named files, named officers, and the hearings that
+              restored homes and maintenance.
+              {deskCount > 0 ? ` ${deskCount} stories on the desk page.` : ''}
+            </p>
+            <Link to="/desk" className="work-pill">
+              Open The Desk →
+            </Link>
+          </Reveal>
         </div>
-
-        {deskStories.map((story, i) => (
-          <DeskEntry key={story.id || story.slug || i} story={story} index={i} />
-        ))}
       </section>
 
-      {/* The Camps */}
       <section id="camps" className="work-camps">
         <div className="work-camps__overlay" aria-hidden="true" />
         <div className="work-camps__inner">
           <p className="work-camps__label">Project 02 · Mobile Camps</p>
           <h2 className="work-camps__title">The Camps</h2>
           <p className="work-camps__ph">Full-bleed photo · Camp under a banyan tree, dusk</p>
-          <a href="#programmes" className="work-pill work-pill--light">Full story →</a>
+          <a href="#programmes" className="work-pill work-pill--light">
+            Full story →
+          </a>
         </div>
       </section>
 
-      {/* Annual reports */}
       <section id="reports" className="work-reports">
         <div className="container">
           <p className="work-section-label">

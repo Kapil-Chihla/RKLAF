@@ -2,7 +2,7 @@ export const socialLinks = [
   { name: 'Instagram', href: 'https://www.instagram.com/rklegalaidfoundation', icon: 'instagram' },
   { name: 'Facebook', href: 'https://facebook.com/', icon: 'facebook' },
   { name: 'YouTube', href: 'https://www.youtube.com/@radheykrishnalegalaid', icon: 'youtube' },
-  { name: 'LinkedIn', href: 'https://www.linkedin.com/', icon: 'linkedin' },
+  { name: 'LinkedIn', href: 'https://www.linkedin.com/company/radhey-krishna-legal-aid-foundation/', icon: 'linkedin' },
   { name: 'Spotify', href: 'https://open.spotify.com/', icon: 'spotify' },
 ];
 
@@ -22,7 +22,15 @@ export const WHATSAPP_DISPLAY = CONTACT_PHONE_DISPLAY;
 export const navItems = [
   { label: 'Home', path: '/' },
   { label: 'About Us', path: '/about' },
-  { label: 'Our Work', path: '/our-work' },
+  {
+    label: 'Our Work',
+    path: '/our-work',
+    children: [
+      { label: 'Programmes & Initiatives', path: '/our-work#programmes' },
+      { label: 'The Desk', path: '/desk' },
+      { label: 'Annual reports', path: '/our-work#reports' },
+    ],
+  },
   { label: 'Know Your Rights', shortLabel: 'Rights', path: '/know-your-rights' },
   { label: 'Impact', path: '/impact' },
   { label: 'Library', path: '/library' },

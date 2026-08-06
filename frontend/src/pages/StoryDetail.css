@@ -118,6 +118,35 @@
   font-style: italic;
 }
 
+.story-detail__docs {
+  margin: 2rem 0 0;
+}
+
+.story-detail__docs h2 {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  color: var(--ink);
+}
+
+.story-detail__docs ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.story-detail__docs a {
+  color: var(--accent, #b08a3c);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.story-detail__docs a:hover {
+  text-decoration: underline;
+}
+
 .story-detail__back {
   margin-top: 2.5rem;
 }

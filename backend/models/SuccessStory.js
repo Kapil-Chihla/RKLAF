@@ -10,6 +10,16 @@ const galleryImageSchema = new mongoose.Schema(
   { _id: false }
 );
 
+const documentSchema = new mongoose.Schema(
+  {
+    id: { type: String, required: true },
+    url: { type: String, required: true },
+    name: { type: String, default: '' },
+    createdAt: { type: String, default: '' },
+  },
+  { _id: false }
+);
+
 /** Impact → Success stories */
 const successStorySchema = new mongoose.Schema(
   {
@@ -24,6 +34,7 @@ const successStorySchema = new mongoose.Schema(
     result: { type: String, default: '' },
     fullBody: { type: String, default: '' },
     gallery: { type: [galleryImageSchema], default: [] },
+    documents: { type: [documentSchema], default: [] },
     published: { type: Boolean, default: true },
     createdBy: { type: String, required: true },
     createdAt: { type: String, required: true },

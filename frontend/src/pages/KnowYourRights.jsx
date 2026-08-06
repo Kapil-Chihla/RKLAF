@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 import Reveal from '../components/motion/Reveal';
 import FaqAccordion from '../components/FaqAccordion';
-import { WHATSAPP_DISPLAY, WHATSAPP_URL, CONTACT_PHONE_TEL, CONTACT_PHONE_E164 } from '../data/navigation';
+import { WHATSAPP_DISPLAY, WHATSAPP_URL, CONTACT_PHONE_TEL } from '../data/navigation';
+import { legalGlossaryByLetter, GLOSSARY_LETTERS } from '../data/legalGlossary';
+import { kyrHelplines } from '../data/kyrHelplines';
+import { kyrFaqs } from '../data/kyrFaqs';
 import mapImage from '../assets/map.webp';
 import worldGlobe from '../assets/world.webp';
 import publicApi from '../lib/publicApi';
@@ -40,19 +43,6 @@ const doors = [
     cta: 'Save numbers →',
     href: '#emergency',
   },
-];
-
-const glossaryPills = [
-  { term: 'Affidavit', def: 'a written statement you swear is true', hot: false },
-  { term: 'Maintenance', def: 'money a court can order for food, shelter, care', hot: true },
-  { term: 'FIR', def: 'First Information Report — how a cognizable offence is recorded', hot: false },
-  { term: 'Bail', def: 'temporary release while a case is pending', hot: false },
-  { term: 'Section 23', def: 'cancels a gift or transfer made under pressure by an elder', hot: true },
-  { term: 'Injunction', def: 'a court order to do — or stop doing — something', hot: false },
-  { term: 'PIL', def: 'Public Interest Litigation for rights that affect many', hot: false },
-  { term: 'Petition', def: 'a formal written request to a court or authority', hot: false },
-  { term: 'Cognizable', def: 'an offence police can investigate without a court order first', hot: false },
-  { term: 'Legal aid', def: 'free counsel when you cannot afford a private lawyer', hot: false },
 ];
 
 const guides = [
@@ -131,48 +121,12 @@ const videos = [
 
 const emergency = [
   {
-    number: '1800-XXX',
+    number: WHATSAPP_DISPLAY.replace(/\s/g, ''),
     label: 'RKLAF free legal helpline · Mon to Sat, 9 to 6',
     href: CONTACT_PHONE_TEL,
     featured: true,
   },
-  { number: '112', label: 'National emergency number, all services', href: 'tel:112' },
-  { number: '1091', label: "Women's helpline, 24 hours", href: 'tel:1091' },
-  { number: '14567', label: 'Elder line, national helpline for senior citizens', href: 'tel:14567' },
-  { number: '1098', label: 'Childline, for children in distress', href: 'tel:1098' },
-];
-
-const kyrFaqs = [
-  {
-    id: 'kyr-1',
-    question: 'Is your legal help really free?',
-    answer:
-      'Yes, completely. Consultations, drafting and court representation are funded by donors and members. A client never pays us anything, at any stage.',
-  },
-  {
-    id: 'kyr-2',
-    question: 'Do I need documents to get advice at a camp?',
-    answer:
-      'Bring what you have — ID, any notice, gift deed, FIR, or court paper. If you have nothing yet, come anyway. Volunteers will tell you exactly what to collect next.',
-  },
-  {
-    id: 'kyr-3',
-    question: 'Can you help if my case is in another state?',
-    answer:
-      'Often yes. We assess jurisdiction on the call, and where we cannot appear ourselves we route you to a trusted desk or legal-aid partner in that state.',
-  },
-  {
-    id: 'kyr-4',
-    question: 'What happens after I call the helpline?',
-    answer:
-      'A volunteer logs your matter, a case officer calls back, and you get a clear next step — camp visit, document list, or filing plan — usually within one working day.',
-  },
-  {
-    id: 'kyr-5',
-    question: 'Can NRIs use these services for matters in India?',
-    answer:
-      'Yes. Our NRI desk guides overseas Indians through property, family, and RTI matters back home, with a named officer on the Indian side.',
-  },
+  ...kyrHelplines,
 ];
 
 function DoorIcon({ name }) {
@@ -212,6 +166,10 @@ export default function KnowYourRights() {
   const [contact, setContact] = useState('');
   const [sent, setSent] = useState(false);
   const [guideList, setGuideList] = useState(guides);
+  const [glossaryLetter, setGlossaryLetter] = useState('A');
+
+  const glossaryEntries = legalGlossaryByLetter[glossaryLetter] || [];
+  const glossaryTotal = Object.values(legalGlossaryByLetter).reduce((n, list) => n + list.length, 0);
 
   useEffect(() => {
     publicApi
@@ -220,13 +178,13 @@ export default function KnowYourRights() {
         if (!Array.isArray(r.data) || !r.data.length) return;
         setGuideList(
           r.data.map((a, i) => ({
-            id: a.id,
+            id: a.id || a.slug || `guide-${i}`,
             title: a.title,
             cover: a.summary || a.category || 'Practical guide',
             tone: GUIDE_TONES[i % GUIDE_TONES.length],
             href: a.file ? guidePdfDownloadUrl(a.id) : '#',
-            hasPdf: Boolean(a.file),
             coverImage: a.coverImage ? assetUrl(a.coverImage) : null,
+            hasPdf: Boolean(a.file),
           })),
         );
       })
@@ -235,65 +193,42 @@ export default function KnowYourRights() {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const text = [
-      'Hello, I have a Know Your Rights question from the website.',
-      question.trim() && `Question: ${question.trim()}`,
-      contact.trim() && `Reply to: ${contact.trim()}`,
-    ]
-      .filter(Boolean)
-      .join('\n');
-    window.open(
-      `https://wa.me/${CONTACT_PHONE_E164}?text=${encodeURIComponent(text || 'Hello from Know Your Rights')}`,
-      '_blank',
-      'noopener,noreferrer',
-    );
     setSent(true);
   };
 
   return (
     <div className="kyr kyr--v2">
-      {/* Hero */}
       <header className="kyr-hero">
         <div className="container kyr-hero__grid">
           <Reveal as="div" className="kyr-hero__copy" variant="up">
-            <span className="kyr-rule" aria-hidden="true" />
+            <p className="kyr-label">Know Your Rights</p>
             <h1>
-              Rights begin where <em>confusion</em> ends
+              Rights you can
+              <br />
+              actually use
             </h1>
-            <p className="kyr-hero__lead">
-              Everything on this page is written for first-time readers: plain words, short reads, real
-              examples. Start anywhere. The law belongs to you.
+            <p className="kyr-hero__lede">
+              A plain-language desk for the words, guides, and helplines people ask for at every camp —
+              so the next FIR, notice, or tribunal date feels less like a wall.
             </p>
-            <a href="#ask" className="kyr-pill">
-              <span className="kyr-pill__dot" aria-hidden="true" />
-              Get free legal aid
-            </a>
-          </Reveal>
-
-          <Reveal as="div" className="kyr-hero__visual" variant="scale" delay={80}>
-            <div className="kyr-mapframe" aria-hidden="true">
-              <span className="kyr-mapframe__dot kyr-mapframe__dot--a" />
-              <span className="kyr-mapframe__dot kyr-mapframe__dot--b" />
-              <span className="kyr-mapframe__dot kyr-mapframe__dot--c" />
-              <span className="kyr-mapframe__dot kyr-mapframe__dot--d" />
-              <div className="kyr-mapframe__board">
-                <img src={mapImage} alt="" className="kyr-mapframe__img" />
-                <div className="kyr-mapframe__wash" />
-              </div>
-              <img src={worldGlobe} alt="" className="kyr-mapframe__ghost" />
+            <div className="kyr-hero__actions">
+              <a href="#glossary" className="kyr-pill">
+                Open the glossary
+              </a>
+              <a href="#emergency" className="kyr-pill kyr-pill--ghost">
+                <span className="kyr-pill__dot" aria-hidden="true" />
+                Save helplines
+              </a>
             </div>
+          </Reveal>
+          <Reveal as="div" className="kyr-hero__visual" variant="scale" delay={80} aria-hidden="true">
+            <img src={worldGlobe} alt="" />
           </Reveal>
         </div>
       </header>
 
-      {/* Four doors */}
       <section id="doors" className="kyr-doors">
         <div className="container">
-          <Reveal as="header" className="kyr-center-head" variant="up">
-            <p className="kyr-label">How this hub helps</p>
-            <h2>Four doors into the law</h2>
-          </Reveal>
-
           <div className="kyr-doors__grid">
             {doors.map((d, i) => (
               <Reveal key={d.title} as="article" className="kyr-door" variant="up" delay={i * 50}>
@@ -315,29 +250,54 @@ export default function KnowYourRights() {
         </div>
       </section>
 
-      {/* Glossary */}
       <section id="glossary" className="kyr-glossary">
         <div className="container">
           <Reveal as="header" className="kyr-center-head" variant="up">
             <p className="kyr-label">Legal glossary</p>
             <h2>Words that stop scaring you once you know them</h2>
+            <p className="kyr-glossary__count">{glossaryTotal} terms · pick a letter</p>
           </Reveal>
 
-          <Reveal as="div" className="kyr-pills" variant="up" delay={40}>
-            {glossaryPills.map((p) => (
-              <span key={p.term} className={`kyr-pill-term ${p.hot ? 'kyr-pill-term--hot' : ''}`}>
-                <strong>{p.term}</strong> {p.def}
-              </span>
-            ))}
-          </Reveal>
+          <Reveal as="div" className="kyr-az" variant="up" delay={40}>
+            <div className="kyr-az__tabs" role="tablist" aria-label="Glossary letters">
+              {GLOSSARY_LETTERS.map((letter) => {
+                const count = legalGlossaryByLetter[letter]?.length || 0;
+                const disabled = count === 0;
+                return (
+                  <button
+                    key={letter}
+                    type="button"
+                    role="tab"
+                    aria-selected={glossaryLetter === letter}
+                    aria-controls="glossary-panel"
+                    disabled={disabled}
+                    className={`kyr-az__tab ${glossaryLetter === letter ? 'is-active' : ''}`}
+                    onClick={() => setGlossaryLetter(letter)}
+                  >
+                    {letter}
+                  </button>
+                );
+              })}
+            </div>
 
-          <p className="kyr-more">
-            <a href="#guides">View all 120+ terms →</a>
-          </p>
+            <div id="glossary-panel" className="kyr-az__panel" role="tabpanel">
+              <h3 className="kyr-az__heading">
+                <span aria-hidden="true">{glossaryLetter}</span>
+                {glossaryEntries.length} {glossaryEntries.length === 1 ? 'term' : 'terms'}
+              </h3>
+              <dl className="kyr-az__list">
+                {glossaryEntries.map((entry) => (
+                  <div key={entry.term} className="kyr-az__item">
+                    <dt>{entry.term}</dt>
+                    <dd>{entry.def}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          </Reveal>
         </div>
       </section>
 
-      {/* Practical guides — PDF card grid */}
       <section id="guides" className="kyr-guides">
         <div className="container">
           <Reveal as="header" className="kyr-guides__head" variant="up">
@@ -393,7 +353,6 @@ export default function KnowYourRights() {
         </div>
       </section>
 
-      {/* Videos */}
       <section id="videos" className="kyr-videos">
         <div className="container">
           <Reveal as="header" className="kyr-center-head" variant="up">
@@ -420,7 +379,6 @@ export default function KnowYourRights() {
         </div>
       </section>
 
-      {/* Emergency */}
       <section id="emergency" className="kyr-emergency">
         <div className="container">
           <Reveal as="header" variant="up">
@@ -430,19 +388,13 @@ export default function KnowYourRights() {
 
           <div className="kyr-emergency__grid">
             {emergency.map((c, i) => (
-              <Reveal key={c.number} as="div" variant="up" delay={i * 40}>
+              <Reveal key={`${c.number}-${c.label}`} as="div" variant="up" delay={Math.min(i * 25, 200)}>
                 <a
                   href={c.href}
                   className={`kyr-emcard ${c.featured ? 'kyr-emcard--featured' : ''}`}
                 >
-                  <strong>
-                    {c.number === '1800-XXX' ? WHATSAPP_DISPLAY.replace(/\s/g, '') : c.number}
-                  </strong>
-                  <span>
-                    {c.number === '1800-XXX'
-                      ? 'RKLAF free legal helpline · Mon to Sat, 9 to 6'
-                      : c.label}
-                  </span>
+                  <strong>{c.number}</strong>
+                  <span>{c.label}</span>
                 </a>
               </Reveal>
             ))}
@@ -450,7 +402,6 @@ export default function KnowYourRights() {
         </div>
       </section>
 
-      {/* FAQs */}
       <section id="faqs" className="kyr-faqs">
         <div className="container kyr-faqs__inner">
           <Reveal as="header" className="kyr-center-head" variant="up">
@@ -463,7 +414,6 @@ export default function KnowYourRights() {
         </div>
       </section>
 
-      {/* Ask */}
       <section id="ask" className="kyr-ask">
         <div className="container">
           <div className="kyr-ask__panel">
@@ -498,17 +448,16 @@ export default function KnowYourRights() {
                   />
                 </label>
                 <label>
-                  Phone or email for the reply
+                  Email or phone
                   <input
-                    type="text"
                     value={contact}
                     onChange={(e) => setContact(e.target.value)}
-                    placeholder="+91 or you@email.com"
+                    placeholder="How should we reach you?"
                     required
                   />
                 </label>
                 <button type="submit" className="kyr-pill kyr-pill--block">
-                  {sent ? 'Opening WhatsApp…' : 'Send question →'}
+                  {sent ? 'Sent — we will reply soon' : 'Send question'}
                 </button>
               </form>
             </Reveal>

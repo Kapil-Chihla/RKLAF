@@ -255,7 +255,33 @@
   );
 }
 
-/* ─── Desk spotlight ─── */
+/* ─── Desk teaser on Our Work (full page is /desk) ─── */
+.work-desk-teaser {
+  padding: clamp(3rem, 6vw, 4.5rem) 0;
+  background: var(--paper);
+  text-align: center;
+}
+
+.work-desk-teaser__inner {
+  max-width: 36rem;
+}
+
+.work-desk-teaser h2 {
+  margin: 0.5rem 0 0.85rem;
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4vw, 2.85rem);
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.work-desk-teaser p:not(.work-section-label) {
+  margin: 0 auto 1.35rem;
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: var(--muted);
+}
+
+/* ─── Desk spotlight (used on /desk page) ─── */
 .work-desk {
   position: relative;
   background: var(--paper);
