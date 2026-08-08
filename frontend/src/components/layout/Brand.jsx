@@ -11,7 +11,7 @@ export default function Brand({ variant = 'header', onNavigate }) {
       aria-label="Radhey Krishna Legal Aid Foundation — Home"
     >
       <span className="brand-mark">
-        <img src={logo} alt="" className="brand-logo" width={56} height={56} />
+        <img src={logo} alt="" className="brand-logo" width={58} height={58} />
       </span>
       <span className="brand-rule" aria-hidden="true" />
       <span className="brand-text">

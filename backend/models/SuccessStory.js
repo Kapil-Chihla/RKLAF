@@ -28,6 +28,8 @@ const successStorySchema = new mongoose.Schema(
     tag: { type: String, default: '' },
     title: { type: String, required: true },
     caption: { type: String, default: '' },
+    /** Forum / file line under the title, e.g. "Maintenance Tribunal · File RK/2024/0187" */
+    caseLine: { type: String, default: '' },
     heroImage: { type: String, default: null },
     problem: { type: String, default: '' },
     action: { type: String, default: '' },

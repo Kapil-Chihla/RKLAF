@@ -29,7 +29,7 @@ const areas = [
       { value: '3,100+', label: 'people engaged' },
       { value: '9', label: 'districts this year' },
     ],
-    href: '/our-work/programmes#camps',
+    href: '/our-work/programmes',
     flip: true,
   },
   {

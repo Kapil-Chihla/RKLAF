@@ -7,6 +7,7 @@ const emptyForm = {
   title: '',
   tag: '',
   caption: '',
+  caseLine: '',
   problem: '',
   action: '',
   result: '',
@@ -51,6 +52,7 @@ export default function SuccessStoriesManage() {
       title: story.title || '',
       tag: story.tag || '',
       caption: story.caption || '',
+      caseLine: story.caseLine || '',
       problem: story.problem || '',
       action: story.action || '',
       result: story.result || '',
@@ -100,9 +102,9 @@ export default function SuccessStoriesManage() {
   return (
     <div>
       <div className="admin-card">
-        <h2>{editing ? 'Edit success story' : 'Impact — success stories'}</h2>
+        <h2>{editing ? 'Edit argued in full' : 'Impact — Argued in full'}</h2>
         <p style={{ color: '#5a6f82', marginTop: 0 }}>
-          Cards show tag, title, problem / action / result. Multiple images and PDFs supported.
+          Success stories on Impact (tag, title, case line, problem / action / result). Multiple images and PDFs supported.
           {editing ? ' Remove existing media below, or add more files.' : ''}
         </p>
         {msg && (
@@ -131,6 +133,14 @@ export default function SuccessStoriesManage() {
           <label>
             Photo caption
             <input value={form.caption} onChange={(e) => setForm({ ...form, caption: e.target.value })} />
+          </label>
+          <label>
+            Case line
+            <input
+              placeholder="Maintenance Tribunal, Mathura · File RK/2024/0187"
+              value={form.caseLine}
+              onChange={(e) => setForm({ ...form, caseLine: e.target.value })}
+            />
           </label>
 
           {editing ? (

@@ -273,17 +273,17 @@ export default function About() {
       {/* 1 · HERO */}
       <section className="about-hero" id="about-hero">
         <div className="about-hero__left">
-          <span className="about-kicker">About us</span>
+          <h1 className="about-hero__title">About Us</h1>
           <p className="about-epigraph">One man’s quiet compassion became a promise:</p>
           <p className="about-promise">
             “no one, however poor or powerless, would ever have to face the law alone.”
           </p>
-          <h1 className="about-tagline">
+          <h2 className="about-tagline">
             With You.
             <br />
             For You.
             <i>Nyaya Tak.</i>
-          </h1>
+          </h2>
           <p className="about-carry">
             That promise is what we carry forward, for every person who still needs someone in their
             corner.

@@ -17,29 +17,6 @@ function snapSrc(n) {
   return snapModules[`../assets/${n}.jpeg`];
 }
 
-const SNAP_ORIENT = {
-  1: 'portrait',
-  2: 'portrait',
-  3: 'landscape',
-  4: 'landscape',
-  5: 'portrait',
-  6: 'portrait',
-  7: 'landscape',
-  8: 'portrait',
-  9: 'portrait',
-  10: 'landscape',
-  11: 'portrait',
-  12: 'portrait',
-  13: 'portrait',
-  14: 'portrait',
-  15: 'landscape',
-  16: 'portrait',
-  17: 'landscape',
-  18: 'portrait',
-  19: 'landscape',
-  20: 'landscape',
-};
-
 const SNAP_CAPTIONS = [
   'On the ground',
   'Together at camp',
@@ -63,13 +40,29 @@ const SNAP_CAPTIONS = [
   'Case follow-up',
 ];
 
+/** Prefer faces / subjects for tall phone shots cropped into the square frame. */
+const SNAP_FOCUS = {
+  1: 'center 28%',
+  2: 'center 22%',
+  5: 'center 30%',
+  6: 'center 28%',
+  8: 'center 35%',
+  9: 'center 25%',
+  11: 'center 28%',
+  12: 'center 30%',
+  13: 'center 22%',
+  14: 'center 24%',
+  16: 'center 28%',
+  18: 'center 20%',
+};
+
 const snapshots = Array.from({ length: 10 }, (_, i) => {
   const n = i + 1;
   return {
     src: snapSrc(n),
     label: `Field snapshot ${n}`,
     caption: SNAP_CAPTIONS[i],
-    orient: SNAP_ORIENT[n],
+    focus: SNAP_FOCUS[n] || 'center center',
   };
 });
 
@@ -79,7 +72,7 @@ const snapshotsRow2 = Array.from({ length: 10 }, (_, i) => {
     src: snapSrc(n),
     label: `Field snapshot ${n}`,
     caption: SNAP_CAPTIONS[i + 10],
-    orient: SNAP_ORIENT[n],
+    focus: SNAP_FOCUS[n] || 'center center',
   };
 });
 
@@ -322,11 +315,18 @@ function MediaPlaceholder({ label, caption, ratio = '4 / 3' }) {
   );
 }
 
-/** Frame aspect follows photo orientation so tall shots (esp. row 2) fill properly. */
-function PolaroidPhoto({ src, label, orient = 'landscape' }) {
+/** Square window + cover fill — every photo edges the frame the same way. */
+function PolaroidPhoto({ src, label, focus = 'center center' }) {
   return (
-    <div className={`home-polaroid__media home-polaroid__media--${orient}`}>
-      <img className="home-polaroid__img" src={src} alt={label} loading="lazy" />
+    <div className="home-polaroid__media">
+      <img
+        className="home-polaroid__img"
+        src={src}
+        alt={label}
+        loading="lazy"
+        decoding="async"
+        style={{ objectPosition: focus }}
+      />
     </div>
   );
 }
@@ -537,7 +537,7 @@ export default function Home() {
                     key={`${rowIndex}-${copy}-${shot.label}-${i}`}
                   >
                     {shot.src ? (
-                      <PolaroidPhoto src={shot.src} label={shot.label} orient={shot.orient} />
+                      <PolaroidPhoto src={shot.src} label={shot.label} focus={shot.focus} />
                     ) : (
                       <MediaPlaceholder label={shot.label} />
                     )}

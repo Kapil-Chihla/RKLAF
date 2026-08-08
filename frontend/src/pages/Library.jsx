@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Reveal from '../components/motion/Reveal';
 import { socialLinks } from '../data/navigation';
+import libraryBanner from '../assets/librarybanner.jpeg';
 import './Library.css';
 
 const LIB_BROWSE = [
@@ -186,10 +187,9 @@ export default function Library() {
             </div>
           </Reveal>
 
-          <Reveal as="div" className="lib-hero__photo" variant="scale" delay={60} aria-hidden="true">
-            <span className="lib-hero__halo" />
-            <span>Host photo placeholder</span>
-            <small>Studio portrait with headphones, warm light, cut out over the band.</small>
+          <Reveal as="div" className="lib-hero__photo lib-hero__photo--img" variant="scale" delay={60}>
+            <span className="lib-hero__halo" aria-hidden="true" />
+            <img src={libraryBanner} alt="" />
           </Reveal>
         </div>
       </header>

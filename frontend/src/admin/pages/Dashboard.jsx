@@ -14,10 +14,34 @@ const SECTIONS = [
         statKey: 'deskStories',
       },
       {
+        to: '/admin/running-now',
+        label: 'Running now',
+        desc: 'Pending litigation cards on Impact — status, allegation, relief, stage.',
+        statKey: 'runningNow',
+      },
+      {
+        to: '/admin/told-in-full',
+        label: 'Told in full',
+        desc: 'Delhi prisons programme stories on Impact (problem / action / result).',
+        statKey: 'toldInFull',
+      },
+      {
         to: '/admin/success-stories',
-        label: 'Success stories',
-        desc: 'Impact cards (problem / action / result) and full story pages.',
+        label: 'Argued in full',
+        desc: 'Impact success stories — problem / action / result and full story pages.',
         statKey: 'successStories',
+      },
+      {
+        to: '/admin/also-on-record',
+        label: 'Also on record',
+        desc: 'Year + header + description + PDF ledger on Impact.',
+        statKey: 'alsoOnRecord',
+      },
+      {
+        to: '/admin/press-mentions',
+        label: 'Press mentions',
+        desc: 'Press clips, images, and quotes for the Impact mosaic.',
+        statKey: 'pressMentions',
       },
       {
         to: '/admin/reports',

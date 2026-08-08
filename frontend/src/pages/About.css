@@ -118,6 +118,18 @@
   justify-content: center;
 }
 
+.about-hero .about-kicker,
+.about-hero__title {
+  font-family: var(--au-serif);
+  font-size: clamp(2.75rem, 5.5vw, 4.25rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  line-height: 1.05;
+  color: var(--au-ink);
+  margin: 0;
+}
+
 .about-epigraph {
   font-size: 0.74rem;
   color: var(--au-taupe);
@@ -142,7 +154,7 @@
   font-weight: 600;
   line-height: 1.02;
   letter-spacing: -0.015em;
-  font-size: clamp(2.3rem, 4.6vw, 3.9rem);
+  font-size: clamp(1.85rem, 3.6vw, 2.85rem);
   margin: 1.85rem 0 0;
   color: var(--au-ink);
 }
@@ -361,10 +373,12 @@ button.about-vid__play:hover span {
 }
 
 .about-message p {
-  font-size: 0.82rem;
+  font-size: 1.05rem;
+  line-height: 1.75;
   color: var(--au-soft);
   margin: 0.9rem 0 0;
   max-width: 44ch;
+  text-align: justify;
 }
 
 .about-nameplate {
@@ -503,10 +517,12 @@ button.about-vid__play:hover span {
 }
 
 .about-story__head p {
-  font-size: 0.8rem;
+  font-size: 1.05rem;
+  line-height: 1.75;
   color: var(--au-soft);
   max-width: 60ch;
   margin: 0.75rem auto 0;
+  text-align: justify;
 }
 
 .about-lineage {
@@ -733,10 +749,12 @@ button.about-vid__play:hover span {
 }
 
 .about-chapter__body p {
-  font-size: 0.8rem;
+  font-size: 1.05rem;
+  line-height: 1.75;
   color: var(--au-soft);
   margin: 0.75rem 0 0;
   max-width: 62ch;
+  text-align: justify;
 }
 
 .about-chapter__nav {
@@ -790,10 +808,12 @@ button.about-vid__play:hover span {
 }
 
 .about-office p {
-  font-size: 0.8rem;
+  font-size: 1.05rem;
+  line-height: 1.75;
   color: var(--au-soft);
   margin: 0.75rem 0 0;
   max-width: 44ch;
+  text-align: justify;
 }
 
 .about-office .about-vid__frame {
@@ -819,10 +839,12 @@ button.about-vid__play:hover span {
 }
 
 .about-work p {
-  font-size: 0.8rem;
+  font-size: 1.05rem;
+  line-height: 1.75;
   color: var(--au-soft);
   margin: 0.75rem 0 0;
   max-width: 50ch;
+  text-align: justify;
 }
 
 .about-work__mission-lead {
@@ -898,10 +920,12 @@ button.about-vid__play:hover span {
 }
 
 .about-where__intro {
-  font-size: 0.8rem;
+  font-size: 1.05rem;
+  line-height: 1.75;
   color: var(--au-soft);
   margin: 0.75rem 0 0;
   max-width: 44ch;
+  text-align: justify;
 }
 
 .about-offices {
@@ -1026,7 +1050,7 @@ button.about-vid__play:hover span {
 }
 
 .about-soon__icon {
-  font-size: 1.1rem;
+  font-size: 0.98rem;
   color: var(--au-khaki);
   flex-shrink: 0;
 }
@@ -1062,10 +1086,12 @@ button.about-vid__play:hover span {
 }
 
 .about-closing > p:not(.about-closing__line):not(.about-closing__echo) {
-  font-size: 0.8rem;
+  font-size: 1.05rem;
+  line-height: 1.75;
   color: var(--au-soft);
   max-width: 56ch;
   margin: 1.1rem auto 0;
+  text-align: justify;
 }
 
 .about-closing__echo {

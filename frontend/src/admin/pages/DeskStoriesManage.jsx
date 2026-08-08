@@ -123,8 +123,13 @@ export default function DeskStoriesManage() {
         )}
         <form className="admin-form" onSubmit={handleSubmit}>
           <label>
-            Title
-            <input required value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
+            Programme title (public name)
+            <input
+              required
+              value={form.title}
+              onChange={(e) => setForm({ ...form, title: e.target.value })}
+              placeholder="e.g. Legal Aid Behind Bars"
+            />
           </label>
           <label>
             Category / kicker
@@ -182,11 +187,11 @@ export default function DeskStoriesManage() {
             />
           </label>
           <label>
-            Full story header
+            Alternate public title (optional)
             <input
               value={form.fullHeader}
               onChange={(e) => setForm({ ...form, fullHeader: e.target.value })}
-              placeholder="Defaults to title"
+              placeholder="Leave blank to use the programme title everywhere"
             />
           </label>
           <label>

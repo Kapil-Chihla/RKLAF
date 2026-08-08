@@ -12,4 +12,8 @@ module.exports = {
   SuccessStory: require('./SuccessStory'),
   Paper: require('./Paper'),
   ExplainerVideo: require('./ExplainerVideo'),
+  RunningNow: require('./RunningNow'),
+  ToldInFull: require('./ToldInFull'),
+  AlsoOnRecord: require('./AlsoOnRecord'),
+  PressMention: require('./PressMention'),
 };

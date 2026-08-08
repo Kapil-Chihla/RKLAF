@@ -9,6 +9,10 @@ import BlogsManage from './pages/BlogsManage';
 import ArticlesManage from './pages/ArticlesManage';
 import DeskStoriesManage from './pages/DeskStoriesManage';
 import SuccessStoriesManage from './pages/SuccessStoriesManage';
+import RunningNowManage from './pages/RunningNowManage';
+import ToldInFullManage from './pages/ToldInFullManage';
+import AlsoOnRecordManage from './pages/AlsoOnRecordManage';
+import PressMentionsManage from './pages/PressMentionsManage';
 import PapersManage from './pages/PapersManage';
 import ExplainerVideosManage from './pages/ExplainerVideosManage';
 import ReportsManage from './pages/ReportsManage';
@@ -28,6 +32,10 @@ export default function AdminRoutes() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="desk" element={<DeskStoriesManage />} />
           <Route path="success-stories" element={<SuccessStoriesManage />} />
+          <Route path="running-now" element={<RunningNowManage />} />
+          <Route path="told-in-full" element={<ToldInFullManage />} />
+          <Route path="also-on-record" element={<AlsoOnRecordManage />} />
+          <Route path="press-mentions" element={<PressMentionsManage />} />
           <Route path="camps" element={<CampsManage />} />
           <Route path="reports" element={<ReportsManage />} />
           <Route path="blogs" element={<BlogsManage />} />

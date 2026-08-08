@@ -1,0 +1,24 @@
+const mongoose = require('mongoose');
+
+/** Impact → Told in full (prison programme stories) */
+const toldInFullSchema = new mongoose.Schema(
+  {
+    id: { type: String, required: true, unique: true, index: true },
+    slug: { type: String, required: true, index: true },
+    tag: { type: String, default: '' },
+    title: { type: String, required: true },
+    caption: { type: String, default: '' },
+    heroImage: { type: String, default: null },
+    problem: { type: String, default: '' },
+    action: { type: String, default: '' },
+    result: { type: String, default: '' },
+    sortOrder: { type: Number, default: 0 },
+    published: { type: Boolean, default: true },
+    createdBy: { type: String, required: true },
+    createdAt: { type: String, required: true },
+    updatedAt: { type: String, default: '' },
+  },
+  { versionKey: false }
+);
+
+module.exports = mongoose.model('ToldInFull', toldInFullSchema);

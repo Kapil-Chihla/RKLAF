@@ -27,8 +27,9 @@
   }
 
   .brand-mark {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
+    padding: 2px;
   }
 }
 
@@ -135,10 +136,9 @@ svg {
     font-size: clamp(1.35rem, 6vw, 1.7rem);
   }
 
-  .work-desk__title,
-  .work-camps__title {
-    letter-spacing: 0.12em;
-    font-size: clamp(1.85rem, 8vw, 2.6rem);
+  .work-desk__title {
+    letter-spacing: 0.14em;
+    font-size: clamp(2.15rem, 9vw, 3.25rem);
   }
 
   .work-report {
@@ -298,7 +298,7 @@ svg {
   .join-cta__band {
     flex-direction: column;
     align-items: stretch;
-    text-align: left;
+    text-align: justify;
   }
 
   .join-cta__btn {

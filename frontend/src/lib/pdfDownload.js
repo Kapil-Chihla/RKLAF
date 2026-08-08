@@ -10,6 +10,12 @@ export function guidePdfDownloadUrl(articleId) {
   return `${API_BASE}/articles/${encodeURIComponent(articleId)}/download`;
 }
 
+/** Inline PDF stream for in-page preview modal (falls back to download if /view missing). */
+export function guidePdfViewUrl(articleId) {
+  if (!articleId) return '#';
+  return `${API_BASE}/articles/${encodeURIComponent(articleId)}/view`;
+}
+
 export function paperPdfDownloadUrl(paperId) {
   if (!paperId) return '#';
   return `${API_BASE}/papers/${encodeURIComponent(paperId)}/download`;
@@ -28,6 +34,16 @@ export function deskDocumentDownloadUrl(storyIdOrSlug, docId) {
 export function successDocumentDownloadUrl(storyIdOrSlug, docId) {
   if (!storyIdOrSlug || !docId) return '#';
   return `${API_BASE}/success-stories/${encodeURIComponent(storyIdOrSlug)}/documents/${encodeURIComponent(docId)}/download`;
+}
+
+export function alsoOnRecordPdfDownloadUrl(recordId) {
+  if (!recordId) return '#';
+  return `${API_BASE}/also-on-record/${encodeURIComponent(recordId)}/download`;
+}
+
+export function pressMentionPdfDownloadUrl(pressId) {
+  if (!pressId) return '#';
+  return `${API_BASE}/press-mentions/${encodeURIComponent(pressId)}/pdf/download`;
 }
 
 /**

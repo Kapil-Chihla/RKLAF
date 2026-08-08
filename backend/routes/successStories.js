@@ -79,6 +79,7 @@ router.post('/', protect, contentManagers, uploadStoryMedia, async (req, res) =>
       title,
       tag,
       caption,
+      caseLine,
       problem,
       action,
       result,
@@ -104,6 +105,7 @@ router.post('/', protect, contentManagers, uploadStoryMedia, async (req, res) =>
       tag: tag || '',
       title,
       caption: caption || '',
+      caseLine: caseLine || '',
       heroImage,
       problem: problem || '',
       action: action || '',
@@ -130,6 +132,7 @@ router.put('/:id', protect, contentManagers, uploadStoryMedia, async (req, res) 
       title,
       tag,
       caption,
+      caseLine,
       problem,
       action,
       result,
@@ -147,6 +150,7 @@ router.put('/:id', protect, contentManagers, uploadStoryMedia, async (req, res) 
     }
     if (tag !== undefined) story.tag = tag;
     if (caption !== undefined) story.caption = caption;
+    if (caseLine !== undefined) story.caseLine = caseLine;
     if (problem !== undefined) story.problem = problem;
     if (action !== undefined) story.action = action;
     if (result !== undefined) story.result = result;

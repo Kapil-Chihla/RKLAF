@@ -9,7 +9,8 @@ import mapImage from '../assets/map.webp';
 import worldGlobe from '../assets/world.webp';
 import publicApi from '../lib/publicApi';
 import { assetUrl } from '../lib/api';
-import { guidePdfDownloadUrl } from '../lib/pdfDownload';
+import { guidePdfDownloadUrl, guidePdfViewUrl } from '../lib/pdfDownload';
+import PdfPreviewModal from '../components/pdf/PdfPreviewModal';
 import { looksLikeEmail, submitContact } from '../lib/submitContact';
 import './KnowYourRights.css';
 
@@ -205,6 +206,7 @@ export default function KnowYourRights() {
   const [askBusy, setAskBusy] = useState(false);
   const [askError, setAskError] = useState('');
   const [guideList, setGuideList] = useState(guides);
+  const [activeGuide, setActiveGuide] = useState(null);
   const [videoList, setVideoList] = useState(FALLBACK_VIDEOS);
   const [activeVideo, setActiveVideo] = useState(null);
   const [glossaryLetter, setGlossaryLetter] = useState('A');
@@ -226,6 +228,7 @@ export default function KnowYourRights() {
             coverLabel: a.category || 'Practical guide',
             tone: GUIDE_TONES[i % GUIDE_TONES.length],
             href: a.file ? guidePdfDownloadUrl(a.id) : '#',
+            viewHref: a.file ? guidePdfViewUrl(a.id) : '#',
             coverImage: a.coverImage ? assetUrl(a.coverImage) : null,
             hasPdf: Boolean(a.file),
           })),
@@ -414,13 +417,24 @@ export default function KnowYourRights() {
             </div>
 
             <div id="glossary-panel" className="kyr-az__panel" role="tabpanel">
-              <dl className="kyr-az__list">
-                {glossaryEntries.map((entry) => (
-                  <div key={entry.term} className="kyr-az__item">
-                    <dt>{entry.term}</dt>
-                    <dd>{entry.def}</dd>
+              <dl
+                className="kyr-az__track"
+                key={glossaryLetter}
+                aria-label={`Definitions for letter ${glossaryLetter}`}
+              >
+                {glossaryEntries.length ? (
+                  glossaryEntries.map((entry) => (
+                    <div key={entry.term} className="kyr-az__card">
+                      <dt>{entry.term}</dt>
+                      <dd>{entry.def}</dd>
+                    </div>
+                  ))
+                ) : (
+                  <div className="kyr-az__card kyr-az__card--empty">
+                    <dt>No terms yet</dt>
+                    <dd>Pick another letter from the row above.</dd>
                   </div>
-                ))}
+                )}
               </dl>
             </div>
           </Reveal>
@@ -432,14 +446,19 @@ export default function KnowYourRights() {
           <Reveal as="header" className="kyr-guides__head" variant="up">
             <span className="kyr-rule" aria-hidden="true" />
             <h2>Practical guides, one situation at a time</h2>
-            <p>Downloadable PDF handbooks — cover, title, and a one-click download.</p>
+            <p>Open any handbook to preview, zoom, and download the PDF.</p>
           </Reveal>
 
           <div className="kyr-guides__cards">
-            {guideList.map((g, i) => (
+            {guideList.map((g, i) => {
+              const canPreview =
+                g.hasPdf !== false &&
+                ((g.href && g.href !== '#') || (g.viewHref && g.viewHref !== '#'));
+              return (
               <Reveal key={g.id} as="article" className="kyr-pdf" variant="up" delay={i * 40}>
-                <div
-                  className={`kyr-pdf__cover kyr-pdf__cover--${g.tone}${g.coverImage ? ' kyr-pdf__cover--photo' : ''}`}
+                <button
+                  type="button"
+                  className={`kyr-pdf__cover kyr-pdf__cover--${g.tone}${g.coverImage ? ' kyr-pdf__cover--photo' : ''}${canPreview ? ' kyr-pdf__cover--clickable' : ''}`}
                   style={
                     g.coverImage
                       ? {
@@ -449,39 +468,69 @@ export default function KnowYourRights() {
                         }
                       : undefined
                   }
-                  aria-hidden="true"
+                  onClick={() => {
+                    if (canPreview) setActiveGuide(g);
+                  }}
+                  disabled={!canPreview}
+                  aria-label={canPreview ? `Preview ${g.title}` : `${g.title} PDF coming soon`}
                 >
                   <span className="kyr-pdf__badge">PDF</span>
                   {!g.coverImage ? <strong>{g.coverLabel || g.cover}</strong> : null}
-                </div>
+                </button>
                 <h3 className="kyr-pdf__title" title={g.title}>
-                  {g.title}
+                  {canPreview ? (
+                    <button type="button" className="kyr-pdf__title-btn" onClick={() => setActiveGuide(g)}>
+                      {g.title}
+                    </button>
+                  ) : (
+                    g.title
+                  )}
                 </h3>
                 {g.description ? <p className="kyr-pdf__desc">{g.description}</p> : null}
-                {g.hasPdf !== false && g.href !== '#' ? (
-                  <a
-                    className="kyr-pdf__dl"
-                    href={g.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`Download ${g.title} as PDF`}
-                  >
-                    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8">
-                      <path d="M12 4v10M8 10l4 4 4-4" />
-                      <path d="M5 18h14" />
-                    </svg>
-                    Download PDF
-                  </a>
+                {canPreview ? (
+                  <div className="kyr-pdf__actions">
+                    <button
+                      type="button"
+                      className="kyr-pdf__dl"
+                      onClick={() => setActiveGuide(g)}
+                      aria-label={`Preview ${g.title}`}
+                    >
+                      Preview
+                    </button>
+                    <a
+                      className="kyr-pdf__dl kyr-pdf__dl--secondary"
+                      href={g.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Download ${g.title} as PDF`}
+                    >
+                      <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8">
+                        <path d="M12 4v10M8 10l4 4 4-4" />
+                        <path d="M5 18h14" />
+                      </svg>
+                      Download
+                    </a>
+                  </div>
                 ) : (
                   <span className="kyr-pdf__dl kyr-pdf__dl--disabled" aria-disabled="true">
                     PDF coming soon
                   </span>
                 )}
               </Reveal>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
+
+      {activeGuide ? (
+        <PdfPreviewModal
+          title={activeGuide.title}
+          viewUrl={activeGuide.viewHref}
+          downloadUrl={activeGuide.href}
+          onClose={() => setActiveGuide(null)}
+        />
+      ) : null}
 
       <section id="videos" className="kyr-videos">
         <div className="container">

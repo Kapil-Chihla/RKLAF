@@ -12,6 +12,10 @@ const {
   Paper,
   ExplainerVideo,
   Contact,
+  RunningNow,
+  ToldInFull,
+  AlsoOnRecord,
+  PressMention,
 } = require('../models');
 const { protect, contentManagers } = require('../auth');
 
@@ -32,6 +36,10 @@ router.get('/stats', protect, contentManagers, async (req, res) => {
     explainerVideos,
     contacts,
     unreadContacts,
+    runningNow,
+    toldInFull,
+    alsoOnRecord,
+    pressMentions,
   ] = await Promise.all([
     Blog.countDocuments(),
     Camp.countDocuments(),
@@ -46,6 +54,10 @@ router.get('/stats', protect, contentManagers, async (req, res) => {
     ExplainerVideo.countDocuments(),
     Contact.countDocuments(),
     Contact.countDocuments({ read: { $ne: true } }),
+    RunningNow.countDocuments(),
+    ToldInFull.countDocuments(),
+    AlsoOnRecord.countDocuments(),
+    PressMention.countDocuments(),
   ]);
 
   res.json({
@@ -62,6 +74,10 @@ router.get('/stats', protect, contentManagers, async (req, res) => {
     explainerVideos,
     contacts,
     unreadContacts,
+    runningNow,
+    toldInFull,
+    alsoOnRecord,
+    pressMentions,
   });
 });
 

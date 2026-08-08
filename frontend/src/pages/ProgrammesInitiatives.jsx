@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import WorkBrowse from '../components/our-work/WorkBrowse';
 import { DeskEntry, WorkPageBanner } from '../components/our-work/WorkParts';
 import publicApi from '../lib/publicApi';
@@ -65,18 +64,6 @@ export default function ProgrammesInitiatives() {
         {deskStories.map((story, i) => (
           <DeskEntry key={story.id || story.slug || i} story={story} index={i} />
         ))}
-      </section>
-
-      <section id="camps" className="work-camps">
-        <div className="work-camps__overlay" aria-hidden="true" />
-        <div className="work-camps__inner">
-          <p className="work-camps__label">Project 02 · Mobile Camps</p>
-          <h2 className="work-camps__title">The Camps</h2>
-          <p className="work-camps__ph">Full-bleed photo · Camp under a banyan tree, dusk</p>
-          <Link to="/our-work" className="work-pill work-pill--light">
-            Areas of Work →
-          </Link>
-        </div>
       </section>
     </div>
   );

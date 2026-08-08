@@ -8,19 +8,20 @@ function pdfFilename(title, fallback = 'document') {
   return `${base}.pdf`;
 }
 
-function contentDisposition(filename) {
+function contentDisposition(filename, { inline = false } = {}) {
   const safe = String(filename || 'document.pdf')
     .replace(/[/\\?&#]+/g, '-')
     .replace(/"/g, '');
   const ascii = safe.replace(/[^\x20-\x7E]+/g, '_') || 'document.pdf';
-  return `attachment; filename="${ascii}"; filename*=UTF-8''${encodeURIComponent(safe)}`;
+  const kind = inline ? 'inline' : 'attachment';
+  return `${kind}; filename="${ascii}"; filename*=UTF-8''${encodeURIComponent(safe)}`;
 }
 
 /**
  * Fetch Cloudinary private download URL and pipe bytes to the Express response.
  * Avoids browser landing on broken CDN fl_attachment URLs (HTTP 400 / ACL 401).
  */
-function streamUrlToResponse(fileUrl, res, { filename, contentType = 'application/pdf' }) {
+function streamUrlToResponse(fileUrl, res, { filename, contentType = 'application/pdf', inline = false } = {}) {
   return new Promise((resolve, reject) => {
     const lib = fileUrl.startsWith('https') ? https : http;
     const req = lib.get(fileUrl, (upstream) => {
@@ -31,7 +32,7 @@ function streamUrlToResponse(fileUrl, res, { filename, contentType = 'applicatio
         upstream.headers.location
       ) {
         upstream.resume();
-        return streamUrlToResponse(upstream.headers.location, res, { filename, contentType })
+        return streamUrlToResponse(upstream.headers.location, res, { filename, contentType, inline })
           .then(resolve)
           .catch(reject);
       }
@@ -44,11 +45,13 @@ function streamUrlToResponse(fileUrl, res, { filename, contentType = 'applicatio
       if (typeof res.status === 'function') res.status(200);
       else res.statusCode = 200;
       res.setHeader('Content-Type', upstream.headers['content-type'] || contentType);
-      res.setHeader('Content-Disposition', contentDisposition(filename));
+      res.setHeader('Content-Disposition', contentDisposition(filename, { inline }));
       if (upstream.headers['content-length']) {
         res.setHeader('Content-Length', upstream.headers['content-length']);
       }
+      // Allow embedding in the site PDF preview modal (same or configured frontend origin)
       res.setHeader('Cache-Control', 'private, no-store');
+      res.setHeader('X-Content-Type-Options', 'nosniff');
       upstream.pipe(res);
       upstream.on('end', resolve);
       upstream.on('error', reject);
@@ -60,7 +63,7 @@ function streamUrlToResponse(fileUrl, res, { filename, contentType = 'applicatio
 /**
  * Resolve a stored Cloudinary file URL into a download streamed through our API.
  */
-async function sendPdfDownload(res, fileUrl, filename = 'document.pdf') {
+async function sendPdfDownload(res, fileUrl, filename = 'document.pdf', { inline = false } = {}) {
   let name = String(filename || 'document.pdf').trim() || 'document.pdf';
   if (!name.toLowerCase().endsWith('.pdf')) name += '.pdf';
 
@@ -70,7 +73,7 @@ async function sendPdfDownload(res, fileUrl, filename = 'document.pdf') {
   }
 
   try {
-    await streamUrlToResponse(privateUrl, res, { filename: name });
+    await streamUrlToResponse(privateUrl, res, { filename: name, inline });
   } catch (err) {
     if (!res.headersSent) {
       res.status(502).json({
@@ -86,10 +89,14 @@ async function sendPdfDownload(res, fileUrl, filename = 'document.pdf') {
   }
 }
 
+async function sendPdfInline(res, fileUrl, filename = 'document.pdf') {
+  return sendPdfDownload(res, fileUrl, filename, { inline: true });
+}
+
 /**
  * Express handler factory: find doc by id/slug, stream PDF with attachment headers.
  */
-function createPdfDownloadHandler(Model, { titleField = 'title', notFound = 'File not found' } = {}) {
+function createPdfDownloadHandler(Model, { titleField = 'title', notFound = 'File not found', inline = false } = {}) {
   return async function pdfDownload(req, res) {
     try {
       const doc = await Model.findOne({
@@ -99,7 +106,7 @@ function createPdfDownloadHandler(Model, { titleField = 'title', notFound = 'Fil
       if (!doc.file) return res.status(404).json({ message: 'No PDF uploaded for this item' });
 
       const filename = pdfFilename(doc[titleField] || doc.year || 'document');
-      return sendPdfDownload(res, doc.file, filename);
+      return sendPdfDownload(res, doc.file, filename, { inline });
     } catch (err) {
       if (!res.headersSent) {
         res.status(500).json({ message: err.message || 'Download failed' });
@@ -121,4 +128,5 @@ module.exports = {
   createPdfDownloadHandler,
   assertPdfUpload,
   sendPdfDownload,
+  sendPdfInline,
 };

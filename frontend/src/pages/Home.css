@@ -433,8 +433,8 @@
 
 .home-who__copy p {
   color: var(--muted);
-  font-size: 1.02rem;
-  line-height: 1.7;
+  font-size: 1.15rem;
+  line-height: 1.75;
   max-width: 34rem;
 }
 
@@ -667,6 +667,7 @@ a.home-card--link:hover {
 .home-snapshots__group {
   display: flex;
   flex-shrink: 0;
+  align-items: flex-end;
   gap: 1rem;
   padding-right: 1rem;
 }
@@ -692,24 +693,19 @@ a.home-card--link:hover {
 
 .home-polaroid .home-ph { border-radius: 2px; }
 
-/* Frame matches photo orientation so portraits (row 2) aren’t squashed into landscape */
+/* One square window for every shot — cover fills edge-to-edge (no letterbox / no squeeze) */
 .home-polaroid__media {
+  position: relative;
   width: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 1 / 1;
   border-radius: 2px;
   overflow: hidden;
   background: #e8dfd2;
 }
 
-.home-polaroid__media--portrait {
-  aspect-ratio: 3 / 4;
-}
-
-.home-polaroid__media--landscape {
-  aspect-ratio: 4 / 3;
-}
-
 .home-polaroid__img {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
@@ -844,8 +840,8 @@ a.home-story--link:hover {
 .home-expertise__intro p {
   max-width: 22rem;
   color: var(--muted);
-  font-size: 1.02rem;
-  line-height: 1.65;
+  font-size: 1.15rem;
+  line-height: 1.7;
 }
 
 .home-expertise__list {
@@ -1229,16 +1225,8 @@ a.home-story--link:hover {
   }
 
   .home-polaroid .home-ph {
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 1 / 1;
     padding: 0.65rem 0.45rem;
-  }
-
-  .home-polaroid__media--landscape {
-    aspect-ratio: 4 / 3;
-  }
-
-  .home-polaroid__media--portrait {
-    aspect-ratio: 3 / 4;
   }
 
   .home-polaroid .home-ph__label {

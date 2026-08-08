@@ -104,6 +104,14 @@
   padding: 1rem;
 }
 
+.work-banner__ph--photo {
+  background-repeat: no-repeat;
+}
+
+.work-banner__ph--photo span {
+  display: none;
+}
+
 .work-banner__inner {
   position: relative;
   z-index: 1;
@@ -190,8 +198,7 @@
 
 #programmes,
 #desk,
-#reports,
-#camps {
+#reports {
   scroll-margin-top: calc(var(--header-h, 72px) + 3.25rem);
 }
 
@@ -256,8 +263,8 @@
 .work-prog__desc {
   margin: 0.95rem 0 1.35rem;
   max-width: 38rem;
-  font-size: 1.02rem;
-  line-height: 1.65;
+  font-size: 1.15rem;
+  line-height: 1.7;
   color: var(--muted);
 }
 
@@ -460,8 +467,8 @@
 .work-desk__lead-text p:not(.work-desk__kicker) {
   margin: 0 0 1rem;
   max-width: 34rem;
-  font-size: 1.02rem;
-  line-height: 1.7;
+  font-size: 1.15rem;
+  line-height: 1.75;
   color: var(--muted);
 }
 
@@ -512,18 +519,8 @@
   direction: ltr;
 }
 
-.work-desk__account {
-  padding-top: clamp(2.5rem, 5vw, 3.5rem);
-  padding-bottom: clamp(2rem, 4vw, 3rem);
-  text-align: center;
-}
-
-.work-desk__account .work-pill {
-  margin-top: 0.25rem;
-}
-
 .work-desk__lead-text .work-pill {
-  margin-top: 0.5rem;
+  margin-top: 0.35rem;
   display: inline-flex;
 }
 
@@ -579,56 +576,6 @@
   font-size: 1.05rem;
   line-height: 1.65;
   color: var(--muted);
-}
-
-/* ─── Camps ─── */
-.work-camps {
-  position: relative;
-  min-height: clamp(360px, 48vw, 520px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  color: #fff;
-  background:
-    linear-gradient(180deg, rgba(20, 16, 12, 0.55), rgba(20, 16, 12, 0.72)),
-    linear-gradient(135deg, #5c4a3c, #2a221c);
-  overflow: hidden;
-}
-
-.work-camps__inner {
-  position: relative;
-  z-index: 1;
-  padding: clamp(3rem, 6vw, 4.5rem) 1.25rem;
-  max-width: 40rem;
-}
-
-.work-camps__label {
-  margin: 0 0 0.85rem;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.work-camps__title {
-  margin: 0 0 0.85rem;
-  font-family: var(--font-serif);
-  font-size: clamp(2.5rem, 6vw, 4.25rem);
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: #fff;
-}
-
-.work-camps__ph {
-  margin: 0 0 1.5rem;
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.55);
 }
 
 /* ─── Reports ─── */

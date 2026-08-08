@@ -2,9 +2,11 @@ import { Link } from 'react-router-dom';
 import Reveal from '../motion/Reveal';
 import { assetUrl } from '../../lib/api';
 import { deskStoryHref } from '../../data/deskStories';
+import ourWorkBanner from '../../assets/ourworkbanner.jpeg';
 
 export function DeskEntry({ story, index }) {
   const num = String(story.number || index + 1).padStart(2, '0');
+  const displayTitle = (story.fullHeader || story.title || '').trim();
   const paras = (story.listingDescription || '')
     .split(/\n+/)
     .filter((p) => p.trim());
@@ -12,9 +14,8 @@ export function DeskEntry({ story, index }) {
   const detail = story.gallery?.[0];
   const flip = index % 2 === 1;
   const storyHref = deskStoryHref(story);
-  const accountLead =
-    story.fullBody?.split(/\n+/)[0]?.trim() ||
-    'Open the full account — photos, timeline, and the complete story from the desk.';
+  // Featured programme title lives in the page banner — don't repeat it here.
+  const showTitle = index > 0 && Boolean(displayTitle);
 
   return (
     <Reveal as="div" className={`work-desk__entry ${flip ? 'work-desk__entry--flip' : ''}`} variant="up">
@@ -26,10 +27,15 @@ export function DeskEntry({ story, index }) {
             </span>
             <div className="work-desk__lead-text">
               <p className="work-desk__kicker">{story.kicker || 'Programmes & Initiatives'}</p>
-              <h3>{story.title}</h3>
+              {showTitle ? <h3>{displayTitle}</h3> : null}
               {paras.map((p, i) => (
                 <p key={i}>{p}</p>
               ))}
+              {storyHref ? (
+                <Link to={storyHref} className="work-pill">
+                  Full story →
+                </Link>
+              ) : null}
             </div>
           </div>
         </div>
@@ -40,7 +46,7 @@ export function DeskEntry({ story, index }) {
               <img className="work-frame__img" src={hero} alt="" />
             ) : (
               <div className="work-frame__ph">
-                <span>Photo · {story.title}</span>
+                <span>Photo · {displayTitle || 'Programme'}</span>
               </div>
             )}
           </figure>
@@ -50,17 +56,6 @@ export function DeskEntry({ story, index }) {
             </figure>
           ) : null}
         </div>
-      </div>
-
-      <div className="container work-account__inner work-desk__account">
-        <p className="work-account__label">The full account</p>
-        <h2 className="work-account__title">{story.fullHeader || story.title}</h2>
-        <p className="work-account__lead">{accountLead}</p>
-        {storyHref ? (
-          <Link to={storyHref} className="work-pill">
-            Full story →
-          </Link>
-        ) : null}
       </div>
     </Reveal>
   );
@@ -96,11 +91,19 @@ export function ProgrammeBlock({ item }) {
   );
 }
 
-export function WorkPageBanner({ title = 'Our Work' }) {
+export function WorkPageBanner({ title = 'Our Work', image = ourWorkBanner }) {
+  const bg = image
+    ? {
+        backgroundImage: `linear-gradient(180deg, rgba(43, 34, 26, 0.38), rgba(43, 34, 26, 0.62)), url(${image})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }
+    : undefined;
+
   return (
     <header className="work-banner">
-      <div className="work-banner__ph" aria-hidden="true">
-        <span>Banner photo · Legal aid camp under way, wide shot</span>
+      <div className={`work-banner__ph${image ? ' work-banner__ph--photo' : ''}`} style={bg} aria-hidden="true">
+        {!image ? <span>Banner photo · Legal aid camp under way, wide shot</span> : null}
       </div>
       <div className="container work-banner__inner">
         <h1>{title}</h1>

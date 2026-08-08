@@ -26,6 +26,11 @@ router.get(
   createPdfDownloadHandler(Article, { notFound: 'Guide not found' }),
 );
 
+router.get(
+  '/:id/view',
+  createPdfDownloadHandler(Article, { notFound: 'Guide not found', inline: true }),
+);
+
 router.get('/:slugOrId', async (req, res) => {
   const { slugOrId } = req.params;
   const article = await Article.findOne({
