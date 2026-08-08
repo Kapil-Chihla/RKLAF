@@ -11,6 +11,7 @@ const {
   DeskStory,
   SuccessStory,
   Paper,
+  ExplainerVideo,
 } = require('../models');
 const { protect, contentManagers } = require('../auth');
 
@@ -29,6 +30,7 @@ router.get('/stats', protect, contentManagers, async (req, res) => {
     deskStories,
     successStories,
     papers,
+    explainerVideos,
   ] = await Promise.all([
     Blog.countDocuments(),
     Camp.countDocuments(),
@@ -41,6 +43,7 @@ router.get('/stats', protect, contentManagers, async (req, res) => {
     DeskStory.countDocuments(),
     SuccessStory.countDocuments(),
     Paper.countDocuments(),
+    ExplainerVideo.countDocuments(),
   ]);
 
   res.json({
@@ -55,6 +58,7 @@ router.get('/stats', protect, contentManagers, async (req, res) => {
     deskStories,
     successStories,
     papers,
+    explainerVideos,
   });
 });
 

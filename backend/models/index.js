@@ -12,4 +12,5 @@ module.exports = {
   DeskStory: require('./DeskStory'),
   SuccessStory: require('./SuccessStory'),
   Paper: require('./Paper'),
+  ExplainerVideo: require('./ExplainerVideo'),
 };

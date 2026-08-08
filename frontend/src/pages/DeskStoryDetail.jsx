@@ -4,7 +4,7 @@ import publicApi from '../lib/publicApi';
 import { assetUrl } from '../lib/api';
 import Reveal from '../components/motion/Reveal';
 import { FALLBACK_DESK } from '../data/deskStories';
-import { cloudinaryPdfAttachmentUrl } from '../lib/pdfDownload';
+import { deskDocumentDownloadUrl } from '../lib/pdfDownload';
 import './StoryDetail.css';
 
 export default function DeskStoryDetail() {
@@ -101,7 +101,7 @@ export default function DeskStoryDetail() {
             <ul>
               {story.documents.map((doc) => {
                 const label = doc.name || 'Document.pdf';
-                const href = cloudinaryPdfAttachmentUrl(doc.url, label);
+                const href = deskDocumentDownloadUrl(story.id || story.slug, doc.id);
                 return (
                   <li key={doc.id}>
                     <a

@@ -4,6 +4,12 @@ const { cloudinary } = require('../config/cloudinary');
 function resourceType(mimetype, ext) {
   if (mimetype === 'application/pdf' || ext === '.pdf') return 'raw';
   if (mimetype?.startsWith('image/')) return 'image';
+  if (
+    mimetype?.startsWith('video/') ||
+    ['.mp4', '.webm', '.mov', '.m4v'].includes(ext)
+  ) {
+    return 'video';
+  }
   return 'auto';
 }
 
@@ -28,6 +34,8 @@ function uploadBuffer(file, folder) {
       resource_type: type,
       use_filename: !isPdf,
       unique_filename: true,
+      // Prefer public delivery when the account allows PDF/ZIP delivery
+      access_mode: 'public',
     };
 
     if (isPdf) {
@@ -45,25 +53,74 @@ function uploadBuffer(file, folder) {
 }
 
 /**
- * Turn a Cloudinary delivery URL into a forced-download URL with a .pdf filename.
- * Cross-origin HTML `download` attributes are ignored by browsers — this is required.
+ * Parse Cloudinary delivery URL → { resourceType, type, publicId }.
+ * Handles transforms + version segments before the public_id.
+ */
+function parseCloudinaryUrl(fileUrl) {
+  if (!fileUrl || typeof fileUrl !== 'string') return null;
+  const full = fileUrl.match(
+    /\/(raw|image|video|auto)\/(upload|authenticated|private)\/(?:(?:[^/]+\/)*?)?(?:v\d+\/)?(.+)$/i,
+  );
+  if (!full) return null;
+  const publicId = decodeURIComponent(full[3].split('?')[0]).replace(/^\/+/, '');
+  if (!publicId) return null;
+  return {
+    resourceType: full[1].toLowerCase(),
+    type: full[2].toLowerCase(),
+    publicId,
+  };
+}
+
+/**
+ * Signed Admin download URL. Works even when Free-plan CDN blocks PDF delivery
+ * (x-cld-error: deny or ACL failure on /raw/upload/... PDFs).
  *
- * Important: periods in the fl_attachment filename MUST be %2E-encoded.
- * `fl_attachment:ngo-2.pdf` → Cloudinary HTTP 400 (dot ends a transformation segment).
+ * @param {string} fileUrl - stored Cloudinary secure_url
+ * @param {string} [filename] - suggested download filename (e.g. report.pdf)
+ * @param {number} [ttlSec=600]
+ */
+function cloudinaryPrivateDownloadUrl(fileUrl, filename = 'document.pdf', ttlSec = 600) {
+  const parsed = parseCloudinaryUrl(fileUrl);
+  if (!parsed) return null;
+
+  let name = String(filename || 'document.pdf').trim() || 'document.pdf';
+  if (!name.toLowerCase().endsWith('.pdf')) name += '.pdf';
+  name = name.replace(/[/\\?&#]+/g, '-').slice(0, 120);
+
+  return cloudinary.utils.private_download_url(parsed.publicId, '', {
+    resource_type: parsed.resourceType,
+    type: parsed.type === 'authenticated' ? 'authenticated' : 'upload',
+    attachment: name,
+    expires_at: Math.floor(Date.now() / 1000) + ttlSec,
+  });
+}
+
+/**
+ * Legacy CDN fl_attachment helper.
+ * Free Cloudinary plans often block PDF CDN delivery — prefer privateDownloadUrl.
+ * Do NOT put a `.pdf` (or `%2Epdf`) in the flag value: Cloudinary still splits on
+ * the decoded dot and returns "Invalid flag in transformation: pdf".
  */
 function cloudinaryAttachmentUrl(fileUrl, filename = 'document.pdf') {
   if (!fileUrl) return null;
-  let name = String(filename).trim() || 'document.pdf';
-  if (!name.toLowerCase().endsWith('.pdf')) name += '.pdf';
-  // Strip path junk, then encode; force `.` → `%2E` so Cloudinary keeps the extension
-  const safe = encodeURIComponent(name.replace(/[/\\?&#]+/g, '-')).replace(/\./g, '%2E');
+  // Prefer signed Admin download whenever credentials are configured
+  try {
+    const privateUrl = cloudinaryPrivateDownloadUrl(fileUrl, filename);
+    if (privateUrl) return privateUrl;
+  } catch (_) {
+    /* fall through to CDN flag */
+  }
 
   if (/\/upload\/fl_attachment/.test(fileUrl)) return fileUrl;
-
   if (fileUrl.includes('/upload/')) {
-    return fileUrl.replace('/upload/', `/upload/fl_attachment:${safe}/`);
+    return fileUrl.replace('/upload/', '/upload/fl_attachment/');
   }
   return fileUrl;
 }
 
-module.exports = { uploadBuffer, cloudinaryAttachmentUrl };
+module.exports = {
+  uploadBuffer,
+  parseCloudinaryUrl,
+  cloudinaryPrivateDownloadUrl,
+  cloudinaryAttachmentUrl,
+};

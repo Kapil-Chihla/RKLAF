@@ -104,20 +104,56 @@ const guides = [
   },
 ];
 
-const videos = [
+const FALLBACK_VIDEOS = [
   {
+    id: 'fallback-1',
     title: 'The Senior Citizens Act in 8 minutes',
     meta: '24K views · Hindi & English subtitles',
+    thumbnail: null,
+    video: null,
+    externalUrl: null,
   },
   {
+    id: 'fallback-2',
     title: 'Your first day in court',
     meta: '90 sec animated short',
+    thumbnail: null,
+    video: null,
+    externalUrl: null,
   },
   {
+    id: 'fallback-3',
     title: 'Reading a gift deed before signing',
     meta: '2 min · from our camps',
+    thumbnail: null,
+    video: null,
+    externalUrl: null,
   },
 ];
+
+/** Turn YouTube / Vimeo watch URLs into embeddable iframe srcs. */
+function embedUrl(url) {
+  if (!url) return null;
+  try {
+    const u = new URL(url);
+    const host = u.hostname.replace(/^www\./, '');
+    if (host === 'youtu.be') {
+      const id = u.pathname.slice(1).split('/')[0];
+      return id ? `https://www.youtube.com/embed/${id}?autoplay=1` : null;
+    }
+    if (host === 'youtube.com' || host === 'm.youtube.com' || host === 'youtube-nocookie.com') {
+      const id = u.searchParams.get('v') || u.pathname.match(/\/embed\/([^/]+)/)?.[1];
+      return id ? `https://www.youtube.com/embed/${id}?autoplay=1` : null;
+    }
+    if (host === 'vimeo.com') {
+      const id = u.pathname.split('/').filter(Boolean)[0];
+      return id ? `https://player.vimeo.com/video/${id}?autoplay=1` : null;
+    }
+  } catch {
+    /* not a URL */
+  }
+  return null;
+}
 
 const emergency = [
   {
@@ -166,6 +202,8 @@ export default function KnowYourRights() {
   const [contact, setContact] = useState('');
   const [sent, setSent] = useState(false);
   const [guideList, setGuideList] = useState(guides);
+  const [videoList, setVideoList] = useState(FALLBACK_VIDEOS);
+  const [activeVideo, setActiveVideo] = useState(null);
   const [glossaryLetter, setGlossaryLetter] = useState('A');
 
   const glossaryEntries = legalGlossaryByLetter[glossaryLetter] || [];
@@ -180,7 +218,8 @@ export default function KnowYourRights() {
           r.data.map((a, i) => ({
             id: a.id || a.slug || `guide-${i}`,
             title: a.title,
-            cover: a.summary || a.category || 'Practical guide',
+            description: (a.summary || '').trim(),
+            coverLabel: a.category || 'Practical guide',
             tone: GUIDE_TONES[i % GUIDE_TONES.length],
             href: a.file ? guidePdfDownloadUrl(a.id) : '#',
             coverImage: a.coverImage ? assetUrl(a.coverImage) : null,
@@ -189,12 +228,51 @@ export default function KnowYourRights() {
         );
       })
       .catch(() => {});
+
+    publicApi
+      .get('/explainer-videos')
+      .then((r) => {
+        if (!Array.isArray(r.data) || !r.data.length) return;
+        setVideoList(
+          r.data.map((v, i) => ({
+            id: v.id || v.slug || `video-${i}`,
+            title: v.title,
+            meta: v.meta || '',
+            thumbnail: v.thumbnail ? assetUrl(v.thumbnail) : null,
+            video: v.video ? assetUrl(v.video) : null,
+            externalUrl: v.externalUrl || null,
+          })),
+        );
+      })
+      .catch(() => {});
   }, []);
+
+  useEffect(() => {
+    if (!activeVideo) return undefined;
+    const onKey = (e) => {
+      if (e.key === 'Escape') setActiveVideo(null);
+    };
+    document.addEventListener('keydown', onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [activeVideo]);
 
   const onSubmit = (e) => {
     e.preventDefault();
     setSent(true);
   };
+
+  const openVideo = (v) => {
+    if (!v.video && !v.externalUrl) return;
+    setActiveVideo(v);
+  };
+
+  const iframeSrc = activeVideo ? embedUrl(activeVideo.externalUrl) : null;
+  const fileSrc = activeVideo?.video || null;
 
   return (
     <div className="kyr kyr--v2">
@@ -325,11 +403,11 @@ export default function KnowYourRights() {
             {guideList.map((g, i) => (
               <Reveal key={g.id} as="article" className="kyr-pdf" variant="up" delay={i * 40}>
                 <div
-                  className={`kyr-pdf__cover kyr-pdf__cover--${g.tone}`}
+                  className={`kyr-pdf__cover kyr-pdf__cover--${g.tone}${g.coverImage ? ' kyr-pdf__cover--photo' : ''}`}
                   style={
                     g.coverImage
                       ? {
-                          backgroundImage: `linear-gradient(rgba(20,16,12,0.35), rgba(20,16,12,0.55)), url(${g.coverImage})`,
+                          backgroundImage: `url(${g.coverImage})`,
                           backgroundSize: 'cover',
                           backgroundPosition: 'center',
                         }
@@ -338,11 +416,12 @@ export default function KnowYourRights() {
                   aria-hidden="true"
                 >
                   <span className="kyr-pdf__badge">PDF</span>
-                  <strong>{g.cover}</strong>
+                  {!g.coverImage ? <strong>{g.coverLabel || g.cover}</strong> : null}
                 </div>
                 <h3 className="kyr-pdf__title" title={g.title}>
                   {g.title}
                 </h3>
+                {g.description ? <p className="kyr-pdf__desc">{g.description}</p> : null}
                 {g.hasPdf !== false && g.href !== '#' ? (
                   <a
                     className="kyr-pdf__dl"
@@ -375,24 +454,82 @@ export default function KnowYourRights() {
             <h2>Watch it in two minutes</h2>
           </Reveal>
 
-          <div className="kyr-videos__grid">
-            {videos.map((v, i) => (
-              <Reveal key={v.title} as="article" className="kyr-video" variant="up" delay={i * 50}>
-                <button type="button" className="kyr-video__thumb" aria-label={`Play: ${v.title}`}>
-                  <span className="kyr-video__ph">Video thumbnail</span>
-                  <span className="kyr-video__play" aria-hidden="true">
-                    ▶
-                  </span>
-                </button>
-                <div className="kyr-video__meta">
-                  <h3>{v.title}</h3>
-                  <p>{v.meta}</p>
-                </div>
-              </Reveal>
-            ))}
+          <div className="kyr-videos__scroll" role="region" aria-label="Explainer videos carousel">
+            <div className="kyr-videos__track">
+              {videoList.map((v, i) => {
+                const playable = Boolean(v.video || v.externalUrl);
+                return (
+                  <Reveal key={v.id} as="article" className="kyr-video" variant="up" delay={Math.min(i * 40, 160)}>
+                    <button
+                      type="button"
+                      className="kyr-video__thumb"
+                      aria-label={playable ? `Play: ${v.title}` : v.title}
+                      disabled={!playable}
+                      onClick={() => openVideo(v)}
+                    >
+                      {v.thumbnail ? (
+                        <img src={v.thumbnail} alt="" className="kyr-video__img" loading="lazy" />
+                      ) : (
+                        <span className="kyr-video__ph">Video thumbnail</span>
+                      )}
+                      <span className="kyr-video__play" aria-hidden="true">
+                        ▶
+                      </span>
+                    </button>
+                    <div className="kyr-video__meta">
+                      <h3>{v.title}</h3>
+                      {v.meta ? <p>{v.meta}</p> : null}
+                    </div>
+                  </Reveal>
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>
+
+      {activeVideo ? (
+        <div
+          className="kyr-video-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-label={activeVideo.title}
+          onClick={() => setActiveVideo(null)}
+        >
+          <div className="kyr-video-modal__panel" onClick={(e) => e.stopPropagation()}>
+            <button
+              type="button"
+              className="kyr-video-modal__close"
+              aria-label="Close video"
+              onClick={() => setActiveVideo(null)}
+            >
+              ×
+            </button>
+            <div className="kyr-video-modal__frame">
+              {fileSrc ? (
+                <video src={fileSrc} controls autoPlay playsInline />
+              ) : iframeSrc ? (
+                <iframe
+                  src={iframeSrc}
+                  title={activeVideo.title}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              ) : activeVideo.externalUrl ? (
+                <a
+                  className="kyr-video-modal__ext"
+                  href={activeVideo.externalUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Open video in a new tab →
+                </a>
+              ) : null}
+            </div>
+            <p className="kyr-video-modal__title">{activeVideo.title}</p>
+          </div>
+        </div>
+      ) : null}
 
       <section id="emergency" className="kyr-emergency">
         <div className="container">

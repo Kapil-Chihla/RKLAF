@@ -7,6 +7,12 @@ import { reportPdfDownloadUrl } from '../lib/pdfDownload';
 import { FALLBACK_DESK, deskStoryHref } from '../data/deskStories';
 import './OurWork.css';
 
+const WORK_BROWSE = [
+  { id: 'programmes', num: '01', label: 'Programmes & Initiatives' },
+  { id: 'desk', num: '02', label: 'Our Desk' },
+  { id: 'reports', num: '03', label: 'Annual Reports' },
+];
+
 const FALLBACK_REPORTS = [
   { id: 'fb-r1', year: '2025–26', title: 'Annual Report 2025–26', summary: 'Impact, audited financials & ledger', file: null },
   { id: 'fb-r2', year: '2024–25', title: 'Annual Report 2024–25', summary: 'Impact, audited financials & ledger', file: null },
@@ -167,6 +173,7 @@ function DeskEntry({ story, index }) {
 export default function OurWork() {
   const [deskStories, setDeskStories] = useState(FALLBACK_DESK);
   const [annualReports, setAnnualReports] = useState(FALLBACK_REPORTS);
+  const [activeBrowse, setActiveBrowse] = useState(WORK_BROWSE[0].id);
 
   useEffect(() => {
     publicApi
@@ -182,6 +189,30 @@ export default function OurWork() {
       })
       .catch(() => {});
   }, []);
+
+  useEffect(() => {
+    const nodes = WORK_BROWSE.map((t) => document.getElementById(t.id)).filter(Boolean);
+    if (!nodes.length) return undefined;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible[0]?.target?.id) setActiveBrowse(visible[0].target.id);
+      },
+      { rootMargin: '-28% 0px -55% 0px', threshold: [0.08, 0.2, 0.4] },
+    );
+    nodes.forEach((n) => observer.observe(n));
+    return () => observer.disconnect();
+  }, [deskStories.length]);
+
+  const scrollToSection = (id) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    setActiveBrowse(id);
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   const featured = deskStories[0];
   const bannerStyle = featured?.heroImage
@@ -202,6 +233,23 @@ export default function OurWork() {
           <h1>Our Work</h1>
         </div>
       </header>
+
+      <nav className="work-browse" aria-label="Browse Our Work">
+        <div className="container work-browse__inner">
+          {WORK_BROWSE.map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              className={`work-browse__tab${activeBrowse === tab.id ? ' is-active' : ''}`}
+              onClick={() => scrollToSection(tab.id)}
+              aria-current={activeBrowse === tab.id ? 'true' : undefined}
+            >
+              <span className="work-browse__num">{tab.num}</span>
+              <span className="work-browse__label">{tab.label}</span>
+            </button>
+          ))}
+        </div>
+      </nav>
 
       <section id="programmes" className="work-programmes">
         <div className="container">

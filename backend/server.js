@@ -61,6 +61,7 @@ app.use('/api/guide-categories', require('./routes/guideCategories'));
 app.use('/api/desk-stories', require('./routes/deskStories'));
 app.use('/api/success-stories', require('./routes/successStories'));
 app.use('/api/papers', require('./routes/papers'));
+app.use('/api/explainer-videos', require('./routes/explainerVideos'));
 app.use('/api/reports', require('./routes/reports'));
 app.use('/api/camps', require('./routes/camps'));
 app.use('/api/contact', require('./routes/contact'));
@@ -80,7 +81,18 @@ app.use((err, req, res, next) => {
   next(err);
 });
 
-const uploadFolders = ['blogs', 'articles', 'reports', 'team', 'camps', 'desk', 'success', 'papers', 'general'];
+const uploadFolders = [
+  'blogs',
+  'articles',
+  'reports',
+  'team',
+  'camps',
+  'desk',
+  'success',
+  'papers',
+  'videos',
+  'general',
+];
 uploadFolders.forEach((folder) => {
   const fullPath = path.join(__dirname, 'uploads', folder);
   if (!fs.existsSync(fullPath)) {

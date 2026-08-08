@@ -6,7 +6,8 @@ const generateId = require('../lib/generateId');
 const { parseCaptions, parseJsonArray } = require('../lib/contentHelpers');
 const { protect, contentManagers, adminOrSuper } = require('../auth');
 const { uploadAny } = require('../upload');
-const { uploadBuffer, cloudinaryAttachmentUrl } = require('../lib/cloudinaryUpload');
+const { uploadBuffer } = require('../lib/cloudinaryUpload');
+const { sendPdfDownload } = require('../lib/pdfDownload');
 
 const router = express.Router();
 
@@ -58,7 +59,7 @@ router.get('/', async (req, res) => {
   res.json(items);
 });
 
-/** Force a real PDF download (Cloudinary raw URLs often fail in-browser viewers). */
+/** Force a real PDF download (streamed via signed Cloudinary Admin URL). */
 router.get('/:slugOrId/documents/:docId/download', async (req, res) => {
   const { slugOrId, docId } = req.params;
   const story = await SuccessStory.findOne({
@@ -69,7 +70,7 @@ router.get('/:slugOrId/documents/:docId/download', async (req, res) => {
   const doc = (story.documents || []).find((d) => d.id === docId);
   if (!doc?.url) return res.status(404).json({ message: 'Document not found' });
   const filename = doc.name || 'document.pdf';
-  return res.redirect(302, cloudinaryAttachmentUrl(doc.url, filename));
+  return sendPdfDownload(res, doc.url, filename);
 });
 
 router.post('/', protect, contentManagers, uploadStoryMedia, async (req, res) => {

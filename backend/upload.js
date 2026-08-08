@@ -23,5 +23,11 @@ exports.uploadPDF = multer({
 
 exports.uploadAny = multer({
   storage: memory,
-  limits: { fileSize: 20 * 1024 * 1024 },
+  limits: { fileSize: 100 * 1024 * 1024 },
+});
+
+exports.uploadVideo = multer({
+  storage: memory,
+  fileFilter: fileFilter(['.mp4', '.webm', '.mov', '.m4v']),
+  limits: { fileSize: 100 * 1024 * 1024 },
 });

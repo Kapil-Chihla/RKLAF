@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import publicApi from '../lib/publicApi';
 import { assetUrl } from '../lib/api';
 import Reveal from '../components/motion/Reveal';
-import { cloudinaryPdfAttachmentUrl } from '../lib/pdfDownload';
+import { successDocumentDownloadUrl } from '../lib/pdfDownload';
 import './StoryDetail.css';
 
 export default function SuccessStoryDetail() {
@@ -102,7 +102,7 @@ export default function SuccessStoryDetail() {
             <ul>
               {story.documents.map((doc) => {
                 const label = doc.name || 'Document.pdf';
-                const href = cloudinaryPdfAttachmentUrl(doc.url, label);
+                const href = successDocumentDownloadUrl(story.id || story.slug, doc.id);
                 return (
                   <li key={doc.id}>
                     <a

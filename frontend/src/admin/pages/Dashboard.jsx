@@ -36,6 +36,12 @@ const SECTIONS = [
         desc: 'Cover image + PDF + title + description for the KYR guides grid.',
         statKey: 'articles',
       },
+      {
+        to: '/admin/explainer-videos',
+        label: 'Explainer videos',
+        desc: 'Thumbnail + video file or YouTube link for the KYR horizontal carousel.',
+        statKey: 'explainerVideos',
+      },
     ],
   },
   {
@@ -92,6 +98,10 @@ export default function Dashboard() {
           <div className="admin-stat">
             <strong>{stats.articles ?? 0}</strong>
             <span>KYR guides</span>
+          </div>
+          <div className="admin-stat">
+            <strong>{stats.explainerVideos ?? 0}</strong>
+            <span>KYR videos</span>
           </div>
           <div className="admin-stat">
             <strong>{stats.blogs ?? 0}</strong>

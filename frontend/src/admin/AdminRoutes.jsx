@@ -10,6 +10,7 @@ import ArticlesManage from './pages/ArticlesManage';
 import DeskStoriesManage from './pages/DeskStoriesManage';
 import SuccessStoriesManage from './pages/SuccessStoriesManage';
 import PapersManage from './pages/PapersManage';
+import ExplainerVideosManage from './pages/ExplainerVideosManage';
 import ReportsManage from './pages/ReportsManage';
 import CampsManage from './pages/CampsManage';
 import UsersManage from './pages/UsersManage';
@@ -30,6 +31,7 @@ export default function AdminRoutes() {
           <Route path="blogs" element={<BlogsManage />} />
           <Route path="papers" element={<PapersManage />} />
           <Route path="articles" element={<ArticlesManage />} />
+          <Route path="explainer-videos" element={<ExplainerVideosManage />} />
           <Route path="users" element={<UsersManage />} />
         </Route>
         <Route path="*" element={<Navigate to="/admin/login" replace />} />

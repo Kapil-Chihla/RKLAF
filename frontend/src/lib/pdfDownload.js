@@ -1,8 +1,9 @@
 import { API_BASE } from './api';
 
 /**
- * Backend download endpoints redirect to Cloudinary with fl_attachment
- * so the browser saves a real .pdf (HTML download attr fails cross-origin).
+ * Backend download endpoints redirect to a signed Cloudinary Admin download URL.
+ * Direct CDN links fail on Free plans (PDF delivery blocked → 401 ACL failure),
+ * and fl_attachment:filename.pdf is rejected by Cloudinary's transform parser.
  */
 export function guidePdfDownloadUrl(articleId) {
   if (!articleId) return '#';
@@ -30,21 +31,15 @@ export function successDocumentDownloadUrl(storyIdOrSlug, docId) {
 }
 
 /**
- * Build a Cloudinary delivery URL that forces a PDF download with a real filename.
- *
- * Periods in fl_attachment filenames must be %2E — otherwise Cloudinary returns HTTP 400
- * (it treats `.pdf` as the end of a transformation segment).
+ * Best-effort CDN attachment URL. Prefer API download helpers above —
+ * Free Cloudinary accounts block public PDF delivery.
+ * Never append :filename.pdf — Cloudinary treats ".pdf" as a broken transform flag.
  */
-export function cloudinaryPdfAttachmentUrl(fileUrl, filename = 'document.pdf') {
+export function cloudinaryPdfAttachmentUrl(fileUrl) {
   if (!fileUrl) return '#';
-  let name = String(filename).trim() || 'document.pdf';
-  if (!name.toLowerCase().endsWith('.pdf')) name += '.pdf';
-  const safe = encodeURIComponent(name.replace(/[/\\?&#]+/g, '-')).replace(/\./g, '%2E');
-
   if (/\/upload\/fl_attachment/.test(fileUrl)) return fileUrl;
-
   if (fileUrl.includes('/upload/')) {
-    return fileUrl.replace('/upload/', `/upload/fl_attachment:${safe}/`);
+    return fileUrl.replace('/upload/', '/upload/fl_attachment/');
   }
   return fileUrl;
 }

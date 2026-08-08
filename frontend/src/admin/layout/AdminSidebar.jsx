@@ -18,7 +18,10 @@ const NAV_GROUPS = [
   },
   {
     label: 'Know Your Rights',
-    items: [{ to: '/admin/articles', label: 'Practical guides (PDF)' }],
+    items: [
+      { to: '/admin/articles', label: 'Practical guides (PDF)' },
+      { to: '/admin/explainer-videos', label: 'Explainer videos' },
+    ],
   },
   {
     label: 'Academics',

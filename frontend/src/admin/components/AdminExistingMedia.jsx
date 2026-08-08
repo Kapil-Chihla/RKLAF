@@ -1,5 +1,6 @@
 import { assetUrl } from '../../lib/api';
 import { cloudinaryPdfAttachmentUrl } from '../../lib/pdfDownload';
+/** Prefer API download routes on public pages; admin preview uses CDN attachment flag. */
 
 /**
  * Editable list of already-uploaded gallery images or PDF documents.
@@ -63,7 +64,7 @@ export default function AdminExistingMedia({
           {items.map((doc) => (
             <li key={doc.id || doc.url}>
               <a
-                href={cloudinaryPdfAttachmentUrl(doc.url, doc.name || 'document.pdf')}
+                href={cloudinaryPdfAttachmentUrl(doc.url)}
                 target="_blank"
                 rel="noopener noreferrer"
               >
