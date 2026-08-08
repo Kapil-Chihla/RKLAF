@@ -1,6 +1,5 @@
 import { assetUrl } from '../../lib/api';
 import { cloudinaryPdfAttachmentUrl } from '../../lib/pdfDownload';
-/** Prefer API download routes on public pages; admin preview uses CDN attachment flag. */
 
 /**
  * Editable list of already-uploaded gallery images or PDF documents.
@@ -11,6 +10,7 @@ export default function AdminExistingMedia({
   items,
   kind = 'image',
   onRemove,
+  onChangeItem,
   onClearHero,
   heroUrl,
   clearHero,
@@ -47,6 +47,22 @@ export default function AdminExistingMedia({
             <div key={img.id || img.url} className="admin-existing-media__card">
               <img src={assetUrl(img.url)} alt={img.caption || ''} />
               {img.caption ? <span className="admin-existing-media__cap">{img.caption}</span> : null}
+              {onChangeItem ? (
+                <label style={{ display: 'grid', gap: 4, fontSize: '0.78rem', color: '#5a6f82' }}>
+                  Show after paragraph #
+                  <input
+                    type="number"
+                    min="1"
+                    placeholder="End of story"
+                    value={img.afterParagraph || ''}
+                    onChange={(e) =>
+                      onChangeItem(img.id || img.url, {
+                        afterParagraph: e.target.value ? Number(e.target.value) : null,
+                      })
+                    }
+                  />
+                </label>
+              ) : null}
               <button
                 type="button"
                 className="admin-btn admin-btn--danger admin-btn--sm"
@@ -62,14 +78,26 @@ export default function AdminExistingMedia({
       {kind === 'document' && items?.length ? (
         <ul className="admin-existing-media__docs">
           {items.map((doc) => (
-            <li key={doc.id || doc.url}>
-              <a
-                href={cloudinaryPdfAttachmentUrl(doc.url)}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {doc.name || 'Document.pdf'}
+            <li key={doc.id || doc.url} style={{ display: 'grid', gap: '0.45rem' }}>
+              <a href={cloudinaryPdfAttachmentUrl(doc.url)} target="_blank" rel="noopener noreferrer">
+                {doc.title || doc.name || 'Document.pdf'}
               </a>
+              {onChangeItem ? (
+                <>
+                  <input
+                    type="text"
+                    placeholder="Public title"
+                    value={doc.title || ''}
+                    onChange={(e) => onChangeItem(doc.id || doc.url, { title: e.target.value })}
+                  />
+                  <textarea
+                    rows={2}
+                    placeholder="Short description (like KYR practical guides)"
+                    value={doc.description || ''}
+                    onChange={(e) => onChangeItem(doc.id || doc.url, { description: e.target.value })}
+                  />
+                </>
+              ) : null}
               <button
                 type="button"
                 className="admin-btn admin-btn--danger admin-btn--sm"

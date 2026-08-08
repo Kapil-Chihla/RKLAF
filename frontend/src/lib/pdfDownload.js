@@ -31,6 +31,11 @@ export function deskDocumentDownloadUrl(storyIdOrSlug, docId) {
   return `${API_BASE}/desk-stories/${encodeURIComponent(storyIdOrSlug)}/documents/${encodeURIComponent(docId)}/download`;
 }
 
+export function deskDocumentViewUrl(storyIdOrSlug, docId) {
+  if (!storyIdOrSlug || !docId) return '#';
+  return `${API_BASE}/desk-stories/${encodeURIComponent(storyIdOrSlug)}/documents/${encodeURIComponent(docId)}/view`;
+}
+
 export function successDocumentDownloadUrl(storyIdOrSlug, docId) {
   if (!storyIdOrSlug || !docId) return '#';
   return `${API_BASE}/success-stories/${encodeURIComponent(storyIdOrSlug)}/documents/${encodeURIComponent(docId)}/download`;

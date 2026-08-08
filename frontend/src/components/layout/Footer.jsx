@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { navItems, socialLinks, WHATSAPP_DISPLAY, WHATSAPP_URL, CONTACT_EMAIL, CONTACT_MAILTO, CONTACT_PHONE_TEL, OFFICE_DELHI } from '../../data/navigation';
+import { navItems, socialLinks, WHATSAPP_DISPLAY, WHATSAPP_URL, CONTACT_EMAIL, CONTACT_MAILTO, OFFICE_DELHI } from '../../data/navigation';
 import Brand from './Brand';
 import SocialIcon from '../icons/SocialIcons';
 
@@ -92,11 +92,6 @@ export default function Footer() {
           <h4>Contact</h4>
           <ul>
             <li>
-              <span className="footer-v2__label">Helpline</span>
-              <a href={CONTACT_PHONE_TEL}>{WHATSAPP_DISPLAY}</a>
-              <small>Mon to Sat, 9 to 6</small>
-            </li>
-            <li>
               <span className="footer-v2__label">WhatsApp</span>
               <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">{WHATSAPP_DISPLAY}</a>
             </li>
@@ -108,8 +103,8 @@ export default function Footer() {
               <span className="footer-v2__label">Head office</span>
               <a href={OFFICE_DELHI.mapsUrl} target="_blank" rel="noopener noreferrer">
                 {OFFICE_DELHI.short}
+                <small>Open map</small>
               </a>
-              <small>Walk-in Tue &amp; Thu · Open map</small>
             </li>
           </ul>
         </div>

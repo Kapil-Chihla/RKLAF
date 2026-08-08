@@ -5,20 +5,12 @@ import {
   WHATSAPP_URL,
   CONTACT_EMAIL,
   CONTACT_MAILTO,
-  CONTACT_PHONE_TEL,
   OFFICE_DELHI,
 } from '../data/navigation';
 import { submitContact } from '../lib/submitContact';
 import './Contact.css';
 
 const channels = [
-  {
-    id: 'helpline',
-    icon: 'phone',
-    title: 'Helpline',
-    detail: `${WHATSAPP_DISPLAY} · Mon to Sat, 9am to 6pm · Hindi, English & Braj`,
-    href: CONTACT_PHONE_TEL,
-  },
   {
     id: 'whatsapp',
     icon: 'chat',
@@ -38,7 +30,7 @@ const channels = [
     id: 'office',
     icon: 'pin',
     title: OFFICE_DELHI.title,
-    detail: `${OFFICE_DELHI.short} · walk-ins Tue & Thu`,
+    detail: OFFICE_DELHI.short,
     href: OFFICE_DELHI.mapsUrl,
     external: true,
   },

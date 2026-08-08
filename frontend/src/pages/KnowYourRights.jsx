@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Reveal from '../components/motion/Reveal';
 import FaqAccordion from '../components/FaqAccordion';
-import { WHATSAPP_URL, CONTACT_PHONE_TEL } from '../data/navigation';
+import { WHATSAPP_URL } from '../data/navigation';
 import { legalGlossaryByLetter, GLOSSARY_LETTERS } from '../data/legalGlossary';
 import { kyrHelplines } from '../data/kyrHelplines';
 import { kyrFaqs } from '../data/kyrFaqs';
@@ -251,15 +251,42 @@ export default function KnowYourRights() {
   const [videoList, setVideoList] = useState(FALLBACK_VIDEOS);
   const [activeVideo, setActiveVideo] = useState(null);
   const [glossaryLetter, setGlossaryLetter] = useState('A');
+  const glossaryTrackRef = useRef(null);
+  const decksScrollRef = useRef(null);
+  const deckTabClickRef = useRef(false);
 
   const glossaryEntries = legalGlossaryByLetter[glossaryLetter] || [];
   const glossaryTotal = Object.values(legalGlossaryByLetter).reduce((n, list) => n + list.length, 0);
   const glossaryPreview = glossaryEntries.map((e) => e.term).join('  ·  ');
   const activeDeck = deckList[activeDeckIdx] || null;
 
+  const scrollGlossary = (dir) => {
+    const el = glossaryTrackRef.current;
+    if (!el) return;
+    const step = Math.max(220, Math.round(el.clientWidth * 0.72));
+    el.scrollBy({ left: dir * step, behavior: 'smooth' });
+  };
+
   useEffect(() => {
-    const el = document.getElementById(`kyr-deck-tab-${activeDeck?.id}`);
-    el?.scrollIntoView({ inline: 'nearest', block: 'nearest', behavior: 'smooth' });
+    glossaryTrackRef.current?.scrollTo({ left: 0 });
+  }, [glossaryLetter]);
+
+  useEffect(() => {
+    if (!deckTabClickRef.current) return undefined;
+    deckTabClickRef.current = false;
+    const scroller = decksScrollRef.current;
+    const tab = document.getElementById(`kyr-deck-tab-${activeDeck?.id}`);
+    if (!scroller || !tab) return undefined;
+    const tabLeft = tab.offsetLeft;
+    const tabRight = tabLeft + tab.offsetWidth;
+    const viewLeft = scroller.scrollLeft;
+    const viewRight = viewLeft + scroller.clientWidth;
+    if (tabLeft < viewLeft) {
+      scroller.scrollTo({ left: Math.max(0, tabLeft - 12), behavior: 'smooth' });
+    } else if (tabRight > viewRight) {
+      scroller.scrollTo({ left: tabRight - scroller.clientWidth + 12, behavior: 'smooth' });
+    }
+    return undefined;
   }, [activeDeckIdx, activeDeck?.id]);
 
   useEffect(() => {
@@ -354,7 +381,7 @@ export default function KnowYourRights() {
       setQuestion('');
       setContact('');
     } catch (err) {
-      setAskError(err.response?.data?.message || 'Could not send. Please WhatsApp or call the helpline.');
+      setAskError(err.response?.data?.message || 'Could not send. Please WhatsApp us instead.');
     } finally {
       setAskBusy(false);
     }
@@ -477,25 +504,56 @@ export default function KnowYourRights() {
             </div>
 
             <div id="glossary-panel" className="kyr-az__panel" role="tabpanel">
-              <dl
-                className="kyr-az__track"
-                key={glossaryLetter}
-                aria-label={`Definitions for letter ${glossaryLetter}`}
-              >
-                {glossaryEntries.length ? (
-                  glossaryEntries.map((entry) => (
-                    <div key={entry.term} className="kyr-az__card">
-                      <dt>{entry.term}</dt>
-                      <dd>{entry.def}</dd>
+              <div className="kyr-az__toolbar">
+                <p className="kyr-az__hint">
+                  {glossaryEntries.length > 3
+                    ? `Swipe or use arrows — ${glossaryEntries.length} terms`
+                    : 'Glossary terms'}
+                </p>
+                <div className="kyr-az__arrows">
+                  <button
+                    type="button"
+                    className="kyr-az__arrow"
+                    aria-label="Scroll glossary left"
+                    onClick={() => scrollGlossary(-1)}
+                  >
+                    ←
+                  </button>
+                  <button
+                    type="button"
+                    className="kyr-az__arrow"
+                    aria-label="Scroll glossary right"
+                    onClick={() => scrollGlossary(1)}
+                  >
+                    →
+                  </button>
+                </div>
+              </div>
+              <div className="kyr-az__scroller">
+                <dl
+                  ref={glossaryTrackRef}
+                  className="kyr-az__track"
+                  key={glossaryLetter}
+                  aria-label={`Definitions for letter ${glossaryLetter}`}
+                >
+                  {glossaryEntries.length ? (
+                    glossaryEntries.map((entry) => (
+                      <div key={entry.term} className="kyr-az__card">
+                        <dt>{entry.term}</dt>
+                        <dd>{entry.def}</dd>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="kyr-az__card kyr-az__card--empty">
+                      <dt>No terms yet</dt>
+                      <dd>Pick another letter from the row above.</dd>
                     </div>
-                  ))
-                ) : (
-                  <div className="kyr-az__card kyr-az__card--empty">
-                    <dt>No terms yet</dt>
-                    <dd>Pick another letter from the row above.</dd>
-                  </div>
-                )}
-              </dl>
+                  )}
+                </dl>
+                {glossaryEntries.length > 3 ? (
+                  <div className="kyr-az__fade" aria-hidden="true" />
+                ) : null}
+              </div>
             </div>
           </Reveal>
         </div>
@@ -604,7 +662,12 @@ export default function KnowYourRights() {
               </p>
             </Reveal>
 
-            <div className="kyr-decks__scroll" role="tablist" aria-label="Know Your Rights guide decks">
+            <div
+              ref={decksScrollRef}
+              className="kyr-decks__scroll"
+              role="tablist"
+              aria-label="Know Your Rights guide decks"
+            >
               <div className="kyr-decks__track">
                 {deckList.map((deck, i) => {
                   const n = String(i + 1).padStart(2, '0');
@@ -618,7 +681,10 @@ export default function KnowYourRights() {
                         aria-controls="kyr-deck-panel"
                         id={`kyr-deck-tab-${deck.id}`}
                         className={`kyr-deck-card${selected ? ' is-active' : ''}`}
-                        onClick={() => setActiveDeckIdx(i)}
+                        onClick={() => {
+                          deckTabClickRef.current = true;
+                          setActiveDeckIdx(i);
+                        }}
                       >
                         <span className="kyr-deck-card__cat">
                           {deck.category || deck.smallTitle || 'Know your rights'}
@@ -697,7 +763,10 @@ export default function KnowYourRights() {
                       className="kyr-deck-stage__arrow"
                       aria-label="Previous deck"
                       disabled={activeDeckIdx <= 0}
-                      onClick={() => setActiveDeckIdx((i) => Math.max(0, i - 1))}
+                      onClick={() => {
+                        deckTabClickRef.current = true;
+                        setActiveDeckIdx((i) => Math.max(0, i - 1));
+                      }}
                     >
                       ←
                     </button>
@@ -706,9 +775,10 @@ export default function KnowYourRights() {
                       className="kyr-deck-stage__arrow"
                       aria-label="Next deck"
                       disabled={activeDeckIdx >= deckList.length - 1}
-                      onClick={() =>
-                        setActiveDeckIdx((i) => Math.min(deckList.length - 1, i + 1))
-                      }
+                      onClick={() => {
+                        deckTabClickRef.current = true;
+                        setActiveDeckIdx((i) => Math.min(deckList.length - 1, i + 1));
+                      }}
                     >
                       →
                     </button>
@@ -865,9 +935,6 @@ export default function KnowYourRights() {
               <div className="kyr-ask__actions">
                 <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="kyr-pill">
                   WhatsApp us
-                </a>
-                <a href={CONTACT_PHONE_TEL} className="kyr-pill kyr-pill--ghost">
-                  Call the helpline
                 </a>
               </div>
             </Reveal>

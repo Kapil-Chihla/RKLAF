@@ -11,7 +11,11 @@ export function DeskEntry({ story, index }) {
     .split(/\n+/)
     .filter((p) => p.trim());
   const hero = story.heroImage ? assetUrl(story.heroImage) : null;
-  const detail = story.gallery?.[0];
+  const heroKey = (story.heroImage || '').split('?')[0].replace(/\/$/, '');
+  const detail = (story.gallery || []).find((img) => {
+    const key = (img.url || '').split('?')[0].replace(/\/$/, '');
+    return key && key !== heroKey;
+  });
   const flip = index % 2 === 1;
   const storyHref = deskStoryHref(story);
   // Featured programme title lives in the page banner — don't repeat it here.

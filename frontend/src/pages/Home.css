@@ -1078,7 +1078,7 @@ a.home-story--link:hover .home-story__more {
 
 .home-contact__grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1.2rem;
 }
 
@@ -1087,6 +1087,13 @@ a.home-story--link:hover .home-story__more {
   gap: 0.8rem;
   align-items: flex-start;
   color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.home-contact__item:hover .home-contact__body small {
+  text-decoration: underline;
+  color: var(--ink);
 }
 
 .home-contact__icon {

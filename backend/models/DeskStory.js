@@ -6,6 +6,11 @@ const galleryImageSchema = new mongoose.Schema(
     url: { type: String, required: true },
     caption: { type: String, default: '' },
     order: { type: Number, default: 0 },
+    /**
+     * 1-based paragraph index: show this image immediately after that paragraph.
+     * null / 0 = show after the full body (end of story).
+     */
+    afterParagraph: { type: Number, default: null },
   },
   { _id: false }
 );
@@ -14,7 +19,12 @@ const documentSchema = new mongoose.Schema(
   {
     id: { type: String, required: true },
     url: { type: String, required: true },
+    /** Original filename (download disposition) */
     name: { type: String, default: '' },
+    /** Public card title (falls back to name) */
+    title: { type: String, default: '' },
+    description: { type: String, default: '' },
+    coverImage: { type: String, default: null },
     createdAt: { type: String, default: '' },
   },
   { _id: false }

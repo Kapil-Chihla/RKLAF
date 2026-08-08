@@ -12,6 +12,9 @@ const emptyForm = {
   fullBody: '',
   number: '',
   galleryCaptions: '',
+  galleryAfterParagraphs: '',
+  newDocTitle: '',
+  newDocDescription: '',
 };
 
 export default function DeskStoriesManage() {
@@ -22,6 +25,7 @@ export default function DeskStoriesManage() {
   const [hero, setHero] = useState(null);
   const [gallery, setGallery] = useState([]);
   const [documents, setDocuments] = useState([]);
+  const [documentCovers, setDocumentCovers] = useState([]);
   const [editing, setEditing] = useState(null);
   const [keptGallery, setKeptGallery] = useState([]);
   const [keptDocuments, setKeptDocuments] = useState([]);
@@ -45,6 +49,7 @@ export default function DeskStoriesManage() {
     setHero(null);
     setGallery([]);
     setDocuments([]);
+    setDocumentCovers([]);
     setEditing(null);
     setKeptGallery([]);
     setKeptDocuments([]);
@@ -62,10 +67,14 @@ export default function DeskStoriesManage() {
       fullBody: story.fullBody || '',
       number: story.number != null ? String(story.number) : '',
       galleryCaptions: '',
+      galleryAfterParagraphs: '',
+      newDocTitle: '',
+      newDocDescription: '',
     });
     setHero(null);
     setGallery([]);
     setDocuments([]);
+    setDocumentCovers([]);
     setKeptGallery([...(story.gallery || [])]);
     setKeptDocuments([...(story.documents || [])]);
     setClearHero(false);
@@ -73,16 +82,43 @@ export default function DeskStoriesManage() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const patchKeptGallery = (id, patch) => {
+    setKeptGallery((prev) =>
+      prev.map((img) => ((img.id || img.url) === id ? { ...img, ...patch } : img)),
+    );
+  };
+
+  const patchKeptDocument = (id, patch) => {
+    setKeptDocuments((prev) =>
+      prev.map((doc) => ((doc.id || doc.url) === id ? { ...doc, ...patch } : doc)),
+    );
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMsg('');
     const fd = new FormData();
+    const skipKeys = new Set(['newDocTitle', 'newDocDescription']);
     Object.entries(form).forEach(([k, v]) => {
+      if (skipKeys.has(k)) return;
       if (v !== '') fd.append(k, v);
     });
     if (hero) fd.append('hero', hero);
     gallery.forEach((f) => fd.append('gallery', f));
     documents.forEach((f) => fd.append('documents', f));
+    documentCovers.forEach((f) => fd.append('documentCovers', f));
+
+    if (documents.length) {
+      const meta = documents.map((file, index) => ({
+        title:
+          index === 0 && form.newDocTitle.trim()
+            ? form.newDocTitle.trim()
+            : file.name.replace(/\.pdf$/i, ''),
+        description: index === 0 ? form.newDocDescription.trim() : '',
+      }));
+      fd.append('documentsMeta', JSON.stringify(meta));
+    }
+
     try {
       if (editing) {
         fd.append('galleryJson', JSON.stringify(keptGallery));
@@ -103,13 +139,19 @@ export default function DeskStoriesManage() {
     }
   };
 
+  const paragraphHint = (form.fullBody || '')
+    .split(/\n+/)
+    .filter((p) => p.trim()).length;
+
   return (
     <div>
       <div className="admin-card">
         <h2>{editing ? 'Edit story' : 'Programmes & Initiatives — case stories'}</h2>
         <p style={{ color: '#5a6f82', marginTop: 0 }}>
           Stories appear on Our Work → Programmes &amp; Initiatives
-          (<code>/our-work/programmes</code>). Select multiple gallery images and PDFs.
+          (<code>/our-work/programmes</code>). Gallery images can be placed after a specific body
+          paragraph. Hero is the banner only — do not re-add the same photo to the gallery (it will be
+          deduped).
           {editing ? ' Remove existing media below, or add more files.' : ''}
         </p>
         {msg && (
@@ -185,6 +227,9 @@ export default function DeskStoriesManage() {
                 if (e.target.files?.[0]) setClearHero(false);
               }}
             />
+            <small style={{ display: 'block', marginTop: 4, color: '#5a6f82' }}>
+              Banner only. Do not upload the same file again under Story images.
+            </small>
           </label>
           <label>
             Alternate public title (optional)
@@ -195,12 +240,16 @@ export default function DeskStoriesManage() {
             />
           </label>
           <label>
-            Full account
+            Full account (separate paragraphs with blank lines)
             <textarea
               rows={8}
               value={form.fullBody}
               onChange={(e) => setForm({ ...form, fullBody: e.target.value })}
             />
+            <small style={{ display: 'block', marginTop: 4, color: '#5a6f82' }}>
+              Currently {paragraphHint} paragraph{paragraphHint === 1 ? '' : 's'}. Use “after paragraph
+              #” on gallery images to place photos between them (1 = after first paragraph).
+            </small>
           </label>
 
           {editing ? (
@@ -209,6 +258,7 @@ export default function DeskStoriesManage() {
               kind="image"
               items={keptGallery}
               onRemove={(id) => setKeptGallery((prev) => prev.filter((img) => (img.id || img.url) !== id))}
+              onChangeItem={patchKeptGallery}
             />
           ) : null}
 
@@ -232,6 +282,15 @@ export default function DeskStoriesManage() {
               onChange={(e) => setForm({ ...form, galleryCaptions: e.target.value })}
             />
           </label>
+          <label>
+            After paragraph # for new images (one per line, same order — blank = end of story)
+            <textarea
+              rows={3}
+              value={form.galleryAfterParagraphs}
+              onChange={(e) => setForm({ ...form, galleryAfterParagraphs: e.target.value })}
+              placeholder={'2\n4\n'}
+            />
+          </label>
 
           {editing ? (
             <AdminExistingMedia
@@ -239,6 +298,7 @@ export default function DeskStoriesManage() {
               kind="document"
               items={keptDocuments}
               onRemove={(id) => setKeptDocuments((prev) => prev.filter((doc) => (doc.id || doc.url) !== id))}
+              onChangeItem={patchKeptDocument}
             />
           ) : null}
 
@@ -250,13 +310,37 @@ export default function DeskStoriesManage() {
               multiple
               onChange={(e) => setDocuments(Array.from(e.target.files || []))}
             />
-            <small style={{ display: 'block', marginTop: 4, color: '#5a6f82' }}>
-              The public page shows each file&apos;s original name (e.g. ngo-2.pdf). Rename the file on your
-              computer before upload if you want a clearer label.
-            </small>
             {documents.length > 0 ? (
               <small style={{ display: 'block', marginTop: 4 }}>{documents.length} new PDF(s) selected</small>
             ) : null}
+          </label>
+          <label>
+            Title for first new PDF (optional)
+            <input
+              value={form.newDocTitle}
+              onChange={(e) => setForm({ ...form, newDocTitle: e.target.value })}
+              placeholder="e.g. Handbook on Inquiry Procedure"
+            />
+          </label>
+          <label>
+            Description for first new PDF (optional)
+            <textarea
+              rows={2}
+              value={form.newDocDescription}
+              onChange={(e) => setForm({ ...form, newDocDescription: e.target.value })}
+              placeholder="Short blurb shown on the public card, like KYR practical guides."
+            />
+          </label>
+          <label>
+            Cover image for first new PDF (optional)
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                setDocumentCovers(file ? [file] : []);
+              }}
+            />
           </label>
           <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
             <button type="submit" className="admin-btn admin-btn--primary">

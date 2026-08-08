@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import HeroSketch from '../components/home/HeroSketch';
 import CountUp from '../components/motion/CountUp';
 import Reveal from '../components/motion/Reveal';
-import { WHATSAPP_DISPLAY, WHATSAPP_URL, CONTACT_EMAIL, CONTACT_MAILTO, CONTACT_PHONE_TEL, OFFICE_DELHI } from '../data/navigation';
+import { WHATSAPP_DISPLAY, WHATSAPP_URL, CONTACT_EMAIL, CONTACT_MAILTO, OFFICE_DELHI } from '../data/navigation';
 import publicApi from '../lib/publicApi';
 import { assetUrl } from '../lib/api';
 import './Home.css';
@@ -85,7 +85,7 @@ const introStats = [
 
 const sideNav = [
   { id: 'who-we-are', label: 'Who We Are' },
-  { id: 'stories', label: 'Impact' },
+  { id: 'stories', label: 'What we do' },
   { id: 'expertise', label: 'Expertise' },
   { id: 'resources', label: 'Resources' },
   { id: 'join-help', label: 'Join Us & Help' },
@@ -665,12 +665,14 @@ export default function Home() {
               <path fill="currentColor" d="M32 10c-6 8-14 14-14 24a14 14 0 0028 0c0-10-8-16-14-24z" opacity=".18" />
             </svg>
             <h2 className="home-display">Need help now?</h2>
-            <p>Call, message or walk into a camp. A volunteer triages every request within 24 hours.</p>
+            <p>Message us on WhatsApp or visit a camp. A volunteer triages every request within 24 hours.</p>
             <div className="home-cta__actions">
-              <a href={CONTACT_PHONE_TEL} className="home-pill home-pill--light">Call helpline</a>
               <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="home-pill home-pill--light">
                 WhatsApp us
               </a>
+              <Link to="/contact" className="home-pill home-pill--light">
+                Contact us
+              </Link>
             </div>
           </article>
 
@@ -707,18 +709,6 @@ export default function Home() {
 
       <section id="contact-home" className="home-contact">
         <div className="container home-contact__grid">
-          <a href={CONTACT_PHONE_TEL} className="home-contact__item">
-            <span className="home-contact__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.81.36 1.6.7 2.35a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.75.34 1.54.57 2.35.7A2 2 0 0122 16.92z" />
-              </svg>
-            </span>
-            <div className="home-contact__body">
-              <strong>Helpline</strong>
-              <span>{WHATSAPP_DISPLAY}</span>
-              <small>Mon to Sat, 9 to 6</small>
-            </div>
-          </a>
           <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="home-contact__item">
             <span className="home-contact__icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
@@ -757,7 +747,7 @@ export default function Home() {
             <div className="home-contact__body">
               <strong>Head office</strong>
               <span>{OFFICE_DELHI.short}</span>
-              <small>Walk-in Tue &amp; Thu · Open map</small>
+              <small>Open map</small>
             </div>
           </a>
         </div>

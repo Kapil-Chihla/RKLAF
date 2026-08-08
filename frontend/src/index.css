@@ -1012,6 +1012,11 @@ select,
   color: rgba(255, 255, 255, 0.45) !important;
 }
 
+.footer-v2__col--contact a:hover small {
+  color: rgba(255, 255, 255, 0.85) !important;
+  text-decoration: underline;
+}
+
 .footer-v2__bottom {
   border-top: 1px solid rgba(255, 255, 255, 0.12);
 }
