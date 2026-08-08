@@ -30,7 +30,18 @@ const documentSchema = new mongoose.Schema(
   { _id: false }
 );
 
-/** The Desk — standalone case stories page */
+const bodyBlockSchema = new mongoose.Schema(
+  {
+    type: { type: String, enum: ['paragraph', 'image'], required: true },
+    text: { type: String, default: '' },
+    id: { type: String, default: null },
+    url: { type: String, default: null },
+    caption: { type: String, default: '' },
+  },
+  { _id: false }
+);
+
+/** Programmes & Initiatives — case stories */
 const deskStorySchema = new mongoose.Schema(
   {
     id: { type: String, required: true, unique: true, index: true },
@@ -38,7 +49,7 @@ const deskStorySchema = new mongoose.Schema(
     number: { type: Number, default: 1 },
     kicker: { type: String, default: 'Senior Citizens' },
     title: { type: String, required: true },
-    /** Short copy on the Desk listing */
+    /** Short copy on the listing */
     listingDescription: { type: String, default: '' },
     /** 1–2 line blurb for home page feature cards */
     featureBlurb: { type: String, default: '' },
@@ -46,6 +57,8 @@ const deskStorySchema = new mongoose.Schema(
     /** Full story page */
     fullHeader: { type: String, default: '' },
     fullBody: { type: String, default: '' },
+    /** Ordered story content: paragraph + image blocks (preferred) */
+    bodyBlocks: { type: [bodyBlockSchema], default: [] },
     gallery: { type: [galleryImageSchema], default: [] },
     documents: { type: [documentSchema], default: [] },
     published: { type: Boolean, default: true },

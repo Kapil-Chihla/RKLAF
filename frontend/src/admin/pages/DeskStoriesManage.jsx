@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import api from '../api';
 import { useAuth } from '../AuthContext';
+import { assetUrl } from '../../lib/api';
 import AdminExistingMedia from '../components/AdminExistingMedia';
 
 const emptyForm = {
@@ -9,25 +10,86 @@ const emptyForm = {
   listingDescription: '',
   featureBlurb: '',
   fullHeader: '',
-  fullBody: '',
   number: '',
-  galleryCaptions: '',
-  galleryAfterParagraphs: '',
   newDocTitle: '',
   newDocDescription: '',
 };
+
+let blockKey = 0;
+function nextKey(prefix) {
+  blockKey += 1;
+  return `${prefix}-${Date.now()}-${blockKey}`;
+}
+
+function blocksFromStory(story) {
+  if (Array.isArray(story?.bodyBlocks) && story.bodyBlocks.length) {
+    return story.bodyBlocks
+      .map((b) => {
+        if (b.type === 'paragraph' && String(b.text || '').trim()) {
+          return { key: nextKey('p'), type: 'paragraph', text: String(b.text).trim() };
+        }
+        if (b.type === 'image' && b.url) {
+          return {
+            key: nextKey('i'),
+            type: 'image',
+            id: b.id || null,
+            url: b.url,
+            caption: b.caption || '',
+            file: null,
+            preview: assetUrl(b.url),
+          };
+        }
+        return null;
+      })
+      .filter(Boolean);
+  }
+
+  const paragraphs = String(story?.fullBody || '')
+    .split(/\n+/)
+    .map((p) => p.trim())
+    .filter(Boolean);
+  const hero = (story?.heroImage || '').split('?')[0].replace(/\/$/, '');
+  const byAfter = new Map();
+  for (const img of story?.gallery || []) {
+    const key = (img.url || '').split('?')[0].replace(/\/$/, '');
+    if (!key || key === hero) continue;
+    const n = Number(img.afterParagraph);
+    if (Number.isFinite(n) && n > 0 && n <= paragraphs.length) {
+      const list = byAfter.get(n) || [];
+      list.push(img);
+      byAfter.set(n, list);
+    }
+  }
+
+  const blocks = [];
+  paragraphs.forEach((text, index) => {
+    blocks.push({ key: nextKey('p'), type: 'paragraph', text });
+    (byAfter.get(index + 1) || []).forEach((img) => {
+      blocks.push({
+        key: nextKey('i'),
+        type: 'image',
+        id: img.id || null,
+        url: img.url,
+        caption: img.caption || '',
+        file: null,
+        preview: assetUrl(img.url),
+      });
+    });
+  });
+  return blocks.length ? blocks : [{ key: nextKey('p'), type: 'paragraph', text: '' }];
+}
 
 export default function DeskStoriesManage() {
   const { user } = useAuth();
   const [items, setItems] = useState([]);
   const [msg, setMsg] = useState('');
+  const [busy, setBusy] = useState(false);
   const [form, setForm] = useState(emptyForm);
   const [hero, setHero] = useState(null);
-  const [gallery, setGallery] = useState([]);
+  const [blocks, setBlocks] = useState([{ key: nextKey('p'), type: 'paragraph', text: '' }]);
   const [documents, setDocuments] = useState([]);
   const [documentCovers, setDocumentCovers] = useState([]);
   const [editing, setEditing] = useState(null);
-  const [keptGallery, setKeptGallery] = useState([]);
   const [keptDocuments, setKeptDocuments] = useState([]);
   const [clearHero, setClearHero] = useState(false);
   const canDelete = ['super_admin', 'admin'].includes(user?.role);
@@ -47,11 +109,10 @@ export default function DeskStoriesManage() {
   const resetForm = () => {
     setForm(emptyForm);
     setHero(null);
-    setGallery([]);
+    setBlocks([{ key: nextKey('p'), type: 'paragraph', text: '' }]);
     setDocuments([]);
     setDocumentCovers([]);
     setEditing(null);
-    setKeptGallery([]);
     setKeptDocuments([]);
     setClearHero(false);
   };
@@ -64,28 +125,18 @@ export default function DeskStoriesManage() {
       listingDescription: story.listingDescription || '',
       featureBlurb: story.featureBlurb || '',
       fullHeader: story.fullHeader || '',
-      fullBody: story.fullBody || '',
       number: story.number != null ? String(story.number) : '',
-      galleryCaptions: '',
-      galleryAfterParagraphs: '',
       newDocTitle: '',
       newDocDescription: '',
     });
     setHero(null);
-    setGallery([]);
+    setBlocks(blocksFromStory(story));
     setDocuments([]);
     setDocumentCovers([]);
-    setKeptGallery([...(story.gallery || [])]);
     setKeptDocuments([...(story.documents || [])]);
     setClearHero(false);
     setMsg('');
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const patchKeptGallery = (id, patch) => {
-    setKeptGallery((prev) =>
-      prev.map((img) => ((img.id || img.url) === id ? { ...img, ...patch } : img)),
-    );
   };
 
   const patchKeptDocument = (id, patch) => {
@@ -94,20 +145,96 @@ export default function DeskStoriesManage() {
     );
   };
 
+  const updateBlock = (key, patch) => {
+    setBlocks((prev) => prev.map((b) => (b.key === key ? { ...b, ...patch } : b)));
+  };
+
+  const removeBlock = (key) => {
+    setBlocks((prev) => {
+      const next = prev.filter((b) => b.key !== key);
+      return next.length ? next : [{ key: nextKey('p'), type: 'paragraph', text: '' }];
+    });
+  };
+
+  const moveBlock = (key, dir) => {
+    setBlocks((prev) => {
+      const i = prev.findIndex((b) => b.key === key);
+      const j = i + dir;
+      if (i < 0 || j < 0 || j >= prev.length) return prev;
+      const copy = [...prev];
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+      return copy;
+    });
+  };
+
+  const addParagraph = () => {
+    setBlocks((prev) => [...prev, { key: nextKey('p'), type: 'paragraph', text: '' }]);
+  };
+
+  const addImageAfter = (afterKey) => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = () => {
+      const file = input.files?.[0];
+      if (!file) return;
+      const preview = URL.createObjectURL(file);
+      const imageBlock = {
+        key: nextKey('i'),
+        type: 'image',
+        id: null,
+        url: null,
+        caption: '',
+        file,
+        preview,
+      };
+      setBlocks((prev) => {
+        if (!afterKey) return [...prev, imageBlock];
+        const i = prev.findIndex((b) => b.key === afterKey);
+        if (i < 0) return [...prev, imageBlock];
+        const copy = [...prev];
+        copy.splice(i + 1, 0, imageBlock);
+        return copy;
+      });
+    };
+    input.click();
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMsg('');
+    setBusy(true);
     const fd = new FormData();
-    const skipKeys = new Set(['newDocTitle', 'newDocDescription']);
-    Object.entries(form).forEach(([k, v]) => {
-      if (skipKeys.has(k)) return;
-      if (v !== '') fd.append(k, v);
+    ['title', 'kicker', 'listingDescription', 'featureBlurb', 'fullHeader', 'number'].forEach((k) => {
+      if (form[k] !== '') fd.append(k, form[k]);
     });
     if (hero) fd.append('hero', hero);
-    gallery.forEach((f) => fd.append('gallery', f));
+
+    const payload = [];
+    blocks.forEach((b) => {
+      if (b.type === 'paragraph') {
+        if (String(b.text || '').trim()) {
+          payload.push({ type: 'paragraph', text: String(b.text).trim() });
+        }
+        return;
+      }
+      if (b.file) {
+        payload.push({ type: 'image', isNew: true, caption: b.caption || '' });
+        fd.append('blockImages', b.file);
+      } else if (b.url) {
+        payload.push({
+          type: 'image',
+          id: b.id,
+          url: b.url,
+          caption: b.caption || '',
+          isNew: false,
+        });
+      }
+    });
+    fd.append('bodyBlocks', JSON.stringify(payload));
+
     documents.forEach((f) => fd.append('documents', f));
     documentCovers.forEach((f) => fd.append('documentCovers', f));
-
     if (documents.length) {
       const meta = documents.map((file, index) => ({
         title:
@@ -121,43 +248,40 @@ export default function DeskStoriesManage() {
 
     try {
       if (editing) {
-        fd.append('galleryJson', JSON.stringify(keptGallery));
         fd.append('documentsJson', JSON.stringify(keptDocuments));
         if (clearHero && !hero) fd.append('clearHero', 'true');
         await api.put(`/desk-stories/${editing.id}`, fd, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
-        setMsg('Desk story updated.');
+        setMsg('Programme updated.');
       } else {
         await api.post('/desk-stories', fd, { headers: { 'Content-Type': 'multipart/form-data' } });
-        setMsg('Desk story published.');
+        setMsg('Programme published.');
       }
       resetForm();
       load();
     } catch (err) {
       setMsg(err.response?.data?.message || 'Save failed');
+    } finally {
+      setBusy(false);
     }
   };
-
-  const paragraphHint = (form.fullBody || '')
-    .split(/\n+/)
-    .filter((p) => p.trim()).length;
 
   return (
     <div>
       <div className="admin-card">
-        <h2>{editing ? 'Edit story' : 'Programmes & Initiatives — case stories'}</h2>
+        <h2>{editing ? 'Edit programme' : 'Programmes & Initiatives'}</h2>
         <p style={{ color: '#5a6f82', marginTop: 0 }}>
-          Stories appear on Our Work → Programmes &amp; Initiatives
-          (<code>/our-work/programmes</code>). Gallery images can be placed after a specific body
-          paragraph. Hero is the banner only — do not re-add the same photo to the gallery (it will be
-          deduped).
-          {editing ? ' Remove existing media below, or add more files.' : ''}
+          Write the story as a stack of paragraphs. Click <strong>Add photo under this</strong> to place
+          an image right after that paragraph — no paragraph numbers needed. Hero photo is only the page
+          banner (do not add the same photo again in the story).
         </p>
         {msg && (
           <div
             className={`admin-alert ${
-              msg.toLowerCase().includes('fail') ? 'admin-alert--error' : 'admin-alert--success'
+              msg.toLowerCase().includes('fail') || msg.toLowerCase().includes('missing')
+                ? 'admin-alert--error'
+                : 'admin-alert--success'
             }`}
           >
             {msg}
@@ -192,7 +316,6 @@ export default function DeskStoriesManage() {
             <textarea
               rows={2}
               maxLength={220}
-              placeholder="Shown on the homepage Programmes cards — keep it to two short lines."
               value={form.featureBlurb}
               onChange={(e) => setForm({ ...form, featureBlurb: e.target.value })}
             />
@@ -209,7 +332,7 @@ export default function DeskStoriesManage() {
 
           {editing ? (
             <AdminExistingMedia
-              title="Current hero"
+              title="Current hero (banner only)"
               kind="hero"
               heroUrl={editing.heroImage}
               clearHero={clearHero}
@@ -218,7 +341,7 @@ export default function DeskStoriesManage() {
           ) : null}
 
           <label>
-            Hero photo {editing ? '(leave empty to keep current)' : ''}
+            Hero / banner photo {editing ? '(leave empty to keep current)' : ''}
             <input
               type="file"
               accept="image/*"
@@ -227,70 +350,82 @@ export default function DeskStoriesManage() {
                 if (e.target.files?.[0]) setClearHero(false);
               }}
             />
-            <small style={{ display: 'block', marginTop: 4, color: '#5a6f82' }}>
-              Banner only. Do not upload the same file again under Story images.
-            </small>
           </label>
           <label>
             Alternate public title (optional)
             <input
               value={form.fullHeader}
               onChange={(e) => setForm({ ...form, fullHeader: e.target.value })}
-              placeholder="Leave blank to use the programme title everywhere"
+              placeholder="Leave blank to use the programme title"
             />
-          </label>
-          <label>
-            Full account (separate paragraphs with blank lines)
-            <textarea
-              rows={8}
-              value={form.fullBody}
-              onChange={(e) => setForm({ ...form, fullBody: e.target.value })}
-            />
-            <small style={{ display: 'block', marginTop: 4, color: '#5a6f82' }}>
-              Currently {paragraphHint} paragraph{paragraphHint === 1 ? '' : 's'}. Use “after paragraph
-              #” on gallery images to place photos between them (1 = after first paragraph).
-            </small>
           </label>
 
-          {editing ? (
-            <AdminExistingMedia
-              title="Current gallery"
-              kind="image"
-              items={keptGallery}
-              onRemove={(id) => setKeptGallery((prev) => prev.filter((img) => (img.id || img.url) !== id))}
-              onChangeItem={patchKeptGallery}
-            />
-          ) : null}
+          <div className="admin-story-blocks">
+            <div className="admin-story-blocks__head">
+              <strong>Full story</strong>
+              <span>Add a paragraph, then optionally add a photo under it.</span>
+            </div>
 
-          <label>
-            Story images (gallery) — select multiple
-            <input
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={(e) => setGallery(Array.from(e.target.files || []))}
-            />
-            {gallery.length > 0 ? (
-              <small style={{ display: 'block', marginTop: 4 }}>{gallery.length} new image(s) selected</small>
-            ) : null}
-          </label>
-          <label>
-            Gallery captions (one per line, same order as new images)
-            <textarea
-              rows={3}
-              value={form.galleryCaptions}
-              onChange={(e) => setForm({ ...form, galleryCaptions: e.target.value })}
-            />
-          </label>
-          <label>
-            After paragraph # for new images (one per line, same order — blank = end of story)
-            <textarea
-              rows={3}
-              value={form.galleryAfterParagraphs}
-              onChange={(e) => setForm({ ...form, galleryAfterParagraphs: e.target.value })}
-              placeholder={'2\n4\n'}
-            />
-          </label>
+            {blocks.map((block, index) => (
+              <div key={block.key} className={`admin-story-block admin-story-block--${block.type}`}>
+                <div className="admin-story-block__toolbar">
+                  <span>
+                    {block.type === 'paragraph' ? `Paragraph ${index + 1}` : 'Photo'}
+                  </span>
+                  <div className="admin-story-block__actions">
+                    <button type="button" className="admin-btn admin-btn--ghost admin-btn--sm" onClick={() => moveBlock(block.key, -1)} disabled={index === 0}>
+                      ↑
+                    </button>
+                    <button type="button" className="admin-btn admin-btn--ghost admin-btn--sm" onClick={() => moveBlock(block.key, 1)} disabled={index === blocks.length - 1}>
+                      ↓
+                    </button>
+                    <button type="button" className="admin-btn admin-btn--danger admin-btn--sm" onClick={() => removeBlock(block.key)}>
+                      Remove
+                    </button>
+                  </div>
+                </div>
+
+                {block.type === 'paragraph' ? (
+                  <>
+                    <textarea
+                      rows={4}
+                      value={block.text}
+                      onChange={(e) => updateBlock(block.key, { text: e.target.value })}
+                      placeholder="Write this paragraph…"
+                    />
+                    <button
+                      type="button"
+                      className="admin-btn admin-btn--secondary admin-btn--sm"
+                      onClick={() => addImageAfter(block.key)}
+                    >
+                      + Add photo under this paragraph
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    {block.preview ? (
+                      <img src={block.preview} alt="" className="admin-story-block__img" />
+                    ) : null}
+                    <input
+                      type="text"
+                      placeholder="Caption (optional)"
+                      value={block.caption}
+                      onChange={(e) => updateBlock(block.key, { caption: e.target.value })}
+                    />
+                  </>
+                )}
+              </div>
+            ))}
+
+            <div className="admin-story-blocks__add">
+              <button type="button" className="admin-btn" onClick={addParagraph}>
+                + Add paragraph
+              </button>
+              <button type="button" className="admin-btn admin-btn--ghost" onClick={() => addImageAfter(null)}>
+                + Add photo at end
+              </button>
+            </div>
+          </div>
 
           {editing ? (
             <AdminExistingMedia
@@ -310,16 +445,12 @@ export default function DeskStoriesManage() {
               multiple
               onChange={(e) => setDocuments(Array.from(e.target.files || []))}
             />
-            {documents.length > 0 ? (
-              <small style={{ display: 'block', marginTop: 4 }}>{documents.length} new PDF(s) selected</small>
-            ) : null}
           </label>
           <label>
             Title for first new PDF (optional)
             <input
               value={form.newDocTitle}
               onChange={(e) => setForm({ ...form, newDocTitle: e.target.value })}
-              placeholder="e.g. Handbook on Inquiry Procedure"
             />
           </label>
           <label>
@@ -328,7 +459,6 @@ export default function DeskStoriesManage() {
               rows={2}
               value={form.newDocDescription}
               onChange={(e) => setForm({ ...form, newDocDescription: e.target.value })}
-              placeholder="Short blurb shown on the public card, like KYR practical guides."
             />
           </label>
           <label>
@@ -342,18 +472,20 @@ export default function DeskStoriesManage() {
               }}
             />
           </label>
+
           <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-            <button type="submit" className="admin-btn admin-btn--primary">
-              {editing ? 'Save changes' : 'Publish story'}
+            <button type="submit" className="admin-btn admin-btn--primary" disabled={busy}>
+              {busy ? 'Saving…' : editing ? 'Save changes' : 'Publish programme'}
             </button>
             {editing ? (
-              <button type="button" className="admin-btn admin-btn--ghost" onClick={resetForm}>
+              <button type="button" className="admin-btn admin-btn--ghost" onClick={resetForm} disabled={busy}>
                 Cancel edit
               </button>
             ) : null}
           </div>
         </form>
       </div>
+
       <div className="admin-card" style={{ marginTop: '1.5rem' }}>
         <h2>Programmes &amp; Initiatives ({items.length})</h2>
         <div className="admin-table-wrap">
@@ -374,7 +506,10 @@ export default function DeskStoriesManage() {
                   <td>{s.title}</td>
                   <td>{s.kicker}</td>
                   <td>
-                    {(s.gallery?.length || 0)} img · {(s.documents?.length || 0)} pdf
+                    {(s.bodyBlocks || []).filter((b) => b.type === 'image').length ||
+                      s.gallery?.length ||
+                      0}{' '}
+                    img · {(s.documents?.length || 0)} pdf
                   </td>
                   <td style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                     <button type="button" className="admin-btn" onClick={() => startEdit(s)}>

@@ -3,7 +3,13 @@ const path = require('path');
 const slugify = require('slugify');
 const { DeskStory } = require('../models');
 const generateId = require('../lib/generateId');
-const { parseCaptions, parseJsonArray } = require('../lib/contentHelpers');
+const { parseJsonArray } = require('../lib/contentHelpers');
+const {
+  normalizeBlocks,
+  legacyFromBlocks,
+  blocksFromLegacy,
+  normalizeUrl,
+} = require('../lib/deskBodyBlocks');
 const { protect, contentManagers, adminOrSuper } = require('../auth');
 const { uploadAny } = require('../upload');
 const { uploadBuffer } = require('../lib/cloudinaryUpload');
@@ -13,7 +19,7 @@ const router = express.Router();
 
 const uploadDeskMedia = uploadAny.fields([
   { name: 'hero', maxCount: 1 },
-  { name: 'gallery', maxCount: 24 },
+  { name: 'blockImages', maxCount: 24 },
   { name: 'documents', maxCount: 12 },
   { name: 'documentCovers', maxCount: 12 },
 ]);
@@ -25,42 +31,6 @@ function isImage(file) {
 function isPdf(file) {
   const ext = path.extname(file?.originalname || '').toLowerCase();
   return file?.mimetype === 'application/pdf' || ext === '.pdf';
-}
-
-function normalizeUrl(url) {
-  if (!url || typeof url !== 'string') return '';
-  return url.split('?')[0].replace(/\/$/, '');
-}
-
-function parseAfterParagraphs(raw, count) {
-  const lines = parseCaptions(raw, count);
-  return lines.map((line) => {
-    if (line === '' || line == null) return null;
-    const n = parseInt(line, 10);
-    return Number.isFinite(n) && n > 0 ? n : null;
-  });
-}
-
-function normalizeAfterParagraph(value) {
-  if (value === undefined || value === null || value === '') return null;
-  const n = parseInt(value, 10);
-  return Number.isFinite(n) && n > 0 ? n : null;
-}
-
-async function buildGallery(files, captionsRaw, afterRaw, startOrder = 0) {
-  if (!files?.length) return [];
-  const images = files.filter(isImage);
-  if (!images.length) return [];
-  const captions = parseCaptions(captionsRaw, images.length);
-  const afters = parseAfterParagraphs(afterRaw, images.length);
-  const urls = await Promise.all(images.map((f) => uploadBuffer(f, 'desk')));
-  return urls.map((url, index) => ({
-    id: generateId('img'),
-    url,
-    caption: captions[index] || '',
-    afterParagraph: afters[index],
-    order: startOrder + index,
-  }));
 }
 
 async function buildDocuments(files, metaRaw, coverFiles) {
@@ -90,16 +60,6 @@ async function buildDocuments(files, metaRaw, coverFiles) {
   });
 }
 
-function mapKeptGallery(items) {
-  return (items || []).map((img, index) => ({
-    id: img.id || generateId('img'),
-    url: img.url,
-    caption: img.caption || '',
-    afterParagraph: normalizeAfterParagraph(img.afterParagraph),
-    order: index,
-  }));
-}
-
 function mapKeptDocuments(items) {
   return (items || []).map((doc) => ({
     id: doc.id || generateId('doc'),
@@ -112,14 +72,59 @@ function mapKeptDocuments(items) {
   }));
 }
 
-/** Drop gallery entries that duplicate the hero URL. */
-function dedupeGalleryAgainstHero(gallery, heroImage) {
+/**
+ * Resolve bodyBlocks from multipart: upload new blockImages in order for isNew slots.
+ * Syncs fullBody + gallery. Strips images that match hero URL.
+ */
+async function applyBodyBlocks(storyLike, bodyBlocksRaw, blockImageFiles, heroImage) {
+  const parsed = parseJsonArray(bodyBlocksRaw, 'bodyBlocks');
+  if (!parsed.ok) return { ok: false, error: parsed.error };
+  if (!parsed.value) return { ok: true, skipped: true };
+
+  const draft = normalizeBlocks(parsed.value);
+  const files = (blockImageFiles || []).filter(isImage);
+  let fileIdx = 0;
   const hero = normalizeUrl(heroImage);
-  if (!hero) return gallery || [];
-  return (gallery || []).filter((img) => normalizeUrl(img.url) !== hero);
+  const resolved = [];
+
+  for (const block of draft) {
+    if (block.type === 'paragraph') {
+      resolved.push({ type: 'paragraph', text: block.text });
+      continue;
+    }
+    let url = block.url;
+    let id = block.id || generateId('img');
+    if (block.isNew) {
+      const file = files[fileIdx++];
+      if (!file) {
+        return { ok: false, error: 'Missing image file for a new photo block' };
+      }
+      url = await uploadBuffer(file, 'desk');
+      id = generateId('img');
+    }
+    if (!url) continue;
+    if (normalizeUrl(url) === hero) continue;
+    resolved.push({
+      type: 'image',
+      id,
+      url,
+      caption: block.caption || '',
+    });
+  }
+
+  if (fileIdx < files.length) {
+    return { ok: false, error: 'Extra image files were uploaded without matching blocks' };
+  }
+
+  const legacy = legacyFromBlocks(resolved);
+  return {
+    ok: true,
+    bodyBlocks: resolved,
+    fullBody: legacy.fullBody,
+    gallery: legacy.gallery,
+  };
 }
 
-/** Keep project numbers sequential 1..n after deletes / gaps. */
 async function renumberDeskStories() {
   const items = await DeskStory.find({}).sort({ number: 1, createdAt: 1 });
   await Promise.all(
@@ -133,20 +138,28 @@ async function renumberDeskStories() {
   );
 }
 
+function withResolvedBlocks(item) {
+  if (!item) return item;
+  if (Array.isArray(item.bodyBlocks) && item.bodyBlocks.length) return item;
+  return {
+    ...item,
+    bodyBlocks: blocksFromLegacy(item.fullBody, item.gallery, item.heroImage),
+  };
+}
+
 router.get('/', async (req, res) => {
   const filter = req.query.all === 'true' ? {} : { published: { $ne: false } };
   const items = await DeskStory.find(filter).sort({ number: 1, createdAt: 1 }).lean();
-  res.json(items);
+  res.json(items.map(withResolvedBlocks));
 });
 
-/** Force a real PDF download (streamed via signed Cloudinary Admin URL). */
 router.get('/:slugOrId/documents/:docId/download', async (req, res) => {
   const { slugOrId, docId } = req.params;
   const story = await DeskStory.findOne({
     $or: [{ slug: slugOrId }, { id: slugOrId }],
     ...(req.query.all === 'true' ? {} : { published: { $ne: false } }),
   }).lean();
-  if (!story) return res.status(404).json({ message: 'Desk story not found' });
+  if (!story) return res.status(404).json({ message: 'Programme not found' });
   const doc = (story.documents || []).find((d) => d.id === docId);
   if (!doc?.url) return res.status(404).json({ message: 'Document not found' });
   const filename = doc.name || doc.title || 'document.pdf';
@@ -159,7 +172,7 @@ router.get('/:slugOrId/documents/:docId/view', async (req, res) => {
     $or: [{ slug: slugOrId }, { id: slugOrId }],
     ...(req.query.all === 'true' ? {} : { published: { $ne: false } }),
   }).lean();
-  if (!story) return res.status(404).json({ message: 'Desk story not found' });
+  if (!story) return res.status(404).json({ message: 'Programme not found' });
   const doc = (story.documents || []).find((d) => d.id === docId);
   if (!doc?.url) return res.status(404).json({ message: 'Document not found' });
   const filename = doc.name || doc.title || 'document.pdf';
@@ -174,12 +187,10 @@ router.post('/', protect, contentManagers, uploadDeskMedia, async (req, res) => 
       listingDescription,
       featureBlurb,
       fullHeader,
-      fullBody,
       number,
       published,
-      galleryCaptions,
-      galleryAfterParagraphs,
       documentsMeta,
+      bodyBlocks,
     } = req.body;
     if (!title) return res.status(400).json({ message: 'Title is required' });
 
@@ -190,10 +201,15 @@ router.post('/', protect, contentManagers, uploadDeskMedia, async (req, res) => 
 
     let heroImage = null;
     if (heroFile) heroImage = await uploadBuffer(heroFile, 'desk');
-    const gallery = dedupeGalleryAgainstHero(
-      await buildGallery(req.files?.gallery, galleryCaptions, galleryAfterParagraphs),
+
+    const blocksResult = await applyBodyBlocks(
+      {},
+      bodyBlocks,
+      req.files?.blockImages,
       heroImage,
     );
+    if (!blocksResult.ok) return res.status(400).json({ message: blocksResult.error });
+
     const documents = await buildDocuments(
       req.files?.documents,
       documentsMeta,
@@ -217,14 +233,15 @@ router.post('/', protect, contentManagers, uploadDeskMedia, async (req, res) => 
       featureBlurb: (featureBlurb || '').trim(),
       heroImage,
       fullHeader: fullHeader || title,
-      fullBody: fullBody || '',
-      gallery,
+      fullBody: blocksResult.skipped ? '' : blocksResult.fullBody,
+      bodyBlocks: blocksResult.skipped ? [] : blocksResult.bodyBlocks,
+      gallery: blocksResult.skipped ? [] : blocksResult.gallery,
       documents,
       published: published === 'false' ? false : true,
       createdBy: req.user.id,
       createdAt: new Date().toISOString(),
     });
-    res.status(201).json(story.toObject());
+    res.status(201).json(withResolvedBlocks(story.toObject()));
   } catch (err) {
     res.status(500).json({ message: err.message || 'Upload failed' });
   }
@@ -233,7 +250,7 @@ router.post('/', protect, contentManagers, uploadDeskMedia, async (req, res) => 
 router.put('/:id', protect, contentManagers, uploadDeskMedia, async (req, res) => {
   try {
     const story = await DeskStory.findOne({ id: req.params.id });
-    if (!story) return res.status(404).json({ message: 'Desk story not found' });
+    if (!story) return res.status(404).json({ message: 'Programme not found' });
 
     const {
       title,
@@ -241,14 +258,11 @@ router.put('/:id', protect, contentManagers, uploadDeskMedia, async (req, res) =
       listingDescription,
       featureBlurb,
       fullHeader,
-      fullBody,
       number,
       published,
-      galleryCaptions,
-      galleryAfterParagraphs,
       documentsMeta,
-      galleryJson,
       documentsJson,
+      bodyBlocks,
       clearHero,
     } = req.body;
 
@@ -260,18 +274,11 @@ router.put('/:id', protect, contentManagers, uploadDeskMedia, async (req, res) =
     if (listingDescription !== undefined) story.listingDescription = listingDescription;
     if (featureBlurb !== undefined) story.featureBlurb = String(featureBlurb).trim();
     if (fullHeader !== undefined) story.fullHeader = fullHeader;
-    if (fullBody !== undefined) story.fullBody = fullBody;
     if (number !== undefined && number !== '') {
       const n = parseInt(number, 10);
       if (!Number.isNaN(n)) story.number = n;
     }
     if (published !== undefined) story.published = published === 'false' ? false : true;
-
-    const keptGallery = parseJsonArray(galleryJson, 'galleryJson');
-    if (!keptGallery.ok) return res.status(400).json({ message: keptGallery.error });
-    if (keptGallery.value) {
-      story.gallery = mapKeptGallery(keptGallery.value);
-    }
 
     const keptDocs = parseJsonArray(documentsJson, 'documentsJson');
     if (!keptDocs.ok) return res.status(400).json({ message: keptDocs.error });
@@ -291,13 +298,18 @@ router.put('/:id', protect, contentManagers, uploadDeskMedia, async (req, res) =
       story.heroImage = await uploadBuffer(heroFile, 'desk');
     }
 
-    const newGallery = await buildGallery(
-      req.files?.gallery,
-      galleryCaptions,
-      galleryAfterParagraphs,
-      (story.gallery || []).length,
+    const blocksResult = await applyBodyBlocks(
+      story,
+      bodyBlocks,
+      req.files?.blockImages,
+      story.heroImage,
     );
-    if (newGallery.length) story.gallery = [...(story.gallery || []), ...newGallery];
+    if (!blocksResult.ok) return res.status(400).json({ message: blocksResult.error });
+    if (!blocksResult.skipped) {
+      story.bodyBlocks = blocksResult.bodyBlocks;
+      story.fullBody = blocksResult.fullBody;
+      story.gallery = blocksResult.gallery;
+    }
 
     const newDocs = await buildDocuments(
       req.files?.documents,
@@ -306,21 +318,18 @@ router.put('/:id', protect, contentManagers, uploadDeskMedia, async (req, res) =
     );
     if (newDocs.length) story.documents = [...(story.documents || []), ...newDocs];
 
-    story.gallery = dedupeGalleryAgainstHero(story.gallery, story.heroImage);
-
     story.updatedAt = new Date().toISOString();
     await story.save();
-    res.json(story.toObject());
+    res.json(withResolvedBlocks(story.toObject()));
   } catch (err) {
     res.status(500).json({ message: err.message || 'Update failed' });
   }
 });
 
-/** Resequence project numbers 1..n (fixes leftovers like a lone “03”). */
 router.post('/renumber', protect, contentManagers, async (_req, res) => {
   await renumberDeskStories();
   const items = await DeskStory.find({}).sort({ number: 1, createdAt: 1 }).lean();
-  res.json(items);
+  res.json(items.map(withResolvedBlocks));
 });
 
 router.get('/:slugOrId', async (req, res) => {
@@ -329,15 +338,15 @@ router.get('/:slugOrId', async (req, res) => {
     $or: [{ slug: slugOrId }, { id: slugOrId }],
     ...(req.query.all === 'true' ? {} : { published: { $ne: false } }),
   }).lean();
-  if (!item) return res.status(404).json({ message: 'Desk story not found' });
-  res.json(item);
+  if (!item) return res.status(404).json({ message: 'Programme not found' });
+  res.json(withResolvedBlocks(item));
 });
 
 router.delete('/:id', protect, adminOrSuper, async (req, res) => {
   const result = await DeskStory.deleteOne({ id: req.params.id });
-  if (result.deletedCount === 0) return res.status(404).json({ message: 'Desk story not found' });
+  if (result.deletedCount === 0) return res.status(404).json({ message: 'Programme not found' });
   await renumberDeskStories();
-  res.json({ message: 'Desk story deleted' });
+  res.json({ message: 'Programme deleted' });
 });
 
 module.exports = router;

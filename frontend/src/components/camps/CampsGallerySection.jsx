@@ -32,7 +32,7 @@ export default function CampsGallerySection() {
         <CampSkeletonGrid />
       ) : camps.length === 0 ? (
         <div className="camps-empty">
-          <p>Camp albums will appear here once published from the admin panel.</p>
+          <p>Camp albums will appear here once they are published.</p>
         </div>
       ) : (
         <div className="camps-grid">

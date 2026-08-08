@@ -18,7 +18,6 @@ import ExplainerVideosManage from './pages/ExplainerVideosManage';
 import RightsDecksManage from './pages/RightsDecksManage';
 import LibraryPodcastsManage from './pages/LibraryPodcastsManage';
 import ReportsManage from './pages/ReportsManage';
-import CampsManage from './pages/CampsManage';
 import UsersManage from './pages/UsersManage';
 import TeamManage from './pages/TeamManage';
 import ContactsManage from './pages/ContactsManage';
@@ -32,13 +31,14 @@ export default function AdminRoutes() {
         <Route path="setup" element={<SetupSuperAdmin />} />
         <Route element={<AdminLayout />}>
           <Route path="dashboard" element={<Dashboard />} />
-          <Route path="desk" element={<DeskStoriesManage />} />
+          <Route path="programmes" element={<DeskStoriesManage />} />
+          <Route path="desk" element={<Navigate to="/admin/programmes" replace />} />
           <Route path="success-stories" element={<SuccessStoriesManage />} />
           <Route path="running-now" element={<RunningNowManage />} />
           <Route path="told-in-full" element={<ToldInFullManage />} />
           <Route path="also-on-record" element={<AlsoOnRecordManage />} />
           <Route path="press-mentions" element={<PressMentionsManage />} />
-          <Route path="camps" element={<CampsManage />} />
+          <Route path="camps" element={<Navigate to="/admin/dashboard" replace />} />
           <Route path="reports" element={<ReportsManage />} />
           <Route path="blogs" element={<BlogsManage />} />
           <Route path="papers" element={<PapersManage />} />

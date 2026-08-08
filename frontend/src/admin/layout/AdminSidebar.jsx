@@ -10,13 +10,12 @@ const NAV_GROUPS = [
   {
     label: 'Our Work & Impact',
     items: [
-      { to: '/admin/desk', label: 'Programmes & Initiatives' },
+      { to: '/admin/programmes', label: 'Programmes & Initiatives' },
       { to: '/admin/running-now', label: 'Running now' },
       { to: '/admin/told-in-full', label: 'Told in full' },
       { to: '/admin/success-stories', label: 'Argued in full' },
       { to: '/admin/also-on-record', label: 'Also on record' },
       { to: '/admin/press-mentions', label: 'Press mentions' },
-      { to: '/admin/camps', label: 'Camp albums' },
       { to: '/admin/reports', label: 'Annual reports' },
     ],
   },

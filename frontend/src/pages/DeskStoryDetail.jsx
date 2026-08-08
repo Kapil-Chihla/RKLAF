@@ -5,24 +5,11 @@ import { assetUrl } from '../lib/api';
 import Reveal from '../components/motion/Reveal';
 import { FALLBACK_DESK } from '../data/deskStories';
 import { deskDocumentDownloadUrl, deskDocumentViewUrl } from '../lib/pdfDownload';
+import { resolveStoryBlocks } from '../lib/storyBlocks';
 import PdfPreviewModal from '../components/pdf/PdfPreviewModal';
 import './StoryDetail.css';
 
 const DOC_TONES = ['plum', 'cream', 'ink', 'sage', 'gold', 'clay', 'olive'];
-
-function normalizeUrl(url) {
-  if (!url || typeof url !== 'string') return '';
-  return url.split('?')[0].replace(/\/$/, '');
-}
-
-function GalleryFigure({ img, title }) {
-  return (
-    <figure className="story-detail__shot">
-      <img src={assetUrl(img.url)} alt={img.caption || title} />
-      {img.caption ? <figcaption>{img.caption}</figcaption> : null}
-    </figure>
-  );
-}
 
 export default function DeskStoryDetail() {
   const { slug } = useParams();
@@ -72,18 +59,7 @@ export default function DeskStoryDetail() {
   }
 
   const num = String(story.number || 1).padStart(2, '0');
-  const paragraphs = (story.fullBody || '').split(/\n+/).filter((p) => p.trim());
-  const heroKey = normalizeUrl(story.heroImage);
-  const gallery = (story.gallery || []).filter((img) => normalizeUrl(img.url) !== heroKey);
-
-  const imagesAfter = (paragraphIndex1Based) =>
-    gallery.filter((img) => Number(img.afterParagraph) === paragraphIndex1Based);
-
-  const trailingImages = gallery.filter((img) => {
-    const n = Number(img.afterParagraph);
-    return !Number.isFinite(n) || n <= 0 || n > paragraphs.length;
-  });
-
+  const blocks = resolveStoryBlocks(story);
   const storyKey = story.id || story.slug;
 
   return (
@@ -106,28 +82,22 @@ export default function DeskStoryDetail() {
       </header>
 
       <article className="container story-detail__body">
-        <Reveal as="div" variant="up">
-          {paragraphs.length ? (
-            paragraphs.map((p, i) => (
-              <div key={`p-${i}`} className="story-detail__block">
-                <p>{p}</p>
-                {imagesAfter(i + 1).map((img) => (
-                  <GalleryFigure key={img.id || img.url} img={img} title={story.title} />
-                ))}
-              </div>
-            ))
+        <Reveal as="div" variant="up" className="story-detail__blocks">
+          {blocks.length ? (
+            blocks.map((block, i) =>
+              block.type === 'paragraph' ? (
+                <p key={`p-${i}`}>{block.text}</p>
+              ) : (
+                <figure key={block.id || `img-${i}`} className="story-detail__shot">
+                  <img src={assetUrl(block.url)} alt={block.caption || story.title} />
+                  {block.caption ? <figcaption>{block.caption}</figcaption> : null}
+                </figure>
+              ),
+            )
           ) : (
             <p>{story.listingDescription}</p>
           )}
         </Reveal>
-
-        {trailingImages.length > 0 ? (
-          <div className="story-detail__gallery">
-            {trailingImages.map((img) => (
-              <GalleryFigure key={img.id || img.url} img={img} title={story.title} />
-            ))}
-          </div>
-        ) : null}
 
         {story.documents?.length > 0 ? (
           <div className="story-detail__docs">
@@ -151,11 +121,7 @@ export default function DeskStoryDetail() {
                       }`}
                       style={cover ? { backgroundImage: `url(${cover})` } : undefined}
                       onClick={() =>
-                        setActiveDoc({
-                          title,
-                          viewUrl: viewHref,
-                          downloadUrl: downloadHref,
-                        })
+                        setActiveDoc({ title, viewUrl: viewHref, downloadUrl: downloadHref })
                       }
                       aria-label={`Preview ${title}`}
                     >
@@ -167,29 +133,19 @@ export default function DeskStoryDetail() {
                         type="button"
                         className="story-doc-card__title-btn"
                         onClick={() =>
-                          setActiveDoc({
-                            title,
-                            viewUrl: viewHref,
-                            downloadUrl: downloadHref,
-                          })
+                          setActiveDoc({ title, viewUrl: viewHref, downloadUrl: downloadHref })
                         }
                       >
                         {title}
                       </button>
                     </h3>
-                    {doc.description ? (
-                      <p className="story-doc-card__desc">{doc.description}</p>
-                    ) : null}
+                    {doc.description ? <p className="story-doc-card__desc">{doc.description}</p> : null}
                     <div className="story-doc-card__actions">
                       <button
                         type="button"
                         className="story-doc-card__dl"
                         onClick={() =>
-                          setActiveDoc({
-                            title,
-                            viewUrl: viewHref,
-                            downloadUrl: downloadHref,
-                          })
+                          setActiveDoc({ title, viewUrl: viewHref, downloadUrl: downloadHref })
                         }
                       >
                         Preview

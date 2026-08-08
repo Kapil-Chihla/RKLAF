@@ -8,7 +8,7 @@ const SECTIONS = [
     heading: 'Our Work & Impact',
     items: [
       {
-        to: '/admin/desk',
+        to: '/admin/programmes',
         label: 'Programmes & Initiatives',
         desc: 'Case stories for Our Work → Programmes & Initiatives — listing copy, hero photo, full account + gallery.',
         statKey: 'deskStories',
