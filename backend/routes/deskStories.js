@@ -93,6 +93,7 @@ router.post('/', protect, contentManagers, uploadDeskMedia, async (req, res) => 
       title,
       kicker,
       listingDescription,
+      featureBlurb,
       fullHeader,
       fullBody,
       number,
@@ -125,6 +126,7 @@ router.post('/', protect, contentManagers, uploadDeskMedia, async (req, res) => 
       kicker: kicker || 'Senior Citizens',
       title,
       listingDescription: listingDescription || '',
+      featureBlurb: (featureBlurb || '').trim(),
       heroImage,
       fullHeader: fullHeader || title,
       fullBody: fullBody || '',
@@ -149,6 +151,7 @@ router.put('/:id', protect, contentManagers, uploadDeskMedia, async (req, res) =
       title,
       kicker,
       listingDescription,
+      featureBlurb,
       fullHeader,
       fullBody,
       number,
@@ -165,6 +168,7 @@ router.put('/:id', protect, contentManagers, uploadDeskMedia, async (req, res) =
     }
     if (kicker !== undefined) story.kicker = kicker;
     if (listingDescription !== undefined) story.listingDescription = listingDescription;
+    if (featureBlurb !== undefined) story.featureBlurb = String(featureBlurb).trim();
     if (fullHeader !== undefined) story.fullHeader = fullHeader;
     if (fullBody !== undefined) story.fullBody = fullBody;
     if (number !== undefined && number !== '') {

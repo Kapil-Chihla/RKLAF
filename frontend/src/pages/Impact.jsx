@@ -71,7 +71,7 @@ function StoriesSection({ storyList }) {
       <div className="container">
         <Reveal as="header" variant="up">
           <span className="impact-rule" aria-hidden="true" />
-          <h2>Success stories</h2>
+          <h2>Impact through Litigation</h2>
         </Reveal>
 
         <div className="impact-stories__scroll">
@@ -291,7 +291,7 @@ export default function Impact() {
           </div>
 
           <p className="impact-hands__cta">
-            <Link to="/our-work#programmes">See programmes &amp; initiatives →</Link>
+            <Link to="/our-work/programmes">See programmes &amp; initiatives →</Link>
           </p>
         </div>
       </section>

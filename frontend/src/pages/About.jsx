@@ -1,330 +1,616 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import {
+  CONTACT_EMAIL,
+  CONTACT_MAILTO,
+  CONTACT_PHONE_DISPLAY,
+  CONTACT_PHONE_TEL,
+  socialLinks,
+} from '../data/navigation';
 import Reveal from '../components/motion/Reveal';
+import photoDada from '../assets/_unused/dada.jpeg';
+import photoDadi from '../assets/_unused/dadi.jpeg';
+import photoAjayHero from '../assets/aboutusi.jpeg';
+import photoAjayStory from '../assets/_unused/father.jpeg';
+import photoOffice from '../assets/_unused/comunityoutreach.jpeg';
+import officeVideo from '../assets/officevideo.mp4';
 import './About.css';
 
-const team = [
+const LINEAGE = [
   {
-    name: 'Adv. Ajay Garg',
-    role: 'Founder & Managing Trustee',
-    blurb: 'Leads case strategy and the Foundation’s courtroom mandate.',
+    id: 'rs-garg',
+    mark: false,
+    disc: photoDada,
+    discLabel: 'R.S. GARG',
+    discPos: 'center 22%',
+    label: 'Late Sh. R.S. Garg',
+    tag: 'The bench',
+    role: 'Where it began',
+    name: 'Late Sh. R.S. Garg',
+    sub: 'Judicial Officer, then Advocate',
+    photo: photoDada,
+    photoFit: 'contain',
+    photoHint: 'Late Sh. R.S. Garg',
+    text: 'He started his career not as a courtroom advocate, but as a Judicial Officer in Haryana, sitting quite literally on the other side of the bench, seeing firsthand how the machinery of justice moved and who it so often left behind. That early vantage point stayed with him. When he later moved to Delhi and began practicing in the District Courts and the High Court of Delhi, one thing about him never changed: he could never say no to a person in need, fee or no fee. Case after case, quietly and without fanfare, his pro bono practice became the defining part of his career.',
   },
   {
-    name: 'Trustee — Desk Lead',
-    role: 'Senior Citizens Desk',
-    blurb: 'Maintenance, property protection, and elder-abuse matters.',
+    id: 'krishna-garg',
+    mark: false,
+    disc: photoDadi,
+    discLabel: 'KRISHNA GARG',
+    discPos: 'center 22%',
+    label: 'Late Smt. Krishna Garg',
+    tag: 'Beside him',
+    role: 'Beside him, always',
+    name: 'Late Smt. Krishna Garg',
+    sub: 'A woman of deep faith and quiet strength',
+    photo: photoDadi,
+    photoFit: 'contain',
+    photoHint: 'Late Smt. Krishna Garg',
+    text: 'He did not do this alone. His wife stood beside him through every one of those years, supporting his charitable work in the way that partners often do, without ever asking for recognition. The Foundation carries both their names because the work was always theirs together.',
   },
   {
-    name: 'Trustee — Outreach',
-    role: 'Camps & Helpline',
-    blurb: 'Runs on-ground camps and first-response triage.',
+    id: 'registered',
+    mark: true,
+    disc: null,
+    discLabel: '2016',
+    label: '25 Nov 2016',
+    tag: 'Registered',
+    role: 'A foundation born from memory',
+    name: '25th November, 2016',
+    sub: 'Registered as a Charitable Trust',
+    photo: null,
+    photoFit: 'cover',
+    photoHint: 'Trust registration, 25 November 2016',
+    text: 'When they passed on, their son chose to give their life’s quiet work a permanent home. He registered the Radhey Krishna Legal Aid Foundation as a Charitable Trust, named for his parents and built on the very principle they had lived by.',
   },
   {
-    name: 'Volunteer Cohort',
-    role: 'Law Students & Fellows',
-    blurb: 'RTI drives, research desks, and clinic support.',
+    id: 'ajay-garg',
+    mark: false,
+    disc: photoAjayStory,
+    discLabel: 'AJAY GARG',
+    discPos: 'left center',
+    label: 'Mr. Ajay Garg',
+    tag: 'Chief Trustee',
+    role: 'Chief Trustee and Founder',
+    name: 'Mr. Ajay Garg, Advocate',
+    sub: 'Supreme Court of India and Delhi High Court',
+    photo: photoAjayStory,
+    photoFit: 'cover',
+    photoPos: 'left center',
+    photoHint: 'Mr. Ajay Garg, Advocate',
+    text: 'A law graduate of Campus Law Centre, Delhi University, with over 30 years of experience as a practicing Advocate before the Supreme Court of India and the Delhi High Court. He has been awarded and honoured by eminent dignitaries in Indian academia for his contributions to the legal field, and has personally conducted numerous pro bono matters before the Supreme Court and the Delhi High Court, several of which now stand as reported judgments.',
+  },
+  {
+    id: 'ruchi-garg',
+    mark: false,
+    disc: null,
+    discLabel: 'RUCHI GARG',
+    label: 'Ms. Ruchi Garg',
+    tag: 'Trustee',
+    role: 'Trustee',
+    name: 'Ms. Ruchi Garg',
+    sub: 'Standing beside him, as his mother once stood beside his father',
+    photo: null,
+    photoFit: 'cover',
+    photoHint: 'Ms. Ruchi Garg',
+    text: 'Trustee of the Foundation, whose support has been integral to its work, standing alongside the Chief Trustee in carrying this institution forward. The same quiet partnership that began a generation ago continues into this one.',
+  },
+  {
+    id: 'today',
+    mark: true,
+    disc: null,
+    discLabel: 'Now',
+    label: 'Today',
+    tag: 'Ongoing',
+    role: 'Carrying the work forward',
+    name: 'The work today',
+    sub: 'From one pro bono practice to a full institution',
+    photo: photoOffice,
+    photoFit: 'cover',
+    photoHint: 'Legal aid outreach and Tihar Central Jail visits',
+    text: 'What began as one man’s pro bono practice has since grown into a full-fledged institution, providing free legal aid to hundreds of poor, deprived, disabled and downtrodden persons, including inmates inside Tihar Central Jail, and arguing matters all the way up to the Supreme Court of India, several of which now stand as reported judgments. Every case we take on today is a continuation of that first instinct on the judicial bench: that no one should be denied justice simply because they cannot afford it.',
   },
 ];
 
-const journey = [
+const PILLARS = [
   {
-    year: '2014',
-    icon: 'sprout',
-    label: 'First clinic seeds',
-    title: 'The idea takes root',
-    desc: 'Informal aid desks and family-led counsel begin shaping what would become the Foundation.',
-    visual: 'Field notebook',
+    title: 'We remove the fear',
+    body: 'Too often people avoid seeking legal help because they are afraid of the process itself: the paperwork, the language, the courts, the cost. We exist to take that fear out of the way.',
   },
   {
-    year: '2016',
-    icon: 'scroll',
-    label: 'Trust deed signing day',
-    title: 'Registered as a charitable trust',
-    desc: 'The work gets a name and a legal form: the Radhey Krishna Legal Aid Foundation, a tribute carried into a mandate.',
-    visual: 'Trust deed signing day',
+    title: 'We keep the doors open',
+    body: 'Justice must stay within reach of those who are financially constrained and at risk of being shut out entirely. No one should lose their right to be heard, to representation, or to a fair process because they cannot afford it.',
   },
   {
-    year: '2018',
-    icon: 'desk',
-    label: 'Senior citizens desk',
-    title: 'Flagship protection desk opens',
-    desc: 'A dedicated desk for elders — maintenance, property, and abuse under the 2007 Act.',
-    visual: 'Desk at the tribunal',
-  },
-  {
-    year: '2021',
-    icon: 'grad',
-    label: 'Student cohort',
-    title: 'National RTI & campus clinics',
-    desc: 'Law students join structured drives unlocking pensions, ration, and scheme entitlements.',
-    visual: 'Campus clinic day',
-  },
-  {
-    year: '2024',
-    icon: 'globe',
-    label: 'Wider map',
-    title: 'Camps across more districts',
-    desc: 'Outreach widens — village rights camps, diaspora queries, and deeper public-interest work.',
-    visual: 'District camp map',
-  },
-  {
-    year: '2026',
-    icon: 'court',
-    label: 'Still showing up',
-    title: 'A decade into the mandate',
-    desc: 'The same sentence still holds: nobody loses a case because they could not afford to fight it.',
-    visual: 'Courthouse steps',
+    title: 'We go past the courtroom',
+    body: 'Through legal literacy, community outreach, youth engagement and policy advocacy, we reach people in every area of their lives, not only at their moment of crisis. Justice should reach people on their own terms, wherever they are.',
   },
 ];
 
-function JourneyIcon({ name }) {
-  if (name === 'sprout') {
-    return (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
-        <path d="M12 20V10M12 10c0-4 3-7 7-7-1 4-4 7-7 7zm0 0c0-4-3-7-7-7 1 4 4 7 7 7z" />
-      </svg>
-    );
-  }
-  if (name === 'scroll') {
-    return (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
-        <path d="M6 5h10a2 2 0 012 2v12H8a2 2 0 01-2-2V5zm0 0H5a2 2 0 00-2 2v1h3M18 19h1a2 2 0 002-2v-1h-3M9 10h6M9 14h4" />
-      </svg>
-    );
-  }
-  if (name === 'desk') {
-    return (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
-        <circle cx="12" cy="9" r="3" />
-        <path d="M5 19c1.5-3 4-5 7-5s5.5 2 7 5" />
-      </svg>
-    );
-  }
-  if (name === 'grad') {
-    return (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
-        <path d="M3 10l9-5 9 5-9 5-9-5zm3 4v4l6 3 6-3v-4" />
-      </svg>
-    );
-  }
-  if (name === 'globe') {
-    return (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
-        <circle cx="12" cy="12" r="8" />
-        <path d="M4 12h16M12 4c2.5 2.5 2.5 13.5 0 16M12 4c-2.5 2.5-2.5 13.5 0 16" />
-      </svg>
-    );
-  }
+const AIMS = [
+  {
+    title: 'Free, effective legal aid',
+    body: 'For the poor, deprived and marginalized, from first consultation to final judgment.',
+  },
+  {
+    title: 'Legal literacy for everyone',
+    body: 'So people understand their rights long before they ever need a lawyer.',
+  },
+  {
+    title: 'Causes of public importance',
+    body: 'From civil liberties to the environment, matters that affect entire communities, not just individuals.',
+  },
+  {
+    title: 'A generation of responsible lawyers',
+    body: 'Giving practicing advocates and law students real, hands-on pro bono experience.',
+  },
+];
+
+const COURTS = [
+  'All District Courts of Delhi',
+  'High Courts',
+  'Tribunals',
+  'Supreme Court of India',
+];
+
+function ScalesIcon({ className }) {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
-      <path d="M4 20h16M6 20V10l6-4 6 4v10M10 20v-5h4v5" />
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+      <path d="M12 3v18M8 7h8M6 7l-3 6h6L6 7zm12 0l-3 6h6l-3-6zM5 13c0 2 1.5 3.5 3.5 3.5S12 15 12 13M12 13c0 2 1.5 3.5 3.5 3.5S19 15 19 13" />
     </svg>
   );
 }
 
-function SectionLabel({ children }) {
+function PlayIcon() {
   return (
-    <div className="about-label" aria-hidden="false">
-      <span className="about-label__rule" />
-      <span className="about-label__star" aria-hidden="true">✦</span>
-      <span className="about-label__text">{children}</span>
-      <span className="about-label__star" aria-hidden="true">✦</span>
-      <span className="about-label__rule" />
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M8.5 6.5v11l9-5.5-9-5.5z" />
+    </svg>
+  );
+}
+
+function PhBox({ label, hint, dark, image, fit = 'cover', position, className = '' }) {
+  if (image) {
+    return (
+      <div className={`about-ph about-ph--photo about-ph--${fit} ${className}`.trim()}>
+        <img
+          src={image}
+          alt={hint || label || ''}
+          style={position ? { objectPosition: position } : undefined}
+        />
+      </div>
+    );
+  }
+  return (
+    <div className={`about-ph ${dark ? 'about-ph--dark' : ''} ${className}`.trim()}>
+      <span>{label}</span>
+      {hint ? <small>{hint}</small> : null}
+    </div>
+  );
+}
+
+function VideoCard({ tag, label, hint, image, src }) {
+  const videoRef = useRef(null);
+  const [playing, setPlaying] = useState(false);
+
+  const start = () => {
+    const el = videoRef.current;
+    if (!el || !src) return;
+    el.muted = false;
+    el.play()
+      .then(() => setPlaying(true))
+      .catch(() => {
+        el.muted = true;
+        el.play()
+          .then(() => {
+            setPlaying(true);
+            el.muted = false;
+          })
+          .catch(() => {});
+      });
+  };
+
+  const onEnded = () => setPlaying(false);
+  const onPause = () => {
+    const el = videoRef.current;
+    if (el && el.paused && !el.ended) setPlaying(false);
+  };
+
+  if (src) {
+    return (
+      <div className={`about-vid about-vid--player${playing ? ' is-playing' : ''}`}>
+        {tag && !playing ? <span className="about-vid__tag">{tag}</span> : null}
+        <div className="about-vid__frame">
+          <video
+            ref={videoRef}
+            className="about-vid__video"
+            src={src}
+            poster={image || undefined}
+            controls={playing}
+            controlsList="nodownload"
+            playsInline
+            preload="auto"
+            onEnded={onEnded}
+            onPause={onPause}
+            onPlay={() => setPlaying(true)}
+          />
+        </div>
+        {!playing ? (
+          <button type="button" className="about-vid__play" onClick={start} aria-label={label || 'Play video'}>
+            <span>
+              <PlayIcon />
+            </span>
+          </button>
+        ) : null}
+      </div>
+    );
+  }
+
+  return (
+    <div className="about-vid">
+      {tag ? <span className="about-vid__tag">{tag}</span> : null}
+      <PhBox label={label} hint={hint} dark image={image} />
+      <div className="about-vid__play" aria-hidden="true">
+        <span>
+          <PlayIcon />
+        </span>
+      </div>
     </div>
   );
 }
 
 export default function About() {
-  const [activeYear, setActiveYear] = useState(1);
-  const current = journey[activeYear];
+  const [cur, setCur] = useState(0);
+  const chapter = LINEAGE[cur];
 
-  const goPrev = () => setActiveYear((i) => (i - 1 + journey.length) % journey.length);
-  const goNext = () => setActiveYear((i) => (i + 1) % journey.length);
+  const step = (d) => setCur((i) => (i + d + LINEAGE.length) % LINEAGE.length);
 
   return (
-    <div className="about about--v2">
-      {/* Mandate */}
-      <section id="mandate" className="about-mandate">
-        <div className="container">
-          <Reveal as="div" className="about-mandate__copy" variant="up">
-            <SectionLabel>Our mandate</SectionLabel>
-            <h1 className="about-mandate__title">
-              Nobody loses a case because they{' '}
-              <em>could not afford</em> to fight it.
-            </h1>
-            <p className="about-mandate__lead">
-              That single sentence is our entire mission. Everything else — the camps, the helpline,
-              the podcast, the classrooms — exists to keep it true across every district we serve.
-              Free legal aid, plain-language education, and representation carried through to the final order.
-            </p>
-            <div className="about-mandate__seal" aria-hidden="true">
-              <span className="about-mandate__seal-ring">
-                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <path d="M24 8v32M14 14h20M16 14l-5 14h10L16 14zm16 0l-5 14h10L32 14z" />
-                </svg>
-              </span>
-            </div>
-          </Reveal>
-
-          <Reveal as="div" className="about-media" variant="up" delay={120}>
-            <div className="about-film">
-              <span className="about-film__badge">Film · 4 min</span>
-              <div className="about-film__center">
-                <p className="about-film__ph-label">
-                  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.6">
-                    <path d="M4 7h11l2-2h3v14H4V7zM9 11h4M9 15h6" />
-                  </svg>
-                  Video placeholder
-                </p>
-                <button type="button" className="about-film__play" aria-label="Play film (coming soon)" disabled>
-                  <span className="about-film__play-ring" aria-hidden="true" />
-                  <span className="about-film__play-tri" aria-hidden="true" />
-                </button>
-              </div>
-              <p className="about-film__caption">
-                The founder in the first one-room clinic, telling the story to camera.
-                Warm, unhurried, subtitled in Hindi &amp; English.
-              </p>
-            </div>
-
-            <aside className="about-quote-card">
-              <span className="about-quote-card__marks" aria-hidden="true">“</span>
-              <p>
-                My grandfather queued outside a court for eleven years and never once sat before a judge.
-                This foundation carries his name so that no one else’s story ends in the queue.
-              </p>
-              <footer>
-                <strong>Adv. Ajay Garg</strong>
-                <span className="about-quote-card__role">Founder &amp; Managing Trustee</span>
-                <a href="#mandate" className="about-quote-card__link">Watch the film →</a>
-              </footer>
-            </aside>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* Heritage */}
-      <section id="heritage" className="about-heritage">
-        <div className="container">
-          <Reveal as="div" className="about-heritage__panel" variant="up">
-            <div className="about-heritage__top">
-              <p className="about-heritage__eyebrow">Our heritage</p>
-              <h2 className="about-heritage__title">In their name</h2>
-              <p className="about-heritage__intro">
-                The foundation is a tribute before it is an organisation. These are the people whose lives,
-                and whose waits, opened this door for everyone who walks through it now.
-              </p>
-            </div>
-
-            <div className="about-heritage__grid">
-              <div className="about-polaroids">
-                <figure className="about-polaroid about-polaroid--a">
-                  <div className="about-polaroid__tape" />
-                  <div className="about-polaroid__frame">
-                    <span className="about-polaroid__tag">Archival portrait</span>
-                    <small>Late Shri Radhey Krishna ji, c. 1968</small>
-                  </div>
-                  <figcaption>Shri Radhey Krishna ji</figcaption>
-                </figure>
-                <figure className="about-polaroid about-polaroid--b">
-                  <div className="about-polaroid__tape" />
-                  <div className="about-polaroid__frame">
-                    <span className="about-polaroid__tag">Archival photo</span>
-                    <small>The family outside the district court, c. 1974</small>
-                  </div>
-                  <figcaption>The eleven-year queue, 1974</figcaption>
-                </figure>
-              </div>
-
-              <div className="about-heritage__right">
-                <p>
-                  He was a farmer who believed the courthouse belonged to every citizen — not only those
-                  who could pay to wait inside it. Eleven years in a queue outside a district court became
-                  the story this foundation refuses to repeat.
-                </p>
-                <p>
-                  Families who walk into our camps still add names to the tribute register. Each name is a
-                  reminder that the mandate is personal before it is institutional.
-                </p>
-                <p className="about-heritage__names">
-                  Radhey Krishna ji · Smt. Kaushalya Devi · and the elders of every camp
-                </p>
-                <div className="about-heritage__diyas" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M6 16c0 2 2.5 3.5 6 3.5s6-1.5 6-3.5c0-2-2-3-3.5-4.5C13 10 12 8 12 8s-1 2-2.5 3.5C8 13 6 14 6 16z" fill="#c46a3a"/><path d="M5 17.5c1 2.2 3.5 3.5 7 3.5s6-1.3 7-3.5" fill="none" stroke="#e8dcc8" strokeWidth="1.4"/></svg>
-                  <svg viewBox="0 0 24 24"><path d="M6 16c0 2 2.5 3.5 6 3.5s6-1.5 6-3.5c0-2-2-3-3.5-4.5C13 10 12 8 12 8s-1 2-2.5 3.5C8 13 6 14 6 16z" fill="#c46a3a"/><path d="M5 17.5c1 2.2 3.5 3.5 7 3.5s6-1.3 7-3.5" fill="none" stroke="#e8dcc8" strokeWidth="1.4"/></svg>
-                  <svg viewBox="0 0 24 24"><path d="M6 16c0 2 2.5 3.5 6 3.5s6-1.5 6-3.5c0-2-2-3-3.5-4.5C13 10 12 8 12 8s-1 2-2.5 3.5C8 13 6 14 6 16z" fill="#c46a3a"/><path d="M5 17.5c1 2.2 3.5 3.5 7 3.5s6-1.3 7-3.5" fill="none" stroke="#e8dcc8" strokeWidth="1.4"/></svg>
-                </div>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* Team */}
-      <section id="team" className="about-team">
-        <div className="container">
-          <Reveal as="header" className="about-team__head" variant="up">
-            <p className="about-eyebrow">The team</p>
-            <h2 className="about-display">The people who show up</h2>
-          </Reveal>
-
-          <div className="about-team__grid">
-            {team.map((member, i) => (
-              <Reveal as="article" className="about-person" key={member.name} variant="up" delay={i * 70}>
-                <div className="about-person__avatar" aria-hidden="true">
-                  <span>{member.name.split(' ').slice(-1)[0].slice(0, 1)}</span>
-                </div>
-                <h3>{member.name}</h3>
-                <p className="about-person__role">{member.role}</p>
-                <p className="about-person__blurb">{member.blurb}</p>
-              </Reveal>
-            ))}
+    <div className="about about--v3">
+      {/* 1 · HERO */}
+      <section className="about-hero" id="about-hero">
+        <div className="about-hero__left">
+          <span className="about-kicker">About us</span>
+          <p className="about-epigraph">One man’s quiet compassion became a promise:</p>
+          <p className="about-promise">
+            “no one, however poor or powerless, would ever have to face the law alone.”
+          </p>
+          <h1 className="about-tagline">
+            With You.
+            <br />
+            For You.
+            <i>Nyaya Tak.</i>
+          </h1>
+          <p className="about-carry">
+            That promise is what we carry forward, for every person who still needs someone in their
+            corner.
+          </p>
+          <div className="about-stamp">
+            <span className="about-stamp__seal" aria-hidden="true">
+              <ScalesIcon />
+            </span>
+            <span>
+              Radhey Krishna Legal Aid Foundation
+              <br />
+              Charitable Trust · registered 25 November 2016
+            </span>
           </div>
         </div>
+        <div className="about-hero__right">
+          <PhBox
+            className="about-hero__photo"
+            label="Photo"
+            hint="Advocate with a client outside court"
+            dark
+            image={photoAjayHero}
+          />
+          <span className="about-hero__vcap">Delhi · since 2016</span>
+        </div>
       </section>
 
-      {/* Journey */}
-      <section id="journey" className="about-journey">
-        <div className="container">
-          <Reveal as="header" className="about-journey__head" variant="up">
-            <p className="about-eyebrow">The journey</p>
-            <h2 className="about-display">A decade, year by year</h2>
-            <p className="about-journey__hint">Click a year to travel</p>
-          </Reveal>
+      {/* 2 · CHIEF TRUSTEE MESSAGE */}
+      <section className="about-message" id="message">
+        <Reveal as="div" variant="up">
+          <VideoCard
+            tag="A MESSAGE FROM OUR CHIEF TRUSTEE"
+            label="Video"
+            hint="Mr. Ajay Garg, Advocate"
+            image={photoAjayHero}
+          />
+        </Reveal>
+        <Reveal as="div" variant="up" delay={80}>
+          <span className="about-kicker">Hear it first</span>
+          <h2>Before you read our story in words, hear it in his own voice.</h2>
+          <p>
+            In this short message, our Chief Trustee shares why Radhey Krishna Legal Aid Foundation
+            exists, what it stands for, and what it does for the people who come to us.
+          </p>
+          <div className="about-nameplate">
+            <b>Mr. Ajay Garg, Advocate</b>
+            <span>Chief Trustee and Founder</span>
+          </div>
+          <a className="about-watch" href="#message">
+            Watch the message →
+          </a>
+        </Reveal>
+      </section>
 
-          <div className="about-timeline" role="tablist" aria-label="Decade timeline">
-            <div className="about-timeline__line" aria-hidden="true" />
-            {journey.map((item, i) => (
+      {/* 3 · PHILOSOPHY */}
+      <section className="about-phil" id="philosophy">
+        <span className="about-kicker">Our philosophy</span>
+        <h2 className="about-phil__conviction">
+          To fight for people, not just represent them. And to stay by their side{' '}
+          <em>until the fight is won.</em>
+        </h2>
+        <p className="about-phil__sub">
+          That is the one conviction that guides us. Everything below follows from it: the law should
+          never feel distant, intimidating, or out of reach, for anyone.
+        </p>
+        <div className="about-pillars">
+          {PILLARS.map((p) => (
+            <div className="about-pillar" key={p.title}>
+              <b>{p.title}</b>
+              <p>{p.body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 4 · LINEAGE */}
+      <section className="about-story" id="story">
+        <div className="about-story__head">
+          <span className="about-kicker">Our story</span>
+          <h2>One thread, two generations</h2>
+          <p>
+            Long before it became a registered institution, this story began in the life of one man,
+            and the woman who stood beside him. The same partnership carries it today.
+          </p>
+        </div>
+
+        <div className="about-lineage">
+          <div className="about-brackets" aria-hidden="true">
+            <div className="about-bracket">
+              <span>Where it began</span>
+              <i />
+            </div>
+            <div className="about-bracket about-bracket--two">
+              <span>Carrying it forward</span>
+              <i />
+            </div>
+          </div>
+
+          <div className="about-rail" role="tablist" aria-label="Family lineage">
+            <div className="about-rail__thread" aria-hidden="true" />
+            {LINEAGE.map((node, i) => (
               <button
-                key={item.year}
+                key={node.id}
                 type="button"
                 role="tab"
-                aria-selected={i === activeYear}
-                className={`about-timeline__node ${i === activeYear ? 'is-active' : ''}`}
-                onClick={() => setActiveYear(i)}
+                aria-selected={i === cur}
+                className={`about-node${node.mark ? ' about-node--mark' : ''}${i === cur ? ' is-on' : ''}`}
+                onClick={() => setCur(i)}
               >
-                <span className="about-timeline__icon" aria-hidden="true">
-                  <JourneyIcon name={item.icon} />
+                <span className="about-node__disc">
+                  {node.mark ? (
+                    <span className="about-node__mark-glyph" aria-hidden="true">
+                      {node.discLabel}
+                    </span>
+                  ) : node.disc ? (
+                    <img
+                      src={node.disc}
+                      alt=""
+                      style={node.discPos ? { objectPosition: node.discPos } : undefined}
+                    />
+                  ) : (
+                    <span className="about-node__initials">{node.discLabel}</span>
+                  )}
                 </span>
-                <span className="about-timeline__year">{item.year}</span>
+                <b>{node.label}</b>
+                <em>{node.tag}</em>
               </button>
             ))}
           </div>
+        </div>
 
-          <Reveal as="article" className="about-year-card" variant="up" key={current.year}>
-            <div className="about-year-card__visual">
-              <span>{current.visual}</span>
-              <small>{current.label}</small>
+        <article className="about-chapter" key={chapter.id}>
+          <PhBox
+            className="about-chapter__photo"
+            label="Photo"
+            hint={chapter.photoHint}
+            image={chapter.photo}
+            fit={chapter.photoFit || 'cover'}
+            position={chapter.photoPos}
+          />
+          <div className="about-chapter__body">
+            <span className="about-chapter__role">{chapter.role}</span>
+            <h3>{chapter.name}</h3>
+            <span className="about-chapter__sub">{chapter.sub}</span>
+            <p>{chapter.text}</p>
+            <div className="about-chapter__nav">
+              <button type="button" onClick={() => step(-1)} aria-label="Previous">
+                ←
+              </button>
+              <button type="button" onClick={() => step(1)} aria-label="Next">
+                →
+              </button>
             </div>
-            <div className="about-year-card__body">
-              <p className="about-year-card__year">{current.year}</p>
-              <h3>{current.title}</h3>
-              <p>{current.desc}</p>
-              <div className="about-year-card__nav">
-                <button type="button" onClick={goPrev} aria-label="Previous year">←</button>
-                <button type="button" onClick={goNext} aria-label="Next year">→</button>
+          </div>
+        </article>
+        <p className="about-hint">Click a face or a marker to follow the thread</p>
+      </section>
+
+      {/* 5 · OFFICE */}
+      <section className="about-office" id="office">
+        <Reveal as="div" variant="up">
+          <span className="about-kicker">Inside our office</span>
+          <h2>Where the work actually happens</h2>
+          <p>
+            A short tour of the space, and the team behind every case we take on. The Foundation is
+            run and managed voluntarily by practicing lawyers and law students, working together so
+            that the poor, deprived, needy, downtrodden and differently-abled can protect their
+            rights.
+          </p>
+        </Reveal>
+        <Reveal as="div" variant="up" delay={80}>
+          <VideoCard
+            tag="INSIDE OUR OFFICE"
+            label="Office tour"
+            src={officeVideo}
+          />
+        </Reveal>
+      </section>
+
+      {/* 6 · WHAT WE DO + MISSION */}
+      <section className="about-work" id="work">
+        <div>
+          <span className="about-kicker">What we do</span>
+          <h2>Legal aid that is preventive, remedial, activist and reformative</h2>
+          <p>
+            We assist people who would otherwise be unable to afford legal representation or access
+            to the court system, with particular focus on senior citizens, women, children, and other
+            underprivileged and marginalized groups, while generating public awareness on issues that
+            concern everyone.
+          </p>
+          <div className="about-modes">
+            <span>Preventive</span>
+            <span>Remedial</span>
+            <span>Activist</span>
+            <span>Reformative</span>
+          </div>
+        </div>
+        <div>
+          <span className="about-kicker">Our mission</span>
+          <p className="about-work__mission-lead">
+            Our mission goes beyond winning cases. It is about making sure legal aid actually reaches
+            the people who need it.
+          </p>
+          <div className="about-aims">
+            {AIMS.map((aim) => (
+              <div className="about-aim" key={aim.title}>
+                <i aria-hidden="true">✦</i>
+                <span>
+                  <b>{aim.title}</b>
+                  {aim.body}
+                </span>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 7 · WHERE WE WORK */}
+      <section className="about-where" id="where">
+        <div>
+          <span className="about-kicker">Where we work</span>
+          <h2>Two offices, one jurisdiction that keeps widening</h2>
+          <p className="about-where__intro">
+            We appear wherever the matter is listed, and we run awareness work far beyond the courts
+            we practice in.
+          </p>
+          <div className="about-soon">
+            <span className="about-soon__icon" aria-hidden="true">
+              ✦
+            </span>
+            <div>
+              <b>International programme</b>
+              <span>Launching soon, to extend the same support to Indians and families abroad.</span>
             </div>
-          </Reveal>
+          </div>
+        </div>
+        <div>
+          <div className="about-offices">
+            <div className="about-off">
+              <em>Head office</em>
+              <b>Delhi</b>
+              <span>The main office, where case intake, filings and day-to-day work are handled.</span>
+            </div>
+            <div className="about-off">
+              <em>Branch office</em>
+              <b>Imphal</b>
+              <span>Our branch in Manipur, extending the Foundation’s reach in the North East.</span>
+            </div>
+          </div>
+          <div className="about-appear">
+            <p>We appear before</p>
+            <div className="about-courts">
+              {COURTS.map((c) => (
+                <span key={c}>{c}</span>
+              ))}
+            </div>
+          </div>
+          <div className="about-reach">
+            <div>
+              <b>Awareness across India</b>
+              <span>
+                Legal literacy drives, camps and outreach initiatives run nationwide, not only where
+                our offices sit.
+              </span>
+            </div>
+            <div>
+              <b>Wherever the need is</b>
+              <span>
+                Case work is taken up on merit and need, whichever forum it belongs before.
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 8 · CLOSING */}
+      <section className="about-closing" id="closing">
+        <p className="about-closing__line">One case, one person, and one right restored at a time.</p>
+        <p>
+          Radhey Krishna Legal Aid Foundation continues to grow, extending free legal aid and support
+          to an ever-increasing number of impoverished and underprivileged people.
+        </p>
+        <p className="about-closing__echo">With You. For You. Nyaya Tak.</p>
+      </section>
+
+      {/* 9 · CONTACT */}
+      <section className="about-contact" id="reach">
+        <span className="about-kicker">Get in touch</span>
+        <h2>Reach us</h2>
+        <div className="about-cgrid">
+          <div className="about-cblock">
+            <em>Head office · Delhi</em>
+            <p>
+              New Delhi
+              <br />
+              India
+            </p>
+          </div>
+          <div className="about-cblock">
+            <em>Branch office · Imphal</em>
+            <p>
+              Imphal, Manipur
+              <br />
+              India
+            </p>
+          </div>
+          <div className="about-cblock">
+            <em>Contact</em>
+            <p>
+              Phone:{' '}
+              <a href={`tel:${CONTACT_PHONE_TEL}`}>{CONTACT_PHONE_DISPLAY}</a>
+              <br />
+              Email: <a href={CONTACT_MAILTO}>{CONTACT_EMAIL}</a>
+            </p>
+            <div className="about-csocial">
+              {socialLinks.slice(0, 4).map((s) => (
+                <a key={s.name} href={s.href} target="_blank" rel="noreferrer" aria-label={s.name}>
+                  {s.name === 'LinkedIn' ? 'in' : s.name === 'YouTube' ? '▶' : s.name.slice(0, 1)}
+                </a>
+              ))}
+            </div>
+            <p className="about-contact__cta">
+              <Link to="/contact">Full contact page →</Link>
+            </p>
+          </div>
+        </div>
+        <div className="about-cfoot">
+          <span>Radhey Krishna Legal Aid Foundation · Charitable Trust registered 25 November 2016</span>
+          <i>With You, For You, Nyaya Tak.</i>
         </div>
       </section>
     </div>

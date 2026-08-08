@@ -47,7 +47,7 @@ export default function DeskStoryDetail() {
       <div className="story-detail">
         <div className="container story-detail__empty">
           <h1>Story not found</h1>
-          <Link to="/our-work#desk">← Back to The Desk</Link>
+          <Link to="/our-work/programmes">← Back to Programmes &amp; Initiatives</Link>
         </div>
       </div>
     );
@@ -68,7 +68,7 @@ export default function DeskStoryDetail() {
       >
         <div className="container story-detail__hero-inner">
           <p className="story-detail__kicker">
-            The Desk · Project {num}
+            Programmes &amp; Initiatives · Project {num}
           </p>
           <h1>{story.fullHeader || story.title}</h1>
           {story.kicker ? <p className="story-detail__tag">{story.kicker}</p> : null}
@@ -121,7 +121,7 @@ export default function DeskStoryDetail() {
         )}
 
         <p className="story-detail__back">
-          <Link to="/our-work#desk">← Back to The Desk</Link>
+          <Link to="/our-work/programmes">← Back to Programmes &amp; Initiatives</Link>
         </p>
       </article>
     </div>

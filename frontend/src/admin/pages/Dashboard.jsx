@@ -9,8 +9,8 @@ const SECTIONS = [
     items: [
       {
         to: '/admin/desk',
-        label: 'The Desk',
-        desc: 'Case stories for Our Work — listing copy, hero photo, full account + gallery.',
+        label: 'Programmes & Initiatives',
+        desc: 'Case stories for Our Work → Programmes & Initiatives — listing copy, hero photo, full account + gallery.',
         statKey: 'deskStories',
       },
       {
@@ -102,7 +102,7 @@ export default function Dashboard() {
         <div className="admin-stats">
           <div className="admin-stat">
             <strong>{stats.deskStories ?? 0}</strong>
-            <span>Desk stories</span>
+            <span>Programmes</span>
           </div>
           <div className="admin-stat">
             <strong>{stats.successStories ?? 0}</strong>

@@ -157,6 +157,7 @@
   font-family: inherit;
   white-space: nowrap;
   color: var(--muted);
+  text-decoration: none;
   transition: color 0.2s, border-color 0.2s;
 }
 

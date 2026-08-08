@@ -32,7 +32,7 @@ export default function Login() {
     <div className="admin-auth-page">
       <div className="admin-auth-card">
         <h1>Admin Login</h1>
-        <p>Sign in to upload Desk stories, success stories, KYR guides, blogs, and papers.</p>
+        <p>Sign in to upload Programmes &amp; Initiatives stories, success stories, KYR guides, blogs, and papers.</p>
         <div className="admin-alert admin-alert--success" style={{ fontSize: '0.9rem' }}>
           <strong>Test login</strong>
           <br />

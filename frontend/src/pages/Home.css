@@ -527,6 +527,14 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1rem;
+  align-items: stretch;
+}
+
+.home-impact__grid > .reveal {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .home-card {
@@ -535,9 +543,33 @@
   overflow: hidden;
   border: 1px solid var(--line);
   box-shadow: 0 10px 26px rgba(26, 21, 16, 0.05);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
-.home-card__visual { position: relative; }
+a.home-card--link {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+a.home-card--link:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 32px rgba(26, 21, 16, 0.08);
+}
+
+.home-card__visual { position: relative; flex-shrink: 0; }
+
+.home-card__photo {
+  aspect-ratio: 4 / 3;
+  background: linear-gradient(145deg, #e8dcc8, #c4b19a 55%, #a89070);
+  background-size: cover;
+  background-position: center;
+}
 
 .home-card__visual .home-ph { border-radius: 0; }
 
@@ -558,7 +590,13 @@
   z-index: 2;
 }
 
-.home-card__body { padding: 1.5rem 1.1rem 1.2rem; }
+.home-card__body {
+  padding: 1.5rem 1.1rem 1.2rem;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
 
 .home-card__tag {
   display: inline-block;
@@ -575,13 +613,27 @@
   font-size: 1.12rem;
   margin: 0 0 0.4rem;
   color: var(--ink);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: calc(1.25em * 2);
+  line-height: 1.25;
 }
 
 .home-card__body p {
   margin: 0;
+  margin-top: auto;
   font-size: 0.88rem;
-  line-height: 1.55;
+  line-height: 1.45;
   color: var(--muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: calc(1.45em * 2);
 }
 
 /* Stories */
@@ -595,18 +647,19 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 0.45rem;
+  gap: 0.75rem;
+  padding-block: 0.35rem;
 }
 
 .home-snapshots__row {
   display: flex;
   width: max-content;
-  padding: 0.5rem 0 0.35rem;
+  padding: 0.85rem 0 0.75rem;
   animation: home-snap-marquee 55s linear infinite;
 }
 
 .home-snapshots__row--reverse {
-  padding-bottom: 1rem;
+  padding-bottom: 1.25rem;
   animation-direction: reverse;
   animation-duration: 60s;
 }
@@ -624,9 +677,9 @@
 }
 
 .home-polaroid {
-  width: clamp(148px, 17vw, 186px);
+  width: clamp(168px, 19vw, 220px);
   margin: 0;
-  padding: 0.6rem 0.6rem 0.8rem;
+  padding: 0.65rem 0.65rem 0.9rem;
   background: #fff;
   border-radius: 4px;
   box-shadow: 0 10px 24px rgba(26, 21, 16, 0.08);
@@ -638,6 +691,31 @@
 .home-polaroid--3 { transform: rotate(-0.7deg) translateY(-6px); }
 
 .home-polaroid .home-ph { border-radius: 2px; }
+
+/* Frame matches photo orientation so portraits (row 2) aren’t squashed into landscape */
+.home-polaroid__media {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 2px;
+  overflow: hidden;
+  background: #e8dfd2;
+}
+
+.home-polaroid__media--portrait {
+  aspect-ratio: 3 / 4;
+}
+
+.home-polaroid__media--landscape {
+  aspect-ratio: 4 / 3;
+}
+
+.home-polaroid__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
 
 .home-polaroid figcaption {
   margin-top: 0.5rem;
@@ -652,6 +730,14 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1.1rem;
+  align-items: stretch;
+}
+
+.home-stories__grid > .reveal {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .home-story {
@@ -659,14 +745,49 @@
   border-radius: var(--radius-sm);
   overflow: hidden;
   border: 1px solid var(--line);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
-.home-story .home-ph { border-radius: 0; }
+a.home-story--link {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
 
-.home-story__body { padding: 1.1rem 1.15rem 1.3rem; }
+a.home-story--link:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 32px rgba(26, 21, 16, 0.08);
+}
+
+.home-story .home-ph { border-radius: 0; flex-shrink: 0; }
+
+.home-story__photo {
+  aspect-ratio: 16 / 11;
+  flex-shrink: 0;
+  background: linear-gradient(145deg, #e8dcc8, #c4b19a 55%, #a89070);
+  background-size: cover;
+  background-position: center;
+}
+
+.home-story__body {
+  padding: 1.1rem 1.15rem 1.3rem;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
 
 .home-story__tag {
-  display: inline-block;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
   margin-bottom: 0.5rem;
   padding: 0.22rem 0.55rem;
   border-radius: 999px;
@@ -676,6 +797,8 @@
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--muted);
+  width: fit-content;
+  max-width: 100%;
 }
 
 .home-story__body h3 {
@@ -683,13 +806,27 @@
   font-size: 1.15rem;
   margin: 0 0 0.45rem;
   color: var(--ink);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: calc(1.25em * 3);
+  line-height: 1.25;
 }
 
 .home-story__body p {
   margin: 0;
+  margin-top: auto;
   font-size: 0.88rem;
-  line-height: 1.55;
+  line-height: 1.45;
   color: var(--muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: calc(1.45em * 2);
 }
 
 /* Expertise */
@@ -1074,8 +1211,8 @@
   .home-polaroid,
   .home-polaroid--2,
   .home-polaroid--3 {
-    width: min(46vw, 200px);
-    padding: 0.55rem 0.55rem 0.7rem;
+    width: min(50vw, 230px);
+    padding: 0.6rem 0.6rem 0.75rem;
     box-shadow: 0 10px 22px rgba(26, 21, 16, 0.1);
   }
 
@@ -1092,8 +1229,16 @@
   }
 
   .home-polaroid .home-ph {
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 4 / 3;
     padding: 0.65rem 0.45rem;
+  }
+
+  .home-polaroid__media--landscape {
+    aspect-ratio: 4 / 3;
+  }
+
+  .home-polaroid__media--portrait {
+    aspect-ratio: 3 / 4;
   }
 
   .home-polaroid .home-ph__label {

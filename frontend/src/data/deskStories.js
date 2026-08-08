@@ -8,6 +8,7 @@ export const FALLBACK_DESK = [
     title: 'Built from one wave of evictions',
     listingDescription:
       'In 2018 our helpline began ringing with the same story told in different voices: parents moved into storerooms of houses they built, gift deeds signed under pressure, patience mistaken for consent. The desk was built to answer that exact call, and it has never stopped.\n\nA single case officer stays with each elder from intake to compliance. Volunteers sit beside them at every hearing, so nobody faces a tribunal alone at seventy.',
+    featureBlurb: 'One officer, one volunteer, one file — elders protected from coerced gift deeds to restored homes.',
     heroImage: null,
     fullHeader: 'Four hundred elders, one method',
     fullBody:

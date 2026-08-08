@@ -4,7 +4,84 @@ import HeroSketch from '../components/home/HeroSketch';
 import CountUp from '../components/motion/CountUp';
 import Reveal from '../components/motion/Reveal';
 import { WHATSAPP_DISPLAY, WHATSAPP_URL, CONTACT_EMAIL, CONTACT_MAILTO, CONTACT_PHONE_TEL } from '../data/navigation';
+import publicApi from '../lib/publicApi';
+import { assetUrl } from '../lib/api';
 import './Home.css';
+
+const snapModules = import.meta.glob('../assets/{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}.jpeg', {
+  eager: true,
+  import: 'default',
+});
+
+function snapSrc(n) {
+  return snapModules[`../assets/${n}.jpeg`];
+}
+
+const SNAP_ORIENT = {
+  1: 'portrait',
+  2: 'portrait',
+  3: 'landscape',
+  4: 'landscape',
+  5: 'portrait',
+  6: 'portrait',
+  7: 'landscape',
+  8: 'portrait',
+  9: 'portrait',
+  10: 'landscape',
+  11: 'portrait',
+  12: 'portrait',
+  13: 'portrait',
+  14: 'portrait',
+  15: 'landscape',
+  16: 'portrait',
+  17: 'landscape',
+  18: 'portrait',
+  19: 'landscape',
+  20: 'landscape',
+};
+
+const SNAP_CAPTIONS = [
+  'On the ground',
+  'Together at camp',
+  'Rights in practice',
+  'Community day',
+  'Listening first',
+  'Relief in hand',
+  'At the hearing',
+  'Side by side',
+  'Village intake',
+  'Order in hand',
+  'Helpline shift',
+  'Tribunal steps',
+  'Camp morning',
+  'Rights workshop',
+  'Family counsel',
+  'Volunteer desk',
+  'Court corridor',
+  'Field visit',
+  'Community hall',
+  'Case follow-up',
+];
+
+const snapshots = Array.from({ length: 10 }, (_, i) => {
+  const n = i + 1;
+  return {
+    src: snapSrc(n),
+    label: `Field snapshot ${n}`,
+    caption: SNAP_CAPTIONS[i],
+    orient: SNAP_ORIENT[n],
+  };
+});
+
+const snapshotsRow2 = Array.from({ length: 10 }, (_, i) => {
+  const n = i + 11;
+  return {
+    src: snapSrc(n),
+    label: `Field snapshot ${n}`,
+    caption: SNAP_CAPTIONS[i + 10],
+    orient: SNAP_ORIENT[n],
+  };
+});
 
 const introStats = [
   { end: 2016, suffix: '', label: 'Registered as a Charitable Trust', icon: 'people', duration: 2200 },
@@ -22,58 +99,67 @@ const sideNav = [
   { id: 'contact-home', label: 'Contact' },
 ];
 
-const programmes = [
+const FALLBACK_PROGRAMMES = [
   {
+    id: 'fb-p1',
     num: '01',
     tag: 'Flagship · Since 2018',
     title: 'Senior Citizens Protection Desk',
     desc: '400+ elders protected through maintenance, property, and abuse cases.',
     visual: 'Elder with advocate',
     caption: 'At the tribunal steps',
+    slug: null,
+    heroImage: null,
   },
   {
+    id: 'fb-p2',
     num: '02',
     tag: 'Camps · Nationwide',
     title: 'Legal Aid Camps',
     desc: '40+ on-ground camps bringing free counsel to villages and city wards.',
     visual: 'Camp intake desk',
     caption: 'Walking in together',
+    slug: null,
+    heroImage: null,
   },
   {
+    id: 'fb-p3',
     num: '03',
     tag: 'Rights · Education',
     title: 'Know Your Rights Drives',
     desc: 'Plain-language guides, workshops, and school clinics on constitutional rights.',
     visual: 'Rights workshop',
     caption: 'Rights class, Faridabad',
+    slug: null,
+    heroImage: null,
   },
   {
+    id: 'fb-p4',
     num: '04',
     tag: 'Accountability · RTI',
     title: 'RTI & Public Interest',
     desc: '80+ law students unlocking pensions, ration, and scheme entitlements.',
     visual: 'RTI filing desk',
     caption: 'Order copy in hand',
+    slug: null,
+    heroImage: null,
   },
 ];
 
-const snapshots = [
-  { label: 'Campus clinic', caption: 'Intake desk, DU' },
-  { label: 'First hearing', caption: 'Walking in together' },
-  { label: 'Door to door', caption: 'Pension rights walk' },
-  { label: 'Order copy', caption: 'Maintenance in hand' },
-  { label: 'Workshop', caption: 'Rights class, Faridabad' },
-  { label: 'Helpline', caption: 'Senior citizens’ sabha' },
-];
-
-const snapshotsRow2 = [
-  { label: 'Tribunal day', caption: 'Elder at the steps' },
-  { label: 'Camp intake', caption: 'Village ward desk' },
-  { label: 'RTI drive', caption: 'Students filing forms' },
-  { label: 'Legal literacy', caption: 'School rights clinic' },
-  { label: 'Relief order', caption: 'Copy in her hands' },
-  { label: 'Night helpline', caption: 'Volunteer on shift' },
-];
+function mapHomeProgramme(s, i) {
+  const num = String(s.number || i + 1).padStart(2, '0');
+  return {
+    id: s.id || s.slug || `prog-${i}`,
+    num,
+    tag: s.kicker || 'Programme',
+    title: s.fullHeader || s.title,
+    desc: (s.featureBlurb || '').trim() || (s.listingDescription || '').split(/\n+/)[0]?.trim() || '',
+    slug: s.slug || null,
+    heroImage: s.heroImage ? assetUrl(s.heroImage) : null,
+    visual: 'Programme photo',
+    caption: s.caption || '',
+  };
+}
 
 /** Duplicate until the strip is wider than the viewport (avoids empty cream gaps). */
 function marqueeSet(items, minCards = 14) {
@@ -82,8 +168,9 @@ function marqueeSet(items, minCards = 14) {
   return set;
 }
 
-const stories = [
+const FALLBACK_STORIES = [
   {
+    id: 'fallback-1',
     tag: 'Senior Citizens',
     title: 'Kamla Devi, 74, gets her home back',
     desc: 'Coerced gift deed cancelled, possession restored, ₹8,000 monthly maintenance in 63 days.',
@@ -91,6 +178,7 @@ const stories = [
     caption: 'Kamla Devi at her home',
   },
   {
+    id: 'fallback-2',
     tag: 'Labour Rights',
     title: '42 workers recover 6 months of unpaid wages',
     desc: 'Wage claims reconstructed from screenshots and recovered with interest.',
@@ -98,6 +186,7 @@ const stories = [
     caption: 'Construction workers at site',
   },
   {
+    id: 'fallback-3',
     tag: 'Family Law',
     title: 'Ruksana wins custody and a safe home',
     desc: 'Protection orders secured and full custody granted after a six-month fight.',
@@ -105,6 +194,19 @@ const stories = [
     caption: 'Leaving court with relief',
   },
 ];
+
+function mapHomeStory(s, i) {
+  return {
+    id: s.id || s.slug || `story-${i}`,
+    slug: s.slug || null,
+    tag: s.tag || 'Litigation',
+    title: s.title,
+    desc: (s.result || s.action || s.problem || s.desc || '').trim(),
+    visual: s.photo || 'Portrait',
+    caption: s.caption || '',
+    heroImage: s.heroImage ? assetUrl(s.heroImage) : null,
+  };
+}
 
 const expertise = [
   { title: 'Senior Citizens', desc: 'Maintenance, property protection and elder abuse under the 2007 Act' },
@@ -220,8 +322,39 @@ function MediaPlaceholder({ label, caption, ratio = '4 / 3' }) {
   );
 }
 
+/** Frame aspect follows photo orientation so tall shots (esp. row 2) fill properly. */
+function PolaroidPhoto({ src, label, orient = 'landscape' }) {
+  return (
+    <div className={`home-polaroid__media home-polaroid__media--${orient}`}>
+      <img className="home-polaroid__img" src={src} alt={label} loading="lazy" />
+    </div>
+  );
+}
+
 export default function Home() {
   const [activeSection, setActiveSection] = useState('who-we-are');
+  const [featuredStories, setFeaturedStories] = useState(FALLBACK_STORIES);
+  const [featuredProgrammes, setFeaturedProgrammes] = useState(FALLBACK_PROGRAMMES);
+
+  useEffect(() => {
+    publicApi
+      .get('/success-stories')
+      .then((r) => {
+        if (!Array.isArray(r.data) || !r.data.length) return;
+        // API returns newest first — feature the latest three
+        setFeaturedStories(r.data.slice(0, 3).map(mapHomeStory));
+      })
+      .catch(() => {});
+
+    publicApi
+      .get('/desk-stories')
+      .then((r) => {
+        if (!Array.isArray(r.data) || !r.data.length) return;
+        // Latest four programmes for the home feature strip
+        setFeaturedProgrammes(r.data.slice(0, 4).map(mapHomeProgramme));
+      })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     const nodes = sideNav
@@ -335,7 +468,7 @@ export default function Home() {
         <div className="container">
           <header className="home-section-head">
             <div>
-              <p className="home-eyebrow">Success stories</p>
+              <p className="home-eyebrow">Impact through Litigation</p>
               <h2 className="home-display">Real people. Real orders. Real relief.</h2>
             </div>
             <Link to="/impact#stories" className="home-pill">
@@ -344,16 +477,40 @@ export default function Home() {
           </header>
 
           <div className="home-stories__grid">
-            {stories.map((story, i) => (
-              <Reveal as="article" className="home-story" key={story.title} variant="up" delay={i * 90}>
-                <MediaPlaceholder label={story.visual} caption={story.caption} ratio="16 / 11" />
-                <div className="home-story__body">
-                  <span className="home-story__tag">{story.tag}</span>
-                  <h3>{story.title}</h3>
-                  <p>{story.desc}</p>
-                </div>
-              </Reveal>
-            ))}
+            {featuredStories.map((story, i) => {
+              const href = story.slug ? `/impact/stories/${story.slug}` : null;
+              const inner = (
+                <>
+                  {story.heroImage ? (
+                    <div
+                      className="home-story__photo"
+                      style={{ backgroundImage: `url(${story.heroImage})` }}
+                      role="img"
+                      aria-label={story.caption || story.title}
+                    />
+                  ) : (
+                    <MediaPlaceholder label={story.visual} caption={story.caption} ratio="16 / 11" />
+                  )}
+                  <div className="home-story__body">
+                    <span className="home-story__tag">{story.tag}</span>
+                    <h3>{story.title}</h3>
+                    {story.desc ? <p>{story.desc}</p> : null}
+                  </div>
+                </>
+              );
+
+              return (
+                <Reveal key={story.id || story.title} as="div" variant="up" delay={i * 90}>
+                  {href ? (
+                    <Link to={href} className="home-story home-story--link">
+                      {inner}
+                    </Link>
+                  ) : (
+                    <article className="home-story">{inner}</article>
+                  )}
+                </Reveal>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -379,7 +536,11 @@ export default function Home() {
                     className={`home-polaroid home-polaroid--${((i + row.tilt) % 3) + 1}`}
                     key={`${rowIndex}-${copy}-${shot.label}-${i}`}
                   >
-                    <MediaPlaceholder label={shot.label} />
+                    {shot.src ? (
+                      <PolaroidPhoto src={shot.src} label={shot.label} orient={shot.orient} />
+                    ) : (
+                      <MediaPlaceholder label={shot.label} />
+                    )}
                     <figcaption>{shot.caption}</figcaption>
                   </figure>
                 ))}
@@ -396,25 +557,39 @@ export default function Home() {
               <p className="home-eyebrow">Our Work</p>
               <h2 className="home-display">Programmes &amp; Initiatives</h2>
             </div>
-            <Link to="/our-work#programmes" className="home-pill">
+            <Link to="/our-work/programmes" className="home-pill">
               View all programmes →
             </Link>
           </header>
 
           <div className="home-impact__grid">
-            {programmes.map((item, i) => (
-              <Reveal as="article" className="home-card" key={item.num} variant="up" delay={i * 80}>
-                <div className="home-card__visual">
-                  <MediaPlaceholder label={item.visual} caption={item.caption} />
-                  <span className="home-card__num">{item.num}</span>
-                </div>
-                <div className="home-card__body">
-                  <span className="home-card__tag">{item.tag}</span>
-                  <h3>{item.title}</h3>
-                  <p>{item.desc}</p>
-                </div>
-              </Reveal>
-            ))}
+            {featuredProgrammes.map((item, i) => {
+              const href = item.slug ? `/our-work/desk/${item.slug}` : '/our-work/programmes';
+              return (
+                <Reveal key={item.id || item.num} as="div" variant="up" delay={i * 80}>
+                  <Link to={href} className="home-card home-card--link">
+                    <div className="home-card__visual">
+                      {item.heroImage ? (
+                        <div
+                          className="home-card__photo"
+                          style={{ backgroundImage: `url(${item.heroImage})` }}
+                          role="img"
+                          aria-label={item.title}
+                        />
+                      ) : (
+                        <MediaPlaceholder label={item.visual} caption={item.caption} />
+                      )}
+                      <span className="home-card__num">{item.num}</span>
+                    </div>
+                    <div className="home-card__body">
+                      <span className="home-card__tag">{item.tag}</span>
+                      <h3>{item.title}</h3>
+                      {item.desc ? <p>{item.desc}</p> : null}
+                    </div>
+                  </Link>
+                </Reveal>
+              );
+            })}
           </div>
         </div>
       </section>

@@ -30,6 +30,8 @@ const deskStorySchema = new mongoose.Schema(
     title: { type: String, required: true },
     /** Short copy on the Desk listing */
     listingDescription: { type: String, default: '' },
+    /** 1–2 line blurb for home page feature cards */
+    featureBlurb: { type: String, default: '' },
     heroImage: { type: String, default: null },
     /** Full story page */
     fullHeader: { type: String, default: '' },

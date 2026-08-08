@@ -7,6 +7,7 @@ const emptyForm = {
   title: '',
   kicker: 'Senior Citizens',
   listingDescription: '',
+  featureBlurb: '',
   fullHeader: '',
   fullBody: '',
   number: '',
@@ -56,6 +57,7 @@ export default function DeskStoriesManage() {
       title: story.title || '',
       kicker: story.kicker || 'Senior Citizens',
       listingDescription: story.listingDescription || '',
+      featureBlurb: story.featureBlurb || '',
       fullHeader: story.fullHeader || '',
       fullBody: story.fullBody || '',
       number: story.number != null ? String(story.number) : '',
@@ -104,9 +106,10 @@ export default function DeskStoriesManage() {
   return (
     <div>
       <div className="admin-card">
-        <h2>{editing ? 'Edit desk story' : 'The Desk — case stories'}</h2>
+        <h2>{editing ? 'Edit story' : 'Programmes & Initiatives — case stories'}</h2>
         <p style={{ color: '#5a6f82', marginTop: 0 }}>
-          Stories appear on Our Work → The Desk. Select multiple gallery images and PDFs.
+          Stories appear on Our Work → Programmes &amp; Initiatives
+          (<code>/our-work/programmes</code>). Select multiple gallery images and PDFs.
           {editing ? ' Remove existing media below, or add more files.' : ''}
         </p>
         {msg && (
@@ -135,6 +138,16 @@ export default function DeskStoriesManage() {
               placeholder="Auto"
               value={form.number}
               onChange={(e) => setForm({ ...form, number: e.target.value })}
+            />
+          </label>
+          <label>
+            Home feature blurb (2 short lines)
+            <textarea
+              rows={2}
+              maxLength={220}
+              placeholder="Shown on the homepage Programmes cards — keep it to two short lines."
+              value={form.featureBlurb}
+              onChange={(e) => setForm({ ...form, featureBlurb: e.target.value })}
             />
           </label>
           <label>
@@ -242,7 +255,7 @@ export default function DeskStoriesManage() {
           </label>
           <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
             <button type="submit" className="admin-btn admin-btn--primary">
-              {editing ? 'Save changes' : 'Publish desk story'}
+              {editing ? 'Save changes' : 'Publish story'}
             </button>
             {editing ? (
               <button type="button" className="admin-btn admin-btn--ghost" onClick={resetForm}>
@@ -253,7 +266,7 @@ export default function DeskStoriesManage() {
         </form>
       </div>
       <div className="admin-card" style={{ marginTop: '1.5rem' }}>
-        <h2>Desk stories ({items.length})</h2>
+        <h2>Programmes &amp; Initiatives ({items.length})</h2>
         <div className="admin-table-wrap">
           <table className="admin-table">
             <thead>

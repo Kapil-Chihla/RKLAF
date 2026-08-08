@@ -122,7 +122,7 @@ export default function SuccessStoryDetail() {
         )}
 
         <p className="story-detail__back">
-          <Link to="/impact#stories">← Back to success stories</Link>
+          <Link to="/impact#stories">← Back to Impact through Litigation</Link>
         </p>
       </article>
     </div>

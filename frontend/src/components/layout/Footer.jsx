@@ -81,7 +81,7 @@ export default function Footer() {
           <h4>Get involved</h4>
           <ul>
             <li><Link to="/our-work">Our Work</Link></li>
-            <li><Link to="/our-work#reports">Annual reports</Link></li>
+            <li><Link to="/our-work/reports">Annual reports</Link></li>
             <li><Link to="/donate">Donate</Link></li>
             <li><Link to="/join-us">Volunteer &amp; intern</Link></li>
             <li><Link to="/join-us#member">Membership</Link></li>

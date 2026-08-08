@@ -32,8 +32,9 @@ export const navItems = [
 
 export const footerColumns = [];
 export const aboutSectionLinks = [
-  { label: 'Our Mandate', path: '/about#mandate' },
-  { label: 'Our Heritage', path: '/about#heritage' },
-  { label: 'Our Team', path: '/about#team' },
-  { label: 'The Journey', path: '/about#journey' },
+  { label: 'About Us', path: '/about#about-hero' },
+  { label: 'Our Philosophy', path: '/about#philosophy' },
+  { label: 'Our Story', path: '/about#story' },
+  { label: 'What We Do', path: '/about#work' },
+  { label: 'Where We Work', path: '/about#where' },
 ];
