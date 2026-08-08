@@ -20,6 +20,12 @@ const SECTIONS = [
         statKey: 'successStories',
       },
       {
+        to: '/admin/map-locations',
+        label: 'Map locations',
+        desc: 'Pins for the homepage and Impact map — place and edit locations.',
+        statKey: 'mapLocations',
+      },
+      {
         to: '/admin/reports',
         label: 'Annual reports',
         desc: 'Year + PDF. Public Our Work page shows the latest 2 years only.',
@@ -61,6 +67,23 @@ const SECTIONS = [
       },
     ],
   },
+  {
+    heading: 'Inbox & team',
+    items: [
+      {
+        to: '/admin/contacts',
+        label: 'Contact inbox',
+        desc: 'Messages from Contact, KYR Ask, and Donate forms. Mark read or delete.',
+        statKey: 'contacts',
+      },
+      {
+        to: '/admin/team',
+        label: 'Team profiles',
+        desc: 'Public team members — name, role, bio, and photo.',
+        statKey: 'team',
+      },
+    ],
+  },
 ];
 
 export default function Dashboard() {
@@ -92,6 +115,10 @@ export default function Dashboard() {
             <span>Success stories</span>
           </div>
           <div className="admin-stat">
+            <strong>{stats.mapLocations ?? 0}</strong>
+            <span>Map locations</span>
+          </div>
+          <div className="admin-stat">
             <strong>{stats.reports ?? 0}</strong>
             <span>Reports</span>
           </div>
@@ -111,6 +138,14 @@ export default function Dashboard() {
             <strong>{stats.papers ?? 0}</strong>
             <span>Papers</span>
           </div>
+          <div className="admin-stat">
+            <strong>{stats.team ?? 0}</strong>
+            <span>Team</span>
+          </div>
+          <div className="admin-stat">
+            <strong>{stats.unreadContacts ?? 0}</strong>
+            <span>Unread messages</span>
+          </div>
         </div>
       )}
 
@@ -122,7 +157,13 @@ export default function Dashboard() {
               <Link key={item.to} to={item.to} className="admin-card admin-card--link">
                 <div className="admin-card__meta">
                   <h3>{item.label}</h3>
-                  {stats ? <span>{stats[item.statKey] ?? 0} published</span> : null}
+                  {stats ? (
+                    <span>
+                      {item.statKey === 'contacts'
+                        ? `${stats.unreadContacts ?? 0} unread · ${stats.contacts ?? 0} total`
+                        : `${stats[item.statKey] ?? 0} published`}
+                    </span>
+                  ) : null}
                 </div>
                 <p>{item.desc}</p>
                 <span className="admin-card__cta">Open upload panel →</span>
@@ -134,7 +175,7 @@ export default function Dashboard() {
 
       {isSuperAdmin ? (
         <section className="admin-dash__section">
-          <h2>Team</h2>
+          <h2>Access</h2>
           <div className="admin-dashboard-grid">
             <Link to="/admin/users" className="admin-card admin-card--link admin-card--accent">
               <div className="admin-card__meta">

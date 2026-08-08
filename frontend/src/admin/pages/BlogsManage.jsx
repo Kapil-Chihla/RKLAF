@@ -2,19 +2,30 @@ import { useEffect, useState } from 'react';
 import api from '../api';
 import { useAuth } from '../AuthContext';
 
+const emptyForm = {
+  title: '',
+  excerpt: '',
+  content: '',
+  sections: '',
+  author: '',
+  kind: 'blog',
+};
+
+function sectionsToText(sections) {
+  if (!sections?.length) return '';
+  if (typeof sections === 'string') return sections;
+  return sections
+    .map((s) => `## ${s.heading || ''}\n${s.body || ''}`.trimEnd())
+    .join('\n\n');
+}
+
 export default function BlogsManage() {
   const { user } = useAuth();
   const [items, setItems] = useState([]);
   const [msg, setMsg] = useState('');
-  const [form, setForm] = useState({
-    title: '',
-    excerpt: '',
-    content: '',
-    sections: '',
-    author: '',
-    kind: 'blog',
-  });
+  const [form, setForm] = useState(emptyForm);
   const [image, setImage] = useState(null);
+  const [editingId, setEditingId] = useState(null);
   const canDelete = ['super_admin', 'admin'].includes(user?.role);
 
   const load = () => api.get('/blogs?all=true').then((r) => setItems(r.data)).catch(() => {});
@@ -22,6 +33,27 @@ export default function BlogsManage() {
   useEffect(() => {
     load();
   }, []);
+
+  const clearForm = () => {
+    setForm({ ...emptyForm, kind: form.kind || 'blog' });
+    setImage(null);
+    setEditingId(null);
+  };
+
+  const startEdit = (item) => {
+    setEditingId(item.id);
+    setForm({
+      title: item.title || '',
+      excerpt: item.excerpt || '',
+      content: item.content || '',
+      sections: sectionsToText(item.sections),
+      author: item.author || '',
+      kind: item.kind === 'experience' ? 'experience' : 'blog',
+    });
+    setImage(null);
+    setMsg('');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,31 +67,37 @@ export default function BlogsManage() {
     fd.append('kind', form.kind);
     if (image) fd.append('image', image);
     try {
-      await api.post('/blogs', fd, { headers: { 'Content-Type': 'multipart/form-data' } });
-      setMsg(form.kind === 'experience' ? 'Experience published.' : 'Blog published.');
-      setForm({ title: '', excerpt: '', content: '', sections: '', author: '', kind: form.kind });
-      setImage(null);
+      if (editingId) {
+        await api.put(`/blogs/${editingId}`, fd, { headers: { 'Content-Type': 'multipart/form-data' } });
+        setMsg(form.kind === 'experience' ? 'Experience updated.' : 'Blog updated.');
+      } else {
+        await api.post('/blogs', fd, { headers: { 'Content-Type': 'multipart/form-data' } });
+        setMsg(form.kind === 'experience' ? 'Experience published.' : 'Blog published.');
+      }
+      clearForm();
       load();
     } catch (err) {
-      setMsg(err.response?.data?.message || 'Upload failed');
+      setMsg(err.response?.data?.message || 'Save failed');
     }
   };
 
   const remove = async (id) => {
     if (!canDelete || !confirm('Delete this post?')) return;
     await api.delete(`/blogs/${id}`);
+    if (editingId === id) clearForm();
     load();
   };
 
   return (
     <div>
       <div className="admin-card">
-        <h2>Academics — blogs & experiences</h2>
+        <h2>{editingId ? 'Edit blog / experience' : 'Academics — blogs & experiences'}</h2>
         <p style={{ color: '#5a6f82', marginTop: 0 }}>
           Latest posts appear first. Use sections with <code>## Heading</code> blocks for point-wise full articles.
+          {editingId ? ' Leave image empty to keep the current hero.' : ''}
         </p>
         {msg && (
-          <div className={`admin-alert ${msg.includes('fail') ? 'admin-alert--error' : 'admin-alert--success'}`}>
+          <div className={`admin-alert ${msg.toLowerCase().includes('fail') ? 'admin-alert--error' : 'admin-alert--success'}`}>
             {msg}
           </div>
         )}
@@ -101,12 +139,19 @@ export default function BlogsManage() {
             <input value={form.author} onChange={(e) => setForm({ ...form, author: e.target.value })} />
           </label>
           <label>
-            Hero image
+            Hero image {editingId ? '(leave empty to keep current)' : ''}
             <input type="file" accept="image/*" onChange={(e) => setImage(e.target.files?.[0] || null)} />
           </label>
-          <button type="submit" className="admin-btn admin-btn--primary">
-            Publish
-          </button>
+          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <button type="submit" className="admin-btn admin-btn--primary">
+              {editingId ? 'Save changes' : 'Publish'}
+            </button>
+            {editingId ? (
+              <button type="button" className="admin-btn admin-btn--ghost" onClick={clearForm}>
+                Cancel edit
+              </button>
+            ) : null}
+          </div>
         </form>
       </div>
       <div className="admin-card" style={{ marginTop: '1.5rem' }}>
@@ -118,7 +163,7 @@ export default function BlogsManage() {
                 <th>Title</th>
                 <th>Type</th>
                 <th>Date</th>
-                {canDelete && <th>Actions</th>}
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -127,13 +172,16 @@ export default function BlogsManage() {
                   <td>{b.title}</td>
                   <td>{b.kind || 'blog'}</td>
                   <td>{new Date(b.createdAt).toLocaleDateString()}</td>
-                  {canDelete && (
-                    <td>
+                  <td style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                    <button type="button" className="admin-btn" onClick={() => startEdit(b)}>
+                      Edit
+                    </button>
+                    {canDelete ? (
                       <button type="button" className="admin-btn admin-btn--danger" onClick={() => remove(b.id)}>
                         Delete
                       </button>
-                    </td>
-                  )}
+                    ) : null}
+                  </td>
                 </tr>
               ))}
             </tbody>

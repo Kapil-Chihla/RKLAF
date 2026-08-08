@@ -12,6 +12,7 @@ const {
   SuccessStory,
   Paper,
   ExplainerVideo,
+  Contact,
 } = require('../models');
 const { protect, contentManagers } = require('../auth');
 
@@ -31,6 +32,8 @@ router.get('/stats', protect, contentManagers, async (req, res) => {
     successStories,
     papers,
     explainerVideos,
+    contacts,
+    unreadContacts,
   ] = await Promise.all([
     Blog.countDocuments(),
     Camp.countDocuments(),
@@ -44,6 +47,8 @@ router.get('/stats', protect, contentManagers, async (req, res) => {
     SuccessStory.countDocuments(),
     Paper.countDocuments(),
     ExplainerVideo.countDocuments(),
+    Contact.countDocuments(),
+    Contact.countDocuments({ read: { $ne: true } }),
   ]);
 
   res.json({
@@ -59,6 +64,8 @@ router.get('/stats', protect, contentManagers, async (req, res) => {
     successStories,
     papers,
     explainerVideos,
+    contacts,
+    unreadContacts,
   });
 });
 

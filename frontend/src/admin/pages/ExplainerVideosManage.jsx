@@ -2,14 +2,17 @@ import { useEffect, useState } from 'react';
 import api from '../api';
 import { useAuth } from '../AuthContext';
 
+const emptyForm = { title: '', meta: '', externalUrl: '' };
+
 export default function ExplainerVideosManage() {
   const { user } = useAuth();
   const [items, setItems] = useState([]);
   const [msg, setMsg] = useState('');
   const [busy, setBusy] = useState(false);
-  const [form, setForm] = useState({ title: '', meta: '', externalUrl: '' });
+  const [form, setForm] = useState(emptyForm);
   const [video, setVideo] = useState(null);
   const [thumbnail, setThumbnail] = useState(null);
+  const [editingId, setEditingId] = useState(null);
   const canDelete = ['super_admin', 'admin'].includes(user?.role);
 
   const load = () =>
@@ -19,10 +22,30 @@ export default function ExplainerVideosManage() {
     load();
   }, []);
 
+  const clearForm = () => {
+    setForm(emptyForm);
+    setVideo(null);
+    setThumbnail(null);
+    setEditingId(null);
+  };
+
+  const startEdit = (item) => {
+    setEditingId(item.id);
+    setForm({
+      title: item.title || '',
+      meta: item.meta || '',
+      externalUrl: item.externalUrl || '',
+    });
+    setVideo(null);
+    setThumbnail(null);
+    setMsg('');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMsg('');
-    if (!video && !form.externalUrl.trim()) {
+    if (!editingId && !video && !form.externalUrl.trim()) {
       setMsg('Upload a video file or paste an external URL.');
       return;
     }
@@ -34,18 +57,24 @@ export default function ExplainerVideosManage() {
     if (video) fd.append('video', video);
     if (thumbnail) fd.append('thumbnail', thumbnail);
     try {
-      await api.post('/explainer-videos', fd, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-        timeout: 180000,
-      });
-      setMsg('Video published.');
-      setForm({ title: '', meta: '', externalUrl: '' });
-      setVideo(null);
-      setThumbnail(null);
+      if (editingId) {
+        await api.put(`/explainer-videos/${editingId}`, fd, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+          timeout: 180000,
+        });
+        setMsg('Video updated.');
+      } else {
+        await api.post('/explainer-videos', fd, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+          timeout: 180000,
+        });
+        setMsg('Video published.');
+      }
+      clearForm();
       e.target.reset?.();
       load();
     } catch (err) {
-      setMsg(err.response?.data?.message || 'Upload failed');
+      setMsg(err.response?.data?.message || 'Save failed');
     } finally {
       setBusy(false);
     }
@@ -54,15 +83,20 @@ export default function ExplainerVideosManage() {
   return (
     <div>
       <div className="admin-card">
-        <h2>Know Your Rights — explainer videos</h2>
+        <h2>{editingId ? 'Edit explainer video' : 'Know Your Rights — explainer videos'}</h2>
         <p style={{ color: '#5a6f82', marginTop: 0 }}>
           Thumbnail + title + meta line, plus a video file (mp4/webm/mov, up to 100MB) or a YouTube /
           Vimeo link. Cards appear in the public KYR carousel — scroll expands as you add more.
+          {editingId
+            ? ' Video, URL, and thumbnail are optional when editing — leave empty to keep current media.'
+            : ''}
         </p>
         {msg && (
           <div
             className={`admin-alert ${
-              msg.toLowerCase().includes('fail') || msg.toLowerCase().includes('upload a video')
+              msg.toLowerCase().includes('fail') ||
+              msg.toLowerCase().includes('upload a video') ||
+              msg.toLowerCase().includes('keep a video')
                 ? 'admin-alert--error'
                 : 'admin-alert--success'
             }`}
@@ -89,7 +123,7 @@ export default function ExplainerVideosManage() {
             />
           </label>
           <label>
-            Thumbnail image
+            Thumbnail image {editingId ? '(leave empty to keep current)' : ''}
             <input
               type="file"
               accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
@@ -97,7 +131,7 @@ export default function ExplainerVideosManage() {
             />
           </label>
           <label>
-            Video file
+            Video file {editingId ? '(optional — leave empty to keep current)' : ''}
             <input
               type="file"
               accept="video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov,.m4v"
@@ -113,9 +147,16 @@ export default function ExplainerVideosManage() {
               placeholder="https://www.youtube.com/watch?v=…"
             />
           </label>
-          <button type="submit" className="admin-btn admin-btn--primary" disabled={busy}>
-            {busy ? 'Uploading…' : 'Publish video'}
-          </button>
+          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <button type="submit" className="admin-btn admin-btn--primary" disabled={busy}>
+              {busy ? 'Saving…' : editingId ? 'Save changes' : 'Publish video'}
+            </button>
+            {editingId ? (
+              <button type="button" className="admin-btn admin-btn--ghost" onClick={clearForm} disabled={busy}>
+                Cancel edit
+              </button>
+            ) : null}
+          </div>
         </form>
       </div>
 
@@ -129,7 +170,7 @@ export default function ExplainerVideosManage() {
                 <th>Meta</th>
                 <th>Thumb</th>
                 <th>Source</th>
-                {canDelete && <th>Actions</th>}
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -139,21 +180,25 @@ export default function ExplainerVideosManage() {
                   <td>{v.meta || '—'}</td>
                   <td>{v.thumbnail ? 'Yes' : '—'}</td>
                   <td>{v.video ? 'Uploaded file' : v.externalUrl ? 'External URL' : '—'}</td>
-                  {canDelete && (
-                    <td>
+                  <td style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                    <button type="button" className="admin-btn" onClick={() => startEdit(v)}>
+                      Edit
+                    </button>
+                    {canDelete ? (
                       <button
                         type="button"
                         className="admin-btn admin-btn--danger"
                         onClick={async () => {
                           if (!confirm('Delete this video?')) return;
                           await api.delete(`/explainer-videos/${v.id}`);
+                          if (editingId === v.id) clearForm();
                           load();
                         }}
                       >
                         Delete
                       </button>
-                    </td>
-                  )}
+                    ) : null}
+                  </td>
                 </tr>
               ))}
             </tbody>

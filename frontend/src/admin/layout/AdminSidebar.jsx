@@ -13,6 +13,7 @@ const NAV_GROUPS = [
       { to: '/admin/desk', label: 'The Desk stories' },
       { to: '/admin/success-stories', label: 'Success stories' },
       { to: '/admin/camps', label: 'Camp albums' },
+      { to: '/admin/map-locations', label: 'Map locations' },
       { to: '/admin/reports', label: 'Annual reports' },
     ],
   },
@@ -29,6 +30,10 @@ const NAV_GROUPS = [
       { to: '/admin/blogs', label: 'Blogs & experiences' },
       { to: '/admin/papers', label: 'Research & white papers' },
     ],
+  },
+  {
+    label: 'Inbox',
+    items: [{ to: '/admin/contacts', label: 'Contact inbox' }],
   },
 ];
 
@@ -67,9 +72,16 @@ export default function AdminSidebar({ open, onClose }) {
               ))}
             </div>
           ))}
-          {isSuperAdmin ? (
-            <div className="admin-sidebar__group">
-              <p className="admin-sidebar__group-label">Team</p>
+          <div className="admin-sidebar__group">
+            <p className="admin-sidebar__group-label">Team</p>
+            <NavLink
+              to="/admin/team"
+              className={({ isActive }) => (isActive ? 'is-active' : '')}
+              onClick={onClose}
+            >
+              Team profiles
+            </NavLink>
+            {isSuperAdmin ? (
               <NavLink
                 to="/admin/users"
                 className={({ isActive }) => (isActive ? 'is-active' : '')}
@@ -77,8 +89,8 @@ export default function AdminSidebar({ open, onClose }) {
               >
                 Team access & invites
               </NavLink>
-            </div>
-          ) : null}
+            ) : null}
+          </div>
         </nav>
 
         <div className="admin-sidebar__footer">

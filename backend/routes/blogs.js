@@ -64,6 +64,39 @@ router.post('/', protect, contentManagers, uploadImage.single('image'), async (r
   res.status(201).json(blog.toObject());
 });
 
+router.put('/:id', protect, contentManagers, uploadImage.single('image'), async (req, res) => {
+  const blog = await Blog.findOne({ id: req.params.id });
+  if (!blog) return res.status(404).json({ message: 'Blog not found' });
+
+  const { title, excerpt, content, author, kind, sections, published, clearImage } = req.body;
+  if (title?.trim()) {
+    blog.title = title.trim();
+    blog.slug = slugify(title.trim(), { lower: true, strict: true });
+  }
+  if (excerpt !== undefined) blog.excerpt = excerpt;
+  if (author !== undefined) blog.author = author;
+  if (kind === 'experience' || kind === 'blog') blog.kind = kind;
+  if (published !== undefined) blog.published = published === 'false' ? false : true;
+
+  if (sections !== undefined) {
+    const parsedSections = parseSections(sections);
+    blog.sections = parsedSections;
+    if (content !== undefined) {
+      blog.content = content || parsedSections.map((s) => `${s.heading}\n\n${s.body}`).join('\n\n');
+    } else if (parsedSections.length) {
+      blog.content = parsedSections.map((s) => `${s.heading}\n\n${s.body}`).join('\n\n');
+    }
+  } else if (content !== undefined) {
+    blog.content = content;
+  }
+
+  if (clearImage === 'true') blog.image = null;
+  if (req.file) blog.image = await uploadBuffer(req.file, 'blogs');
+
+  await blog.save();
+  res.json(blog.toObject());
+});
+
 router.delete('/:id', protect, adminOrSuper, async (req, res) => {
   const result = await Blog.deleteOne({ id: req.params.id });
   if (result.deletedCount === 0) return res.status(404).json({ message: 'Blog not found' });

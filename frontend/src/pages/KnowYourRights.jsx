@@ -10,6 +10,7 @@ import worldGlobe from '../assets/world.webp';
 import publicApi from '../lib/publicApi';
 import { assetUrl } from '../lib/api';
 import { guidePdfDownloadUrl } from '../lib/pdfDownload';
+import { looksLikeEmail, submitContact } from '../lib/submitContact';
 import './KnowYourRights.css';
 
 const GUIDE_TONES = ['plum', 'cream', 'ink', 'sage', 'gold', 'clay', 'olive'];
@@ -201,6 +202,8 @@ export default function KnowYourRights() {
   const [question, setQuestion] = useState('');
   const [contact, setContact] = useState('');
   const [sent, setSent] = useState(false);
+  const [askBusy, setAskBusy] = useState(false);
+  const [askError, setAskError] = useState('');
   const [guideList, setGuideList] = useState(guides);
   const [videoList, setVideoList] = useState(FALLBACK_VIDEOS);
   const [activeVideo, setActiveVideo] = useState(null);
@@ -208,6 +211,7 @@ export default function KnowYourRights() {
 
   const glossaryEntries = legalGlossaryByLetter[glossaryLetter] || [];
   const glossaryTotal = Object.values(legalGlossaryByLetter).reduce((n, list) => n + list.length, 0);
+  const glossaryPreview = glossaryEntries.map((e) => e.term).join('  ·  ');
 
   useEffect(() => {
     publicApi
@@ -261,9 +265,28 @@ export default function KnowYourRights() {
     };
   }, [activeVideo]);
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    setSent(true);
+    setAskError('');
+    setAskBusy(true);
+    const reach = contact.trim();
+    try {
+      await submitContact({
+        name: 'Know Your Rights visitor',
+        email: looksLikeEmail(reach) ? reach : '',
+        phone: looksLikeEmail(reach) ? '' : reach,
+        message: question.trim(),
+        source: 'know-your-rights',
+        subject: '[RKLAF] Know Your Rights — question',
+      });
+      setSent(true);
+      setQuestion('');
+      setContact('');
+    } catch (err) {
+      setAskError(err.response?.data?.message || 'Could not send. Please WhatsApp or call the helpline.');
+    } finally {
+      setAskBusy(false);
+    }
   };
 
   const openVideo = (v) => {
@@ -344,15 +367,32 @@ export default function KnowYourRights() {
       </section>
 
       <section id="glossary" className="kyr-glossary">
-        <div className="container">
-          <Reveal as="header" className="kyr-center-head" variant="up">
+        <div className="kyr-glossary__wash" aria-hidden="true" />
+        <div className="container kyr-glossary__inner">
+          <Reveal as="header" className="kyr-glossary__head" variant="up">
             <p className="kyr-label">Legal glossary</p>
             <h2>Words that stop scaring you once you know them</h2>
-            <p className="kyr-glossary__count">{glossaryTotal} terms · pick a letter</p>
+            <p className="kyr-glossary__lede">
+              Pick a letter. Every term is explained in one line, in the sense it is actually used at a
+              police station or in court.
+            </p>
           </Reveal>
 
-          <Reveal as="div" className="kyr-az" variant="up" delay={40}>
-            <div className="kyr-az__tabs" role="tablist" aria-label="Glossary letters">
+          <Reveal as="div" className="kyr-glossbar-wrap" variant="up" delay={40}>
+            <div className="kyr-glossbar" aria-label={`Terms under ${glossaryLetter}`}>
+              <div className="kyr-glossbar__letter" aria-live="polite">
+                <span>{glossaryLetter}</span>
+              </div>
+              <p className="kyr-glossbar__terms" title={glossaryPreview}>
+                {glossaryPreview || 'No terms for this letter yet.'}
+              </p>
+            </div>
+
+            <a href="#glossary-panel" className="kyr-glossary__viewall">
+              View all {glossaryTotal}+ terms →
+            </a>
+
+            <div className="kyr-glossbar__az" role="tablist" aria-label="A to Z">
               {GLOSSARY_LETTERS.map((letter) => {
                 const count = legalGlossaryByLetter[letter]?.length || 0;
                 const disabled = count === 0;
@@ -364,7 +404,7 @@ export default function KnowYourRights() {
                     aria-selected={glossaryLetter === letter}
                     aria-controls="glossary-panel"
                     disabled={disabled}
-                    className={`kyr-az__tab ${glossaryLetter === letter ? 'is-active' : ''}`}
+                    className={`kyr-glossbar__tab ${glossaryLetter === letter ? 'is-active' : ''}`}
                     onClick={() => setGlossaryLetter(letter)}
                   >
                     {letter}
@@ -374,10 +414,6 @@ export default function KnowYourRights() {
             </div>
 
             <div id="glossary-panel" className="kyr-az__panel" role="tabpanel">
-              <h3 className="kyr-az__heading">
-                <span aria-hidden="true">{glossaryLetter}</span>
-                {glossaryEntries.length} {glossaryEntries.length === 1 ? 'term' : 'terms'}
-              </h3>
               <dl className="kyr-az__list">
                 {glossaryEntries.map((entry) => (
                   <div key={entry.term} className="kyr-az__item">
@@ -589,6 +625,16 @@ export default function KnowYourRights() {
             <Reveal as="div" className="kyr-ask__form-wrap" variant="up" delay={60}>
               <form className="kyr-ask__form" onSubmit={onSubmit}>
                 <img src={mapImage} alt="" className="kyr-ask__form-map" aria-hidden="true" />
+                {askError ? (
+                  <p className="kyr-ask__status kyr-ask__status--error" role="alert">
+                    {askError}
+                  </p>
+                ) : null}
+                {sent && !askError ? (
+                  <p className="kyr-ask__status kyr-ask__status--ok" role="status">
+                    Sent — a volunteer will reply within 24 hours.
+                  </p>
+                ) : null}
                 <label>
                   Your question
                   <textarea
@@ -597,6 +643,7 @@ export default function KnowYourRights() {
                     onChange={(e) => setQuestion(e.target.value)}
                     placeholder="Describe your situation in a few lines…"
                     required
+                    disabled={askBusy}
                   />
                 </label>
                 <label>
@@ -606,10 +653,11 @@ export default function KnowYourRights() {
                     onChange={(e) => setContact(e.target.value)}
                     placeholder="How should we reach you?"
                     required
+                    disabled={askBusy}
                   />
                 </label>
-                <button type="submit" className="kyr-pill kyr-pill--block">
-                  {sent ? 'Sent — we will reply soon' : 'Send question'}
+                <button type="submit" className="kyr-pill kyr-pill--block" disabled={askBusy}>
+                  {askBusy ? 'Sending…' : sent ? 'Send another question' : 'Send question'}
                 </button>
               </form>
             </Reveal>

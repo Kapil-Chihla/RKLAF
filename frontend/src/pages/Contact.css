@@ -195,6 +195,31 @@ a.contact__channel:hover strong {
   color: var(--muted);
 }
 
+.contact__form-error,
+.contact__form-success {
+  margin: 0 0 1rem;
+  padding: 0.75rem 0.95rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.contact__form-error {
+  background: rgba(160, 50, 40, 0.08);
+  color: #8a2e26;
+}
+
+.contact__form-success {
+  background: rgba(70, 110, 70, 0.1);
+  color: #2f4f2f;
+}
+
+.contact__submit:disabled {
+  opacity: 0.65;
+  cursor: wait;
+  transform: none;
+}
+
 .contact__fields {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -209,6 +234,10 @@ a.contact__channel:hover strong {
   font-size: 0.82rem;
   font-weight: 700;
   color: var(--ink);
+}
+
+.contact__form > label {
+  margin-bottom: 0.9rem;
 }
 
 .contact__matter {

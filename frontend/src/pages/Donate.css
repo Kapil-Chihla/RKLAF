@@ -295,6 +295,24 @@
   margin-bottom: 1.25rem;
 }
 
+.donate__form-status {
+  margin: 0 0 0.85rem;
+  padding: 0.75rem 0.95rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.donate__form-status--error {
+  background: rgba(160, 50, 40, 0.08);
+  color: #8a2e26;
+}
+
+.donate__form-status--ok {
+  background: rgba(70, 110, 70, 0.1);
+  color: #2f4f2f;
+}
+
 .donate__submit {
   width: 100%;
   display: inline-flex;
@@ -314,6 +332,12 @@
 .donate__submit:hover {
   transform: translateY(-1px);
   background: #2a221c;
+}
+
+.donate__submit:disabled {
+  opacity: 0.65;
+  cursor: wait;
+  transform: none;
 }
 
 .donate__trust {

@@ -294,100 +294,191 @@
 }
 
 /* ─── Glossary ─── */
+/* ─── Legal glossary (pill + terms + A–Z) ─── */
 .kyr-glossary {
-  padding: clamp(2.5rem, 5vw, 4rem) 0;
+  position: relative;
+  padding: clamp(3.25rem, 7vw, 5.25rem) 0;
   background: var(--paper);
+  overflow: hidden;
 }
 
-.kyr-glossary__count {
-  margin: 0.65rem 0 0;
-  font-size: 0.92rem;
+.kyr-glossary__wash {
+  position: absolute;
+  right: -8%;
+  top: -18%;
+  width: min(58vw, 520px);
+  height: min(58vw, 520px);
+  background:
+    radial-gradient(circle at 35% 40%, rgba(176, 138, 60, 0.07), transparent 62%),
+    linear-gradient(145deg, transparent 30%, rgba(239, 234, 226, 0.85) 70%);
+  clip-path: polygon(28% 0, 100% 0, 100% 72%, 55% 100%, 0 48%);
+  pointer-events: none;
+}
+
+.kyr-glossary__inner {
+  position: relative;
+  z-index: 1;
+  max-width: 56rem;
+}
+
+.kyr-glossary__head {
+  text-align: center;
+  max-width: 36rem;
+  margin: 0 auto clamp(1.75rem, 4vw, 2.5rem);
+}
+
+.kyr-glossary__head h2 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(1.85rem, 3.6vw, 2.75rem);
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+}
+
+.kyr-glossary__lede {
+  margin: 0.9rem auto 0;
+  max-width: 32rem;
+  font-size: 0.98rem;
+  line-height: 1.65;
   color: var(--muted);
 }
 
-.kyr-az {
-  margin-top: clamp(1.5rem, 3vw, 2.25rem);
-  max-width: 48rem;
-  margin-inline: auto;
-}
-
-.kyr-az__tabs {
+.kyr-glossbar-wrap {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.35rem;
-  margin-bottom: 1.5rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.15rem;
+  width: 100%;
 }
 
-.kyr-az__tab {
-  min-width: 2.15rem;
-  height: 2.15rem;
-  padding: 0 0.35rem;
-  border: 1px solid var(--line);
-  border-radius: 6px;
+/* Pill: big letter | single-line term names (no scroll) */
+.kyr-glossbar {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: stretch;
+  width: min(100%, 46rem);
+  min-height: 4.75rem;
   background: #fff;
+  border: 1px solid rgba(31, 28, 25, 0.1);
+  border-radius: 999px;
+  box-shadow: 0 14px 40px rgba(26, 21, 16, 0.07);
+  overflow: hidden;
+}
+
+.kyr-glossbar__letter {
+  display: grid;
+  place-items: center;
+  min-width: 5.25rem;
+  padding: 0.85rem 1.15rem;
+  background: #f3eee6;
+  border-right: 1.5px dashed rgba(31, 28, 25, 0.18);
+}
+
+.kyr-glossbar__letter span {
   font-family: var(--font-serif);
-  font-size: 0.95rem;
+  font-size: clamp(2.4rem, 5vw, 3.15rem);
   font-weight: 700;
+  line-height: 1;
+  color: #8d6b40;
+  letter-spacing: -0.03em;
+}
+
+.kyr-glossbar__terms {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  padding: 0 1.35rem;
+  font-family: var(--font-serif);
+  font-size: clamp(0.92rem, 1.6vw, 1.05rem);
+  font-weight: 600;
   color: var(--ink);
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* A–Z: one fixed line, no horizontal scroll */
+.kyr-glossbar__az {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  width: min(100%, 46rem);
+  gap: 0;
+  overflow: hidden;
+}
+
+.kyr-glossbar__tab {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 2rem;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  font-family: var(--font-serif);
+  font-size: clamp(0.72rem, 1.7vw, 0.95rem);
+  font-weight: 600;
+  color: rgba(31, 28, 25, 0.4);
   cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  transition: color 0.15s ease, background 0.15s ease;
 }
 
-.kyr-az__tab:hover:not(:disabled) {
-  border-color: var(--accent);
-  color: var(--accent);
+.kyr-glossbar__tab:hover:not(:disabled) {
+  color: #8d6b40;
+  background: rgba(141, 107, 64, 0.08);
 }
 
-.kyr-az__tab.is-active {
-  background: var(--charcoal, #1f1c19);
-  border-color: var(--charcoal, #1f1c19);
-  color: #fff;
+.kyr-glossbar__tab.is-active {
+  color: #8d6b40;
+  background: rgba(141, 107, 64, 0.12);
+  font-weight: 700;
 }
 
-.kyr-az__tab:disabled {
-  opacity: 0.35;
+.kyr-glossbar__tab:disabled {
+  opacity: 0.28;
   cursor: not-allowed;
 }
 
-.kyr-az__panel {
-  background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: clamp(1.25rem, 3vw, 1.85rem);
-}
-
-.kyr-az__heading {
-  display: flex;
-  align-items: baseline;
-  gap: 0.75rem;
-  margin: 0 0 1.25rem;
-  font-family: var(--font-sans);
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.kyr-az__heading span {
-  font-family: var(--font-serif);
-  font-size: 2.4rem;
+.kyr-glossary__viewall {
+  margin: 0.15rem 0 0;
+  font-size: 0.7rem;
   font-weight: 700;
-  letter-spacing: -0.02em;
-  text-transform: none;
-  color: var(--ink);
-  line-height: 1;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #8d6b40;
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+
+.kyr-glossary__viewall:hover {
+  opacity: 0.75;
+  color: #8d6b40;
+}
+
+.kyr-az__panel {
+  width: min(100%, 46rem);
+  background: #fff;
+  border: 1px solid rgba(31, 28, 25, 0.1);
+  border-radius: 18px;
+  padding: clamp(1.25rem, 3vw, 1.85rem);
+  box-shadow: 0 12px 32px rgba(26, 21, 16, 0.05);
 }
 
 .kyr-az__list {
   margin: 0;
   display: grid;
-  gap: 1.15rem;
+  gap: 1rem;
 }
 
 .kyr-az__item {
-  padding-bottom: 1.1rem;
+  display: grid;
+  gap: 0.2rem;
+  padding-bottom: 1rem;
   border-bottom: 1px solid var(--line);
 }
 
@@ -396,10 +487,11 @@
   border-bottom: none;
 }
 
+/* One-line definition under each term */
 .kyr-az__item dt {
-  margin: 0 0 0.35rem;
+  margin: 0;
   font-family: var(--font-serif);
-  font-size: 1.12rem;
+  font-size: 1.05rem;
   font-weight: 700;
   color: var(--ink);
   line-height: 1.3;
@@ -407,47 +499,26 @@
 
 .kyr-az__item dd {
   margin: 0;
-  font-size: 0.98rem;
-  line-height: 1.65;
+  font-size: 0.95rem;
+  line-height: 1.55;
   color: var(--muted);
 }
 
-.kyr-pills {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.65rem;
-  max-width: 52rem;
-  margin: 0 auto;
-}
+@media (max-width: 640px) {
+  .kyr-glossbar {
+    border-radius: 22px;
+    min-height: 4.25rem;
+  }
 
-.kyr-pill-term {
-  display: inline-flex;
-  flex-wrap: wrap;
-  gap: 0.35rem;
-  align-items: baseline;
-  padding: 0.55rem 0.9rem;
-  border-radius: 999px;
-  background: #fff;
-  border: 1px solid var(--line);
-  font-size: 0.88rem;
-  color: var(--muted);
-  line-height: 1.35;
-}
+  .kyr-glossbar__letter {
+    min-width: 4rem;
+    padding: 0.75rem 0.85rem;
+  }
 
-.kyr-pill-term strong {
-  color: var(--ink);
-  font-weight: 700;
-}
-
-.kyr-pill-term--hot {
-  background: var(--charcoal);
-  border-color: var(--charcoal);
-  color: rgba(255, 255, 255, 0.78);
-}
-
-.kyr-pill-term--hot strong {
-  color: #fff;
+  .kyr-glossbar__terms {
+    padding: 0 1rem;
+    font-size: 0.88rem;
+  }
 }
 
 /* ─── Guides (PDF card grid) ─── */
@@ -1150,6 +1221,31 @@
   position: relative;
   z-index: 1;
   margin-top: 0.25rem;
+}
+
+.kyr-ask__form .kyr-pill:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+.kyr-ask__status {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding: 0.7rem 0.85rem;
+  border-radius: 12px;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.kyr-ask__status--error {
+  background: rgba(160, 50, 40, 0.08);
+  color: #8a2e26;
+}
+
+.kyr-ask__status--ok {
+  background: rgba(70, 110, 70, 0.1);
+  color: #2f4f2f;
 }
 
 @media (max-width: 1100px) {

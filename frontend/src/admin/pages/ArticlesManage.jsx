@@ -2,14 +2,17 @@ import { useEffect, useState } from 'react';
 import api from '../api';
 import { useAuth } from '../AuthContext';
 
+const emptyForm = { title: '', summary: '', body: '', category: 'General' };
+
 export default function ArticlesManage() {
   const { user } = useAuth();
   const [items, setItems] = useState([]);
   const [categories, setCategories] = useState([]);
   const [msg, setMsg] = useState('');
-  const [form, setForm] = useState({ title: '', summary: '', body: '', category: 'General' });
+  const [form, setForm] = useState(emptyForm);
   const [file, setFile] = useState(null);
   const [cover, setCover] = useState(null);
+  const [editingId, setEditingId] = useState(null);
   const canDelete = ['super_admin', 'admin'].includes(user?.role);
 
   const loadCategories = () =>
@@ -22,11 +25,36 @@ export default function ArticlesManage() {
     loadCategories();
   }, []);
 
+  const clearForm = () => {
+    setForm(emptyForm);
+    setFile(null);
+    setCover(null);
+    setEditingId(null);
+  };
+
+  const startEdit = (item) => {
+    setEditingId(item.id);
+    setForm({
+      title: item.title || '',
+      summary: item.summary || '',
+      body: item.body || '',
+      category: item.category || 'General',
+    });
+    setFile(null);
+    setCover(null);
+    setMsg('');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const category = form.category.trim();
     if (!category) {
       setMsg('Category is required.');
+      return;
+    }
+    if (!editingId && !file) {
+      setMsg('PDF is required for new guides.');
       return;
     }
 
@@ -38,26 +66,40 @@ export default function ArticlesManage() {
     if (file) fd.append('file', file);
     if (cover) fd.append('cover', cover);
     try {
-      await api.post('/articles', fd, { headers: { 'Content-Type': 'multipart/form-data' } });
-      setMsg('Guide uploaded.');
-      setForm({ title: '', summary: '', body: '', category: 'General' });
-      setFile(null);
-      setCover(null);
+      if (editingId) {
+        await api.put(`/articles/${editingId}`, fd, { headers: { 'Content-Type': 'multipart/form-data' } });
+        setMsg('Guide updated.');
+      } else {
+        await api.post('/articles', fd, { headers: { 'Content-Type': 'multipart/form-data' } });
+        setMsg('Guide uploaded.');
+      }
+      clearForm();
       load();
       loadCategories();
     } catch (err) {
-      setMsg(err.response?.data?.message || 'Failed');
+      setMsg(err.response?.data?.message || 'Save failed');
     }
   };
 
   return (
     <div>
       <div className="admin-card">
-        <h2>Know Your Rights — practical guides</h2>
+        <h2>{editingId ? 'Edit practical guide' : 'Know Your Rights — practical guides'}</h2>
         <p style={{ color: '#5a6f82', marginTop: 0 }}>
           Cover image + PDF + title + description. Cards appear on the public Know Your Rights page.
+          {editingId ? ' PDF and cover are optional when editing — leave empty to keep current files.' : ''}
         </p>
-        {msg && <div className="admin-alert admin-alert--success">{msg}</div>}
+        {msg && (
+          <div
+            className={`admin-alert ${
+              msg.toLowerCase().includes('fail') || msg.toLowerCase().includes('required')
+                ? 'admin-alert--error'
+                : 'admin-alert--success'
+            }`}
+          >
+            {msg}
+          </div>
+        )}
         <form className="admin-form" onSubmit={handleSubmit}>
           <label>
             Title
@@ -87,16 +129,28 @@ export default function ArticlesManage() {
             <textarea value={form.body} onChange={(e) => setForm({ ...form, body: e.target.value })} />
           </label>
           <label>
-            PDF (required)
-            <input type="file" accept="application/pdf,.pdf" required onChange={(e) => setFile(e.target.files?.[0] || null)} />
+            PDF {editingId ? '(leave empty to keep current)' : '(required)'}
+            <input
+              type="file"
+              accept="application/pdf,.pdf"
+              required={!editingId}
+              onChange={(e) => setFile(e.target.files?.[0] || null)}
+            />
           </label>
           <label>
-            Cover image
+            Cover image {editingId ? '(leave empty to keep current)' : ''}
             <input type="file" accept="image/*" onChange={(e) => setCover(e.target.files?.[0] || null)} />
           </label>
-          <button type="submit" className="admin-btn admin-btn--primary">
-            Upload guide
-          </button>
+          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <button type="submit" className="admin-btn admin-btn--primary">
+              {editingId ? 'Save changes' : 'Upload guide'}
+            </button>
+            {editingId ? (
+              <button type="button" className="admin-btn admin-btn--ghost" onClick={clearForm}>
+                Cancel edit
+              </button>
+            ) : null}
+          </div>
         </form>
       </div>
       <div className="admin-card" style={{ marginTop: '1.5rem' }}>
@@ -109,7 +163,7 @@ export default function ArticlesManage() {
                 <th>Category</th>
                 <th>Cover</th>
                 <th>PDF</th>
-                {canDelete && <th>Actions</th>}
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -119,20 +173,25 @@ export default function ArticlesManage() {
                   <td>{a.category || 'General'}</td>
                   <td>{a.coverImage ? 'Yes' : '—'}</td>
                   <td>{a.file ? 'Yes' : '—'}</td>
-                  {canDelete && (
-                    <td>
+                  <td style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                    <button type="button" className="admin-btn" onClick={() => startEdit(a)}>
+                      Edit
+                    </button>
+                    {canDelete ? (
                       <button
                         type="button"
                         className="admin-btn admin-btn--danger"
                         onClick={async () => {
+                          if (!confirm('Delete this guide?')) return;
                           await api.delete(`/articles/${a.id}`);
+                          if (editingId === a.id) clearForm();
                           load();
                         }}
                       >
                         Delete
                       </button>
-                    </td>
-                  )}
+                    ) : null}
+                  </td>
                 </tr>
               ))}
             </tbody>

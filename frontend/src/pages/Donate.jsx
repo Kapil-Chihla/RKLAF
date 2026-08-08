@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import CountUp from '../components/motion/CountUp';
 import Reveal from '../components/motion/Reveal';
+import { submitContact } from '../lib/submitContact';
 import './Donate.css';
 
 const programs = [
@@ -181,6 +182,8 @@ export default function Donate() {
   const [email, setEmail] = useState('');
   const [pan, setPan] = useState('');
   const [sent, setSent] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
 
   const effectiveAmount = useMemo(() => {
     if (custom.trim()) {
@@ -189,6 +192,8 @@ export default function Donate() {
     }
     return amount;
   }, [amount, custom]);
+
+  const programMeta = programs.find((p) => p.id === program) || programs[0];
 
   const impact = impactCopy[effectiveAmount] ?? (
     <>
@@ -206,9 +211,31 @@ export default function Donate() {
     setCustom(v);
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    setSent(true);
+    setError('');
+    setBusy(true);
+    try {
+      await submitContact({
+        name: name.trim(),
+        email: email.trim(),
+        message: [
+          `Donation interest from the website.`,
+          `Programme: ${programMeta.title}`,
+          `Amount: ₹${formatInr(effectiveAmount)}`,
+          pan.trim() ? `PAN: ${pan.trim()}` : null,
+        ]
+          .filter(Boolean)
+          .join('\n'),
+        source: 'donate',
+        subject: `[RKLAF] Donate interest — ₹${formatInr(effectiveAmount)}`,
+      });
+      setSent(true);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Could not submit. Please email or WhatsApp us.');
+    } finally {
+      setBusy(false);
+    }
   };
 
   return (
@@ -326,10 +353,23 @@ export default function Donate() {
                 />
               </label>
 
-              <button type="submit" className="donate__submit">
-                {sent
-                  ? 'Thank you — we will confirm shortly →'
-                  : `Donate ₹${formatInr(effectiveAmount)} securely →`}
+              {error ? (
+                <p className="donate__form-status donate__form-status--error" role="alert">
+                  {error}
+                </p>
+              ) : null}
+              {sent && !error ? (
+                <p className="donate__form-status donate__form-status--ok" role="status">
+                  Thank you — we received your details and will confirm next steps by email.
+                </p>
+              ) : null}
+
+              <button type="submit" className="donate__submit" disabled={busy || sent}>
+                {busy
+                  ? 'Sending…'
+                  : sent
+                    ? 'Request received →'
+                    : `Donate ₹${formatInr(effectiveAmount)} securely →`}
               </button>
 
               <ul className="donate__trust">

@@ -1,15 +1,21 @@
 const express = require('express');
 const { TeamMember } = require('../models');
 const generateId = require('../lib/generateId');
-const { protect, adminOnly } = require('../auth');
+const { protect, adminOnly, adminOrSuper } = require('../auth');
 const { uploadImage } = require('../upload');
 const { uploadBuffer } = require('../lib/cloudinaryUpload');
 
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-  const team = await TeamMember.find().lean();
+  const team = await TeamMember.find().sort({ name: 1 }).lean();
   res.json(team);
+});
+
+router.get('/:id', async (req, res) => {
+  const member = await TeamMember.findOne({ id: req.params.id }).lean();
+  if (!member) return res.status(404).json({ message: 'Team member not found' });
+  res.json(member);
 });
 
 router.post('/', protect, adminOnly, uploadImage.single('image'), async (req, res) => {
@@ -25,6 +31,27 @@ router.post('/', protect, adminOnly, uploadImage.single('image'), async (req, re
     image,
   });
   res.status(201).json(member.toObject());
+});
+
+router.put('/:id', protect, adminOnly, uploadImage.single('image'), async (req, res) => {
+  const member = await TeamMember.findOne({ id: req.params.id });
+  if (!member) return res.status(404).json({ message: 'Team member not found' });
+
+  const { name, role, bio, clearImage } = req.body;
+  if (name?.trim()) member.name = name.trim();
+  if (role?.trim()) member.role = role.trim();
+  if (bio !== undefined) member.bio = bio;
+  if (clearImage === 'true') member.image = null;
+  if (req.file) member.image = await uploadBuffer(req.file, 'team');
+
+  await member.save();
+  res.json(member.toObject());
+});
+
+router.delete('/:id', protect, adminOrSuper, async (req, res) => {
+  const result = await TeamMember.deleteOne({ id: req.params.id });
+  if (result.deletedCount === 0) return res.status(404).json({ message: 'Team member not found' });
+  res.json({ message: 'Team member deleted' });
 });
 
 module.exports = router;

@@ -89,6 +89,59 @@ router.post('/', protect, contentManagers, uploadVideoFields, async (req, res) =
   res.status(201).json(item.toObject());
 });
 
+router.put('/:id', protect, contentManagers, uploadVideoFields, async (req, res) => {
+  const item = await ExplainerVideo.findOne({ id: req.params.id });
+  if (!item) return res.status(404).json({ message: 'Video not found' });
+
+  const { title, meta, externalUrl, published, sortOrder, clearThumbnail, clearVideo } = req.body;
+  if (title?.trim()) {
+    item.title = title.trim();
+    item.slug = slugify(title.trim(), { lower: true, strict: true });
+  }
+  if (meta !== undefined) item.meta = String(meta).trim();
+  if (published !== undefined) item.published = published === 'false' ? false : true;
+  if (sortOrder !== undefined && sortOrder !== '') {
+    const orderNum = Number(sortOrder);
+    if (Number.isFinite(orderNum)) item.sortOrder = orderNum;
+  }
+
+  const videoFile = req.files?.video?.[0];
+  const thumbFile = req.files?.thumbnail?.[0];
+  const external = externalUrl !== undefined ? String(externalUrl || '').trim() || null : undefined;
+
+  if (videoFile) {
+    if (!isVideoFile(videoFile)) {
+      return res.status(400).json({ message: 'Video must be mp4, webm, mov, or m4v' });
+    }
+    item.video = await uploadBuffer(videoFile, 'videos');
+    item.externalUrl = null;
+  } else if (clearVideo === 'true') {
+    item.video = null;
+  }
+
+  if (external !== undefined && !videoFile) {
+    item.externalUrl = external;
+    if (external) item.video = null;
+  }
+
+  if (!item.video && !item.externalUrl) {
+    return res.status(400).json({
+      message: 'Keep a video file or provide an external URL',
+    });
+  }
+
+  if (clearThumbnail === 'true') item.thumbnail = null;
+  if (thumbFile) {
+    if (!thumbFile.mimetype?.startsWith('image/')) {
+      return res.status(400).json({ message: 'Thumbnail must be an image (jpg, png, webp)' });
+    }
+    item.thumbnail = await uploadBuffer(thumbFile, 'videos');
+  }
+
+  await item.save();
+  res.json(item.toObject());
+});
+
 router.delete('/:id', protect, adminOrSuper, async (req, res) => {
   const result = await ExplainerVideo.deleteOne({ id: req.params.id });
   if (result.deletedCount === 0) return res.status(404).json({ message: 'Video not found' });

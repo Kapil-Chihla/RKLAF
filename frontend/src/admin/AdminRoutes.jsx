@@ -14,6 +14,9 @@ import ExplainerVideosManage from './pages/ExplainerVideosManage';
 import ReportsManage from './pages/ReportsManage';
 import CampsManage from './pages/CampsManage';
 import UsersManage from './pages/UsersManage';
+import MapLocationsManage from './pages/MapLocationsManage';
+import TeamManage from './pages/TeamManage';
+import ContactsManage from './pages/ContactsManage';
 
 export default function AdminRoutes() {
   return (
@@ -27,11 +30,14 @@ export default function AdminRoutes() {
           <Route path="desk" element={<DeskStoriesManage />} />
           <Route path="success-stories" element={<SuccessStoriesManage />} />
           <Route path="camps" element={<CampsManage />} />
+          <Route path="map-locations" element={<MapLocationsManage />} />
           <Route path="reports" element={<ReportsManage />} />
           <Route path="blogs" element={<BlogsManage />} />
           <Route path="papers" element={<PapersManage />} />
           <Route path="articles" element={<ArticlesManage />} />
           <Route path="explainer-videos" element={<ExplainerVideosManage />} />
+          <Route path="team" element={<TeamManage />} />
+          <Route path="contacts" element={<ContactsManage />} />
           <Route path="users" element={<UsersManage />} />
         </Route>
         <Route path="*" element={<Navigate to="/admin/login" replace />} />

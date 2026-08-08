@@ -56,6 +56,27 @@ router.post('/', protect, contentManagers, uploadPDF.single('file'), async (req,
   res.status(201).json(report.toObject());
 });
 
+router.put('/:id', protect, contentManagers, uploadPDF.single('file'), async (req, res) => {
+  const report = await Report.findOne({ id: req.params.id });
+  if (!report) return res.status(404).json({ message: 'Report not found' });
+
+  const { title, year, summary } = req.body;
+  if (year?.trim()) report.year = year.trim();
+  if (title !== undefined) {
+    report.title = title?.trim() || `Annual Report ${report.year}`;
+  }
+  if (summary !== undefined) report.summary = summary?.trim() || report.summary;
+
+  if (req.file) {
+    const pdfErr = assertPdfUpload(req.file);
+    if (pdfErr) return res.status(400).json({ message: pdfErr });
+    report.file = await uploadBuffer(req.file, 'reports');
+  }
+
+  await report.save();
+  res.json(report.toObject());
+});
+
 router.delete('/:id', protect, adminOrSuper, async (req, res) => {
   const result = await Report.deleteOne({ id: req.params.id });
   if (result.deletedCount === 0) return res.status(404).json({ message: 'Report not found' });

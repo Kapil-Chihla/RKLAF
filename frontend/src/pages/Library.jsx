@@ -194,6 +194,30 @@ export default function Library() {
         </div>
       </header>
 
+      {/* Player bridges hero → page; kept above sticky browse so the title isn’t clipped */}
+      <div className="lib-player-bridge">
+        <div className="container">
+          <Reveal as="div" className="lib-player" variant="up">
+            <div className="lib-player__art" aria-hidden="true">
+              EP art
+            </div>
+            <div className="lib-player__body">
+              <p className="lib-player__meta">Senior Citizens · Ep. 42</p>
+              <h2>Can your children legally evict you?</h2>
+              <div className="lib-player__controls">
+                <button type="button" className="lib-player__play" aria-label="Play episode">
+                  ▶
+                </button>
+                <div className="lib-player__bar" aria-hidden="true">
+                  <span style={{ width: '36%' }} />
+                </div>
+                <span className="lib-player__time">03:12 / 08:40</span>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </div>
+
       <nav className="lib-browse" aria-label="Browse Library">
         <div className="container lib-browse__inner">
           {LIB_BROWSE.map((tab) => (
@@ -214,25 +238,6 @@ export default function Library() {
       <div id="podcast" className="lib-podcast-block">
         <section className="lib-welcome">
           <div className="container">
-            <Reveal as="div" className="lib-player" variant="up">
-              <div className="lib-player__art" aria-hidden="true">
-                EP art
-              </div>
-              <div className="lib-player__body">
-                <p className="lib-player__meta">Senior Citizens · Ep. 42</p>
-                <h2>Can your children legally evict you?</h2>
-                <div className="lib-player__controls">
-                  <button type="button" className="lib-player__play" aria-label="Play episode">
-                    ▶
-                  </button>
-                  <div className="lib-player__bar" aria-hidden="true">
-                    <span style={{ width: '36%' }} />
-                  </div>
-                  <span className="lib-player__time">03:12 / 08:40</span>
-                </div>
-              </div>
-            </Reveal>
-
             <div className="lib-welcome__grid">
               <Reveal as="div" className="lib-welcome__visual" variant="left" aria-hidden="true">
                 <div className="lib-blob">

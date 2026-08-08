@@ -6,8 +6,8 @@ import {
   CONTACT_EMAIL,
   CONTACT_MAILTO,
   CONTACT_PHONE_TEL,
-  CONTACT_PHONE_E164,
 } from '../data/navigation';
+import { submitContact } from '../lib/submitContact';
 import './Contact.css';
 
 const channels = [
@@ -75,26 +75,35 @@ function ChannelIcon({ name }) {
 
 export default function Contact() {
   const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [matter, setMatter] = useState('');
+  const [busy, setBusy] = useState(false);
   const [sent, setSent] = useState(false);
+  const [error, setError] = useState('');
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    const text = [
-      'Hello, I am contacting RKLAF from the Contact Us page.',
-      name.trim() && `Name: ${name.trim()}`,
-      phone.trim() && `Phone: ${phone.trim()}`,
-      matter.trim() && `Matter: ${matter.trim()}`,
-    ]
-      .filter(Boolean)
-      .join('\n');
-    window.open(
-      `https://wa.me/${CONTACT_PHONE_E164}?text=${encodeURIComponent(text)}`,
-      '_blank',
-      'noopener,noreferrer',
-    );
-    setSent(true);
+    setError('');
+    setBusy(true);
+    try {
+      await submitContact({
+        name: name.trim(),
+        email: email.trim(),
+        phone: phone.trim(),
+        message: matter.trim(),
+        source: 'contact',
+      });
+      setSent(true);
+      setName('');
+      setEmail('');
+      setPhone('');
+      setMatter('');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Could not send. Please try WhatsApp or email us directly.');
+    } finally {
+      setBusy(false);
+    }
   };
 
   return (
@@ -158,8 +167,16 @@ export default function Contact() {
           <form className="contact__form" onSubmit={onSubmit}>
             <h2>Send us your matter</h2>
             <p className="contact__form-lead">
-              Share only what you&apos;re comfortable with. Everything is confidential.
+              Share only what you&apos;re comfortable with. Everything is confidential. Messages go to{' '}
+              {CONTACT_EMAIL}.
             </p>
+
+            {error ? <p className="contact__form-error" role="alert">{error}</p> : null}
+            {sent ? (
+              <p className="contact__form-success" role="status">
+                Sent — a volunteer will reply within 24 hours.
+              </p>
+            ) : null}
 
             <div className="contact__fields">
               <label>
@@ -171,6 +188,7 @@ export default function Contact() {
                   placeholder="Your name"
                   required
                   autoComplete="name"
+                  disabled={busy}
                 />
               </label>
               <label>
@@ -182,9 +200,22 @@ export default function Contact() {
                   placeholder="+91"
                   required
                   autoComplete="tel"
+                  disabled={busy}
                 />
               </label>
             </div>
+
+            <label>
+              Email
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@email.com"
+                autoComplete="email"
+                disabled={busy}
+              />
+            </label>
 
             <label className="contact__matter">
               What&apos;s going on?
@@ -194,11 +225,12 @@ export default function Contact() {
                 onChange={(e) => setMatter(e.target.value)}
                 placeholder="A few lines about your situation. No legal language needed."
                 required
+                disabled={busy}
               />
             </label>
 
-            <button type="submit" className="contact__submit">
-              {sent ? 'Opening WhatsApp…' : 'Send message →'}
+            <button type="submit" className="contact__submit" disabled={busy}>
+              {busy ? 'Sending…' : sent ? 'Send another message →' : 'Send message →'}
             </button>
           </form>
         </Reveal>
