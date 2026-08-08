@@ -1,14 +1,5 @@
 import { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
-import {
-  CONTACT_EMAIL,
-  CONTACT_MAILTO,
-  CONTACT_PHONE_DISPLAY,
-  CONTACT_PHONE_TEL,
-  OFFICE_DELHI,
-  OFFICE_IMPHAL,
-  socialLinks,
-} from '../data/navigation';
+import { OFFICE_DELHI, OFFICE_IMPHAL } from '../data/navigation';
 import Reveal from '../components/motion/Reveal';
 import photoDada from '../assets/_unused/dada.jpeg';
 import photoDadi from '../assets/_unused/dadi.jpeg';
@@ -590,64 +581,6 @@ export default function About() {
           to an ever-increasing number of impoverished and underprivileged people.
         </p>
         <p className="about-closing__echo">With You. For You. Nyaya Tak.</p>
-      </section>
-
-      {/* 9 · CONTACT */}
-      <section className="about-contact" id="reach">
-        <span className="about-kicker">Get in touch</span>
-        <h2>Reach us</h2>
-        <div className="about-cgrid">
-          <div className="about-cblock">
-            <em>Head office · Delhi</em>
-            <p>
-              {OFFICE_DELHI.lines.map((line) => (
-                <span key={line}>
-                  {line}
-                  <br />
-                </span>
-              ))}
-              <a href={OFFICE_DELHI.mapsUrl} target="_blank" rel="noopener noreferrer">
-                Open map →
-              </a>
-            </p>
-          </div>
-          <div className="about-cblock">
-            <em>Branch office · Imphal</em>
-            <p>
-              {OFFICE_IMPHAL.lines.map((line) => (
-                <span key={line}>
-                  {line}
-                  <br />
-                </span>
-              ))}
-              Ph.{' '}
-              <a href={`tel:${OFFICE_IMPHAL.phoneTel}`}>{OFFICE_IMPHAL.phoneDisplay}</a>
-            </p>
-          </div>
-          <div className="about-cblock">
-            <em>Contact</em>
-            <p>
-              Phone:{' '}
-              <a href={`tel:${CONTACT_PHONE_TEL}`}>{CONTACT_PHONE_DISPLAY}</a>
-              <br />
-              Email: <a href={CONTACT_MAILTO}>{CONTACT_EMAIL}</a>
-            </p>
-            <div className="about-csocial">
-              {socialLinks.slice(0, 4).map((s) => (
-                <a key={s.name} href={s.href} target="_blank" rel="noreferrer" aria-label={s.name}>
-                  {s.name === 'LinkedIn' ? 'in' : s.name === 'YouTube' ? '▶' : s.name.slice(0, 1)}
-                </a>
-              ))}
-            </div>
-            <p className="about-contact__cta">
-              <Link to="/contact">Full contact page →</Link>
-            </p>
-          </div>
-        </div>
-        <div className="about-cfoot">
-          <span>Radhey Krishna Legal Aid Foundation · Charitable Trust registered 25 November 2016</span>
-          <i>With You, For You, Nyaya Tak.</i>
-        </div>
       </section>
     </div>
   );

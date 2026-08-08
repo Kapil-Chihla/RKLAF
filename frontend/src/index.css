@@ -32,7 +32,7 @@
   --radius-lg: 16px;
   --header-h: 96px;
   --shell-max: 1680px;
-  --shell-gutter: 0.75rem;
+  --shell-gutter: 0px;
   --font-sans: 'DM Sans', system-ui, sans-serif;
   --font-serif: 'Playfair Display', Georgia, serif;
   /* Match About Us page: DM Sans for all body copy sitewide */
@@ -261,28 +261,28 @@ select,
   color: var(--blue);
 }
 
-/* ─── Shell (rounded paper card on cream) ─── */
+/* ─── Shell (full-bleed; no outer cream frame) ─── */
 .site-wrapper--v2 {
   --shell-max: 1680px;
-  --shell-gutter: clamp(0.25rem, 1vw, 0.75rem);
+  --shell-gutter: 0px;
   min-height: 100vh;
-  background: var(--cream);
-  padding: var(--shell-gutter);
-  padding-top: calc(var(--shell-gutter) + var(--safe-top, 0px));
+  background: var(--ivory);
+  padding: 0;
+  padding-top: var(--safe-top, 0px);
   overflow-x: clip;
 }
 
 .site-shell {
-  max-width: var(--shell-max);
+  max-width: none;
   width: 100%;
-  margin: 0 auto;
+  margin: 0;
   background: var(--ivory);
-  border-radius: clamp(18px, 2.2vw, 28px);
-  box-shadow: 0 18px 50px rgba(26, 21, 16, 0.08);
+  border-radius: 0;
+  box-shadow: none;
   overflow: clip;
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - 2 * var(--shell-gutter));
+  min-height: calc(100vh - var(--safe-top, 0px));
 }
 
 .site-wrapper--v2 .site-main {
@@ -786,7 +786,7 @@ select,
     transition: opacity 0.25s ease, visibility 0.25s ease;
     z-index: 200;
     box-shadow: none;
-    border-radius: 0 0 clamp(14px, 2vw, 24px) clamp(14px, 2vw, 24px);
+    border-radius: 0;
   }
 
   .main-nav.is-open {

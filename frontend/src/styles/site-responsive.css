@@ -3,14 +3,14 @@
 /* Fluid type & shell on small phones */
 @media (max-width: 480px) {
   .site-wrapper--v2 {
-    --shell-gutter: 0.2rem;
-    padding: var(--shell-gutter);
-    padding-top: calc(var(--shell-gutter) + var(--safe-top, 0px));
+    --shell-gutter: 0px;
+    padding: 0;
+    padding-top: var(--safe-top, 0px);
   }
 
   .site-shell {
-    border-radius: 14px;
-    min-height: calc(100vh - 2 * var(--shell-gutter));
+    border-radius: 0;
+    min-height: calc(100vh - var(--safe-top, 0px));
   }
 
   .site-wrapper--v2 .container {
@@ -349,12 +349,8 @@ svg {
   }
 }
 
-/* Large desktop — keep prose comfortable, shell spacious */
+/* Large desktop — keep prose comfortable */
 @media (min-width: 1440px) {
-  .site-wrapper--v2 {
-    --shell-gutter: clamp(0.75rem, 1.2vw, 1.25rem);
-  }
-
   .site-wrapper--v2 .container {
     width: min(1400px, calc(100% - var(--container-pad) * 2));
   }
