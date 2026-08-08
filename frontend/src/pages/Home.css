@@ -825,6 +825,20 @@ a.home-story--link:hover {
   min-height: calc(1.45em * 2);
 }
 
+.home-story__more {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent, #854f0b);
+}
+
+a.home-story--link:hover .home-story__more {
+  color: var(--ink, #2a2118);
+}
+
 /* Expertise */
 .home-expertise {
   padding: clamp(3.25rem, 6vw, 5rem) 0;

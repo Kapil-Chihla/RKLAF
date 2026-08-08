@@ -495,6 +495,7 @@ export default function Home() {
                     <span className="home-story__tag">{story.tag}</span>
                     <h3>{story.title}</h3>
                     {story.desc ? <p>{story.desc}</p> : null}
+                    {href ? <span className="home-story__more">Read more →</span> : null}
                   </div>
                 </>
               );
