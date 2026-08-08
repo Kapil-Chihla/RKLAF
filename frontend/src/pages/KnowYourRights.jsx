@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Reveal from '../components/motion/Reveal';
 import FaqAccordion from '../components/FaqAccordion';
-import { WHATSAPP_DISPLAY, WHATSAPP_URL, CONTACT_PHONE_TEL } from '../data/navigation';
+import { WHATSAPP_URL, CONTACT_PHONE_TEL } from '../data/navigation';
 import { legalGlossaryByLetter, GLOSSARY_LETTERS } from '../data/legalGlossary';
 import { kyrHelplines } from '../data/kyrHelplines';
 import { kyrFaqs } from '../data/kyrFaqs';
@@ -9,7 +9,7 @@ import mapImage from '../assets/map.webp';
 import kyrBanner from '../assets/knowyourrightsbanner.jpeg';
 import publicApi from '../lib/publicApi';
 import { assetUrl } from '../lib/api';
-import { guidePdfDownloadUrl, guidePdfViewUrl } from '../lib/pdfDownload';
+import { guidePdfDownloadUrl, guidePdfViewUrl, rightsDeckPdfDownloadUrl } from '../lib/pdfDownload';
 import PdfPreviewModal from '../components/pdf/PdfPreviewModal';
 import { looksLikeEmail, submitContact } from '../lib/submitContact';
 import './KnowYourRights.css';
@@ -133,6 +133,53 @@ const FALLBACK_VIDEOS = [
   },
 ];
 
+const FALLBACK_DECKS = [
+  {
+    id: 'fallback-deck-1',
+    category: 'Senior citizens',
+    smallTitle: 'Guide 01 · Senior citizens',
+    title: 'Your children cannot throw you out',
+    description: 'Maintenance, eviction, and the Senior Citizens Act — what to ask for first.',
+    banner: null,
+    hasPdf: false,
+    downloadHref: '#',
+    slideCount: 5,
+  },
+  {
+    id: 'fallback-deck-2',
+    category: 'Police & FIR',
+    smallTitle: 'Guide 02 · Reporting a crime',
+    title: 'Filing an FIR that actually gets registered',
+    description: 'Zero FIR, refusals, and the free copy you must not leave without.',
+    banner: null,
+    hasPdf: false,
+    downloadHref: '#',
+    slideCount: 5,
+  },
+  {
+    id: 'fallback-deck-3',
+    category: 'Wages',
+    smallTitle: 'Guide 03 · Unpaid wages',
+    title: 'Recovering unpaid wages in three steps',
+    description: 'Labour commissioner route, documents to carry, and timelines that matter.',
+    banner: null,
+    hasPdf: false,
+    downloadHref: '#',
+    slideCount: 5,
+  },
+  {
+    id: 'fallback-deck-4',
+    category: 'Domestic violence',
+    smallTitle: 'Guide 04 · DV Act',
+    title: 'Protection orders under the DV Act',
+    description: 'Relief tonight vs next month — what a magistrate can order.',
+    banner: null,
+    hasPdf: false,
+    downloadHref: '#',
+    slideCount: 5,
+  },
+];
+
 /** Turn YouTube / Vimeo watch URLs into embeddable iframe srcs. */
 function embedUrl(url) {
   if (!url) return null;
@@ -157,15 +204,7 @@ function embedUrl(url) {
   return null;
 }
 
-const emergency = [
-  {
-    number: WHATSAPP_DISPLAY.replace(/\s/g, ''),
-    label: 'RKLAF free legal helpline · Mon to Sat, 9 to 6',
-    href: CONTACT_PHONE_TEL,
-    featured: true,
-  },
-  ...kyrHelplines,
-];
+const emergency = kyrHelplines;
 
 function DoorIcon({ name }) {
   if (name === 'book') {
@@ -207,6 +246,8 @@ export default function KnowYourRights() {
   const [askError, setAskError] = useState('');
   const [guideList, setGuideList] = useState(guides);
   const [activeGuide, setActiveGuide] = useState(null);
+  const [deckList, setDeckList] = useState(FALLBACK_DECKS);
+  const [activeDeckIdx, setActiveDeckIdx] = useState(0);
   const [videoList, setVideoList] = useState(FALLBACK_VIDEOS);
   const [activeVideo, setActiveVideo] = useState(null);
   const [glossaryLetter, setGlossaryLetter] = useState('A');
@@ -214,6 +255,12 @@ export default function KnowYourRights() {
   const glossaryEntries = legalGlossaryByLetter[glossaryLetter] || [];
   const glossaryTotal = Object.values(legalGlossaryByLetter).reduce((n, list) => n + list.length, 0);
   const glossaryPreview = glossaryEntries.map((e) => e.term).join('  ·  ');
+  const activeDeck = deckList[activeDeckIdx] || null;
+
+  useEffect(() => {
+    const el = document.getElementById(`kyr-deck-tab-${activeDeck?.id}`);
+    el?.scrollIntoView({ inline: 'nearest', block: 'nearest', behavior: 'smooth' });
+  }, [activeDeckIdx, activeDeck?.id]);
 
   useEffect(() => {
     publicApi
@@ -233,6 +280,27 @@ export default function KnowYourRights() {
             hasPdf: Boolean(a.file),
           })),
         );
+      })
+      .catch(() => {});
+
+    publicApi
+      .get('/rights-decks')
+      .then((r) => {
+        if (!Array.isArray(r.data) || !r.data.length) return;
+        setDeckList(
+          r.data.map((d, i) => ({
+            id: d.id || d.slug || `deck-${i}`,
+            category: (d.category || '').trim(),
+            smallTitle: (d.smallTitle || '').trim(),
+            title: d.title,
+            description: (d.description || '').trim(),
+            banner: d.banner ? assetUrl(d.banner) : null,
+            hasPdf: Boolean(d.pdf),
+            downloadHref: d.pdf ? rightsDeckPdfDownloadUrl(d.id) : '#',
+            slideCount: d.slideCount || null,
+          })),
+        );
+        setActiveDeckIdx(0);
       })
       .catch(() => {});
 
@@ -522,6 +590,147 @@ export default function KnowYourRights() {
           downloadUrl={activeGuide.href}
           onClose={() => setActiveGuide(null)}
         />
+      ) : null}
+
+      {deckList.length > 0 ? (
+        <section id="decks" className="kyr-decks">
+          <div className="container">
+            <Reveal as="header" className="kyr-center-head" variant="up">
+              <p className="kyr-label">The same guides, as decks</p>
+              <h2>Made to be shown, not only read</h2>
+              <p className="kyr-decks__intro">
+                Short slide decks you can project at camps or send before a hearing — pick a guide
+                below to preview and download the PDF.
+              </p>
+            </Reveal>
+
+            <div className="kyr-decks__scroll" role="tablist" aria-label="Know Your Rights guide decks">
+              <div className="kyr-decks__track">
+                {deckList.map((deck, i) => {
+                  const n = String(i + 1).padStart(2, '0');
+                  const selected = i === activeDeckIdx;
+                  return (
+                    <div key={deck.id} className="kyr-deck-slot">
+                      <button
+                        type="button"
+                        role="tab"
+                        aria-selected={selected}
+                        aria-controls="kyr-deck-panel"
+                        id={`kyr-deck-tab-${deck.id}`}
+                        className={`kyr-deck-card${selected ? ' is-active' : ''}`}
+                        onClick={() => setActiveDeckIdx(i)}
+                      >
+                        <span className="kyr-deck-card__cat">
+                          {deck.category || deck.smallTitle || 'Know your rights'}
+                        </span>
+                        <span className="kyr-deck-card__title">{deck.title}</span>
+                        <span className="kyr-deck-card__num" aria-hidden="true">
+                          {n}
+                        </span>
+                        <span className="kyr-deck-card__arc" aria-hidden="true" />
+                      </button>
+                      <div className="kyr-deck-card__meta">
+                        <span className="kyr-deck-card__meta-title">{deck.title}</span>
+                        {deck.slideCount ? (
+                          <span className="kyr-deck-card__slides">{deck.slideCount} slides</span>
+                        ) : (
+                          <span className="kyr-deck-card__slides">PDF</span>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {activeDeck ? (
+              <div
+                id="kyr-deck-panel"
+                role="tabpanel"
+                aria-labelledby={`kyr-deck-tab-${activeDeck.id}`}
+                className="kyr-deck-stage"
+              >
+                <div
+                  className={`kyr-deck-stage__banner${activeDeck.banner ? ' has-photo' : ''}`}
+                  style={
+                    activeDeck.banner
+                      ? { backgroundImage: `url(${activeDeck.banner})` }
+                      : undefined
+                  }
+                >
+                  <div className="kyr-deck-stage__veil" aria-hidden="true" />
+                  <p className="kyr-deck-stage__brand">Know your rights · RKLAF</p>
+                  <div className="kyr-deck-stage__copy">
+                    {activeDeck.smallTitle ? (
+                      <p className="kyr-deck-stage__small">{activeDeck.smallTitle}</p>
+                    ) : activeDeck.category ? (
+                      <p className="kyr-deck-stage__small">{activeDeck.category}</p>
+                    ) : null}
+                    <h3 className="kyr-deck-stage__title">{activeDeck.title}</h3>
+                    {activeDeck.description ? (
+                      <p className="kyr-deck-stage__desc">{activeDeck.description}</p>
+                    ) : null}
+                  </div>
+                  <span className="kyr-deck-stage__arc" aria-hidden="true" />
+                  <span className="kyr-deck-stage__count" aria-hidden="true">
+                    {activeDeck.slideCount
+                      ? `1 / ${activeDeck.slideCount}`
+                      : String(activeDeckIdx + 1).padStart(2, '0')}
+                  </span>
+                </div>
+
+                <div className="kyr-deck-stage__bar">
+                  <div className="kyr-deck-stage__dots" aria-hidden="true">
+                    {deckList.map((d, i) => (
+                      <span
+                        key={d.id}
+                        className={`kyr-deck-stage__dot${i === activeDeckIdx ? ' is-on' : ''}`}
+                      />
+                    ))}
+                  </div>
+                  <p className="kyr-deck-stage__bar-label">
+                    {activeDeck.category || activeDeck.smallTitle || 'Know your rights'}
+                  </p>
+                  <div className="kyr-deck-stage__nav">
+                    <button
+                      type="button"
+                      className="kyr-deck-stage__arrow"
+                      aria-label="Previous deck"
+                      disabled={activeDeckIdx <= 0}
+                      onClick={() => setActiveDeckIdx((i) => Math.max(0, i - 1))}
+                    >
+                      ←
+                    </button>
+                    <button
+                      type="button"
+                      className="kyr-deck-stage__arrow"
+                      aria-label="Next deck"
+                      disabled={activeDeckIdx >= deckList.length - 1}
+                      onClick={() =>
+                        setActiveDeckIdx((i) => Math.min(deckList.length - 1, i + 1))
+                      }
+                    >
+                      →
+                    </button>
+                    {activeDeck.hasPdf ? (
+                      <a
+                        className="kyr-deck-stage__dl"
+                        href={activeDeck.downloadHref}
+                        download
+                      >
+                        Download deck ↓
+                      </a>
+                    ) : (
+                      <span className="kyr-deck-stage__dl kyr-deck-stage__dl--disabled">
+                        PDF coming soon
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ) : null}
+          </div>
+        </section>
       ) : null}
 
       <section id="videos" className="kyr-videos">

@@ -1,8 +1,16 @@
 import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Reveal from '../components/motion/Reveal';
-import { socialLinks } from '../data/navigation';
+import {
+  socialLinks,
+  SPOTIFY_PROFILE_URL,
+  YOUTUBE_CHANNEL_URL,
+} from '../data/navigation';
+import publicApi from '../lib/publicApi';
+import { assetUrl } from '../lib/api';
+import { isAudioMediaUrl, isDirectMediaUrl, mediaEmbedUrl } from '../lib/mediaEmbed';
 import libraryBanner from '../assets/librarybanner.jpeg';
+import libraryPlaceholder from '../assets/libraryplaceholder.jpeg';
 import './Library.css';
 
 const LIB_BROWSE = [
@@ -11,53 +19,11 @@ const LIB_BROWSE = [
 ];
 
 const platforms = [
-  { label: 'Listen on Spotify', href: 'https://open.spotify.com/', icon: 'note' },
-  { label: 'Apple Podcasts', href: '#', icon: 'note' },
-  { label: 'YouTube', href: 'https://www.youtube.com/@radheykrishnalegalaid', icon: 'play' },
+  { label: 'Listen on Spotify', href: SPOTIFY_PROFILE_URL, icon: 'note' },
+  { label: 'YouTube', href: YOUTUBE_CHANNEL_URL, icon: 'play' },
 ];
 
-const audioPlatforms = [
-  { label: 'Spotify', href: 'https://open.spotify.com/', icon: '♫' },
-  { label: 'Apple Podcasts', href: '#', icon: '◉' },
-  { label: 'JioSaavn', href: '#', icon: '♬' },
-  { label: 'Amazon Music', href: '#', icon: '◈' },
-];
-
-const audioEpisodes = [
-  {
-    tag: 'Senior Citizens',
-    title: 'Can your children legally evict you?',
-    blurb: 'Section 23, coerced gift deeds, and a 63-day restoration story.',
-    dur: 'EP 41 · 28 MIN',
-  },
-  {
-    tag: 'Labour',
-    title: 'Wages you are owed',
-    blurb: 'Building a claim from screenshots, with the interns who did it.',
-    dur: 'EP 40 · 34 MIN',
-  },
-  {
-    tag: 'From the Bench',
-    title: 'A tribunal member speaks',
-    blurb: 'What actually persuades, from the other side of the dais.',
-    dur: 'EP 39 · 41 MIN',
-  },
-];
-
-const videoFeatured = {
-  tag: 'Latest episode',
-  title: 'Arrested at night: what the law actually requires',
-  blurb:
-    'An advocate and a former investigating officer walk through the first hour after an arrest, the arrest memo, and the questions a family should ask at the station.',
-  meta: ['EPISODE 12', 'FILMED AT THE OFFICE', 'SUBTITLES IN HINDI'],
-  duration: '46:12',
-};
-
-const videoList = [
-  { tag: 'Explainer', title: 'Zero FIR in three minutes', dur: '3:12 · 41K views' },
-  { tag: 'Interview', title: 'Inside the prison legal aid desk', dur: '22:40 · 9.8K views' },
-  { tag: 'From the camps', title: 'A day at a village legal aid camp', dur: '14:05 · 12K views' },
-];
+const audioPlatforms = [{ label: 'Spotify', href: SPOTIFY_PROFILE_URL, icon: '♫' }];
 
 const socialShelves = [
   {
@@ -78,7 +44,7 @@ const socialShelves = [
     name: 'YouTube',
     sub: 'Films & explainers',
     cta: 'Subscribe →',
-    href: 'https://www.youtube.com/@radheykrishnalegalaid',
+    href: YOUTUBE_CHANNEL_URL,
     icon: '▶',
     tone: 'yt',
     preview: 'Latest video thumbnail',
@@ -131,8 +97,125 @@ function PlatformIcon({ name }) {
   );
 }
 
+/** Renders Spotify/YouTube iframe or native audio/video from CMS fields. */
+function PodcastMedia({ item, className = '', autoplay = false, compact = false }) {
+  if (!item) return null;
+  const fileUrl = assetUrl(item.media);
+  const external = item.externalUrl || '';
+  const embed = mediaEmbedUrl(external, { autoplay });
+  const directExternal = isDirectMediaUrl(external) ? external : null;
+  const playUrl = fileUrl || directExternal;
+
+  if (embed) {
+    return (
+      <div className={`lib-media lib-media--embed${compact ? ' lib-media--compact' : ''} ${className}`.trim()}>
+        <iframe
+          src={embed}
+          title={item.title || 'Podcast'}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
+          loading="lazy"
+        />
+      </div>
+    );
+  }
+
+  if (playUrl) {
+    const asAudio = item.kind === 'audio' || isAudioMediaUrl(playUrl);
+    if (asAudio) {
+      return (
+        <div className={`lib-media lib-media--audio ${className}`.trim()}>
+          <audio controls src={playUrl} preload="metadata">
+            Your browser does not support audio playback.
+          </audio>
+        </div>
+      );
+    }
+    return (
+      <div className={`lib-media lib-media--video ${className}`.trim()}>
+        <video controls src={playUrl} playsInline preload="metadata" poster={assetUrl(item.thumbnail) || undefined}>
+          Your browser does not support video playback.
+        </video>
+      </div>
+    );
+  }
+
+  return (
+    <div className={`lib-media lib-media--empty ${className}`.trim()} aria-hidden="true">
+      <span>{item.kind === 'audio' ? 'Audio' : 'Video'} coming soon</span>
+    </div>
+  );
+}
+
+function Thumb({ item, label = 'EP' }) {
+  const src = assetUrl(item?.thumbnail);
+  if (src) {
+    return <img src={src} alt="" className="lib-thumb-img" />;
+  }
+  return <span>{label}</span>;
+}
+
 export default function Library() {
   const [activeBrowse, setActiveBrowse] = useState(LIB_BROWSE[0].id);
+  const [podcasts, setPodcasts] = useState([]);
+  const [loadError, setLoadError] = useState('');
+  const [featuredVideoId, setFeaturedVideoId] = useState(null);
+  const [activePlayerId, setActivePlayerId] = useState(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    publicApi
+      .get('/library-podcasts')
+      .then((r) => {
+        if (cancelled) return;
+        const list = Array.isArray(r.data) ? r.data : [];
+        setPodcasts(list);
+        setLoadError('');
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setPodcasts([]);
+          setLoadError('Podcasts could not be loaded right now.');
+        }
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const audioTop5 = useMemo(
+    () => podcasts.filter((p) => p.kind === 'audio').slice(0, 5),
+    [podcasts],
+  );
+  const videoTop5 = useMemo(
+    () => podcasts.filter((p) => p.kind === 'video').slice(0, 5),
+    [podcasts],
+  );
+
+  const latest = useMemo(() => {
+    if (!podcasts.length) return null;
+    return podcasts[0];
+  }, [podcasts]);
+
+  const playerItem = useMemo(() => {
+    if (activePlayerId) {
+      return podcasts.find((p) => p.id === activePlayerId) || latest;
+    }
+    return latest;
+  }, [activePlayerId, podcasts, latest]);
+
+  const featuredVideo = useMemo(() => {
+    if (!videoTop5.length) return null;
+    if (featuredVideoId) {
+      return videoTop5.find((v) => v.id === featuredVideoId) || videoTop5[0];
+    }
+    return videoTop5[0];
+  }, [videoTop5, featuredVideoId]);
+
+  const videoSideList = useMemo(() => {
+    if (!featuredVideo) return videoTop5;
+    return videoTop5.filter((v) => v.id !== featuredVideo.id);
+  }, [videoTop5, featuredVideo]);
 
   useEffect(() => {
     const nodes = LIB_BROWSE.map((t) => document.getElementById(t.id)).filter(Boolean);
@@ -157,6 +240,11 @@ export default function Library() {
     el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
+  const playInTop = (item) => {
+    setActivePlayerId(item.id);
+    document.getElementById('lib-featured-player')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
   return (
     <div className="lib">
       <header className="lib-hero">
@@ -174,12 +262,7 @@ export default function Library() {
             </p>
             <div className="lib-platforms">
               {platforms.map((p) => (
-                <a
-                  key={p.label}
-                  href={p.href}
-                  className="lib-platform"
-                  {...(p.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                >
+                <a key={p.label} href={p.href} className="lib-platform" target="_blank" rel="noopener noreferrer">
                   <PlatformIcon name={p.icon} />
                   {p.label}
                 </a>
@@ -194,26 +277,40 @@ export default function Library() {
         </div>
       </header>
 
-      {/* Player bridges hero → page; kept above sticky browse so the title isn’t clipped */}
-      <div className="lib-player-bridge">
+      <div className="lib-player-bridge" id="lib-featured-player">
         <div className="container">
-          <Reveal as="div" className="lib-player" variant="up">
-            <div className="lib-player__art" aria-hidden="true">
-              EP art
-            </div>
-            <div className="lib-player__body">
-              <p className="lib-player__meta">Senior Citizens · Ep. 42</p>
-              <h2>Can your children legally evict you?</h2>
-              <div className="lib-player__controls">
-                <button type="button" className="lib-player__play" aria-label="Play episode">
-                  ▶
-                </button>
-                <div className="lib-player__bar" aria-hidden="true">
-                  <span style={{ width: '36%' }} />
+          <Reveal as="div" className={`lib-player${playerItem?.kind === 'video' ? ' lib-player--video' : ''}`} variant="up">
+            {playerItem ? (
+              <>
+                <div className="lib-player__art" aria-hidden={!assetUrl(playerItem.thumbnail)}>
+                  <Thumb item={playerItem} label={playerItem.kind === 'video' ? 'VID' : 'EP'} />
                 </div>
-                <span className="lib-player__time">03:12 / 08:40</span>
+                <div className="lib-player__body">
+                  <p className="lib-player__meta">
+                    {playerItem.meta || (playerItem.kind === 'video' ? 'Latest video' : 'Latest episode')}
+                  </p>
+                  <h2>{playerItem.title}</h2>
+                  {playerItem.description ? <p className="lib-player__desc">{playerItem.description}</p> : null}
+                  <PodcastMedia item={playerItem} className="lib-player__media" />
+                </div>
+              </>
+            ) : (
+              <div className="lib-player__body lib-player__body--empty">
+                <p className="lib-player__meta">Library</p>
+                <h2>{loadError || 'New episodes will appear here'}</h2>
+                <p className="lib-player__desc">
+                  Follow us on{' '}
+                  <a href={SPOTIFY_PROFILE_URL} target="_blank" rel="noopener noreferrer">
+                    Spotify
+                  </a>{' '}
+                  and{' '}
+                  <a href={YOUTUBE_CHANNEL_URL} target="_blank" rel="noopener noreferrer">
+                    YouTube
+                  </a>{' '}
+                  meanwhile.
+                </p>
               </div>
-            </div>
+            )}
           </Reveal>
         </div>
       </div>
@@ -239,14 +336,18 @@ export default function Library() {
         <section className="lib-welcome">
           <div className="container">
             <div className="lib-welcome__grid">
-              <Reveal as="div" className="lib-welcome__visual" variant="left" aria-hidden="true">
-                <div className="lib-blob">
-                  <span>Photo placeholder</span>
-                  <small>Listener at a camp, headphones on</small>
+              <Reveal as="div" className="lib-welcome__visual" variant="left">
+                <div className="lib-welcome__photo">
+                  <div className="lib-blob">
+                    <img
+                      src={libraryPlaceholder}
+                      alt="Listener at a camp, headphones on"
+                    />
+                  </div>
+                  <div className="lib-blob-ring" aria-hidden="true" />
+                  <span className="lib-dot lib-dot--a" aria-hidden="true" />
+                  <span className="lib-dot lib-dot--b" aria-hidden="true" />
                 </div>
-                <div className="lib-blob-ring" />
-                <span className="lib-dot lib-dot--a" />
-                <span className="lib-dot lib-dot--b" />
               </Reveal>
 
               <Reveal as="div" className="lib-welcome__copy" variant="up" delay={40}>
@@ -278,12 +379,16 @@ export default function Library() {
                 <p className="lib-label">Listen</p>
                 <h2>The audio podcast</h2>
                 <p className="lib-episodes__lede">
-                  Conversations recorded at the office and in the field, for listening on the way to work. New
-                  episode every fortnight.
+                  Conversations recorded at the office and in the field, for listening on the way to work.
                 </p>
               </div>
-              <a href="#audio" className="lib-browse-link">
-                All audio episodes →
+              <a
+                href={SPOTIFY_PROFILE_URL}
+                className="lib-browse-link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                All audio on Spotify →
               </a>
             </div>
 
@@ -293,7 +398,8 @@ export default function Library() {
                   key={p.label}
                   href={p.href}
                   className="lib-platform lib-platform--light"
-                  {...(p.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <i aria-hidden="true">{p.icon}</i>
                   {p.label}
@@ -301,25 +407,28 @@ export default function Library() {
               ))}
             </div>
 
-            <div className="lib-episodes__grid">
-              {audioEpisodes.map((ep, i) => (
-                <Reveal key={ep.title} as="article" className="lib-ep" variant="up" delay={i * 50}>
-                  <div className="lib-ep__art" aria-hidden="true">
-                    <span>EP art</span>
-                    <span className="lib-ep__play">▶</span>
-                  </div>
-                  <div className="lib-ep__body">
-                    <p className="lib-ep__tag">{ep.tag}</p>
-                    <h3>{ep.title}</h3>
-                    <p>{ep.blurb}</p>
-                    <span className="lib-ep__dur">{ep.dur}</span>
-                    <a href="#audio" className="lib-ep__cta">
-                      Listen →
-                    </a>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
+            {audioTop5.length ? (
+              <div className="lib-episodes__grid">
+                {audioTop5.map((ep, i) => (
+                  <Reveal key={ep.id} as="article" className="lib-ep" variant="up" delay={i * 50}>
+                    <button type="button" className="lib-ep__art" onClick={() => playInTop(ep)}>
+                      <Thumb item={ep} />
+                      <span className="lib-ep__play">▶</span>
+                    </button>
+                    <div className="lib-ep__body">
+                      {ep.meta ? <p className="lib-ep__tag">{ep.meta}</p> : null}
+                      <h3>{ep.title}</h3>
+                      {ep.description ? <p>{ep.description}</p> : null}
+                      <button type="button" className="lib-ep__cta" onClick={() => playInTop(ep)}>
+                        Listen →
+                      </button>
+                    </div>
+                  </Reveal>
+                ))}
+              </div>
+            ) : (
+              <p className="lib-empty">Audio episodes will appear here once published from the admin.</p>
+            )}
           </div>
         </section>
 
@@ -334,62 +443,85 @@ export default function Library() {
                   the answer today.
                 </p>
               </div>
-              <a href="#video" className="lib-browse-link">
-                All video episodes →
+              <a
+                href={YOUTUBE_CHANNEL_URL}
+                className="lib-browse-link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                All videos on YouTube →
               </a>
             </div>
 
-            <div className="lib-video__grid">
-              <Reveal as="article" className="lib-video__main" variant="up">
-                <div className="lib-video__frame">
-                  <span className="lib-video__tag">{videoFeatured.tag}</span>
-                  <div className="lib-video__ph" aria-hidden="true">
-                    <span>Video embed placeholder</span>
-                    <small>Studio conversation, two-camera setup</small>
+            {featuredVideo ? (
+              <div className="lib-video__grid">
+                <Reveal as="article" className="lib-video__main" variant="up">
+                  <div className="lib-video__frame">
+                    <span className="lib-video__tag">{featuredVideo.meta || 'Latest episode'}</span>
+                    <PodcastMedia item={featuredVideo} />
                   </div>
-                  <div className="lib-video__play" aria-hidden="true">
-                    <i>▶</i>
+                  <div className="lib-video__body">
+                    <h3>{featuredVideo.title}</h3>
+                    {featuredVideo.description ? <p>{featuredVideo.description}</p> : null}
                   </div>
-                  <span className="lib-video__badge">{videoFeatured.duration}</span>
-                </div>
-                <div className="lib-video__body">
-                  <h3>{videoFeatured.title}</h3>
-                  <p>{videoFeatured.blurb}</p>
-                  <div className="lib-video__meta">
-                    {videoFeatured.meta.map((m, i) => (
-                      <span key={m}>
-                        {i > 0 ? <span aria-hidden="true"> · </span> : null}
-                        {m}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </Reveal>
+                </Reveal>
 
-              <div className="lib-video__list">
-                {videoList.map((v, i) => (
-                  <Reveal key={v.title} as="article" className="lib-video__item" variant="up" delay={i * 40}>
-                    <div className="lib-video__thumb" aria-hidden="true">
-                      <span>Still</span>
-                      <span className="lib-ep__play">▶</span>
-                    </div>
-                    <div>
-                      <p className="lib-ep__tag">{v.tag}</p>
-                      <h4>{v.title}</h4>
-                      <span className="lib-ep__dur">{v.dur}</span>
-                    </div>
-                  </Reveal>
-                ))}
-                <a
-                  className="lib-ytpill"
-                  href="https://www.youtube.com/@radheykrishnalegalaid"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  ▶ Subscribe on YouTube
-                </a>
+                <div className="lib-video__list">
+                  {videoSideList.map((v, i) => (
+                    <Reveal key={v.id} as="article" className="lib-video__item" variant="up" delay={i * 40}>
+                      <button
+                        type="button"
+                        className="lib-video__thumb"
+                        onClick={() => {
+                          setFeaturedVideoId(v.id);
+                          playInTop(v);
+                        }}
+                      >
+                        <Thumb item={v} label="Still" />
+                        <span className="lib-ep__play">▶</span>
+                      </button>
+                      <div>
+                        {v.meta ? <p className="lib-ep__tag">{v.meta}</p> : null}
+                        <h4>{v.title}</h4>
+                        <button
+                          type="button"
+                          className="lib-ep__cta"
+                          onClick={() => {
+                            setFeaturedVideoId(v.id);
+                            playInTop(v);
+                          }}
+                        >
+                          Watch →
+                        </button>
+                      </div>
+                    </Reveal>
+                  ))}
+                  <a
+                    className="lib-ytpill"
+                    href={YOUTUBE_CHANNEL_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    ▶ Subscribe on YouTube
+                  </a>
+                  <a
+                    className="lib-ytpill lib-ytpill--spotify"
+                    href={SPOTIFY_PROFILE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    ♫ Follow on Spotify
+                  </a>
+                </div>
               </div>
-            </div>
+            ) : (
+              <p className="lib-empty">
+                Video episodes will appear here once published.{' '}
+                <a href={YOUTUBE_CHANNEL_URL} target="_blank" rel="noopener noreferrer">
+                  Visit our YouTube channel →
+                </a>
+              </p>
+            )}
           </div>
         </section>
       </div>

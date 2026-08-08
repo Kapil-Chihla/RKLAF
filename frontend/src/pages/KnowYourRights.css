@@ -757,6 +757,386 @@
   border-style: dashed;
 }
 
+/* ─── Guide decks (carousel + stage) ─── */
+.kyr-decks {
+  --deck-ink: #3c2a1f;
+  --deck-deep: #2b1f18;
+  --deck-cream: #f3eee6;
+  --deck-sand: #e8dfd2;
+  --deck-rim: #d9cfc0;
+  padding: clamp(2.5rem, 5vw, 4.5rem) 0;
+  background: var(--deck-cream);
+}
+
+.kyr-decks__intro {
+  margin: 0.85rem auto 0;
+  max-width: 36rem;
+  font-size: 1.02rem;
+  line-height: 1.55;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.kyr-decks__scroll {
+  container-type: inline-size;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.35rem 0.15rem 1.1rem;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+}
+
+.kyr-decks__scroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.kyr-decks__scroll::-webkit-scrollbar-thumb {
+  background: rgba(43, 34, 26, 0.22);
+  border-radius: 999px;
+}
+
+.kyr-decks__track {
+  --deck-gap: 1rem;
+  --deck-visible: 3.15;
+  display: flex;
+  gap: var(--deck-gap);
+  align-items: stretch;
+  padding-bottom: 0.25rem;
+}
+
+.kyr-deck-slot {
+  flex: 0 0 calc((100cqw - (var(--deck-visible) - 1) * var(--deck-gap)) / var(--deck-visible));
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  scroll-snap-align: start;
+}
+
+.kyr-deck-card {
+  position: relative;
+  flex: 1;
+  min-height: 11.5rem;
+  padding: 1.1rem 1.15rem 2.6rem;
+  border: 2px solid transparent;
+  border-radius: 18px;
+  background: var(--deck-ink);
+  color: #f7f2ea;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 10px 28px rgba(43, 31, 22, 0.16);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+  overflow: hidden;
+}
+
+.kyr-deck-card:hover {
+  transform: translateY(-2px);
+}
+
+.kyr-deck-card.is-active {
+  border-color: var(--deck-rim);
+  box-shadow: 0 12px 32px rgba(43, 31, 22, 0.22);
+}
+
+.kyr-deck-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.kyr-deck-card__cat {
+  display: block;
+  margin: 0 0 0.65rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(247, 242, 234, 0.62);
+}
+
+.kyr-deck-card__title {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: clamp(1.15rem, 2vw, 1.4rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: #fff;
+  text-wrap: balance;
+}
+
+.kyr-deck-card__num {
+  position: absolute;
+  left: 1.1rem;
+  bottom: 0.85rem;
+  font-family: var(--font-serif);
+  font-size: 1.65rem;
+  font-weight: 600;
+  color: rgba(232, 210, 180, 0.55);
+  line-height: 1;
+}
+
+.kyr-deck-card__arc {
+  position: absolute;
+  right: -1.5rem;
+  bottom: -2.2rem;
+  width: 7.5rem;
+  height: 7.5rem;
+  border: 1.5px dashed rgba(232, 210, 180, 0.28);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.kyr-deck-card__meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.kyr-deck-card__meta-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.kyr-deck-card__slides {
+  flex-shrink: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  font-size: 0.65rem;
+}
+
+.kyr-deck-stage {
+  margin-top: 0.35rem;
+  border-radius: 22px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 18px 40px rgba(43, 31, 22, 0.12);
+}
+
+.kyr-deck-stage__banner {
+  position: relative;
+  min-height: clamp(16rem, 38vw, 22rem);
+  padding: clamp(1.4rem, 3vw, 2.1rem);
+  background: linear-gradient(145deg, #4a3426 0%, var(--deck-deep) 55%, #1a120e 100%);
+  background-size: cover;
+  background-position: center;
+  color: #f7f2ea;
+  overflow: hidden;
+}
+
+.kyr-deck-stage__banner.has-photo {
+  background-color: var(--deck-deep);
+}
+
+.kyr-deck-stage__veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    rgba(26, 18, 14, 0.88) 0%,
+    rgba(26, 18, 14, 0.55) 48%,
+    rgba(26, 18, 14, 0.28) 100%
+  );
+  pointer-events: none;
+}
+
+.kyr-deck-stage__banner:not(.has-photo) .kyr-deck-stage__veil {
+  background: transparent;
+}
+
+.kyr-deck-stage__brand {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 1.5rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(247, 242, 234, 0.55);
+}
+
+.kyr-deck-stage__copy {
+  position: relative;
+  z-index: 1;
+  max-width: 34rem;
+}
+
+.kyr-deck-stage__small {
+  margin: 0 0 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(247, 242, 234, 0.7);
+}
+
+.kyr-deck-stage__title {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(1.75rem, 3.6vw, 2.65rem);
+  font-weight: 700;
+  line-height: 1.12;
+  color: #fff;
+  text-wrap: balance;
+}
+
+.kyr-deck-stage__desc {
+  margin: 0.85rem 0 0;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  color: rgba(247, 242, 234, 0.82);
+  text-wrap: pretty;
+}
+
+.kyr-deck-stage__arc {
+  position: absolute;
+  right: -2rem;
+  top: -2.5rem;
+  width: 11rem;
+  height: 11rem;
+  border: 1.5px dashed rgba(232, 210, 180, 0.28);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.kyr-deck-stage__count {
+  position: absolute;
+  right: 1.4rem;
+  bottom: 1.1rem;
+  z-index: 1;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  color: rgba(247, 242, 234, 0.65);
+}
+
+.kyr-deck-stage__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.85rem 1.25rem;
+  padding: 0.95rem 1.2rem;
+  background: #fff;
+  border-top: 1px solid rgba(31, 28, 25, 0.08);
+}
+
+.kyr-deck-stage__dots {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.kyr-deck-stage__dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: rgba(43, 31, 22, 0.18);
+}
+
+.kyr-deck-stage__dot.is-on {
+  background: var(--deck-ink);
+}
+
+.kyr-deck-stage__bar-label {
+  margin: 0;
+  flex: 1;
+  min-width: 8rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.kyr-deck-stage__nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem;
+  margin-left: auto;
+}
+
+.kyr-deck-stage__arrow {
+  width: 2.35rem;
+  height: 2.35rem;
+  border-radius: 50%;
+  border: 1px solid rgba(31, 28, 25, 0.16);
+  background: #fff;
+  color: var(--deck-ink);
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.kyr-deck-stage__arrow:hover:not(:disabled) {
+  border-color: var(--deck-ink);
+}
+
+.kyr-deck-stage__arrow:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.kyr-deck-stage__dl {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.35rem;
+  padding: 0 1rem;
+  border-radius: 999px;
+  background: var(--deck-ink);
+  color: #f7f2ea;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.kyr-deck-stage__dl:hover {
+  filter: brightness(1.08);
+}
+
+.kyr-deck-stage__dl--disabled {
+  opacity: 0.45;
+  pointer-events: none;
+  background: rgba(43, 31, 22, 0.35);
+}
+
+@media (max-width: 720px) {
+  .kyr-decks__track {
+    --deck-visible: 1.35;
+  }
+
+  .kyr-deck-stage__bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .kyr-deck-stage__nav {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .kyr-deck-stage__dl {
+    flex: 1;
+  }
+}
+
+@media (min-width: 721px) and (max-width: 1024px) {
+  .kyr-decks__track {
+    --deck-visible: 2.2;
+  }
+}
+
 /* ─── Videos ─── */
 .kyr-videos {
   padding: clamp(2.5rem, 5vw, 4rem) 0;

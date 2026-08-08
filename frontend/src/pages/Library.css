@@ -318,7 +318,7 @@
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 1.1rem;
-  align-items: center;
+  align-items: start;
   max-width: 52rem;
   margin: 0 auto;
   padding: 1.15rem 1.35rem;
@@ -328,11 +328,23 @@
   overflow: visible;
 }
 
-/* ─── Welcome ─── */
-.lib-welcome {
-  position: relative;
-  padding: clamp(2rem, 4vw, 2.75rem) 0 clamp(3rem, 6vw, 4.5rem);
-  background: var(--paper);
+.lib-player--video {
+  max-width: 64rem;
+}
+
+.lib-player__desc {
+  margin: 0 0 0.85rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.lib-player__body--empty {
+  grid-column: 1 / -1;
+}
+
+.lib-player__media {
+  margin-top: 0.35rem;
 }
 
 .lib-player__art {
@@ -347,6 +359,8 @@
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: rgba(31, 28, 25, 0.5);
+  overflow: hidden;
+  flex-shrink: 0;
 }
 
 .lib-player__meta {
@@ -367,46 +381,89 @@
   line-height: 1.25;
 }
 
-.lib-player__controls {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+.lib-thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
-.lib-player__play {
-  flex-shrink: 0;
-  width: 2.1rem;
-  height: 2.1rem;
-  border-radius: 50%;
+.lib-media {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #1a1612;
+}
+
+.lib-media iframe,
+.lib-media video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
   border: 0;
-  background: var(--charcoal);
-  color: #fff;
-  font-size: 0.85rem;
-  cursor: pointer;
+  background: #000;
+}
+
+.lib-media--audio {
+  background: transparent;
+  overflow: visible;
+}
+
+.lib-media--audio audio {
+  display: block;
+  width: 100%;
+  height: 2.75rem;
+}
+
+/* Spotify embeds are shorter than 16:9 */
+.lib-media--embed iframe[src*='spotify.com'] {
+  aspect-ratio: auto;
+  min-height: 152px;
+  height: 152px;
+}
+
+.lib-media--empty {
+  aspect-ratio: 16 / 9;
   display: grid;
   place-items: center;
+  color: #efe7d6;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: linear-gradient(150deg, #6e5638, #3a2d1f);
 }
 
-.lib-player__bar {
-  flex: 1;
-  height: 4px;
-  border-radius: 999px;
-  background: var(--cream);
-  overflow: hidden;
-}
-
-.lib-player__bar span {
-  display: block;
-  height: 100%;
-  background: var(--charcoal);
-  border-radius: inherit;
-}
-
-.lib-player__time {
-  flex-shrink: 0;
-  font-size: 0.9rem;
+.lib-empty {
+  margin: 1.25rem 0 0;
+  font-size: 1rem;
   color: var(--muted);
-  font-variant-numeric: tabular-nums;
+  font-style: italic;
+}
+
+.lib-empty a {
+  color: var(--accent);
+  font-style: normal;
+  font-weight: 600;
+}
+
+.lib-ytpill--spotify {
+  margin-top: 0.5rem;
+  background: #1db954;
+  border-color: #1db954;
+  color: #fff;
+}
+
+.lib-ytpill--spotify:hover {
+  filter: brightness(1.05);
+  color: #fff;
+}
+
+/* ─── Welcome ─── */
+.lib-welcome {
+  position: relative;
+  padding: clamp(2rem, 4vw, 2.75rem) 0 clamp(3rem, 6vw, 4.5rem);
+  background: var(--paper);
 }
 
 .lib-welcome__grid {
@@ -418,43 +475,42 @@
 
 .lib-welcome__visual {
   position: relative;
+  display: grid;
+  place-items: center;
   min-height: 280px;
 }
 
-.lib-blob {
+.lib-welcome__photo {
+  position: relative;
   width: min(100%, 320px);
   aspect-ratio: 1;
-  margin-inline: auto;
-  border-radius: 42% 58% 55% 45% / 48% 42% 58% 52%;
-  background: linear-gradient(145deg, #e4d7c2, #c4b19a);
-  display: grid;
-  place-items: center;
-  text-align: center;
-  padding: 1.5rem;
-  font-size: 0.9rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(31, 28, 25, 0.5);
 }
 
-.lib-blob small {
+.lib-blob {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #e4d7c2, #c4b19a);
+  overflow: hidden;
+}
+
+.lib-blob img {
   display: block;
-  margin-top: 0.35rem;
-  font-weight: 400;
-  letter-spacing: 0;
-  text-transform: none;
-  opacity: 0.85;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 42% 38%;
 }
 
 .lib-blob-ring {
   position: absolute;
-  right: 12%;
-  bottom: 8%;
+  right: -4%;
+  bottom: -2%;
   width: 88px;
   height: 88px;
   border-radius: 50%;
   border: 1.5px dashed rgba(176, 138, 60, 0.55);
+  pointer-events: none;
 }
 
 .lib-dot {
@@ -462,10 +518,11 @@
   width: 0.5rem;
   height: 0.5rem;
   border-radius: 50%;
+  pointer-events: none;
 }
 
-.lib-dot--a { top: 12%; left: 18%; background: var(--charcoal); }
-.lib-dot--b { top: 28%; right: 22%; background: #5a6b42; }
+.lib-dot--a { top: 14%; left: -2%; background: var(--charcoal); }
+.lib-dot--b { top: 22%; right: -4%; background: #5a6b42; }
 
 .lib-welcome__copy h2 {
   margin: 0 0 0.65rem;
@@ -527,7 +584,7 @@
 
 .lib-episodes__grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
   gap: 1rem;
 }
 
@@ -545,6 +602,8 @@
   position: relative;
   width: 5.5rem;
   height: 5.5rem;
+  padding: 0;
+  border: 0;
   border-radius: 10px;
   background: linear-gradient(145deg, #e8dcc8, #c4b19a);
   display: grid;
@@ -554,6 +613,8 @@
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: rgba(31, 28, 25, 0.45);
+  overflow: hidden;
+  cursor: pointer;
 }
 
 .lib-ep__play {
@@ -596,11 +657,18 @@
 }
 
 .lib-ep__cta {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
   font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--accent);
+  cursor: pointer;
+  text-align: left;
 }
 
 /* ─── Video podcast ─── */
@@ -628,7 +696,11 @@
 
 .lib-video__frame {
   position: relative;
-  aspect-ratio: 16 / 9;
+  background: #1a1612;
+}
+
+.lib-video__frame .lib-media {
+  border-radius: 0;
 }
 
 .lib-video__ph {
@@ -773,6 +845,8 @@
 .lib-video__thumb {
   position: relative;
   aspect-ratio: 16 / 9;
+  padding: 0;
+  border: 0;
   border-radius: 9px;
   overflow: hidden;
   background: linear-gradient(145deg, #e8dcc8, #c4b19a);
@@ -783,6 +857,8 @@
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: rgba(31, 28, 25, 0.45);
+  cursor: pointer;
+  width: 100%;
 }
 
 .lib-video__item h4 {

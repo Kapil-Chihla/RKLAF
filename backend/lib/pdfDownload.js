@@ -96,17 +96,21 @@ async function sendPdfInline(res, fileUrl, filename = 'document.pdf') {
 /**
  * Express handler factory: find doc by id/slug, stream PDF with attachment headers.
  */
-function createPdfDownloadHandler(Model, { titleField = 'title', notFound = 'File not found', inline = false } = {}) {
+function createPdfDownloadHandler(
+  Model,
+  { titleField = 'title', fileField = 'file', notFound = 'File not found', inline = false } = {},
+) {
   return async function pdfDownload(req, res) {
     try {
       const doc = await Model.findOne({
         $or: [{ id: req.params.id }, { slug: req.params.id }],
       }).lean();
       if (!doc) return res.status(404).json({ message: notFound });
-      if (!doc.file) return res.status(404).json({ message: 'No PDF uploaded for this item' });
+      const fileUrl = doc[fileField];
+      if (!fileUrl) return res.status(404).json({ message: 'No PDF uploaded for this item' });
 
       const filename = pdfFilename(doc[titleField] || doc.year || 'document');
-      return sendPdfDownload(res, doc.file, filename, { inline });
+      return sendPdfDownload(res, fileUrl, filename, { inline });
     } catch (err) {
       if (!res.headersSent) {
         res.status(500).json({ message: err.message || 'Download failed' });

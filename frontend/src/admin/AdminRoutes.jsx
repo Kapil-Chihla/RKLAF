@@ -15,6 +15,8 @@ import AlsoOnRecordManage from './pages/AlsoOnRecordManage';
 import PressMentionsManage from './pages/PressMentionsManage';
 import PapersManage from './pages/PapersManage';
 import ExplainerVideosManage from './pages/ExplainerVideosManage';
+import RightsDecksManage from './pages/RightsDecksManage';
+import LibraryPodcastsManage from './pages/LibraryPodcastsManage';
 import ReportsManage from './pages/ReportsManage';
 import CampsManage from './pages/CampsManage';
 import UsersManage from './pages/UsersManage';
@@ -41,7 +43,9 @@ export default function AdminRoutes() {
           <Route path="blogs" element={<BlogsManage />} />
           <Route path="papers" element={<PapersManage />} />
           <Route path="articles" element={<ArticlesManage />} />
+          <Route path="rights-decks" element={<RightsDecksManage />} />
           <Route path="explainer-videos" element={<ExplainerVideosManage />} />
+          <Route path="library-podcasts" element={<LibraryPodcastsManage />} />
           <Route path="team" element={<TeamManage />} />
           <Route path="contacts" element={<ContactsManage />} />
           <Route path="users" element={<UsersManage />} />

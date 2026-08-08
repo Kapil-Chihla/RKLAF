@@ -3,8 +3,17 @@ export const socialLinks = [
   { name: 'Facebook', href: 'https://facebook.com/', icon: 'facebook' },
   { name: 'YouTube', href: 'https://www.youtube.com/@radheykrishnalegalaid', icon: 'youtube' },
   { name: 'LinkedIn', href: 'https://www.linkedin.com/company/radhey-krishna-legal-aid-foundation/', icon: 'linkedin' },
-  { name: 'Spotify', href: 'https://open.spotify.com/', icon: 'spotify' },
+  {
+    name: 'Spotify',
+    href: 'https://open.spotify.com/user/31weviexrzxc6u4wzye6k6h55jwy',
+    icon: 'spotify',
+  },
 ];
+
+/** Canonical podcast / video channel URLs for Library */
+export const SPOTIFY_PROFILE_URL =
+  'https://open.spotify.com/user/31weviexrzxc6u4wzye6k6h55jwy';
+export const YOUTUBE_CHANNEL_URL = 'https://www.youtube.com/@radheykrishnalegalaid';
 
 /** Canonical contact — use these everywhere (tel / WhatsApp / mailto). */
 export const CONTACT_PHONE_E164 = '919811109663';

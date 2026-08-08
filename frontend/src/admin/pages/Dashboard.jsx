@@ -61,10 +61,27 @@ const SECTIONS = [
         statKey: 'articles',
       },
       {
+        to: '/admin/rights-decks',
+        label: 'Guide decks',
+        desc: 'Carousel decks on KYR — banner, titles, description, PDF. Latest first.',
+        statKey: 'rightsDecks',
+      },
+      {
         to: '/admin/explainer-videos',
         label: 'Explainer videos',
         desc: 'Thumbnail + video file or YouTube link for the KYR horizontal carousel.',
         statKey: 'explainerVideos',
+      },
+    ],
+  },
+  {
+    heading: 'Library',
+    items: [
+      {
+        to: '/admin/library-podcasts',
+        label: 'Audio & video podcasts',
+        desc: 'Spotify / YouTube links or uploaded files — top player + top 5 lists on Library.',
+        statKey: 'libraryPodcasts',
       },
     ],
   },
@@ -139,6 +156,10 @@ export default function Dashboard() {
           <div className="admin-stat">
             <strong>{stats.articles ?? 0}</strong>
             <span>KYR guides</span>
+          </div>
+          <div className="admin-stat">
+            <strong>{stats.rightsDecks ?? 0}</strong>
+            <span>KYR decks</span>
           </div>
           <div className="admin-stat">
             <strong>{stats.explainerVideos ?? 0}</strong>

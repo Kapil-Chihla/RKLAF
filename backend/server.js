@@ -72,6 +72,8 @@ app.use('/api/also-on-record', require('./routes/alsoOnRecord'));
 app.use('/api/press-mentions', require('./routes/pressMentions'));
 app.use('/api/papers', require('./routes/papers'));
 app.use('/api/explainer-videos', require('./routes/explainerVideos'));
+app.use('/api/rights-decks', require('./routes/rightsDecks'));
+app.use('/api/library-podcasts', require('./routes/libraryPodcasts'));
 app.use('/api/reports', require('./routes/reports'));
 app.use('/api/camps', require('./routes/camps'));
 app.use('/api/contact', require('./routes/contact'));

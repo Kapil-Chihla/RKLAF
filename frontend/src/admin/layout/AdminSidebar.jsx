@@ -24,8 +24,13 @@ const NAV_GROUPS = [
     label: 'Know Your Rights',
     items: [
       { to: '/admin/articles', label: 'Practical guides (PDF)' },
+      { to: '/admin/rights-decks', label: 'Guide decks' },
       { to: '/admin/explainer-videos', label: 'Explainer videos' },
     ],
+  },
+  {
+    label: 'Library',
+    items: [{ to: '/admin/library-podcasts', label: 'Audio & video podcasts' }],
   },
   {
     label: 'Academics',

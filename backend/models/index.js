@@ -12,6 +12,8 @@ module.exports = {
   SuccessStory: require('./SuccessStory'),
   Paper: require('./Paper'),
   ExplainerVideo: require('./ExplainerVideo'),
+  RightsDeck: require('./RightsDeck'),
+  LibraryPodcast: require('./LibraryPodcast'),
   RunningNow: require('./RunningNow'),
   ToldInFull: require('./ToldInFull'),
   AlsoOnRecord: require('./AlsoOnRecord'),

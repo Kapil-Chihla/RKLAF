@@ -46,6 +46,16 @@ export function pressMentionPdfDownloadUrl(pressId) {
   return `${API_BASE}/press-mentions/${encodeURIComponent(pressId)}/pdf/download`;
 }
 
+export function rightsDeckPdfDownloadUrl(deckId) {
+  if (!deckId) return '#';
+  return `${API_BASE}/rights-decks/${encodeURIComponent(deckId)}/download`;
+}
+
+export function rightsDeckPdfViewUrl(deckId) {
+  if (!deckId) return '#';
+  return `${API_BASE}/rights-decks/${encodeURIComponent(deckId)}/view`;
+}
+
 /**
  * Best-effort CDN attachment URL. Prefer API download helpers above —
  * Free Cloudinary accounts block public PDF delivery.

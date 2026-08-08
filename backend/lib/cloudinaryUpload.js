@@ -6,8 +6,10 @@ function resourceType(mimetype, ext) {
   if (mimetype?.startsWith('image/')) return 'image';
   if (
     mimetype?.startsWith('video/') ||
-    ['.mp4', '.webm', '.mov', '.m4v'].includes(ext)
+    mimetype?.startsWith('audio/') ||
+    ['.mp4', '.webm', '.mov', '.m4v', '.mp3', '.m4a', '.wav', '.ogg', '.aac', '.flac'].includes(ext)
   ) {
+    /* Cloudinary stores audio under the video resource type */
     return 'video';
   }
   return 'auto';
