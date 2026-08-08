@@ -129,17 +129,37 @@ a.contact__channel:hover strong {
 }
 
 .contact__map {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.45rem;
-  min-height: 180px;
-  padding: 1.75rem 1.25rem;
+  position: relative;
+  overflow: hidden;
+  min-height: 220px;
   border-radius: 18px;
   background: linear-gradient(145deg, #ebe4d8, #ddd3c4);
+  border: 1px solid var(--line, rgba(43, 38, 33, 0.1));
+}
+
+.contact__map iframe {
+  display: block;
+  width: 100%;
+  height: 240px;
+  border: 0;
+}
+
+.contact__map-link {
+  display: block;
+  padding: 0.65rem 1rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   text-align: center;
-  color: var(--muted);
+  text-decoration: none;
+  color: var(--ink);
+  background: rgba(252, 251, 248, 0.92);
+  border-top: 1px solid rgba(43, 38, 33, 0.08);
+}
+
+.contact__map-link:hover {
+  color: var(--wine, #854f0b);
 }
 
 .contact__map-icon {

@@ -937,6 +937,26 @@ button.about-vid__play:hover span {
 .about-off span {
   font-size: 0.74rem;
   color: var(--au-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.about-off__line {
+  display: block;
+}
+
+.about-off__map {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--au-brown);
+  text-decoration: none;
+  border-bottom: 1px solid var(--au-brown);
+  padding-bottom: 2px;
 }
 
 .about-appear {

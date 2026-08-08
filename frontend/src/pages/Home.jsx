@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import HeroSketch from '../components/home/HeroSketch';
 import CountUp from '../components/motion/CountUp';
 import Reveal from '../components/motion/Reveal';
-import { WHATSAPP_DISPLAY, WHATSAPP_URL, CONTACT_EMAIL, CONTACT_MAILTO, CONTACT_PHONE_TEL } from '../data/navigation';
+import { WHATSAPP_DISPLAY, WHATSAPP_URL, CONTACT_EMAIL, CONTACT_MAILTO, CONTACT_PHONE_TEL, OFFICE_DELHI } from '../data/navigation';
 import publicApi from '../lib/publicApi';
 import { assetUrl } from '../lib/api';
 import './Home.css';
@@ -741,7 +741,12 @@ export default function Home() {
               <span>{CONTACT_EMAIL}</span>
             </div>
           </a>
-          <div className="home-contact__item">
+          <a
+            href={OFFICE_DELHI.mapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="home-contact__item"
+          >
             <span className="home-contact__icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M12 21s7-5.5 7-11a7 7 0 10-14 0c0 5.5 7 11 7 11z" />
@@ -750,10 +755,10 @@ export default function Home() {
             </span>
             <div className="home-contact__body">
               <strong>Head office</strong>
-              <span>Sector 14, Gurgaon</span>
-              <small>Walk-in Tue &amp; Thu</small>
+              <span>{OFFICE_DELHI.short}</span>
+              <small>Walk-in Tue &amp; Thu · Open map</small>
             </div>
-          </div>
+          </a>
         </div>
       </section>
     </div>

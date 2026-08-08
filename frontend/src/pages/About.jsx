@@ -5,6 +5,8 @@ import {
   CONTACT_MAILTO,
   CONTACT_PHONE_DISPLAY,
   CONTACT_PHONE_TEL,
+  OFFICE_DELHI,
+  OFFICE_IMPHAL,
   socialLinks,
 } from '../data/navigation';
 import Reveal from '../components/motion/Reveal';
@@ -521,14 +523,37 @@ export default function About() {
         <div>
           <div className="about-offices">
             <div className="about-off">
-              <em>Head office</em>
-              <b>Delhi</b>
-              <span>The main office, where case intake, filings and day-to-day work are handled.</span>
+              <em>{OFFICE_DELHI.title}</em>
+              <b>{OFFICE_DELHI.city}</b>
+              <span>
+                {OFFICE_DELHI.lines.map((line) => (
+                  <span key={line} className="about-off__line">
+                    {line}
+                  </span>
+                ))}
+              </span>
+              <a
+                className="about-off__map"
+                href={OFFICE_DELHI.mapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Open map →
+              </a>
             </div>
             <div className="about-off">
-              <em>Branch office</em>
-              <b>Imphal</b>
-              <span>Our branch in Manipur, extending the Foundation’s reach in the North East.</span>
+              <em>{OFFICE_IMPHAL.title}</em>
+              <b>{OFFICE_IMPHAL.city}</b>
+              <span>
+                {OFFICE_IMPHAL.lines.map((line) => (
+                  <span key={line} className="about-off__line">
+                    {line}
+                  </span>
+                ))}
+              </span>
+              <a className="about-off__map" href={`tel:${OFFICE_IMPHAL.phoneTel}`}>
+                {OFFICE_IMPHAL.phoneDisplay}
+              </a>
             </div>
           </div>
           <div className="about-appear">
@@ -575,17 +600,28 @@ export default function About() {
           <div className="about-cblock">
             <em>Head office · Delhi</em>
             <p>
-              New Delhi
-              <br />
-              India
+              {OFFICE_DELHI.lines.map((line) => (
+                <span key={line}>
+                  {line}
+                  <br />
+                </span>
+              ))}
+              <a href={OFFICE_DELHI.mapsUrl} target="_blank" rel="noopener noreferrer">
+                Open map →
+              </a>
             </p>
           </div>
           <div className="about-cblock">
             <em>Branch office · Imphal</em>
             <p>
-              Imphal, Manipur
-              <br />
-              India
+              {OFFICE_IMPHAL.lines.map((line) => (
+                <span key={line}>
+                  {line}
+                  <br />
+                </span>
+              ))}
+              Ph.{' '}
+              <a href={`tel:${OFFICE_IMPHAL.phoneTel}`}>{OFFICE_IMPHAL.phoneDisplay}</a>
             </p>
           </div>
           <div className="about-cblock">

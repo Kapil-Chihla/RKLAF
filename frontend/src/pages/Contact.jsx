@@ -6,6 +6,7 @@ import {
   CONTACT_EMAIL,
   CONTACT_MAILTO,
   CONTACT_PHONE_TEL,
+  OFFICE_DELHI,
 } from '../data/navigation';
 import { submitContact } from '../lib/submitContact';
 import './Contact.css';
@@ -36,9 +37,10 @@ const channels = [
   {
     id: 'office',
     icon: 'pin',
-    title: 'Head office',
-    detail: 'Sector 14, Gurgaon, Haryana · walk-ins Tue & Thu',
-    href: null,
+    title: OFFICE_DELHI.title,
+    detail: `${OFFICE_DELHI.short} · walk-ins Tue & Thu`,
+    href: OFFICE_DELHI.mapsUrl,
+    external: true,
   },
 ];
 
@@ -154,12 +156,22 @@ export default function Contact() {
             })}
           </Reveal>
 
-          <Reveal as="div" className="contact__map" variant="up" delay={80} aria-hidden="true">
-            <span className="contact__map-icon">
-              <ChannelIcon name="pin" />
-            </span>
-            <p>Map embed placeholder</p>
-            <small>Google Maps pin: RKLAF head office</small>
+          <Reveal as="div" className="contact__map" variant="up" delay={80}>
+            <iframe
+              title="RKLAF head office on Google Maps"
+              src={OFFICE_DELHI.mapsEmbed}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              allowFullScreen
+            />
+            <a
+              className="contact__map-link"
+              href={OFFICE_DELHI.mapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open in Google Maps →
+            </a>
           </Reveal>
         </div>
 
