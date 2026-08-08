@@ -20,12 +20,6 @@ const SECTIONS = [
         statKey: 'successStories',
       },
       {
-        to: '/admin/map-locations',
-        label: 'Map locations',
-        desc: 'Pins for the homepage and Impact map — place and edit locations.',
-        statKey: 'mapLocations',
-      },
-      {
         to: '/admin/reports',
         label: 'Annual reports',
         desc: 'Year + PDF. Public Our Work page shows the latest 2 years only.',
@@ -113,10 +107,6 @@ export default function Dashboard() {
           <div className="admin-stat">
             <strong>{stats.successStories ?? 0}</strong>
             <span>Success stories</span>
-          </div>
-          <div className="admin-stat">
-            <strong>{stats.mapLocations ?? 0}</strong>
-            <span>Map locations</span>
           </div>
           <div className="admin-stat">
             <strong>{stats.reports ?? 0}</strong>

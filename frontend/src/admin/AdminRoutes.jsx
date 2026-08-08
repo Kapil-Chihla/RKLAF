@@ -14,7 +14,6 @@ import ExplainerVideosManage from './pages/ExplainerVideosManage';
 import ReportsManage from './pages/ReportsManage';
 import CampsManage from './pages/CampsManage';
 import UsersManage from './pages/UsersManage';
-import MapLocationsManage from './pages/MapLocationsManage';
 import TeamManage from './pages/TeamManage';
 import ContactsManage from './pages/ContactsManage';
 
@@ -30,7 +29,6 @@ export default function AdminRoutes() {
           <Route path="desk" element={<DeskStoriesManage />} />
           <Route path="success-stories" element={<SuccessStoriesManage />} />
           <Route path="camps" element={<CampsManage />} />
-          <Route path="map-locations" element={<MapLocationsManage />} />
           <Route path="reports" element={<ReportsManage />} />
           <Route path="blogs" element={<BlogsManage />} />
           <Route path="papers" element={<PapersManage />} />

@@ -7,7 +7,6 @@ module.exports = {
   Camp: require('./Camp'),
   TeamMember: require('./TeamMember'),
   Contact: require('./Contact'),
-  MapLocation: require('./MapLocation'),
   GuideCategory: require('./GuideCategory'),
   DeskStory: require('./DeskStory'),
   SuccessStory: require('./SuccessStory'),

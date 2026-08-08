@@ -34,7 +34,6 @@ const app = (() => {
   a.use('/api/contact', require('../routes/contact'));
   a.use('/api/payment', require('../routes/payment'));
   a.use('/api/team', require('../routes/team'));
-  a.use('/api/map-locations', require('../routes/mapLocations'));
   a.get('/api/health', (req, res) => res.json({ status: 'ok' }));
   return a;
 })();
@@ -264,12 +263,6 @@ async function main() {
   {
     const r = await request('DELETE', `/api/contact/${contactId}`, { token });
     ok('DELETE /api/contact/:id', r.status === 200);
-  }
-
-  // --- Map locations list ---
-  {
-    const r = await request('GET', '/api/map-locations');
-    ok('GET /api/map-locations', r.status === 200 && Array.isArray(r.json));
   }
 
   // --- Desk / success / camps list (full CRUD already existed) ---

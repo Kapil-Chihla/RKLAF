@@ -9,7 +9,6 @@ require('dotenv').config();
 
 const connectDB = require('./config/database');
 const { configureCloudinary } = require('./config/cloudinary');
-const seedMapLocationsIfEmpty = require('./seed/mapLocations');
 const seedGuideCategoriesIfEmpty = require('./seed/guideCategories');
 const seedTestSuperAdmin = require('./seed/testSuperAdmin');
 
@@ -67,7 +66,6 @@ app.use('/api/camps', require('./routes/camps'));
 app.use('/api/contact', require('./routes/contact'));
 app.use('/api/payment', require('./routes/payment'));
 app.use('/api/team', require('./routes/team'));
-app.use('/api/map-locations', require('./routes/mapLocations'));
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok', message: 'Server running' }));
 
@@ -105,7 +103,6 @@ const PORT = process.env.PORT || 5000;
 async function start() {
   configureCloudinary();
   await connectDB();
-  await seedMapLocationsIfEmpty();
   await seedGuideCategoriesIfEmpty();
   await seedTestSuperAdmin();
   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
