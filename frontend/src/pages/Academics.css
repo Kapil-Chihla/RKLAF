@@ -37,7 +37,7 @@
   justify-content: center;
   align-items: center;
   gap: 0.15rem 0;
-  font-size: 0.72rem;
+  font-size: 0.9rem;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -95,7 +95,7 @@
   border: 0;
   background: transparent;
   padding: 0.2rem 0;
-  font-size: 0.72rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -115,7 +115,7 @@
 
 .acad-browse__hint {
   margin: 0 0 clamp(1.75rem, 4vw, 2.5rem);
-  font-size: 0.92rem;
+  font-size: 1.05rem;
   font-style: italic;
   color: var(--muted);
 }
@@ -145,7 +145,7 @@
 
 .acad-featured__photo span {
   max-width: 16rem;
-  font-size: 0.68rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -175,7 +175,7 @@
   place-items: center;
   text-align: center;
   padding: 0.65rem;
-  font-size: 0.58rem;
+  font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -186,7 +186,7 @@
 .acad-featured__kicker {
   margin: 0 0 0.65rem;
   padding-left: 2.5rem;
-  font-size: 0.68rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -206,7 +206,7 @@
 
 .acad-featured__summary {
   margin: 0 0 1.25rem;
-  font-size: 0.98rem;
+  font-size: 1.1rem;
   line-height: 1.65;
   color: var(--muted);
 }
@@ -219,7 +219,7 @@
   border: 1.5px solid var(--charcoal);
   background: transparent;
   color: var(--ink);
-  font-size: 0.72rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -252,7 +252,7 @@
   top: 0.35rem;
   writing-mode: vertical-rl;
   transform: rotate(180deg);
-  font-size: 0.62rem;
+  font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -270,7 +270,7 @@
 }
 
 .acad-card__photo span {
-  font-size: 0.62rem;
+  font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -288,7 +288,7 @@
 
 .acad-card__body p {
   margin: 0 0 0.85rem;
-  font-size: 0.9rem;
+  font-size: 1.05rem;
   line-height: 1.55;
   color: var(--muted);
   flex: 1;
@@ -297,7 +297,7 @@
 .acad-card__more {
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   color: var(--ink);
 }
 
@@ -324,7 +324,7 @@
 
 .acad-pdfs__head a {
   flex-shrink: 0;
-  font-size: 0.72rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -359,7 +359,7 @@
   border-radius: 2px;
   display: grid;
   place-items: center;
-  font-size: 0.62rem;
+  font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   color: var(--accent);
@@ -385,14 +385,14 @@
 
 .acad-pdf__body p {
   margin: 0;
-  font-size: 0.82rem;
+  font-size: 1rem;
   color: var(--muted);
   line-height: 1.4;
 }
 
 .acad-pdf__dl {
   margin-top: 0.35rem;
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;

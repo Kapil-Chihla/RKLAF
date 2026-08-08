@@ -385,7 +385,7 @@ export default function Home() {
           <h1 className="home-hero__tagline">
             <span className="home-hero__with">With You.</span>{' '}
             <span className="home-hero__for">For You.</span>{' '}
-            <span className="home-hero__nyay">Nyay Tak.</span>
+            <span className="home-hero__nyay">Nyaya Tak.</span>
           </h1>
         </div>
 

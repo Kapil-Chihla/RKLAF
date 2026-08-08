@@ -34,7 +34,7 @@
   margin: 0;
   flex: 1;
   min-width: 0;
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: #2a2118;
   line-height: 1.35;
@@ -89,7 +89,7 @@
   border-radius: 6px;
   background: rgba(255, 255, 255, 0.1);
   color: inherit;
-  font-size: 0.78rem;
+  font-size: 0.95rem;
   font-weight: 600;
   padding: 0.4rem 0.65rem;
   cursor: pointer;
@@ -107,14 +107,14 @@
 .pdf-preview__zoom span {
   min-width: 3.2rem;
   text-align: center;
-  font-size: 0.78rem;
+  font-size: 0.95rem;
   font-variant-numeric: tabular-nums;
 }
 
 .pdf-preview__tool-text {
   width: auto !important;
   padding: 0 0.55rem !important;
-  font-size: 0.72rem !important;
+  font-size: 0.9rem !important;
 }
 
 .pdf-preview__zoom button:hover:not(:disabled),
@@ -164,7 +164,7 @@
   gap: 0.75rem;
   text-align: center;
   color: #e8eaed;
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   padding: 2rem;
 }
 
@@ -185,7 +185,7 @@
   }
 
   .pdf-preview__title {
-    font-size: 0.8rem;
+    font-size: 1rem;
     white-space: normal;
     display: -webkit-box;
     -webkit-line-clamp: 2;

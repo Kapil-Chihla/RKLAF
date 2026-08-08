@@ -25,7 +25,7 @@
   align-items: center;
   gap: 0.65rem;
   margin: 0 0 0.85rem;
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -117,13 +117,13 @@ a.contact__channel:hover strong {
 }
 
 .contact__channel-text strong {
-  font-size: 0.98rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: var(--ink);
 }
 
 .contact__channel-text small {
-  font-size: 0.88rem;
+  font-size: 1.05rem;
   line-height: 1.45;
   color: var(--muted);
 }
@@ -147,7 +147,7 @@ a.contact__channel:hover strong {
 .contact__map-link {
   display: block;
   padding: 0.65rem 1rem;
-  font-size: 0.72rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -177,7 +177,7 @@ a.contact__channel:hover strong {
 
 .contact__map p {
   margin: 0;
-  font-size: 0.72rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -185,7 +185,7 @@ a.contact__channel:hover strong {
 }
 
 .contact__map small {
-  font-size: 0.82rem;
+  font-size: 1rem;
   color: var(--muted);
 }
 
@@ -210,7 +210,7 @@ a.contact__channel:hover strong {
 
 .contact__form-lead {
   margin: 0 0 1.35rem;
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   line-height: 1.55;
   color: var(--muted);
 }
@@ -220,7 +220,7 @@ a.contact__channel:hover strong {
   margin: 0 0 1rem;
   padding: 0.75rem 0.95rem;
   border-radius: 12px;
-  font-size: 0.9rem;
+  font-size: 1.05rem;
   line-height: 1.45;
 }
 
@@ -251,7 +251,7 @@ a.contact__channel:hover strong {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
-  font-size: 0.82rem;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--ink);
 }
@@ -273,7 +273,7 @@ a.contact__channel:hover strong {
   background: #fff;
   font: inherit;
   font-weight: 400;
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   color: var(--ink);
   resize: vertical;
 }
@@ -300,7 +300,7 @@ a.contact__channel:hover strong {
   border-radius: 999px;
   background: var(--charcoal);
   color: #fff;
-  font-size: 0.88rem;
+  font-size: 1.05rem;
   font-weight: 700;
   cursor: pointer;
   transition: transform 0.2s, background 0.2s;

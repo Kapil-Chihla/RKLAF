@@ -18,7 +18,7 @@
   align-items: center;
   gap: 0.75rem;
   margin: 0 0 1.75rem;
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -51,7 +51,7 @@
   border-radius: 999px;
   background: var(--charcoal);
   color: #fff;
-  font-size: 0.76rem;
+  font-size: 0.95rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -96,7 +96,7 @@
 .work-banner__ph span {
   max-width: 28rem;
   text-align: center;
-  font-size: 0.68rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -179,7 +179,7 @@
 }
 
 .work-browse__num {
-  font-size: 0.68rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   color: #854f0b;
@@ -190,7 +190,7 @@
 }
 
 .work-browse__label {
-  font-size: 0.72rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -241,7 +241,7 @@
 
 .work-prog__meta {
   margin: 0 0 0.55rem;
-  font-size: 0.68rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -288,12 +288,12 @@
 .work-prog__stat span {
   display: block;
   margin-top: 0.2rem;
-  font-size: 0.82rem;
+  font-size: 1rem;
   color: var(--muted);
 }
 
 .work-prog__more {
-  font-size: 0.72rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -376,7 +376,7 @@
 
 .work-desk__ph {
   margin: 0 0 1.25rem;
-  font-size: 0.68rem;
+  font-size: 0.9rem;
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -388,7 +388,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.75rem;
-  font-size: 0.78rem;
+  font-size: 0.95rem;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -398,7 +398,7 @@
 .work-desk__star {
   display: block;
   margin-top: 1.25rem;
-  font-size: 0.75rem;
+  font-size: 0.95rem;
   color: rgba(255, 255, 255, 0.7);
 }
 
@@ -448,7 +448,7 @@
 
 .work-desk__kicker {
   margin: 0 0 0.45rem;
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -494,7 +494,7 @@
   color: var(--ink);
   text-align: center;
   padding: 1rem;
-  font-size: 0.68rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -555,7 +555,7 @@
 
 .work-account__label {
   margin: 0 0 0.65rem;
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -629,13 +629,13 @@
 
 .work-report__text p {
   margin: 0;
-  font-size: 0.8rem;
+  font-size: 1rem;
   color: var(--muted);
 }
 
 .work-report__pdf {
   flex-shrink: 0;
-  font-size: 0.72rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;

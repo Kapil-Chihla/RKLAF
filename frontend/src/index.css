@@ -30,7 +30,7 @@
   --shadow-lg: 0 24px 56px rgba(26, 21, 16, 0.1);
   --radius: 12px;
   --radius-lg: 16px;
-  --header-h: 72px;
+  --header-h: 96px;
   --shell-max: 1680px;
   --shell-gutter: 0.75rem;
   --font-sans: 'DM Sans', system-ui, sans-serif;
@@ -54,7 +54,7 @@ html {
 body {
   margin: 0;
   font-family: var(--font-body);
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   color: var(--text);
   background: var(--cream);
   line-height: 1.65;
@@ -84,14 +84,14 @@ h1, h2, h3, h4, h5, h6 {
 p {
   margin: 0 0 1rem;
   font-family: var(--font-body);
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   color: var(--text-muted);
 }
 
 .site-wrapper,
 .site-main {
   text-align: justify;
-  font-size: 1.05rem;
+  font-size: 1.1rem;
 }
 
 ul {
@@ -104,7 +104,7 @@ ul {
 
 /* Keep header chrome at a stable size (don't inherit enlarged body type) */
 .site-header {
-  font-size: 1rem;
+  font-size: 1.1rem;
 }
 
 /* UI chrome: don't stretch short control / nav labels */
@@ -139,7 +139,7 @@ select,
   border-radius: 999px;
   font-family: var(--font-sans);
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   border: 2px solid transparent;
   cursor: pointer;
   transition: transform 0.2s, background 0.2s, color 0.2s;
@@ -189,7 +189,7 @@ select,
 
 .btn-sm {
   padding: 0.55rem 1.1rem;
-  font-size: 0.875rem;
+  font-size: 1rem;
 }
 
 .btn-block {
@@ -207,7 +207,7 @@ select,
 
 .eyebrow {
   display: inline-block;
-  font-size: 0.8rem;
+  font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -312,7 +312,7 @@ select,
   transform: rotate(180deg);
   padding: 0.95rem 0.55rem;
   font-family: var(--font-sans);
-  font-size: 0.72rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -416,15 +416,15 @@ select,
 
 .brand-mark {
   flex-shrink: 0;
-  width: 58px;
-  height: 58px;
+  width: 84px;
+  height: 84px;
   border-radius: 50%;
   overflow: hidden;
   background: #fff;
   border: 1px solid rgba(31, 28, 25, 0.1);
   display: grid;
   place-items: center;
-  padding: 3px;
+  padding: 2px;
   box-sizing: border-box;
 }
 
@@ -443,7 +443,7 @@ select,
 .brand-rule {
   flex-shrink: 0;
   width: 1px;
-  height: 2.65rem;
+  height: 3.6rem;
   background: rgba(31, 28, 25, 0.28);
   align-self: center;
 }
@@ -459,7 +459,7 @@ select,
 .brand-name-line {
   font-family: var(--font-sans, 'Inter', system-ui, sans-serif);
   color: #1a2744;
-  font-size: clamp(0.78rem, 1.45vw, 0.95rem);
+  font-size: clamp(0.95rem, 1.45vw, 1.1rem);
   font-weight: 800;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -470,7 +470,7 @@ select,
 
 .brand-name-line--mid,
 .brand-name-line--sub {
-  font-size: clamp(0.78rem, 1.45vw, 0.95rem);
+  font-size: clamp(0.95rem, 1.45vw, 1.1rem);
   font-weight: 800;
   color: #1a2744;
 }
@@ -479,7 +479,7 @@ select,
   display: block;
   margin-top: 0.28rem;
   font-family: var(--font-sans, 'Inter', system-ui, sans-serif);
-  font-size: 0.68rem;
+  font-size: 0.9rem;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: none;
@@ -555,7 +555,7 @@ select,
   background: var(--text);
   color: #fff;
   font-family: var(--font-sans);
-  font-size: 0.78rem;
+  font-size: 0.95rem;
   font-weight: 600;
 }
 
@@ -601,7 +601,7 @@ select,
 
 .nav-link,
 .nav-dropdown-trigger {
-  font-size: clamp(0.72rem, 0.95vw, 0.8rem);
+  font-size: clamp(0.9rem, 0.95vw, 1rem);
   font-weight: 500;
   letter-spacing: 0.01em;
   color: var(--text);
@@ -678,7 +678,7 @@ select,
   display: block;
   padding: 0.6rem 0.85rem;
   border-radius: 8px;
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: var(--text);
 }
 
@@ -814,7 +814,7 @@ select,
     max-width: 100%;
     justify-content: space-between;
     padding: 0.85rem 0.25rem;
-    font-size: 0.95rem;
+    font-size: 1.1rem;
     white-space: normal;
     text-align: left;
     box-sizing: border-box;
@@ -895,8 +895,8 @@ select,
 }
 
 .brand--footer .brand-mark {
-  width: 52px;
-  height: 52px;
+  width: 72px;
+  height: 72px;
   padding: 2px;
   border-color: rgba(255, 255, 255, 0.2);
   background: #fff;
@@ -919,7 +919,7 @@ select,
 .footer-v2__blurb {
   margin: 0 0 1.1rem;
   max-width: 28rem;
-  font-size: 0.9rem;
+  font-size: 1.05rem;
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.62);
 }
@@ -954,7 +954,7 @@ select,
 .footer-v2__col h4 {
   margin: 0 0 0.9rem;
   font-family: var(--font-serif);
-  font-size: 0.85rem;
+  font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -975,7 +975,7 @@ select,
 .footer-v2__col span,
 .footer-v2__col small {
   color: rgba(255, 255, 255, 0.68);
-  font-size: 0.9rem;
+  font-size: 1.05rem;
   line-height: 1.45;
 }
 
@@ -988,14 +988,14 @@ select,
 }
 
 .footer-v2__sub a {
-  font-size: 0.82rem !important;
+  font-size: 1rem !important;
   color: rgba(255, 255, 255, 0.55) !important;
 }
 
 .footer-v2__label {
   display: block;
   margin-bottom: 0.1rem;
-  font-size: 0.68rem !important;
+  font-size: 0.9rem !important;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1008,7 +1008,7 @@ select,
 
 .footer-v2__col--contact small {
   display: block;
-  font-size: 0.78rem !important;
+  font-size: 0.95rem !important;
   color: rgba(255, 255, 255, 0.45) !important;
 }
 
@@ -1027,7 +1027,7 @@ select,
 
 .footer-v2__bottom p {
   margin: 0;
-  font-size: 0.8rem;
+  font-size: 1rem;
   color: rgba(255, 255, 255, 0.5);
 }
 
@@ -1036,7 +1036,7 @@ select,
   flex-wrap: wrap;
   gap: 0.4rem;
   align-items: center;
-  font-size: 0.8rem;
+  font-size: 1rem;
   color: rgba(255, 255, 255, 0.4);
   /* Clear stacked mail + WhatsApp FABs so Admin stays clickable */
   padding-right: calc(4.5rem + env(safe-area-inset-right, 0px));
@@ -1199,7 +1199,7 @@ select,
 }
 
 .stat-item span {
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--text-muted);
 }
 
@@ -1355,7 +1355,7 @@ select,
   padding: 0.5rem 1rem;
   border-radius: 999px;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 1.05rem;
 }
 
 /* ─── Blogs ─── */
@@ -1401,7 +1401,7 @@ select,
   display: grid;
   gap: 0.4rem;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 1.05rem;
   color: var(--blue);
 }
 
@@ -1427,7 +1427,7 @@ select,
 }
 
 .form-status {
-  font-size: 0.9rem;
+  font-size: 1.05rem;
   color: var(--maroon);
 }
 
@@ -1505,13 +1505,13 @@ select,
   }
 
   .brand-mark {
-    width: 52px;
-    height: 52px;
+    width: 72px;
+    height: 72px;
     padding: 2px;
   }
 
   .brand-rule {
-    height: 2.2rem;
+    height: 2.8rem;
   }
 
   .brand-tagline {
@@ -1537,9 +1537,9 @@ select,
   }
 
   .brand-mark {
-    width: 46px;
-    height: 46px;
-    padding: 2px;
+    width: 64px;
+    height: 64px;
+    padding: 1px;
   }
 }
 
@@ -1573,7 +1573,7 @@ select,
 }
 
 .donate-program-card span {
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--text-muted);
 }
 
@@ -1588,7 +1588,7 @@ select,
 }
 
 .donate-note {
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--text-muted);
   margin-top: 1rem;
 }

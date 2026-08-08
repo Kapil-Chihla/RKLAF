@@ -16,7 +16,7 @@
   background: rgba(255, 255, 255, 0.72);
   color: var(--ink, #1f1c19);
   font-family: var(--font-sans);
-  font-size: 0.78rem;
+  font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
   line-height: 1.2;
@@ -43,7 +43,7 @@
 }
 
 .lang-switch__chev {
-  font-size: 0.65rem;
+  font-size: 0.85rem;
   opacity: 0.65;
   flex-shrink: 0;
 }
@@ -88,14 +88,14 @@
 }
 
 .lang-switch__native {
-  font-size: 0.88rem;
+  font-size: 1.05rem;
   font-weight: 600;
   line-height: 1.35;
   overflow-wrap: anywhere;
 }
 
 .lang-switch__en {
-  font-size: 0.72rem;
+  font-size: 0.9rem;
   color: var(--muted, #6a635c);
   flex-shrink: 0;
 }

@@ -23,7 +23,7 @@
 
 .camps-section__eyebrow {
   margin: 0 0 0.35rem;
-  font-size: 0.74rem;
+  font-size: 0.95rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -130,7 +130,7 @@
   border-radius: 999px;
   background: rgba(18, 32, 46, 0.78);
   color: var(--ivory);
-  font-size: 0.72rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.04em;
 }
@@ -149,7 +149,7 @@
   border-radius: 999px;
   background: rgba(131, 66, 86, 0.1);
   color: var(--wine);
-  font-size: 0.68rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -171,7 +171,7 @@
 .camp-card__summary {
   margin: 0 0 1rem;
   flex: 1;
-  font-size: 0.92rem;
+  font-size: 1.05rem;
   line-height: 1.6;
   color: var(--text-muted);
   display: -webkit-box;
@@ -182,7 +182,7 @@
 
 .camp-card__cta {
   margin-top: auto;
-  font-size: 0.82rem;
+  font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -195,7 +195,7 @@
   align-items: center;
   gap: 0.45rem;
   margin: 0;
-  font-size: 0.72rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -262,7 +262,7 @@
 
 .camp-gallery__item figcaption {
   margin-top: 0.45rem;
-  font-size: 0.82rem;
+  font-size: 1rem;
   color: var(--text-muted);
   line-height: 1.4;
 }
@@ -338,7 +338,7 @@
 .camp-lightbox__counter {
   margin: 0.5rem 0 0;
   color: rgba(251, 249, 246, 0.6);
-  font-size: 0.82rem;
+  font-size: 1rem;
   font-weight: 600;
 }
 
@@ -359,7 +359,7 @@
 }
 
 .camp-detail__back-link {
-  font-size: 0.88rem;
+  font-size: 1.05rem;
   font-weight: 700;
   color: var(--wine);
   transition: color 0.2s ease;
@@ -413,7 +413,7 @@
 
 .camp-detail__kicker {
   margin: 0.5rem 0 0;
-  font-size: 0.72rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -436,7 +436,7 @@
   align-items: center;
   gap: 0.45rem;
   margin: 0 0 0.65rem;
-  font-size: 0.8rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--slate-soft);
 }
@@ -457,7 +457,7 @@
   border-radius: 999px;
   background: rgba(131, 66, 86, 0.1);
   color: var(--wine);
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -479,7 +479,7 @@
   background: var(--ivory);
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
-  font-size: 0.72rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -488,7 +488,7 @@
 
 .camp-detail__stat-pill strong {
   font-family: var(--font-serif);
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   font-weight: 600;
   letter-spacing: 0;
   text-transform: none;
@@ -573,7 +573,7 @@
   border-radius: 999px;
   background: rgba(18, 32, 46, 0.88);
   color: var(--ivory);
-  font-size: 0.72rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -599,7 +599,7 @@
 
 .camp-detail__story-kicker {
   margin: 0 0 0.35rem;
-  font-size: 0.72rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -653,7 +653,7 @@
 
 .camp-detail__gallery-kicker {
   margin: 0 0 0.35rem;
-  font-size: 0.72rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -670,7 +670,7 @@
 .camp-detail__gallery-lead {
   margin: 0;
   color: var(--text-muted);
-  font-size: 1rem;
+  font-size: 1.1rem;
   line-height: 1.6;
   max-width: 36ch;
   justify-self: end;
@@ -709,7 +709,7 @@
 
 .camp-detail__related-kicker {
   margin: 0 0 0.35rem;
-  font-size: 0.74rem;
+  font-size: 0.95rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -729,7 +729,7 @@
 
 .camp-detail__not-found-kicker {
   margin: 0 0 0.5rem;
-  font-size: 0.8rem;
+  font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;

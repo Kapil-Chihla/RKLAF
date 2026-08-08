@@ -30,7 +30,7 @@
 
 .impact-empty {
   margin: 0.5rem 0 0;
-  font-size: 0.82rem;
+  font-size: 1rem;
   color: var(--taupe);
   font-style: italic;
 }
@@ -87,7 +87,7 @@
 }
 
 .impact-hero p {
-  font-size: 0.9rem;
+  font-size: 1.05rem;
   color: rgba(247, 244, 238, 0.85);
   margin: 14px 0 0;
   max-width: 34ch;
@@ -101,7 +101,7 @@
   margin-top: 22px;
   background: #2c2620;
   color: #f1efe8;
-  font-size: 0.72rem;
+  font-size: 0.9rem;
   font-weight: 600;
   letter-spacing: 0.06em;
   padding: 10px 18px;
@@ -118,7 +118,7 @@
   border: 1px solid #d8c9ae;
   display: grid;
   place-items: center;
-  font-size: 0.55rem;
+  font-size: 0.85rem;
 }
 
 .impact-film:hover {
@@ -141,7 +141,9 @@
 .impact-mapzone {
   position: relative;
   padding: 46px 0 62px;
-  overflow: hidden;
+  /* Keep brush ornaments from widening the page; never clip timeline cards */
+  overflow-x: clip;
+  overflow-y: visible;
 }
 
 .impact-brush {
@@ -186,14 +188,14 @@
 
 .impact-mhead p {
   margin: 0;
-  font-size: 0.82rem;
+  font-size: 1rem;
   color: var(--soft);
   max-width: 52ch;
   line-height: 1.55;
 }
 
 .impact-mstamp {
-  font-size: 0.62rem !important;
+  font-size: 0.85rem !important;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -208,8 +210,8 @@
   z-index: 2;
   margin-top: 34px;
   overflow-x: auto;
-  overflow-y: hidden;
-  padding-bottom: 10px;
+  /* padding absorbs hover lift + card chips so nothing clips at the edges */
+  padding-block: 10px 18px;
   scroll-snap-type: x proximity;
   scrollbar-width: thin;
 }
@@ -229,6 +231,7 @@
   grid-auto-columns: minmax(230px, 1fr);
   position: relative;
   min-width: min-content;
+  align-items: stretch;
 }
 
 .impact-htrack::before {
@@ -243,10 +246,14 @@
 
 .impact-hitem {
   display: grid;
-  grid-template-rows: 170px 40px 170px;
+  /* Equal flexible bands keep the dashed spine centered while cards grow with text */
+  grid-template-rows: 1fr 40px 1fr;
+  min-height: 380px;
+  height: 100%;
   padding: 0 12px;
   scroll-snap-align: center;
   position: relative;
+  align-self: stretch;
 }
 
 .impact-hcard {
@@ -255,6 +262,8 @@
   border-radius: 14px;
   padding: 15px 17px;
   transition: 0.25s;
+  /* Full readable copy — never clip titles, body, or chips */
+  overflow: visible;
 }
 
 .impact-hcard:hover {
@@ -275,7 +284,7 @@
 .impact-hcard b {
   display: block;
   font-family: var(--font-serif);
-  font-size: 0.98rem;
+  font-size: 1.1rem;
   font-weight: 600;
   line-height: 1.3;
   color: var(--ink);
@@ -283,7 +292,7 @@
 
 .impact-hcard span {
   display: block;
-  font-size: 0.73rem;
+  font-size: 0.9rem;
   color: var(--soft);
   margin-top: 6px;
   line-height: 1.45;
@@ -293,7 +302,7 @@
   font-style: normal;
   display: inline-block;
   margin-top: 9px;
-  font-size: 0.55rem;
+  font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -302,6 +311,10 @@
   border: 1px solid var(--line);
   border-radius: 999px;
   padding: 4px 9px;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: break-word;
+  line-height: 1.35;
 }
 
 .impact-hnode {
@@ -366,7 +379,7 @@
   position: relative;
   z-index: 2;
   padding: 12px 0 0;
-  font-size: 0.62rem;
+  font-size: 0.85rem;
   letter-spacing: 0.1em;
   color: var(--taupe);
   margin: 0;
@@ -378,7 +391,8 @@
   color: #f1efe8;
   padding: 56px 0;
   position: relative;
-  overflow: hidden;
+  overflow-x: clip;
+  overflow-y: visible;
 }
 
 .impact-numbers::after {
@@ -419,7 +433,7 @@
 }
 
 .impact-num span {
-  font-size: 0.74rem;
+  font-size: 0.95rem;
   color: rgba(247, 244, 238, 0.66);
   display: block;
   margin-top: 6px;
@@ -429,7 +443,7 @@
 
 .impact-num em {
   font-style: normal;
-  font-size: 0.58rem;
+  font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -451,17 +465,17 @@
 }
 
 .impact-lead {
-  font-size: 0.85rem;
+  font-size: 1.1rem;
   color: var(--soft);
   max-width: 58ch;
   margin: 12px 0 0;
-  line-height: 1.55;
+  line-height: 1.6;
 }
 
 .impact-strand {
   display: flex;
   align-items: baseline;
-  gap: 16px;
+  gap: 0.65rem 1rem;
   flex-wrap: wrap;
   margin: 44px 0 18px;
   padding-top: 16px;
@@ -469,18 +483,24 @@
 }
 
 .impact-strand b {
-  font-size: 0.62rem;
+  font-size: 0.8rem;
   font-weight: 700;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--brown);
-  white-space: nowrap;
+  white-space: normal;
+  max-width: 100%;
+  flex: 0 1 auto;
+  line-height: 1.4;
 }
 
 .impact-strand span {
-  font-size: 0.74rem;
+  font-size: 1.05rem;
   color: var(--taupe);
-  line-height: 1.45;
+  line-height: 1.5;
+  flex: 1 1 12rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .impact-live-grid,
@@ -515,7 +535,7 @@
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  font-size: 0.58rem;
+  font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -549,7 +569,7 @@
 
 .impact-live h3 {
   font-family: var(--font-serif);
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 600;
   line-height: 1.32;
   margin: 10px 0 12px;
@@ -557,28 +577,49 @@
 
 .impact-par div {
   display: grid;
-  grid-template-columns: 74px 1fr;
-  gap: 8px;
-  font-size: 0.72rem;
+  grid-template-columns: minmax(6.75rem, max-content) minmax(0, 1fr);
+  column-gap: 0.85rem;
+  row-gap: 0.2rem;
+  align-items: start;
+  font-size: 0.95rem;
   color: var(--soft);
-  padding: 5px 0;
+  padding: 0.55rem 0;
   border-top: 1px dashed var(--line);
-  line-height: 1.45;
+  line-height: 1.5;
 }
 
 .impact-par b {
-  font-size: 0.56rem;
+  font-size: 0.8rem;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--gold);
-  padding-top: 2px;
+  padding-top: 0.15rem;
+  white-space: nowrap;
+  line-height: 1.35;
 }
 
+.impact-par span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Card columns are narrow — stack label above body so type never overlaps */
+.impact-live .impact-par div,
 .impact-story .impact-par div,
 .impact-pstory .impact-par div,
 .impact-sbody .impact-par div {
-  grid-template-columns: 64px 1fr;
+  grid-template-columns: minmax(0, 1fr);
+  column-gap: 0;
+  row-gap: 0.2rem;
+}
+
+.impact-live .impact-par b,
+.impact-story .impact-par b,
+.impact-pstory .impact-par b,
+.impact-sbody .impact-par b {
+  white-space: normal;
 }
 
 /* Prison block */
@@ -607,7 +648,7 @@
 }
 
 .impact-pstat span {
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   color: var(--soft);
   display: block;
   margin-top: 7px;
@@ -618,7 +659,7 @@
 .impact-psub {
   display: flex;
   align-items: baseline;
-  gap: 14px;
+  gap: 0.65rem 0.9rem;
   flex-wrap: wrap;
   margin: 26px 0 16px;
   padding-top: 16px;
@@ -626,17 +667,24 @@
 }
 
 .impact-psub b {
-  font-size: 0.6rem;
+  font-size: 0.8rem;
   font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--gold);
-  white-space: nowrap;
+  white-space: normal;
+  max-width: 100%;
+  flex: 0 1 auto;
+  line-height: 1.4;
 }
 
 .impact-psub span {
-  font-size: 0.72rem;
+  font-size: 1.05rem;
   color: var(--taupe);
+  line-height: 1.5;
+  flex: 1 1 12rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .impact-pcases {
@@ -658,7 +706,7 @@
 }
 
 .impact-pnote {
-  font-size: 0.68rem;
+  font-size: 0.9rem;
   color: var(--taupe);
   font-style: italic;
   margin: 20px 0 0;
@@ -731,7 +779,7 @@ a.impact-story:hover {
   display: grid;
   place-items: center;
   color: #6e5f4b;
-  font-size: 0.66rem;
+  font-size: 0.85rem;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -775,7 +823,7 @@ a.impact-story:hover {
 .impact-readmore {
   display: inline-block;
   margin-top: 14px;
-  font-size: 0.72rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -791,7 +839,7 @@ a.impact-story:hover .impact-readmore {
 }
 
 .impact-tag {
-  font-size: 0.58rem;
+  font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -807,7 +855,7 @@ a.impact-story:hover .impact-readmore {
 }
 
 .impact-caseline {
-  font-size: 0.62rem;
+  font-size: 0.85rem;
   letter-spacing: 0.06em;
   color: var(--taupe);
   display: block;
@@ -821,12 +869,12 @@ a.impact-story:hover .impact-readmore {
 
 .impact-lrow {
   display: grid;
-  grid-template-columns: 58px 168px 1fr 132px;
-  gap: 16px;
+  grid-template-columns: minmax(3.25rem, max-content) minmax(7rem, 11rem) minmax(0, 1fr) auto;
+  gap: 0.75rem 1rem;
   align-items: baseline;
   padding: 13px 4px;
   border-top: 1px dashed var(--line);
-  font-size: 0.76rem;
+  font-size: 0.95rem;
   color: var(--soft);
   text-decoration: none;
   transition: background 0.18s;
@@ -840,12 +888,12 @@ a.impact-lrow:hover {
 .impact-lrow__yr {
   font-family: var(--font-serif);
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 1.05rem;
   color: var(--gold);
 }
 
 .impact-lrow__frm {
-  font-size: 0.6rem;
+  font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -854,7 +902,7 @@ a.impact-lrow:hover {
 
 .impact-chip {
   justify-self: start;
-  font-size: 0.58rem;
+  font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -867,7 +915,7 @@ a.impact-lrow:hover {
 }
 
 .impact-ledger-note {
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   color: var(--taupe);
   margin-top: 14px;
   font-style: italic;
@@ -877,7 +925,8 @@ a.impact-lrow:hover {
 .impact-press {
   padding: 40px 0 60px;
   position: relative;
-  overflow: hidden;
+  overflow-x: clip;
+  overflow-y: visible;
 }
 
 .impact-press h2 {
@@ -888,7 +937,7 @@ a.impact-lrow:hover {
 }
 
 .impact-intro {
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--soft);
   max-width: 52ch;
   margin: 10px 0 0;
@@ -898,7 +947,7 @@ a.impact-lrow:hover {
 .impact-press-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: 120px;
+  grid-auto-rows: minmax(130px, auto);
   gap: 12px;
   margin-top: 26px;
   position: relative;
@@ -907,7 +956,7 @@ a.impact-lrow:hover {
 
 .impact-press-grid > .reveal {
   grid-row: span 2;
-  min-height: 0;
+  min-height: 260px;
 }
 
 .impact-press-grid > .reveal > .impact-clip,
@@ -915,6 +964,7 @@ a.impact-lrow:hover {
 .impact-press-grid > .reveal > .impact-phbox,
 .impact-press-grid > .reveal > .impact-press-media {
   height: 100%;
+  min-height: 100%;
 }
 
 .impact-press-media {
@@ -951,7 +1001,7 @@ a.impact-lrow:hover {
 
 .impact-press-media__body h3 {
   font-family: var(--font-serif);
-  font-size: 0.92rem;
+  font-size: 1.05rem;
   font-weight: 600;
   line-height: 1.3;
   margin: 6px 0 4px;
@@ -977,6 +1027,7 @@ a.impact-lrow:hover {
   text-decoration: none;
   color: inherit;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: visible;
 }
 
 a.impact-clip:hover {
@@ -986,7 +1037,7 @@ a.impact-clip:hover {
 }
 
 .impact-clip__outlet {
-  font-size: 0.58rem;
+  font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -995,21 +1046,21 @@ a.impact-clip:hover {
 
 .impact-clip h3 {
   font-family: var(--font-serif);
-  font-size: 0.98rem;
+  font-size: 1.1rem;
   font-weight: 600;
   line-height: 1.35;
   margin: 10px 0;
 }
 
 .impact-clip__meta {
-  font-size: 0.64rem;
+  font-size: 0.85rem;
   color: var(--taupe);
   letter-spacing: 0.04em;
   display: block;
 }
 
 .impact-clip__read {
-  font-size: 0.62rem;
+  font-size: 0.85rem;
   font-weight: 600;
   color: var(--gold);
   border-top: 1px dashed var(--line);
@@ -1031,14 +1082,14 @@ a.impact-clip:hover {
 .impact-vquote p {
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   line-height: 1.45;
   color: #4a3e30;
   margin: 0;
 }
 
 .impact-vquote span {
-  font-size: 0.66rem;
+  font-size: 0.85rem;
   color: var(--taupe);
   margin-top: 10px;
   letter-spacing: 0.06em;
@@ -1052,7 +1103,7 @@ a.impact-clip:hover {
   }
 
   .impact-hitem {
-    grid-template-rows: 200px 40px 200px;
+    min-height: 420px;
   }
 
   .impact-numgrid,
@@ -1068,13 +1119,22 @@ a.impact-clip:hover {
   }
 
   .impact-lrow {
-    grid-template-columns: 52px 1fr;
-    row-gap: 4px;
+    grid-template-columns: minmax(3rem, max-content) minmax(0, 1fr);
+    row-gap: 0.35rem;
   }
 
   .impact-lrow__frm,
   .impact-chip {
     grid-column: 2;
+  }
+
+  .impact-par div {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 0.2rem;
+  }
+
+  .impact-par b {
+    white-space: normal;
   }
 }
 

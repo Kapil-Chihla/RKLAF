@@ -11,16 +11,13 @@ export default function Brand({ variant = 'header', onNavigate }) {
       aria-label="Radhey Krishna Legal Aid Foundation — Home"
     >
       <span className="brand-mark">
-        <img src={logo} alt="" className="brand-logo" width={58} height={58} />
+        <img src={logo} alt="" className="brand-logo" width={84} height={84} />
       </span>
       <span className="brand-rule" aria-hidden="true" />
       <span className="brand-text">
         <strong className="brand-name-line">Radhey Krishna</strong>
         <span className="brand-name-line brand-name-line--mid">Legal Aid</span>
         <span className="brand-name-line brand-name-line--sub">Foundation</span>
-        {variant === 'header' ? (
-          <span className="brand-tagline">With You. For You. Nyay Tak.</span>
-        ) : null}
       </span>
     </Link>
   );

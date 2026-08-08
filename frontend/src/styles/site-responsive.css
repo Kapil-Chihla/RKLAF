@@ -27,26 +27,40 @@
   }
 
   .brand-mark {
-    width: 44px;
-    height: 44px;
-    padding: 2px;
+    width: 64px;
+    height: 64px;
+    padding: 1px;
   }
 }
 
 @media (max-width: 380px) {
   :root {
-    --header-h: 60px;
+    --header-h: 80px;
   }
 }
 
-/* Prevent horizontal bleed from absolute ornaments */
+/* Prevent horizontal bleed from absolute ornaments — never clip vertical content */
 .site-main {
   overflow-x: clip;
+  overflow-y: visible;
   max-width: 100%;
 }
 
 .site-main > * {
   max-width: 100%;
+}
+
+/* Prefer wrapping over cutting off copy after type-size bumps */
+.site-main h1,
+.site-main h2,
+.site-main h3,
+.site-main h4,
+.site-main p,
+.site-main li,
+.site-main dd,
+.site-main td,
+.site-main th {
+  overflow-wrap: break-word;
 }
 
 img,
@@ -161,7 +175,7 @@ svg {
   }
 
   .kyr-pill-term {
-    font-size: 0.82rem;
+    font-size: 1rem;
   }
 
   .kyr-doors__grid,
@@ -216,7 +230,7 @@ svg {
   }
 
   .lib-welcome__body {
-    font-size: 0.98rem;
+    font-size: 1.1rem;
   }
 
   .lib-drop {

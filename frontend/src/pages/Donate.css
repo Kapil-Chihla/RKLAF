@@ -24,7 +24,7 @@
   align-items: center;
   gap: 0.65rem;
   margin: 0 0 0.85rem;
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -51,7 +51,7 @@
 .donate__lead {
   margin: 0;
   max-width: 32rem;
-  font-size: 1.02rem;
+  font-size: 1.1rem;
   line-height: 1.65;
   color: var(--muted);
 }
@@ -143,14 +143,14 @@
 }
 
 .donate__program-text strong {
-  font-size: 0.92rem;
+  font-size: 1.05rem;
   font-weight: 700;
   line-height: 1.25;
   color: var(--ink);
 }
 
 .donate__program-text span {
-  font-size: 0.78rem;
+  font-size: 0.95rem;
   line-height: 1.4;
   color: var(--muted);
 }
@@ -168,7 +168,7 @@
   border: 1.5px solid var(--line);
   background: #fff;
   color: var(--ink);
-  font-size: 0.92rem;
+  font-size: 1.05rem;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s, color 0.2s, border-color 0.2s;
@@ -207,7 +207,7 @@
   border: 1px solid rgba(43, 38, 33, 0.12);
   background: #f5f2ed;
   font: inherit;
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   color: var(--ink);
 }
 
@@ -244,7 +244,7 @@
 
 .donate__impact p {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 1.05rem;
   line-height: 1.5;
   color: var(--ink);
 }
@@ -264,7 +264,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
-  font-size: 0.82rem;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--ink);
 }
@@ -277,7 +277,7 @@
   background: #fff;
   font: inherit;
   font-weight: 400;
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   color: var(--ink);
 }
 
@@ -299,7 +299,7 @@
   margin: 0 0 0.85rem;
   padding: 0.75rem 0.95rem;
   border-radius: 12px;
-  font-size: 0.9rem;
+  font-size: 1.05rem;
   line-height: 1.45;
 }
 
@@ -323,7 +323,7 @@
   border-radius: 999px;
   background: var(--charcoal);
   color: #fff;
-  font-size: 0.92rem;
+  font-size: 1.05rem;
   font-weight: 700;
   cursor: pointer;
   transition: transform 0.2s, background 0.2s;
@@ -356,7 +356,7 @@
   gap: 0.35rem;
   text-align: center;
   color: var(--muted);
-  font-size: 0.68rem;
+  font-size: 0.9rem;
   line-height: 1.3;
 }
 
@@ -408,7 +408,7 @@
 .donate__side-card > p,
 .donate__side-card blockquote p {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 1.05rem;
   line-height: 1.6;
   color: var(--muted);
 }
@@ -425,7 +425,7 @@
 
 .donate__side-card blockquote footer {
   margin-top: 0.75rem;
-  font-size: 0.82rem;
+  font-size: 1rem;
   color: var(--muted);
 }
 
@@ -455,7 +455,7 @@
 
 .donate__photo p {
   margin: 0;
-  font-size: 0.72rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -463,7 +463,7 @@
 }
 
 .donate__photo small {
-  font-size: 0.82rem;
+  font-size: 1rem;
   color: var(--muted);
   max-width: 16rem;
 }

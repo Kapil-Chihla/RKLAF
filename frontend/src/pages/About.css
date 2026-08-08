@@ -18,12 +18,13 @@
   color: var(--au-ink);
   font-family: var(--au-sans);
   line-height: 1.55;
-  overflow: hidden;
+  overflow-x: clip;
+  overflow-y: visible;
 }
 
 .about-kicker {
   display: block;
-  font-size: 0.6rem;
+  font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.26em;
   text-transform: uppercase;
@@ -38,7 +39,7 @@
   display: grid;
   place-items: center;
   color: #6e5f4b;
-  font-size: 0.62rem;
+  font-size: 0.85rem;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -131,7 +132,7 @@
 }
 
 .about-epigraph {
-  font-size: 0.74rem;
+  font-size: 0.95rem;
   color: var(--au-taupe);
   margin: 1.1rem 0 0;
   letter-spacing: 0.02em;
@@ -140,7 +141,7 @@
 .about-promise {
   font-family: var(--au-serif);
   font-style: italic;
-  font-size: clamp(0.98rem, 1.5vw, 1.15rem);
+  font-size: clamp(1.1rem, 1.5vw, 1.15rem);
   color: var(--au-soft);
   max-width: 38ch;
   margin: 0.5rem 0 0;
@@ -167,7 +168,7 @@
 }
 
 .about-carry {
-  font-size: 0.82rem;
+  font-size: 1rem;
   color: var(--au-soft);
   max-width: 46ch;
   margin: 1.35rem 0 0;
@@ -208,7 +209,7 @@
 }
 
 .about-stamp > span:last-child {
-  font-size: 0.62rem;
+  font-size: 0.85rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--au-taupe);
@@ -233,7 +234,7 @@
   bottom: 20px;
   writing-mode: vertical-rl;
   transform: rotate(180deg);
-  font-size: 0.56rem;
+  font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -271,7 +272,7 @@
   left: 16px;
   top: 16px;
   z-index: 2;
-  font-size: 0.55rem;
+  font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.16em;
   color: #f7f4ee;
@@ -389,13 +390,13 @@ button.about-vid__play:hover span {
 
 .about-nameplate b {
   font-family: var(--au-serif);
-  font-size: 1rem;
+  font-size: 1.1rem;
   display: block;
   font-weight: 600;
 }
 
 .about-nameplate span {
-  font-size: 0.6rem;
+  font-size: 0.85rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--au-taupe);
@@ -404,7 +405,7 @@ button.about-vid__play:hover span {
 .about-watch {
   display: inline-block;
   margin-top: 1rem;
-  font-size: 0.62rem;
+  font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -460,7 +461,7 @@ button.about-vid__play:hover span {
 
 .about-phil__sub {
   font-family: var(--au-sans);
-  font-size: 0.84rem;
+  font-size: 1rem;
   color: rgba(239, 231, 214, 0.72);
   max-width: 52ch;
   margin: 1.1rem 0 0;
@@ -493,7 +494,7 @@ button.about-vid__play:hover span {
 
 .about-pillar p {
   font-family: var(--au-sans);
-  font-size: 0.76rem;
+  font-size: 0.95rem;
   line-height: 1.55;
   color: rgba(239, 231, 214, 0.72);
   margin: 0;
@@ -548,7 +549,7 @@ button.about-vid__play:hover span {
 }
 
 .about-bracket span {
-  font-size: 0.58rem;
+  font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -630,7 +631,7 @@ button.about-vid__play:hover span {
 }
 
 .about-node__initials {
-  font-size: 0.52rem;
+  font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-align: center;
@@ -653,14 +654,14 @@ button.about-vid__play:hover span {
 
 .about-node__mark-glyph {
   font-family: var(--au-serif);
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 600;
   color: var(--au-soft);
 }
 
 .about-node b {
   font-family: var(--au-serif);
-  font-size: 0.84rem;
+  font-size: 1rem;
   line-height: 1.25;
   color: var(--au-soft);
   max-width: 15ch;
@@ -672,7 +673,7 @@ button.about-vid__play:hover span {
 
 .about-node em {
   font-style: normal;
-  font-size: 0.56rem;
+  font-size: 0.85rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--au-taupe);
@@ -726,7 +727,7 @@ button.about-vid__play:hover span {
 }
 
 .about-chapter__role {
-  font-size: 0.58rem;
+  font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -743,7 +744,7 @@ button.about-vid__play:hover span {
 .about-chapter__sub {
   font-family: var(--au-serif);
   font-style: italic;
-  font-size: 0.9rem;
+  font-size: 1.05rem;
   color: var(--au-taupe);
   display: block;
 }
@@ -770,7 +771,7 @@ button.about-vid__play:hover span {
   border: 1px solid var(--au-line);
   background: var(--au-card);
   cursor: pointer;
-  font-size: 0.78rem;
+  font-size: 0.95rem;
   color: var(--au-soft);
   transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
@@ -782,7 +783,7 @@ button.about-vid__play:hover span {
 }
 
 .about-hint {
-  font-size: 0.62rem;
+  font-size: 0.85rem;
   color: var(--au-taupe);
   letter-spacing: 0.08em;
   text-align: center;
@@ -859,7 +860,7 @@ button.about-vid__play:hover span {
 }
 
 .about-modes span {
-  font-size: 0.58rem;
+  font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -881,20 +882,20 @@ button.about-vid__play:hover span {
   gap: 0.9rem;
   padding: 0.9rem 2px;
   border-bottom: 1px solid var(--au-line);
-  font-size: 0.79rem;
+  font-size: 0.95rem;
   color: var(--au-soft);
 }
 
 .about-aim i {
   font-style: normal;
   color: var(--au-khaki);
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   padding-top: 2px;
 }
 
 .about-aim b {
   font-family: var(--au-serif);
-  font-size: 0.92rem;
+  font-size: 1.05rem;
   font-weight: 600;
   color: var(--au-ink);
   display: block;
@@ -943,7 +944,7 @@ button.about-vid__play:hover span {
 
 .about-off em {
   font-style: normal;
-  font-size: 0.56rem;
+  font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -959,7 +960,7 @@ button.about-vid__play:hover span {
 }
 
 .about-off span {
-  font-size: 0.74rem;
+  font-size: 0.95rem;
   color: var(--au-soft);
   display: flex;
   flex-direction: column;
@@ -973,7 +974,7 @@ button.about-vid__play:hover span {
 .about-off__map {
   display: inline-block;
   margin-top: 0.75rem;
-  font-size: 0.62rem;
+  font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -990,7 +991,7 @@ button.about-vid__play:hover span {
 }
 
 .about-appear > p {
-  font-size: 0.62rem;
+  font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -1005,7 +1006,7 @@ button.about-vid__play:hover span {
 }
 
 .about-courts span {
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   color: var(--au-soft);
   background: var(--au-sand);
   border: 1px solid var(--au-line);
@@ -1027,14 +1028,14 @@ button.about-vid__play:hover span {
 
 .about-reach b {
   font-family: var(--au-serif);
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   font-weight: 600;
   display: block;
   margin-bottom: 0.3rem;
 }
 
 .about-reach span {
-  font-size: 0.74rem;
+  font-size: 0.95rem;
   color: var(--au-soft);
 }
 
@@ -1050,20 +1051,20 @@ button.about-vid__play:hover span {
 }
 
 .about-soon__icon {
-  font-size: 0.98rem;
+  font-size: 1.1rem;
   color: var(--au-khaki);
   flex-shrink: 0;
 }
 
 .about-soon b {
   font-family: var(--au-serif);
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   font-weight: 600;
   display: block;
 }
 
 .about-soon span {
-  font-size: 0.72rem;
+  font-size: 0.9rem;
   color: var(--au-soft);
 }
 
@@ -1096,7 +1097,7 @@ button.about-vid__play:hover span {
 
 .about-closing__echo {
   font-family: var(--au-serif);
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   letter-spacing: 0.1em;
   color: var(--au-brown);
   margin: 1.5rem 0 0;
@@ -1130,7 +1131,7 @@ button.about-vid__play:hover span {
 
 .about-cblock em {
   font-style: normal;
-  font-size: 0.56rem;
+  font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -1140,7 +1141,7 @@ button.about-vid__play:hover span {
 }
 
 .about-cblock p {
-  font-size: 0.78rem;
+  font-size: 0.95rem;
   color: rgba(239, 231, 214, 0.8);
   line-height: 1.7;
   margin: 0;
@@ -1165,7 +1166,7 @@ button.about-vid__play:hover span {
   border: 1px solid rgba(216, 201, 174, 0.4);
   display: grid;
   place-items: center;
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   color: #efe7d6;
   text-decoration: none;
   border-bottom: none;
@@ -1183,7 +1184,7 @@ button.about-vid__play:hover span {
   justify-content: space-between;
   gap: 1rem;
   flex-wrap: wrap;
-  font-size: 0.66rem;
+  font-size: 0.85rem;
   color: rgba(239, 231, 214, 0.6);
 }
 
@@ -1191,7 +1192,7 @@ button.about-vid__play:hover span {
   font-style: italic;
   font-family: var(--au-serif);
   color: #d8c9ae;
-  font-size: 0.85rem;
+  font-size: 1rem;
 }
 
 /* ===== RESPONSIVE ===== */

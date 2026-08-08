@@ -15,7 +15,7 @@
 
 .kyr-label {
   margin: 0 0 0.55rem;
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -57,7 +57,7 @@
   border-radius: 999px;
   background: var(--charcoal);
   color: #fff;
-  font-size: 0.82rem;
+  font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0.02em;
   border: 1.5px solid var(--charcoal);
@@ -97,7 +97,7 @@
 }
 
 .kyr-more a {
-  font-size: 0.72rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -171,7 +171,8 @@
   position: relative;
   padding: clamp(2.5rem, 5vw, 4rem) 0;
   background: var(--paper);
-  overflow: hidden;
+  overflow-x: clip;
+  overflow-y: visible;
 }
 
 .kyr-doors__grid {
@@ -218,14 +219,14 @@
 
 .kyr-door p {
   margin: 0 0 1rem;
-  font-size: 0.9rem;
+  font-size: 1.05rem;
   line-height: 1.55;
   color: var(--muted);
   flex: 1;
 }
 
 .kyr-door__cta {
-  font-size: 0.68rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -253,7 +254,8 @@
   position: relative;
   padding: clamp(3.25rem, 7vw, 5.25rem) 0;
   background: var(--paper);
-  overflow: hidden;
+  overflow-x: clip;
+  overflow-y: visible;
 }
 
 .kyr-glossary__wash {
@@ -294,7 +296,7 @@
 .kyr-glossary__lede {
   margin: 0.9rem auto 0;
   max-width: 32rem;
-  font-size: 0.98rem;
+  font-size: 1.1rem;
   line-height: 1.65;
   color: var(--muted);
 }
@@ -344,15 +346,15 @@
   display: flex;
   align-items: center;
   min-width: 0;
-  padding: 0 1.35rem;
+  padding: 0.65rem 1.35rem;
   font-family: var(--font-serif);
-  font-size: clamp(0.92rem, 1.6vw, 1.05rem);
+  font-size: clamp(1.05rem, 1.6vw, 1.05rem);
   font-weight: 600;
   color: var(--ink);
   line-height: 1.35;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;
+  overflow: visible;
+  overflow-wrap: break-word;
 }
 
 /* A–Z: one fixed line, no horizontal scroll */
@@ -375,7 +377,7 @@
   border-radius: 6px;
   background: transparent;
   font-family: var(--font-serif);
-  font-size: clamp(0.72rem, 1.7vw, 0.95rem);
+  font-size: clamp(0.9rem, 1.7vw, 1.1rem);
   font-weight: 600;
   color: rgba(31, 28, 25, 0.4);
   cursor: pointer;
@@ -400,7 +402,7 @@
 
 .kyr-glossary__viewall {
   margin: 0.15rem 0 0;
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -422,7 +424,7 @@
   border-radius: 0;
   padding: 0;
   box-shadow: none;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .kyr-az__track {
@@ -430,10 +432,10 @@
   display: flex;
   gap: 0.9rem;
   overflow-x: auto;
-  overflow-y: hidden;
+  overflow-y: visible;
   scroll-snap-type: x mandatory;
   scroll-padding-inline: 0.25rem;
-  padding: 0.15rem 0.15rem 1rem;
+  padding: 0.35rem 0.15rem 1.15rem;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
   scrollbar-color: rgba(141, 107, 64, 0.45) transparent;
@@ -455,6 +457,7 @@
   flex-direction: column;
   gap: 0.45rem;
   min-height: 9.5rem;
+  height: auto;
   padding: 1.15rem 1.2rem 1.25rem;
   background: #fff;
   border: 1px solid rgba(31, 28, 25, 0.1);
@@ -477,14 +480,9 @@
 
 .kyr-az__card dd {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 1.05rem;
   line-height: 1.5;
   color: var(--muted);
-  display: -webkit-box;
-  -webkit-line-clamp: 5;
-  line-clamp: 5;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
 @media (max-width: 640px) {
@@ -500,7 +498,7 @@
 
   .kyr-glossbar__terms {
     padding: 0 1rem;
-    font-size: 0.88rem;
+    font-size: 1.05rem;
   }
 
   .kyr-az__card {
@@ -531,7 +529,7 @@
 
 .kyr-guides__head p {
   margin: 0;
-  font-size: 0.98rem;
+  font-size: 1.1rem;
   line-height: 1.55;
   color: var(--muted);
 }
@@ -597,7 +595,7 @@
 
 .kyr-pdf__cover strong {
   font-family: var(--font-serif);
-  font-size: clamp(0.95rem, 1.4vw, 1.15rem);
+  font-size: clamp(1.1rem, 1.4vw, 1.15rem);
   font-weight: 700;
   line-height: 1.25;
   letter-spacing: -0.01em;
@@ -612,7 +610,7 @@
   border-radius: 4px;
   background: rgba(255, 255, 255, 0.92);
   color: var(--ink);
-  font-size: 0.58rem;
+  font-size: 0.85rem;
   font-weight: 800;
   letter-spacing: 0.1em;
 }
@@ -672,7 +670,7 @@
 
 .kyr-pdf__title {
   margin: 0;
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   font-family: var(--font-serif);
   font-weight: 700;
   line-height: 1.35;
@@ -702,8 +700,8 @@
 
 .kyr-pdf__desc {
   margin: 0;
-  font-size: 0.78rem;
-  line-height: 1.5;
+  font-size: 1rem;
+  line-height: 1.55;
   color: var(--muted);
   display: -webkit-box;
   -webkit-line-clamp: 4;
@@ -729,7 +727,7 @@
   border-radius: 8px;
   background: transparent;
   color: var(--ink);
-  font-size: 0.78rem;
+  font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
   transition: border-color 0.2s, background 0.2s, color 0.2s;
@@ -829,7 +827,7 @@
   inset: 0;
   display: grid;
   place-items: center;
-  font-size: 0.68rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -848,7 +846,7 @@
   color: var(--ink);
   display: grid;
   place-items: center;
-  font-size: 0.75rem;
+  font-size: 0.95rem;
   box-shadow: 0 8px 24px rgba(26, 21, 16, 0.18);
   z-index: 1;
 }
@@ -863,7 +861,7 @@
 
 .kyr-video__meta h3 {
   margin: 0 0 0.25rem;
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: #fff;
   line-height: 1.35;
@@ -871,7 +869,7 @@
 
 .kyr-video__meta p {
   margin: 0;
-  font-size: 0.78rem;
+  font-size: 0.95rem;
   color: rgba(255, 255, 255, 0.7);
 }
 
@@ -941,7 +939,7 @@
 .kyr-video-modal__title {
   margin: 0.85rem 0 0;
   color: rgba(255, 255, 255, 0.88);
-  font-size: 0.95rem;
+  font-size: 1.1rem;
 }
 
 /* ─── Emergency ─── */
@@ -950,7 +948,8 @@
   padding: clamp(3rem, 6vw, 4.5rem) 0;
   background: var(--charcoal);
   color: #fff;
-  overflow: hidden;
+  overflow-x: clip;
+  overflow-y: visible;
 }
 
 .kyr-emergency h2 {
@@ -1002,7 +1001,7 @@
 }
 
 .kyr-emcard span {
-  font-size: 0.8rem;
+  font-size: 1rem;
   line-height: 1.45;
   color: rgba(255, 255, 255, 0.68);
 }
@@ -1153,7 +1152,7 @@
 .kyr-faqs .faq-accordion--kyr-v2 .faq-accordion__panel p {
   margin: 0;
   max-width: 40rem;
-  font-size: 1.02rem;
+  font-size: 1.1rem;
   line-height: 1.7;
   color: var(--muted);
 }
@@ -1186,7 +1185,7 @@
 
 .kyr-ask__copy p {
   margin: 0 0 1.25rem;
-  font-size: 1.02rem;
+  font-size: 1.1rem;
   line-height: 1.65;
   color: var(--muted);
   max-width: 28rem;
@@ -1229,7 +1228,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
-  font-size: 0.82rem;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--ink);
 }
@@ -1243,7 +1242,7 @@
   background: #fff;
   font: inherit;
   font-weight: 400;
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   color: var(--ink);
   resize: vertical;
 }
@@ -1271,7 +1270,7 @@
   margin: 0;
   padding: 0.7rem 0.85rem;
   border-radius: 12px;
-  font-size: 0.88rem;
+  font-size: 1.05rem;
   line-height: 1.45;
 }
 

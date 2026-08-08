@@ -48,7 +48,7 @@ export default function Footer() {
       <div className="container footer-v2">
         <div className="footer-v2__brand">
           <Brand variant="footer" />
-          <p className="footer-v2__tagline">With You. For You. Nyay Tak.</p>
+          <p className="footer-v2__tagline">With You. For You. Nyaya Tak.</p>
           <p className="footer-v2__blurb">
             Democratizing access to justice for every citizen — from first consultation to the order that changes a life.
           </p>

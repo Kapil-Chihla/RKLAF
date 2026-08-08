@@ -23,7 +23,7 @@
 .home-eyebrow {
   margin: 0 0 0.65rem;
   font-family: var(--font-sans);
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -43,7 +43,7 @@
 .home-text-link {
   display: inline-flex;
   margin-top: 0.35rem;
-  font-size: 0.76rem;
+  font-size: 0.95rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -61,7 +61,7 @@
   background: transparent;
   color: var(--ink);
   font-family: var(--font-sans);
-  font-size: 0.76rem;
+  font-size: 0.95rem;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -124,7 +124,7 @@
 }
 
 .home-ph__label {
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -132,7 +132,7 @@
 
 .home-ph__caption {
   font-weight: 500;
-  font-size: 0.78rem;
+  font-size: 0.95rem;
   letter-spacing: 0;
   text-transform: none;
   opacity: 0.75;
@@ -342,7 +342,7 @@
 .home-stat__label {
   display: block;
   margin-top: 0.2rem;
-  font-size: 0.82rem;
+  font-size: 1rem;
   line-height: 1.35;
   color: var(--muted);
 }
@@ -375,7 +375,7 @@
   justify-content: flex-end;
   gap: 0.45rem;
   color: var(--muted);
-  font-size: 0.68rem;
+  font-size: 0.9rem;
   font-weight: 600;
   pointer-events: auto;
 }
@@ -463,7 +463,7 @@
   border: 1px dashed rgba(255, 255, 255, 0.55);
   border-radius: 999px;
   color: #fff;
-  font-size: 0.66rem;
+  font-size: 0.85rem;
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -513,7 +513,7 @@
   box-shadow: 0 12px 28px rgba(26, 21, 16, 0.12);
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 0.92rem;
+  font-size: 1.05rem;
   line-height: 1.4;
 }
 
@@ -601,7 +601,7 @@ a.home-card--link:hover {
 .home-card__tag {
   display: inline-block;
   margin-bottom: 0.5rem;
-  font-size: 0.62rem;
+  font-size: 0.85rem;
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -625,7 +625,7 @@ a.home-card--link:hover {
 .home-card__body p {
   margin: 0;
   margin-top: auto;
-  font-size: 0.88rem;
+  font-size: 1.05rem;
   line-height: 1.45;
   color: var(--muted);
   display: -webkit-box;
@@ -717,7 +717,7 @@ a.home-card--link:hover {
   margin-top: 0.5rem;
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 0.84rem;
+  font-size: 1rem;
   color: var(--muted);
   text-align: center;
 }
@@ -788,7 +788,7 @@ a.home-story--link:hover {
   padding: 0.22rem 0.55rem;
   border-radius: 999px;
   background: var(--accent-soft);
-  font-size: 0.6rem;
+  font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -814,7 +814,7 @@ a.home-story--link:hover {
 .home-story__body p {
   margin: 0;
   margin-top: auto;
-  font-size: 0.88rem;
+  font-size: 1.05rem;
   line-height: 1.45;
   color: var(--muted);
   display: -webkit-box;
@@ -828,7 +828,7 @@ a.home-story--link:hover {
 .home-story__more {
   display: inline-block;
   margin-top: 0.75rem;
-  font-size: 0.72rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -891,7 +891,7 @@ a.home-story--link:hover .home-story__more {
 }
 
 .home-expertise__desc {
-  font-size: 0.88rem;
+  font-size: 1.05rem;
   color: var(--muted);
   line-height: 1.45;
 }
@@ -963,7 +963,7 @@ a.home-story--link:hover .home-story__more {
 
 .home-shelf__head p {
   margin: 0.15rem 0 0;
-  font-size: 0.66rem;
+  font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -985,7 +985,7 @@ a.home-story--link:hover .home-story__more {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  font-size: 0.9rem;
+  font-size: 1.05rem;
   color: var(--ink);
 }
 
@@ -1004,7 +1004,8 @@ a.home-story--link:hover .home-story__more {
 
 .home-cta {
   position: relative;
-  overflow: hidden;
+  overflow-x: clip;
+  overflow-y: visible;
   padding: clamp(1.6rem, 3vw, 2.25rem);
   border-radius: var(--radius);
   min-height: 230px;
@@ -1032,7 +1033,7 @@ a.home-story--link:hover .home-story__more {
 .home-cta p {
   max-width: 28rem;
   margin: 0 0 1.25rem;
-  font-size: 0.96rem;
+  font-size: 1.1rem;
   line-height: 1.6;
   opacity: 0.9;
 }
@@ -1062,7 +1063,7 @@ a.home-story--link:hover .home-story__more {
   margin: 0;
   max-width: 40rem;
   opacity: 0.9;
-  font-size: 0.94rem;
+  font-size: 1.05rem;
   line-height: 1.55;
 }
 
@@ -1126,7 +1127,7 @@ a.home-story--link:hover .home-story__more {
 
 .home-contact__item strong {
   display: block;
-  font-size: 0.8rem;
+  font-size: 1rem;
   color: var(--ink);
 }
 
@@ -1135,14 +1136,14 @@ a.home-story--link:hover .home-story__more {
 .home-contact__item > div span,
 .home-contact__item > div small {
   display: block;
-  font-size: 0.86rem;
+  font-size: 1rem;
   color: var(--muted);
   line-height: 1.4;
 }
 
 .home-contact__body small,
 .home-contact__item > div small {
-  font-size: 0.76rem;
+  font-size: 0.95rem;
 }
 
 @media (max-width: 1100px) {
@@ -1244,14 +1245,14 @@ a.home-story--link:hover .home-story__more {
   }
 
   .home-polaroid .home-ph__label {
-    font-size: clamp(0.68rem, 2.8vw, 0.82rem);
+    font-size: clamp(0.9rem, 2.8vw, 1rem);
     letter-spacing: 0.08em;
     line-height: 1.2;
   }
 
   .home-polaroid figcaption {
     margin-top: 0.45rem;
-    font-size: clamp(0.78rem, 2.8vw, 0.9rem);
+    font-size: clamp(0.95rem, 2.8vw, 1.05rem);
     line-height: 1.3;
   }
 }
