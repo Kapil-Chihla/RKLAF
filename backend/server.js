@@ -45,7 +45,14 @@ app.use(
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100 });
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: process.env.NODE_ENV === 'production' ? 600 : 5000,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { message: 'Too many requests, please try again later.' },
+  skip: (req) => req.path === '/health' || req.path === '/api/health',
+});
 app.use('/api/', limiter);
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));

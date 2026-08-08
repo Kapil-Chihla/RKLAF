@@ -131,27 +131,19 @@ function TornMini() {
   );
 }
 
-function PhotoBox({ image, label, caption, className = '', position = 'center' }) {
+function PhotoBox({ image, label, caption, className = '', fit = 'cover', position = 'center' }) {
+  if (image) {
+    return (
+      <div className={`impact-phbox impact-phbox--media ${className}`.trim()}>
+        <img src={image} alt="" loading="lazy" style={{ objectFit: fit, objectPosition: position }} />
+      </div>
+    );
+  }
+
   return (
-    <div
-      className={`impact-phbox ${className}`.trim()}
-      style={
-        image
-          ? {
-              backgroundImage: `url(${image})`,
-              backgroundSize: 'cover',
-              backgroundPosition: position,
-              backgroundRepeat: 'no-repeat',
-            }
-          : undefined
-      }
-    >
-      {!image ? (
-        <>
-          <span>{label || 'Photo'}</span>
-          {caption ? <small>{caption}</small> : null}
-        </>
-      ) : null}
+    <div className={`impact-phbox ${className}`.trim()}>
+      <span>{label || 'Photo'}</span>
+      {caption ? <small>{caption}</small> : null}
     </div>
   );
 }
@@ -410,8 +402,9 @@ export default function Impact() {
                       image={photo}
                       label="Portrait"
                       caption={story.caption}
-                      className="impact-phbox--flush"
-                      position="center top"
+                      className="impact-phbox--flush impact-phbox--story"
+                      fit="contain"
+                      position="center center"
                     />
                     <TornMini />
                     <div className="impact-sbody">
@@ -425,6 +418,7 @@ export default function Impact() {
                           ['Result', story.result],
                         ]}
                       />
+                      {href ? <span className="impact-readmore">Read more →</span> : null}
                     </div>
                   </>
                 );

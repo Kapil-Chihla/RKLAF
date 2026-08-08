@@ -6,7 +6,7 @@ import { legalGlossaryByLetter, GLOSSARY_LETTERS } from '../data/legalGlossary';
 import { kyrHelplines } from '../data/kyrHelplines';
 import { kyrFaqs } from '../data/kyrFaqs';
 import mapImage from '../assets/map.webp';
-import worldGlobe from '../assets/world.webp';
+import kyrBanner from '../assets/knowyourrightsbanner.jpeg';
 import publicApi from '../lib/publicApi';
 import { assetUrl } from '../lib/api';
 import { guidePdfDownloadUrl, guidePdfViewUrl } from '../lib/pdfDownload';
@@ -302,7 +302,7 @@ export default function KnowYourRights() {
 
   return (
     <div className="kyr kyr--v2">
-      {/* Hero — world map frame (map.webp), not the globe-only visual */}
+      {/* Hero — knowyourrightsbanner.jpeg */}
       <header className="kyr-hero">
         <div className="container kyr-hero__grid">
           <Reveal as="div" className="kyr-hero__copy" variant="up">
@@ -326,16 +326,8 @@ export default function KnowYourRights() {
           </Reveal>
 
           <Reveal as="div" className="kyr-hero__visual" variant="scale" delay={80}>
-            <div className="kyr-mapframe" aria-hidden="true">
-              <span className="kyr-mapframe__dot kyr-mapframe__dot--a" />
-              <span className="kyr-mapframe__dot kyr-mapframe__dot--b" />
-              <span className="kyr-mapframe__dot kyr-mapframe__dot--c" />
-              <span className="kyr-mapframe__dot kyr-mapframe__dot--d" />
-              <div className="kyr-mapframe__board">
-                <img src={mapImage} alt="" className="kyr-mapframe__img" />
-                <div className="kyr-mapframe__wash" />
-              </div>
-              <img src={worldGlobe} alt="" className="kyr-mapframe__ghost" />
+            <div className="kyr-banner" aria-hidden="true">
+              <img src={kyrBanner} alt="" className="kyr-banner__img" />
             </div>
           </Reveal>
         </div>

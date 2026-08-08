@@ -152,13 +152,8 @@ svg {
     font-size: clamp(1.85rem, 8vw, 2.4rem);
   }
 
-  .kyr-mapframe {
-    min-height: 180px;
-  }
-
-  .kyr-mapframe__ghost,
-  .kyr-mapframe__dot {
-    display: none;
+  .kyr-banner {
+    min-height: 160px;
   }
 
   .kyr-pills {
