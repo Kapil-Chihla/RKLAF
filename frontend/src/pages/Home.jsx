@@ -127,17 +127,6 @@ const FALLBACK_PROGRAMMES = [
     slug: null,
     heroImage: null,
   },
-  {
-    id: 'fb-p4',
-    num: '04',
-    tag: 'Accountability · RTI',
-    title: 'RTI & Public Interest',
-    desc: '80+ law students unlocking pensions, ration, and scheme entitlements.',
-    visual: 'RTI filing desk',
-    caption: 'Order copy in hand',
-    slug: null,
-    heroImage: null,
-  },
 ];
 
 function mapHomeProgramme(s, i) {
@@ -351,8 +340,8 @@ export default function Home() {
       .get('/desk-stories')
       .then((r) => {
         if (!Array.isArray(r.data) || !r.data.length) return;
-        // Latest four programmes for the home feature strip
-        setFeaturedProgrammes(r.data.slice(0, 4).map(mapHomeProgramme));
+        // Feature three programmes — rest via View all
+        setFeaturedProgrammes(r.data.slice(0, 3).map(mapHomeProgramme));
       })
       .catch(() => {});
   }, []);
