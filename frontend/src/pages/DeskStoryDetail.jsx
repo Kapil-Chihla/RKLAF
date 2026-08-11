@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import publicApi from '../lib/publicApi';
 import { assetUrl } from '../lib/api';
-import Reveal from '../components/motion/Reveal';
 import { FALLBACK_DESK } from '../data/deskStories';
 import { deskDocumentDownloadUrl, deskDocumentViewUrl } from '../lib/pdfDownload';
 import { resolveStoryBlocks } from '../lib/storyBlocks';
@@ -19,26 +18,46 @@ export default function DeskStoryDetail() {
   const [missing, setMissing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [activeDoc, setActiveDoc] = useState(null);
+  const [loadError, setLoadError] = useState('');
 
   useEffect(() => {
+    let cancelled = false;
     setLoading(true);
+    setLoadError('');
+    setMissing(false);
+    setStory(null);
+
     publicApi
-      .get(`/desk-stories/${slug}`)
+      .get(`/desk-stories/${encodeURIComponent(slug)}`)
       .then((r) => {
-        setStory(r.data);
-        setMissing(false);
-      })
-      .catch(() => {
-        const local = FALLBACK_DESK.find((s) => s.slug === slug);
-        if (local) {
-          setStory(local);
+        if (cancelled) return;
+        if (r.data && (r.data.slug || r.data.id || r.data.title)) {
+          setStory(r.data);
           setMissing(false);
         } else {
           setStory(null);
           setMissing(true);
         }
       })
-      .finally(() => setLoading(false));
+      .catch((err) => {
+        if (cancelled) return;
+        const local = FALLBACK_DESK.find((s) => s.slug === slug || s.id === slug);
+        if (local) {
+          setStory(local);
+          setMissing(false);
+        } else {
+          setStory(null);
+          setMissing(true);
+          setLoadError(err?.response?.data?.message || err?.message || '');
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, [slug]);
 
   if (loading) {
@@ -54,6 +73,7 @@ export default function DeskStoryDetail() {
       <div className="story-detail">
         <div className="container story-detail__empty">
           <h1>Story not found</h1>
+          {loadError ? <p>{loadError}</p> : null}
           <Link to="/our-work/programmes">← Back to Programmes &amp; Initiatives</Link>
         </div>
       </div>
@@ -61,61 +81,78 @@ export default function DeskStoryDetail() {
   }
 
   const num = String(story.number || 1).padStart(2, '0');
-  const blocks = resolveStoryBlocks(story);
+  let blocks = [];
+  try {
+    blocks = resolveStoryBlocks(story);
+  } catch {
+    blocks = [];
+  }
   const storyKey = story.id || story.slug;
+  const heroUrl = story.heroImage ? assetUrl(story.heroImage) : null;
+  const documents = Array.isArray(story.documents) ? story.documents.filter((d) => d && d.url) : [];
 
   return (
     <div className="story-detail">
       <header
-        className="story-detail__hero"
+        className={`story-detail__hero${!heroUrl ? ' story-detail__hero--text' : ''}`}
         style={
-          story.heroImage
+          heroUrl
             ? {
-                backgroundImage: `linear-gradient(rgba(26,21,16,0.55), rgba(26,21,16,0.72)), url(${assetUrl(story.heroImage)})`,
+                backgroundImage: `linear-gradient(rgba(26,21,16,0.55), rgba(26,21,16,0.72)), url(${heroUrl})`,
               }
             : undefined
         }
       >
         <div className="container story-detail__hero-inner">
           <p className="story-detail__kicker">Programmes &amp; Initiatives · Project {num}</p>
-          <h1>{displayText(story.fullHeader || story.title)}</h1>
+          <h1>{displayText(story.fullHeader || story.title, 'Programme')}</h1>
           {story.kicker ? <p className="story-detail__tag">{displayText(story.kicker)}</p> : null}
         </div>
       </header>
 
       <article className="container story-detail__body">
-        <Reveal as="div" variant="up" className="story-detail__blocks">
+        <div className="story-detail__blocks">
           {blocks.length ? (
             blocks.map((block, i) =>
               block.type === 'paragraph' ? (
                 <p key={`p-${i}`}>{renderRichText(block.text)}</p>
-              ) : (
+              ) : block.type === 'image' && block.url ? (
                 <figure key={block.id || `img-${i}`} className="story-detail__shot">
-                  <img src={assetUrl(block.url)} alt={block.caption || story.title} />
+                  <img
+                    src={assetUrl(block.url)}
+                    alt={block.caption || displayText(story.title, 'Programme photo')}
+                  />
                   {block.caption ? <figcaption>{block.caption}</figcaption> : null}
                 </figure>
-              ),
+              ) : null,
             )
+          ) : story.listingDescription ? (
+            String(story.listingDescription)
+              .split(/\n+/)
+              .map((p) => p.trim())
+              .filter(Boolean)
+              .map((p, i) => <p key={`list-${i}`}>{renderRichText(p)}</p>)
           ) : (
-            <p>{renderRichText(story.listingDescription)}</p>
+            <p>Full story coming soon.</p>
           )}
-        </Reveal>
+        </div>
 
-        {story.documents?.length > 0 ? (
+        {documents.length > 0 ? (
           <div className="story-detail__docs">
             <h2>Documents</h2>
             <p className="story-detail__docs-lede">
               Open any handbook to preview, zoom, and download the PDF.
             </p>
             <div className="story-detail__doc-grid">
-              {story.documents.map((doc, i) => {
+              {documents.map((doc, i) => {
                 const title = doc.title || doc.name || 'Document.pdf';
+                const docId = doc.id || `doc-${i}`;
                 const downloadHref = deskDocumentDownloadUrl(storyKey, doc.id);
                 const viewHref = deskDocumentViewUrl(storyKey, doc.id);
                 const tone = DOC_TONES[i % DOC_TONES.length];
                 const cover = doc.coverImage ? assetUrl(doc.coverImage) : null;
                 return (
-                  <article key={doc.id} className="story-doc-card">
+                  <article key={docId} className="story-doc-card">
                     <button
                       type="button"
                       className={`story-doc-card__cover story-doc-card__cover--${tone}${
@@ -141,7 +178,9 @@ export default function DeskStoryDetail() {
                         {title}
                       </button>
                     </h3>
-                    {doc.description ? <p className="story-doc-card__desc">{doc.description}</p> : null}
+                    {doc.description ? (
+                      <p className="story-doc-card__desc">{renderRichText(doc.description)}</p>
+                    ) : null}
                     <div className="story-doc-card__actions">
                       <button
                         type="button"
@@ -152,7 +191,11 @@ export default function DeskStoryDetail() {
                       >
                         Preview
                       </button>
-                      <a className="story-doc-card__dl story-doc-card__dl--secondary" href={downloadHref} download>
+                      <a
+                        className="story-doc-card__dl story-doc-card__dl--secondary"
+                        href={downloadHref}
+                        download
+                      >
                         Download
                       </a>
                     </div>

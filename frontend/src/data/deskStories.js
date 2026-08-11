@@ -18,8 +18,10 @@ export const FALLBACK_DESK = [
 ];
 
 export function deskStoryHref(story) {
+  if (!story) return null;
   const slug =
     story.slug ||
+    story.id ||
     String(story.title || '')
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')

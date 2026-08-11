@@ -410,12 +410,11 @@
 
 .work-desk__body {
   display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
-  gap: clamp(1.5rem, 4vw, 3rem);
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: clamp(2rem, 5vw, 3.5rem);
   align-items: start;
-  /* Cream story block sits fully below banner; only photos overlap up */
   margin-top: 0;
-  padding-top: clamp(2rem, 4vw, 3rem);
+  padding-top: clamp(1.75rem, 3.5vw, 2.5rem);
   position: relative;
   z-index: 2;
   overflow: visible;
@@ -480,8 +479,8 @@
 
 .work-desk__photos {
   position: relative;
-  min-height: 320px;
-  margin-top: clamp(-5.5rem, -10vw, -3.5rem);
+  min-height: 0;
+  margin-top: 0;
 }
 
 .work-frame {
@@ -517,12 +516,31 @@
   padding-bottom: clamp(2rem, 4vw, 3rem);
 }
 
+.work-desk__spotlight {
+  position: relative;
+}
+
+.work-desk__spotlight + .work-desk__spotlight {
+  margin-top: clamp(1.5rem, 4vw, 2.75rem);
+}
+
+.work-desk__spotlight .work-desk__banner {
+  /* Each programme owns its banner — photo overlap targets this, not the previous story */
+  z-index: 1;
+}
+
 .work-desk__entry--flip .work-desk__body {
   direction: rtl;
 }
 
 .work-desk__entry--flip .work-desk__body > * {
   direction: ltr;
+}
+
+/* Keep photo on the outer edge so flip rows match the breathing room of row 01 */
+.work-desk__entry--flip .work-frame--lg {
+  margin-left: 0;
+  margin-right: auto;
 }
 
 .work-desk__lead-text .work-pill {
@@ -533,7 +551,8 @@
 .work-frame--lg {
   width: min(100%, 340px);
   margin-left: auto;
-  transform: translateY(-18%);
+  margin-right: 0;
+  transform: none;
 }
 
 .work-frame--sm {

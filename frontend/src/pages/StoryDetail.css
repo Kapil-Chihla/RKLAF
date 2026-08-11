@@ -59,6 +59,20 @@
   max-width: 42rem;
 }
 
+.story-detail__blocks {
+  /* Never hide story body behind scroll-reveal opacity */
+  opacity: 1;
+  transform: none;
+}
+
+.story-detail__blocks p {
+  margin: 0 0 1.15rem;
+}
+
+.story-detail__blocks .story-detail__shot {
+  margin: 0 0 1.5rem;
+}
+
 .story-detail__body p {
   margin: 0 0 1.15rem;
   font-size: 1.05rem;
