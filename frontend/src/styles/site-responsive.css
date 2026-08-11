@@ -168,7 +168,15 @@ svg {
 
   .work-desk__title {
     letter-spacing: 0.03em;
-    font-size: clamp(1.55rem, 8vw, 2.5rem);
+    font-size: clamp(1.35rem, 6.5vw, 2.1rem);
+  }
+
+  .work-desk__title--long {
+    font-size: clamp(1.15rem, 5vw, 1.7rem);
+  }
+
+  .work-desk__title--xl {
+    font-size: clamp(1.05rem, 4.4vw, 1.4rem);
   }
 
   .work-report {
