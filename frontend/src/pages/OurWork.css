@@ -350,7 +350,7 @@
 
 .work-desk__banner {
   position: relative;
-  min-height: clamp(280px, 38vw, 420px);
+  min-height: clamp(260px, 36vw, 400px);
   background: radial-gradient(ellipse at 50% 40%, #5a4a3c 0%, #2e251e 55%, #1a1510 100%);
   display: flex;
   align-items: center;
@@ -360,33 +360,50 @@
   overflow: hidden;
 }
 
+.work-desk__banner--plain {
+  min-height: clamp(240px, 32vw, 340px);
+}
+
 .work-desk__banner-inner {
   position: relative;
   z-index: 1;
-  padding: clamp(2.5rem, 5vw, 4rem) 1.25rem;
-  max-width: 48rem;
+  padding: clamp(1.75rem, 4vw, 3rem) 1.25rem;
+  max-width: min(48rem, 100%);
+  width: 100%;
 }
 
 .work-desk__title {
   margin: 0 0 0.85rem;
   font-family: var(--font-serif);
-  font-size: clamp(1.85rem, 5.5vw, 4.25rem);
+  font-size: clamp(1.55rem, 4.2vw, 3.25rem);
   font-weight: 700;
   letter-spacing: 0.04em;
+  line-height: 1.12;
   text-transform: uppercase;
   color: #fff;
   text-align: center;
+  text-wrap: balance;
   overflow-wrap: break-word;
   max-width: 100%;
 }
 
+.work-desk__title--long {
+  font-size: clamp(1.25rem, 3.2vw, 2.35rem);
+  letter-spacing: 0.03em;
+  line-height: 1.18;
+}
+
+.work-desk__title--xl {
+  font-size: clamp(1.1rem, 2.6vw, 1.85rem);
+  letter-spacing: 0.02em;
+  line-height: 1.22;
+  max-width: 36rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .work-desk__ph {
-  margin: 0 0 1.25rem;
-  font-size: 0.9rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.65);
+  display: none;
 }
 
 .work-desk__sub {
@@ -418,6 +435,11 @@
   position: relative;
   z-index: 2;
   overflow: visible;
+}
+
+.work-desk__body--text-only {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 48rem;
 }
 
 .work-desk__copy {

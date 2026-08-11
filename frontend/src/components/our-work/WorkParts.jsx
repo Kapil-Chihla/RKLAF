@@ -34,6 +34,9 @@ export function DeskSpotlight({ story, index }) {
   const hero = story.heroImage ? assetUrl(story.heroImage) : null;
   const flip = index % 2 === 1;
   const storyHref = deskStoryHref(story) || (story.id ? `/our-work/desk/${story.id}` : null);
+  const titleLen = title.length;
+  const titleSize =
+    titleLen > 72 ? 'work-desk__title--xl' : titleLen > 42 ? 'work-desk__title--long' : '';
 
   const bannerStyle = hero
     ? {
@@ -45,12 +48,9 @@ export function DeskSpotlight({ story, index }) {
 
   return (
     <article className={`work-desk__spotlight${flip ? ' work-desk__spotlight--flip' : ''}`}>
-      <div className="work-desk__banner" style={bannerStyle}>
+      <div className={`work-desk__banner${!hero ? ' work-desk__banner--plain' : ''}`} style={bannerStyle}>
         <div className="work-desk__banner-inner">
-          <h2 className="work-desk__title">{title}</h2>
-          {!hero ? (
-            <p className="work-desk__ph">Programme photo · add a hero image in admin</p>
-          ) : null}
+          <h2 className={`work-desk__title ${titleSize}`.trim()}>{title}</h2>
           <p className="work-desk__sub">
             <span aria-hidden="true">—</span> {kicker} · Project {num}{' '}
             <span aria-hidden="true">—</span>
@@ -66,7 +66,7 @@ export function DeskSpotlight({ story, index }) {
         className={`work-desk__entry${flip ? ' work-desk__entry--flip' : ''}`}
         variant="up"
       >
-        <div className="container work-desk__body">
+        <div className={`container work-desk__body${!hero ? ' work-desk__body--text-only' : ''}`}>
           <div className="work-desk__copy">
             <div className="work-desk__lead">
               <span className="work-desk__num" aria-hidden="true">
@@ -86,17 +86,13 @@ export function DeskSpotlight({ story, index }) {
             </div>
           </div>
 
-          <div className="work-desk__photos">
-            <figure className="work-frame work-frame--lg">
-              {hero ? (
+          {hero ? (
+            <div className="work-desk__photos">
+              <figure className="work-frame work-frame--lg">
                 <img className="work-frame__img" src={hero} alt="" />
-              ) : (
-                <div className="work-frame__ph">
-                  <span>Photo · {title}</span>
-                </div>
-              )}
-            </figure>
-          </div>
+              </figure>
+            </div>
+          ) : null}
         </div>
       </Reveal>
     </article>
