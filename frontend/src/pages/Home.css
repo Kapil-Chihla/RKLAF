@@ -138,14 +138,15 @@
   opacity: 0.75;
 }
 
-/* Hero — fits in first viewport: sketch + tagline together */
+/* Hero — first viewport: video fills remainder, stats sit on the bottom edge */
 .home-hero {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  min-height: calc(100svh - var(--header-h) - 1.25rem);
-  padding: 0.35rem 0 1rem;
-  /* Same surface as page — no white “sheet” behind sketch */
+  justify-content: flex-start;
+  height: calc(100svh - var(--header-h));
+  max-height: calc(100svh - var(--header-h));
+  min-height: 0;
+  padding: 0 0 0.85rem;
   background: var(--paper);
   box-sizing: border-box;
 }
@@ -156,8 +157,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: clamp(0.35rem, 1.2vh, 0.85rem);
-  flex: 1 1 auto;
+  flex: 0 0 auto;
   min-height: 0;
   width: 100%;
   max-width: 1100px;
@@ -166,102 +166,33 @@
   background: transparent;
 }
 
-.home-hero__sketch {
-  flex: 0 0 auto;
-  width: min(94%, 860px);
-  max-height: calc(100svh - var(--header-h) - 10rem);
-  background: transparent;
-}
-
-.hero-sketch {
+.home-hero__stage--video {
+  flex: 1 1 auto;
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--paper);
+  display: block;
   position: relative;
-  display: block;
-  width: 100%;
-  max-height: calc(100svh - var(--header-h) - 10rem);
-  margin-inline: auto;
-  overflow: visible;
-  background: transparent;
-  --draw: 0%;
 }
 
-.hero-sketch__img {
+.home-hero__video {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
-  height: auto;
-  max-height: calc(100svh - var(--header-h) - 10rem);
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  /* Keep full artwork (figures + tagline) visible; paper matches letterbox */
   object-fit: contain;
   object-position: center center;
-  background: transparent;
-  mix-blend-mode: multiply;
-  /*
-    Soft left → right pencil edge.
-    Whatever is visible is always a connected part of the real sketch —
-    never random floating scraps.
-  */
-  -webkit-mask-image: linear-gradient(
-    92deg,
-    #000 0%,
-    #000 max(0%, calc(var(--draw) - 12%)),
-    rgba(0, 0, 0, 0.55) max(0%, calc(var(--draw) - 4%)),
-    transparent var(--draw),
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    92deg,
-    #000 0%,
-    #000 max(0%, calc(var(--draw) - 12%)),
-    rgba(0, 0, 0, 0.55) max(0%, calc(var(--draw) - 4%)),
-    transparent var(--draw),
-    transparent 100%
-  );
-  -webkit-mask-size: 100% 100%;
-  mask-size: 100% 100%;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-}
-
-.hero-sketch--done .hero-sketch__img {
-  -webkit-mask-image: none;
-  mask-image: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-sketch__img {
-    -webkit-mask-image: none;
-    mask-image: none;
-  }
-}
-
-/* Fixed, centred over the sketch — no entrance motion */
-.home-hero__tagline {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: min(94%, 760px);
-  margin: 0;
-  padding: 0 0.5rem;
-  text-align: center;
-  z-index: 3;
   pointer-events: none;
-  line-height: 1.2;
-  animation: none;
-}
-
-.home-hero__with,
-.home-hero__for,
-.home-hero__nyay {
-  font-family: var(--font-serif);
-  font-size: clamp(1.55rem, 3.6vw, 2.75rem);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--ink);
-}
-
-.home-hero__for { color: var(--accent); }
-
-.home-hero__nyay {
-  font-style: normal;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -270,7 +201,10 @@
 
 .home-hero__stats {
   flex-shrink: 0;
-  padding: 0.75rem 0 0;
+  position: relative;
+  z-index: 2;
+  padding: 0.85rem 0 0;
+  background: var(--paper);
 }
 
 .home-hero__stats-row {
@@ -1164,14 +1098,25 @@ a.home-story--link:hover .home-story__more {
 
 @media (max-width: 900px) {
   .home-hero {
-    min-height: auto;
-    padding-top: 0.5rem;
+    height: auto;
+    max-height: none;
+    min-height: 0;
+    padding-top: 0;
   }
 
-  .home-hero__sketch,
-  .hero-sketch {
-    max-height: min(52vh, 360px);
-    width: min(92%, 520px);
+  .home-hero__stage--video {
+    flex: 0 0 auto;
+    position: relative;
+    aspect-ratio: 16 / 10;
+    max-height: min(48vh, 420px);
+  }
+
+  .home-hero__video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-height: none;
   }
 
   .home-who__grid,

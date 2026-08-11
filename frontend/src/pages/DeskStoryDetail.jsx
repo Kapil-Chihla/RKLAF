@@ -4,13 +4,37 @@ import publicApi from '../lib/publicApi';
 import { assetUrl } from '../lib/api';
 import { FALLBACK_DESK } from '../data/deskStories';
 import { deskDocumentDownloadUrl, deskDocumentViewUrl } from '../lib/pdfDownload';
-import { resolveStoryBlocks } from '../lib/storyBlocks';
+import { resolveStoryBlocks, groupStoryUnits } from '../lib/storyBlocks';
 import { displayText } from '../lib/displayText';
 import { renderRichText } from '../lib/richText';
 import PdfPreviewModal from '../components/pdf/PdfPreviewModal';
 import './StoryDetail.css';
 
 const DOC_TONES = ['plum', 'cream', 'ink', 'sage', 'gold', 'clay', 'olive'];
+
+function PhotoGrid({ images, altFallback }) {
+  const list = (images || []).filter((img) => img?.url);
+  if (!list.length) return null;
+
+  const countClass =
+    list.length === 1 ? 'is-1' : list.length === 2 ? 'is-2' : 'is-3';
+
+  return (
+    <div className={`story-detail__media ${countClass}`} role="group">
+      {list.map((img, j) => (
+        <figure key={`${img.id || img.url}-${j}`} className="story-detail__media-item">
+          <img
+            src={assetUrl(img.url)}
+            alt={img.caption || altFallback}
+            loading="lazy"
+            decoding="async"
+          />
+          {img.caption ? <figcaption>{img.caption}</figcaption> : null}
+        </figure>
+      ))}
+    </div>
+  );
+}
 
 export default function DeskStoryDetail() {
   const { slug } = useParams();
@@ -81,15 +105,16 @@ export default function DeskStoryDetail() {
   }
 
   const num = String(story.number || 1).padStart(2, '0');
-  let blocks = [];
+  let units = [];
   try {
-    blocks = resolveStoryBlocks(story);
+    units = groupStoryUnits(resolveStoryBlocks(story));
   } catch {
-    blocks = [];
+    units = [];
   }
   const storyKey = story.id || story.slug;
   const heroUrl = story.heroImage ? assetUrl(story.heroImage) : null;
   const documents = Array.isArray(story.documents) ? story.documents.filter((d) => d && d.url) : [];
+  const photoAlt = displayText(story.title, 'Programme photo');
 
   return (
     <div className="story-detail">
@@ -112,20 +137,13 @@ export default function DeskStoryDetail() {
 
       <article className="container story-detail__body">
         <div className="story-detail__blocks">
-          {blocks.length ? (
-            blocks.map((block, i) =>
-              block.type === 'paragraph' ? (
-                <p key={`p-${i}`}>{renderRichText(block.text)}</p>
-              ) : block.type === 'image' && block.url ? (
-                <figure key={block.id || `img-${i}`} className="story-detail__shot">
-                  <img
-                    src={assetUrl(block.url)}
-                    alt={block.caption || displayText(story.title, 'Programme photo')}
-                  />
-                  {block.caption ? <figcaption>{block.caption}</figcaption> : null}
-                </figure>
-              ) : null,
-            )
+          {units.length ? (
+            units.map((unit, i) => (
+              <section key={`unit-${i}`} className="story-detail__unit">
+                {unit.text ? <p>{renderRichText(unit.text)}</p> : null}
+                <PhotoGrid images={unit.images} altFallback={photoAlt} />
+              </section>
+            ))
           ) : story.listingDescription ? (
             String(story.listingDescription)
               .split(/\n+/)
@@ -165,7 +183,6 @@ export default function DeskStoryDetail() {
                       aria-label={`Preview ${title}`}
                     >
                       <span className="story-doc-card__badge">PDF</span>
-                      {!cover ? <strong>{doc.name?.replace(/\.pdf$/i, '') || 'Guide'}</strong> : null}
                     </button>
                     <h3 className="story-doc-card__title">
                       <button

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import HeroSketch from '../components/home/HeroSketch';
+import HeroVideo from '../components/home/HeroVideo';
 import CountUp from '../components/motion/CountUp';
 import Reveal from '../components/motion/Reveal';
 import { WHATSAPP_DISPLAY, WHATSAPP_URL, CONTACT_EMAIL, CONTACT_MAILTO, OFFICE_DELHI } from '../data/navigation';
@@ -370,13 +370,8 @@ export default function Home() {
   return (
     <div className="home home--v2">
       <section className="home-hero" aria-label="Home hero">
-        <div className="home-hero__stage">
-          <HeroSketch className="home-hero__sketch" />
-          <h1 className="home-hero__tagline">
-            <span className="home-hero__with">With You.</span>{' '}
-            <span className="home-hero__for">For You.</span>{' '}
-            <span className="home-hero__nyay">Nyaya Tak.</span>
-          </h1>
+        <div className="home-hero__stage home-hero__stage--video">
+          <HeroVideo />
         </div>
 
         <Reveal as="div" className="home-hero__stats" variant="up" delay={120}>
