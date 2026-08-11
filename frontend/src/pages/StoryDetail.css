@@ -14,6 +14,11 @@
   padding: clamp(2.5rem, 5vw, 4rem) 0;
 }
 
+.story-detail__hero--text {
+  min-height: clamp(200px, 28vw, 300px);
+  background: radial-gradient(ellipse at 40% 30%, #4a3c32 0%, #2a221c 55%, #16120e 100%);
+}
+
 .story-detail__hero-inner {
   max-width: 42rem;
 }

@@ -352,19 +352,15 @@ export default function Impact() {
               ))}
             </div>
 
-            <div className="impact-psub">
+            <div className="impact-psub" id="told">
               <b>Told in full</b>
               <span>Matters where the person agreed to have their story recorded.</span>
             </div>
             {toldInFull.length ? (
               <div className="impact-pcases">
-                {toldInFull.map((story, i) => (
-                  <Reveal key={story.id} as="article" className="impact-pstory" variant="up" delay={i * 40}>
-                    <PhotoBox
-                      image={story.heroImage ? assetUrl(story.heroImage) : null}
-                      label="Photo"
-                      caption={story.caption}
-                    />
+                {toldInFull.map((story, i) => {
+                  const href = story.slug ? `/impact/told/${story.slug}` : null;
+                  const inner = (
                     <div className="impact-sbody">
                       {story.tag ? <span className="impact-tag">{story.tag}</span> : null}
                       <h3>{displayText(story.title)}</h3>
@@ -375,9 +371,21 @@ export default function Impact() {
                           ['Result', story.result],
                         ]}
                       />
+                      {href ? <span className="impact-readmore">Read more →</span> : null}
                     </div>
-                  </Reveal>
-                ))}
+                  );
+                  return (
+                    <Reveal key={story.id} variant="up" delay={i * 40}>
+                      {href ? (
+                        <Link to={href} className="impact-pstory impact-pstory--link">
+                          {inner}
+                        </Link>
+                      ) : (
+                        <article className="impact-pstory">{inner}</article>
+                      )}
+                    </Reveal>
+                  );
+                })}
               </div>
             ) : (
               <p className="impact-empty">No prison stories published yet.</p>

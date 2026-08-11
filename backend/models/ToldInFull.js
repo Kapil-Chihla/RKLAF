@@ -1,6 +1,18 @@
 const mongoose = require('mongoose');
 
-/** Impact → Told in full (prison programme stories) */
+/** Impact → Told in full (prison programme stories — text + PDFs, no photos) */
+const toldDocumentSchema = new mongoose.Schema(
+  {
+    id: { type: String, required: true },
+    url: { type: String, required: true },
+    name: { type: String, default: 'document.pdf' },
+    title: { type: String, default: '' },
+    description: { type: String, default: '' },
+    createdAt: { type: String, default: '' },
+  },
+  { _id: false }
+);
+
 const toldInFullSchema = new mongoose.Schema(
   {
     id: { type: String, required: true, unique: true, index: true },
@@ -8,10 +20,10 @@ const toldInFullSchema = new mongoose.Schema(
     tag: { type: String, default: '' },
     title: { type: String, required: true },
     caption: { type: String, default: '' },
-    heroImage: { type: String, default: null },
     problem: { type: String, default: '' },
     action: { type: String, default: '' },
     result: { type: String, default: '' },
+    documents: { type: [toldDocumentSchema], default: [] },
     sortOrder: { type: Number, default: 0 },
     published: { type: Boolean, default: true },
     createdBy: { type: String, required: true },

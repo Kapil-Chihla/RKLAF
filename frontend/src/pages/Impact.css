@@ -706,9 +706,28 @@
   overflow: hidden;
 }
 
+a.impact-pstory--link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+a.impact-pstory--link:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px rgba(42, 33, 24, 0.12);
+}
+
+a.impact-pstory--link:hover .impact-readmore {
+  color: var(--brown);
+}
+
 .impact-pstory .impact-phbox {
-  height: 130px;
-  border-radius: 0;
+  display: none;
+}
+
+.impact-pstory .impact-sbody {
+  padding: 1.15rem 1.2rem 1.25rem;
 }
 
 .impact-pnote {
@@ -838,10 +857,6 @@ a.impact-story:hover {
 
 a.impact-story:hover .impact-readmore {
   color: var(--ink);
-}
-
-.impact-pstory .impact-sbody {
-  padding: 16px 18px 18px;
 }
 
 .impact-tag {

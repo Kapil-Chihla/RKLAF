@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import api from '../api';
 import { useAuth } from '../AuthContext';
-import { assetUrl } from '../../lib/api';
+import AdminExistingMedia from '../components/AdminExistingMedia';
 import AdminRichHint from '../components/AdminRichHint';
 
 const emptyForm = {
@@ -12,16 +12,19 @@ const emptyForm = {
   action: '',
   result: '',
   sortOrder: '0',
+  newDocTitle: '',
+  newDocDescription: '',
 };
 
 export default function ToldInFullManage() {
   const { user } = useAuth();
   const [items, setItems] = useState([]);
   const [msg, setMsg] = useState('');
+  const [busy, setBusy] = useState(false);
   const [form, setForm] = useState(emptyForm);
-  const [hero, setHero] = useState(null);
+  const [documents, setDocuments] = useState([]);
+  const [keptDocuments, setKeptDocuments] = useState([]);
   const [editing, setEditing] = useState(null);
-  const [clearHero, setClearHero] = useState(false);
   const canDelete = ['super_admin', 'admin'].includes(user?.role);
 
   const load = () => api.get('/told-in-full?all=true').then((r) => setItems(r.data)).catch(() => {});
@@ -32,9 +35,9 @@ export default function ToldInFullManage() {
 
   const resetForm = () => {
     setForm(emptyForm);
-    setHero(null);
+    setDocuments([]);
+    setKeptDocuments([]);
     setEditing(null);
-    setClearHero(false);
   };
 
   const startEdit = (item) => {
@@ -47,24 +50,45 @@ export default function ToldInFullManage() {
       action: item.action || '',
       result: item.result || '',
       sortOrder: String(item.sortOrder ?? 0),
+      newDocTitle: '',
+      newDocDescription: '',
     });
-    setHero(null);
-    setClearHero(false);
+    setDocuments([]);
+    setKeptDocuments(item.documents || []);
     setMsg('');
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const patchKeptDocument = (id, patch) => {
+    setKeptDocuments((prev) =>
+      prev.map((doc) => ((doc.id || doc.url) === id ? { ...doc, ...patch } : doc)),
+    );
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMsg('');
+    setBusy(true);
     const fd = new FormData();
-    Object.entries(form).forEach(([k, v]) => {
-      if (v !== '') fd.append(k, v);
+    ['title', 'tag', 'caption', 'problem', 'action', 'result', 'sortOrder'].forEach((k) => {
+      if (form[k] !== '') fd.append(k, form[k]);
     });
-    if (hero) fd.append('hero', hero);
+
+    documents.forEach((f) => fd.append('documents', f));
+    if (documents.length) {
+      const meta = documents.map((file, index) => ({
+        title:
+          index === 0 && form.newDocTitle.trim()
+            ? form.newDocTitle.trim()
+            : file.name.replace(/\.pdf$/i, ''),
+        description: index === 0 ? form.newDocDescription.trim() : '',
+      }));
+      fd.append('documentsMeta', JSON.stringify(meta));
+    }
+
     try {
       if (editing) {
-        if (clearHero && !hero) fd.append('clearHero', 'true');
+        fd.append('documentsJson', JSON.stringify(keptDocuments));
         await api.put(`/told-in-full/${editing.id}`, fd, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
@@ -77,6 +101,8 @@ export default function ToldInFullManage() {
       load();
     } catch (err) {
       setMsg(err.response?.data?.message || 'Save failed');
+    } finally {
+      setBusy(false);
     }
   };
 
@@ -85,7 +111,8 @@ export default function ToldInFullManage() {
       <div className="admin-card">
         <h2>{editing ? 'Edit told in full' : 'Impact — Told in full'}</h2>
         <p style={{ color: '#5a6f82', marginTop: 0 }}>
-          Delhi prisons programme stories (problem / action / result) on the Impact page.
+          Prison programme stories (problem / action / result). No photos — attach multiple PDFs for the
+          detail page (same pattern as Programmes &amp; Initiatives).
         </p>
         {msg && (
           <div
@@ -111,25 +138,12 @@ export default function ToldInFullManage() {
             />
           </label>
           <label>
-            Photo caption
-            <input value={form.caption} onChange={(e) => setForm({ ...form, caption: e.target.value })} />
-          </label>
-          {editing?.heroImage && !clearHero ? (
-            <div style={{ marginBottom: '0.75rem' }}>
-              <p style={{ margin: '0 0 0.4rem', fontSize: '0.85rem', color: '#5a6f82' }}>Current hero</p>
-              <img
-                src={assetUrl(editing.heroImage)}
-                alt=""
-                style={{ maxWidth: 180, borderRadius: 8, display: 'block' }}
-              />
-              <button type="button" className="admin-btn admin-btn--ghost" onClick={() => setClearHero(true)}>
-                Remove hero
-              </button>
-            </div>
-          ) : null}
-          <label>
-            Hero image {editing ? '(leave empty to keep current)' : ''}
-            <input type="file" accept="image/*" onChange={(e) => setHero(e.target.files?.[0] || null)} />
+            Subtitle (optional)
+            <input
+              value={form.caption}
+              onChange={(e) => setForm({ ...form, caption: e.target.value })}
+              placeholder="Short line under the title on the detail page"
+            />
           </label>
           <label>
             Problem
@@ -146,6 +160,42 @@ export default function ToldInFullManage() {
             <AdminRichHint />
             <textarea rows={3} value={form.result} onChange={(e) => setForm({ ...form, result: e.target.value })} />
           </label>
+
+          {editing ? (
+            <AdminExistingMedia
+              title="Current PDF documents"
+              kind="document"
+              items={keptDocuments}
+              onRemove={(id) => setKeptDocuments((prev) => prev.filter((doc) => (doc.id || doc.url) !== id))}
+              onChangeItem={patchKeptDocument}
+            />
+          ) : null}
+
+          <label>
+            PDF documents — select multiple
+            <input
+              type="file"
+              accept="application/pdf,.pdf"
+              multiple
+              onChange={(e) => setDocuments(Array.from(e.target.files || []))}
+            />
+          </label>
+          <label>
+            Title for first new PDF (optional)
+            <input
+              value={form.newDocTitle}
+              onChange={(e) => setForm({ ...form, newDocTitle: e.target.value })}
+            />
+          </label>
+          <label>
+            Description for first new PDF (optional)
+            <textarea
+              rows={2}
+              value={form.newDocDescription}
+              onChange={(e) => setForm({ ...form, newDocDescription: e.target.value })}
+            />
+          </label>
+
           <label>
             Sort order
             <input
@@ -155,11 +205,11 @@ export default function ToldInFullManage() {
             />
           </label>
           <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-            <button type="submit" className="admin-btn admin-btn--primary">
-              {editing ? 'Save changes' : 'Publish'}
+            <button type="submit" className="admin-btn admin-btn--primary" disabled={busy}>
+              {busy ? 'Saving…' : editing ? 'Save changes' : 'Publish'}
             </button>
             {editing ? (
-              <button type="button" className="admin-btn admin-btn--ghost" onClick={resetForm}>
+              <button type="button" className="admin-btn admin-btn--ghost" onClick={resetForm} disabled={busy}>
                 Cancel edit
               </button>
             ) : null}
@@ -174,7 +224,7 @@ export default function ToldInFullManage() {
               <tr>
                 <th>Tag</th>
                 <th>Title</th>
-                <th>Photo</th>
+                <th>PDFs</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -183,7 +233,7 @@ export default function ToldInFullManage() {
                 <tr key={item.id}>
                   <td>{item.tag}</td>
                   <td>{item.title}</td>
-                  <td>{item.heroImage ? 'Yes' : '—'}</td>
+                  <td>{item.documents?.length || 0}</td>
                   <td style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                     <button type="button" className="admin-btn" onClick={() => startEdit(item)}>
                       Edit
