@@ -9,6 +9,8 @@ import {
 import publicApi from '../lib/publicApi';
 import { assetUrl } from '../lib/api';
 import { isAudioMediaUrl, isDirectMediaUrl, mediaEmbedUrl } from '../lib/mediaEmbed';
+import { displayText } from '../lib/displayText';
+import { renderRichText } from '../lib/richText';
 import libraryBanner from '../assets/librarybanner.jpeg';
 import libraryPlaceholder from '../assets/libraryplaceholder.jpeg';
 import './Library.css';
@@ -289,8 +291,10 @@ export default function Library() {
                   <p className="lib-player__meta">
                     {playerItem.meta || (playerItem.kind === 'video' ? 'Latest video' : 'Latest episode')}
                   </p>
-                  <h2>{playerItem.title}</h2>
-                  {playerItem.description ? <p className="lib-player__desc">{playerItem.description}</p> : null}
+                  <h2>{displayText(playerItem.title)}</h2>
+                  {playerItem.description ? (
+                    <p className="lib-player__desc">{renderRichText(playerItem.description)}</p>
+                  ) : null}
                   <PodcastMedia item={playerItem} className="lib-player__media" />
                 </div>
               </>
@@ -417,8 +421,8 @@ export default function Library() {
                     </button>
                     <div className="lib-ep__body">
                       {ep.meta ? <p className="lib-ep__tag">{ep.meta}</p> : null}
-                      <h3>{ep.title}</h3>
-                      {ep.description ? <p>{ep.description}</p> : null}
+                      <h3>{displayText(ep.title)}</h3>
+                      {ep.description ? <p>{renderRichText(ep.description)}</p> : null}
                       <button type="button" className="lib-ep__cta" onClick={() => playInTop(ep)}>
                         Listen →
                       </button>
@@ -461,8 +465,8 @@ export default function Library() {
                     <PodcastMedia item={featuredVideo} />
                   </div>
                   <div className="lib-video__body">
-                    <h3>{featuredVideo.title}</h3>
-                    {featuredVideo.description ? <p>{featuredVideo.description}</p> : null}
+                    <h3>{displayText(featuredVideo.title)}</h3>
+                    {featuredVideo.description ? <p>{renderRichText(featuredVideo.description)}</p> : null}
                   </div>
                 </Reveal>
 
@@ -482,7 +486,7 @@ export default function Library() {
                       </button>
                       <div>
                         {v.meta ? <p className="lib-ep__tag">{v.meta}</p> : null}
-                        <h4>{v.title}</h4>
+                        <h4>{displayText(v.title)}</h4>
                         <button
                           type="button"
                           className="lib-ep__cta"

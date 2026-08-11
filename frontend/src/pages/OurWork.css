@@ -258,6 +258,9 @@
   display: inline-block;
   border-bottom: 1.5px solid rgba(43, 34, 26, 0.35);
   padding-bottom: 0.2rem;
+  text-align: start;
+  overflow-wrap: break-word;
+  max-width: 100%;
 }
 
 .work-prog__desc {
@@ -367,11 +370,14 @@
 .work-desk__title {
   margin: 0 0 0.85rem;
   font-family: var(--font-serif);
-  font-size: clamp(2.75rem, 7vw, 5rem);
+  font-size: clamp(1.85rem, 5.5vw, 4.25rem);
   font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: #fff;
+  text-align: center;
+  overflow-wrap: break-word;
+  max-width: 100%;
 }
 
 .work-desk__ph {

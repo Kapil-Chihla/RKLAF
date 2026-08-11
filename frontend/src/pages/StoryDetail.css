@@ -39,10 +39,14 @@
 .story-detail__hero h1 {
   margin: 0;
   font-family: var(--font-serif);
-  font-size: clamp(1.85rem, 4vw, 2.85rem);
+  font-size: clamp(1.65rem, 4vw, 2.85rem);
   font-weight: 700;
   line-height: 1.2;
   color: #fff;
+  text-align: start;
+  text-wrap: balance;
+  overflow-wrap: break-word;
+  max-width: 100%;
 }
 
 .story-detail__body {
@@ -55,6 +59,17 @@
   font-size: 1.05rem;
   line-height: 1.75;
   color: var(--muted, #5a5248);
+}
+
+.story-detail__body p strong,
+.story-detail__par dd strong,
+.blog-article__content p strong,
+.work-desk__lead-text p strong,
+.impact-par span strong,
+.kyr-pdf__desc strong,
+.kyr-deck-stage__desc strong {
+  font-weight: 700;
+  color: inherit;
 }
 
 .story-detail__section {

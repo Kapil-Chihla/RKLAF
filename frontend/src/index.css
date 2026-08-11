@@ -60,7 +60,8 @@ body {
   line-height: 1.65;
   font-weight: 400;
   font-optical-sizing: auto;
-  text-align: justify;
+  text-align: start;
+  overflow-wrap: break-word;
 }
 
 a {
@@ -79,6 +80,11 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.2;
   margin: 0 0 0.75rem;
   color: var(--blue);
+  text-align: start;
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: manual;
+  text-wrap: balance;
 }
 
 p {
@@ -86,12 +92,32 @@ p {
   font-family: var(--font-body);
   font-size: 1.1rem;
   color: var(--text-muted);
+  text-align: start;
+  overflow-wrap: break-word;
 }
 
 .site-wrapper,
 .site-main {
-  text-align: justify;
+  text-align: start;
   font-size: 1.1rem;
+}
+
+/* Long-form body copy only — never apply to headings / short labels / cards */
+.story-detail__body p,
+.blog-article__content p,
+.blog-detail__body p,
+.about-message p,
+.about-story__head p,
+.about-chapter__body p,
+.about-office p,
+.about-work p,
+.about-where__intro,
+.about-closing > p,
+.kyr-az__card dd,
+.faq-accordion__panel p {
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
 }
 
 ul {
@@ -1562,7 +1588,7 @@ select,
 }
 
 .donate-program-card {
-  text-align: justify;
+  text-align: start;
   padding: 1rem 1.1rem;
   border: 2px solid var(--sand);
   border-radius: var(--radius);
@@ -1575,11 +1601,14 @@ select,
   display: block;
   color: var(--slate-deep);
   margin-bottom: 0.25rem;
+  text-align: start;
 }
 
 .donate-program-card span {
   font-size: 1rem;
   color: var(--text-muted);
+  text-align: justify;
+  text-justify: inter-word;
 }
 
 .donate-program-card.active {

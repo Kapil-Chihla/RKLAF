@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import api from '../api';
 import { useAuth } from '../AuthContext';
+import AdminRichHint from '../components/AdminRichHint';
 
 const emptyForm = {
   title: '',
@@ -119,6 +120,7 @@ export default function BlogsManage() {
           </label>
           <label>
             Full story (plain text, optional if using sections)
+            <AdminRichHint />
             <textarea
               rows={4}
               value={form.content}
@@ -127,9 +129,10 @@ export default function BlogsManage() {
           </label>
           <label>
             Point-wise sections
+            <AdminRichHint />
             <textarea
               rows={8}
-              placeholder={'## First section\nBody text…\n\n## Second section\nMore text…'}
+              placeholder={'## First section\nBody text with **bold** words…\n\n## Second section\nMore text…'}
               value={form.sections}
               onChange={(e) => setForm({ ...form, sections: e.target.value })}
             />

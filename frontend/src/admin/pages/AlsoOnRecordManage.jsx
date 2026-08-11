@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import api from '../api';
 import { useAuth } from '../AuthContext';
+import AdminRichHint from '../components/AdminRichHint';
 
 const emptyForm = {
   year: '',
@@ -116,6 +117,7 @@ export default function AlsoOnRecordManage() {
           </label>
           <label>
             Description
+            <AdminRichHint />
             <textarea
               rows={3}
               required

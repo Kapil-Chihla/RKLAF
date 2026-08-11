@@ -647,6 +647,8 @@
   font-weight: 700;
   line-height: 1.3;
   color: var(--ink);
+  text-align: start;
+  overflow-wrap: break-word;
 }
 
 .lib-ep__body p {
@@ -798,6 +800,8 @@
   font-weight: 700;
   line-height: 1.3;
   color: var(--ink);
+  text-align: start;
+  overflow-wrap: break-word;
 }
 
 .lib-video__body p {

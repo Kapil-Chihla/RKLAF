@@ -3,6 +3,8 @@ import { Link, useParams } from 'react-router-dom';
 import publicApi from '../lib/publicApi';
 import { assetUrl } from '../lib/api';
 import Reveal from '../components/motion/Reveal';
+import { displayText } from '../lib/displayText';
+import { renderRichText } from '../lib/richText';
 import './StoryDetail.css';
 
 export default function AcademicPostDetail() {
@@ -64,8 +66,8 @@ export default function AcademicPostDetail() {
           <p className="story-detail__tag">
             {post.kind === 'experience' ? 'Experience from the ground' : 'Blog'}
           </p>
-          <h1>{post.title}</h1>
-          {post.excerpt ? <p className="story-detail__kicker">{post.excerpt}</p> : null}
+          <h1>{displayText(post.title)}</h1>
+          {post.excerpt ? <p className="story-detail__kicker">{displayText(post.excerpt)}</p> : null}
         </div>
       </header>
 
@@ -78,11 +80,11 @@ export default function AcademicPostDetail() {
                   ?.split(/\n+/)
                   .filter(Boolean)
                   .map((p, j) => (
-                    <p key={j}>{p}</p>
+                    <p key={j}>{renderRichText(p)}</p>
                   ))}
               </Reveal>
             ))
-          : paragraphs.map((p, i) => <p key={i}>{p}</p>)}
+          : paragraphs.map((p, i) => <p key={i}>{renderRichText(p)}</p>)}
 
         <p className="story-detail__back">
           <Link to="/academics">← Back to Academics</Link>

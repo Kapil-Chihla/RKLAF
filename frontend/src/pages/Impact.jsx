@@ -5,6 +5,8 @@ import CountUp from '../components/motion/CountUp';
 import publicApi from '../lib/publicApi';
 import { assetUrl } from '../lib/api';
 import { alsoOnRecordPdfDownloadUrl, pressMentionPdfDownloadUrl } from '../lib/pdfDownload';
+import { displayText } from '../lib/displayText';
+import { renderRichText } from '../lib/richText';
 import impactBanner from '../assets/impactbanner2.jpeg';
 import './Impact.css';
 
@@ -155,7 +157,7 @@ function ParRows({ rows }) {
         text ? (
           <div key={label}>
             <b>{label}</b>
-            <span>{text}</span>
+            <span>{renderRichText(text)}</span>
           </div>
         ) : null
       )}
@@ -321,7 +323,7 @@ export default function Impact() {
                   <span className="impact-live__status">
                     <i /> {item.status || 'In trial'}
                   </span>
-                  <h3>{item.title}</h3>
+                  <h3>{displayText(item.title)}</h3>
                   <ParRows
                     rows={[
                       ['Allegation', item.allegation],
@@ -365,7 +367,7 @@ export default function Impact() {
                     />
                     <div className="impact-sbody">
                       {story.tag ? <span className="impact-tag">{story.tag}</span> : null}
-                      <h3>{story.title}</h3>
+                      <h3>{displayText(story.title)}</h3>
                       <ParRows
                         rows={[
                           ['Problem', story.problem],
@@ -409,7 +411,7 @@ export default function Impact() {
                     <TornMini />
                     <div className="impact-sbody">
                       {story.tag ? <span className="impact-tag">{story.tag}</span> : null}
-                      <h3>{story.title}</h3>
+                      <h3>{displayText(story.title)}</h3>
                       {story.caseLine ? <span className="impact-caseline">{story.caseLine}</span> : null}
                       <ParRows
                         rows={[
@@ -455,7 +457,7 @@ export default function Impact() {
                   <Row key={row.id} {...rowProps}>
                     <span className="impact-lrow__yr">{row.year}</span>
                     <span className="impact-lrow__frm">{row.header}</span>
-                    <span>{row.description}</span>
+                    <span>{renderRichText(row.description)}</span>
                     {row.statusChip ? <span className="impact-chip">{row.statusChip}</span> : <span />}
                   </Row>
                 );
@@ -540,7 +542,7 @@ export default function Impact() {
                         </div>
                         <div className="impact-press-media__body">
                           {item.outlet ? <span className="impact-clip__outlet">{item.outlet}</span> : null}
-                          <h3>{item.title}</h3>
+                          <h3>{displayText(item.title)}</h3>
                           {item.meta ? <span className="impact-clip__meta">{item.meta}</span> : null}
                         </div>
                       </article>
@@ -561,7 +563,7 @@ export default function Impact() {
                         >
                           <div>
                             {item.outlet ? <span className="impact-clip__outlet">{item.outlet}</span> : null}
-                            <h3>{item.title}</h3>
+                            <h3>{displayText(item.title)}</h3>
                           </div>
                           <div>
                             {item.meta ? <span className="impact-clip__meta">{item.meta}</span> : null}
@@ -572,7 +574,7 @@ export default function Impact() {
                         <article className="impact-clip impact-clip--pdf">
                           <div>
                             {item.outlet ? <span className="impact-clip__outlet">{item.outlet}</span> : null}
-                            <h3>{item.title}</h3>
+                            <h3>{displayText(item.title)}</h3>
                           </div>
                           {item.meta ? <span className="impact-clip__meta">{item.meta}</span> : null}
                         </article>
@@ -587,7 +589,7 @@ export default function Impact() {
                   <>
                     <div>
                       {item.outlet ? <span className="impact-clip__outlet">{item.outlet}</span> : null}
-                      <h3>{item.title}</h3>
+                      <h3>{displayText(item.title)}</h3>
                     </div>
                     <div>
                       {item.meta ? <span className="impact-clip__meta">{item.meta}</span> : null}

@@ -61,6 +61,22 @@
 .site-main td,
 .site-main th {
   overflow-wrap: break-word;
+  max-width: 100%;
+}
+
+/* Headlines must not inherit justify — short CMS titles stretch otherwise */
+.site-main h1,
+.site-main h2,
+.site-main h3,
+.site-main h4,
+.site-main h5,
+.site-main h6 {
+  text-align: start;
+  hyphens: manual;
+}
+
+.site-main .work-desk__title {
+  text-align: center;
 }
 
 img,
@@ -151,8 +167,8 @@ svg {
   }
 
   .work-desk__title {
-    letter-spacing: 0.14em;
-    font-size: clamp(2.15rem, 9vw, 3.25rem);
+    letter-spacing: 0.03em;
+    font-size: clamp(1.55rem, 8vw, 2.5rem);
   }
 
   .work-report {
@@ -186,6 +202,23 @@ svg {
 
   .kyr-ask__panel {
     padding: 1.15rem;
+  }
+
+  .kyr-deck-stage__banner {
+    min-height: 14rem;
+    padding: 1.15rem 1rem 2.5rem;
+  }
+
+  .kyr-deck-stage__title {
+    font-size: clamp(1.35rem, 7vw, 1.85rem);
+  }
+
+  .kyr-deck-stage__desc {
+    font-size: 1rem;
+  }
+
+  .kyr-deck-stage__copy {
+    max-width: 100%;
   }
 }
 
@@ -307,7 +340,7 @@ svg {
   .join-cta__band {
     flex-direction: column;
     align-items: stretch;
-    text-align: justify;
+    text-align: start;
   }
 
   .join-cta__btn {

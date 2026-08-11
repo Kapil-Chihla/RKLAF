@@ -99,6 +99,8 @@
   font-size: clamp(2.4rem, 6vw, 4rem);
   line-height: 1.05;
   max-width: 12ch;
+  text-align: start;
+  overflow-wrap: break-word;
 }
 
 .blogs-hero__accent {
@@ -502,7 +504,9 @@
   font-size: clamp(2rem, 4.5vw, 3.25rem);
   line-height: 1.1;
   color: var(--slate-deep);
-  max-width: 16ch;
+  max-width: min(16ch, 100%);
+  text-align: start;
+  overflow-wrap: break-word;
 }
 
 .blog-article__deck {

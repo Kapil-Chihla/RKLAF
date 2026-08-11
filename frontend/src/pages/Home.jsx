@@ -6,6 +6,7 @@ import Reveal from '../components/motion/Reveal';
 import { WHATSAPP_DISPLAY, WHATSAPP_URL, CONTACT_EMAIL, CONTACT_MAILTO, OFFICE_DELHI } from '../data/navigation';
 import publicApi from '../lib/publicApi';
 import { assetUrl } from '../lib/api';
+import { renderRichText } from '../lib/richText';
 import './Home.css';
 
 const snapModules = import.meta.glob('../assets/{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}.jpeg', {
@@ -494,7 +495,7 @@ export default function Home() {
                   <div className="home-story__body">
                     <span className="home-story__tag">{story.tag}</span>
                     <h3>{story.title}</h3>
-                    {story.desc ? <p>{story.desc}</p> : null}
+                    {story.desc ? <p>{renderRichText(story.desc)}</p> : null}
                     {href ? <span className="home-story__more">Read more →</span> : null}
                   </div>
                 </>
@@ -585,7 +586,7 @@ export default function Home() {
                     <div className="home-card__body">
                       <span className="home-card__tag">{item.tag}</span>
                       <h3>{item.title}</h3>
-                      {item.desc ? <p>{item.desc}</p> : null}
+                      {item.desc ? <p>{renderRichText(item.desc)}</p> : null}
                     </div>
                   </Link>
                 </Reveal>
@@ -611,7 +612,7 @@ export default function Home() {
                 <a href="#expertise" className="home-expertise__row">
                   <span className="home-expertise__num">{String(i + 1).padStart(2, '0')}</span>
                   <span className="home-expertise__title">{item.title}</span>
-                  <span className="home-expertise__desc">{item.desc}</span>
+                  <span className="home-expertise__desc">{renderRichText(item.desc)}</span>
                   <span className="home-expertise__arrow" aria-hidden="true">→</span>
                 </a>
               </li>

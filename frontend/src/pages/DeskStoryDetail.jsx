@@ -6,6 +6,8 @@ import Reveal from '../components/motion/Reveal';
 import { FALLBACK_DESK } from '../data/deskStories';
 import { deskDocumentDownloadUrl, deskDocumentViewUrl } from '../lib/pdfDownload';
 import { resolveStoryBlocks } from '../lib/storyBlocks';
+import { displayText } from '../lib/displayText';
+import { renderRichText } from '../lib/richText';
 import PdfPreviewModal from '../components/pdf/PdfPreviewModal';
 import './StoryDetail.css';
 
@@ -76,8 +78,8 @@ export default function DeskStoryDetail() {
       >
         <div className="container story-detail__hero-inner">
           <p className="story-detail__kicker">Programmes &amp; Initiatives · Project {num}</p>
-          <h1>{story.fullHeader || story.title}</h1>
-          {story.kicker ? <p className="story-detail__tag">{story.kicker}</p> : null}
+          <h1>{displayText(story.fullHeader || story.title)}</h1>
+          {story.kicker ? <p className="story-detail__tag">{displayText(story.kicker)}</p> : null}
         </div>
       </header>
 
@@ -86,7 +88,7 @@ export default function DeskStoryDetail() {
           {blocks.length ? (
             blocks.map((block, i) =>
               block.type === 'paragraph' ? (
-                <p key={`p-${i}`}>{block.text}</p>
+                <p key={`p-${i}`}>{renderRichText(block.text)}</p>
               ) : (
                 <figure key={block.id || `img-${i}`} className="story-detail__shot">
                   <img src={assetUrl(block.url)} alt={block.caption || story.title} />
@@ -95,7 +97,7 @@ export default function DeskStoryDetail() {
               ),
             )
           ) : (
-            <p>{story.listingDescription}</p>
+            <p>{renderRichText(story.listingDescription)}</p>
           )}
         </Reveal>
 

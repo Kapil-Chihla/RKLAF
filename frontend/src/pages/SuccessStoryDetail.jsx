@@ -4,6 +4,8 @@ import publicApi from '../lib/publicApi';
 import { assetUrl } from '../lib/api';
 import Reveal from '../components/motion/Reveal';
 import { successDocumentDownloadUrl } from '../lib/pdfDownload';
+import { displayText } from '../lib/displayText';
+import { renderRichText, RichParagraphs } from '../lib/richText';
 import './StoryDetail.css';
 
 export default function SuccessStoryDetail() {
@@ -46,8 +48,6 @@ export default function SuccessStoryDetail() {
     );
   }
 
-  const paragraphs = (story.fullBody || '').split(/\n+/).filter((p) => p.trim());
-
   return (
     <div className="story-detail">
       <header
@@ -59,9 +59,9 @@ export default function SuccessStoryDetail() {
         }
       >
         <div className="container story-detail__hero-inner">
-          {story.tag ? <p className="story-detail__tag">{story.tag}</p> : null}
-          <h1>{story.title}</h1>
-          {story.caption ? <p className="story-detail__kicker">{story.caption}</p> : null}
+          {story.tag ? <p className="story-detail__tag">{displayText(story.tag)}</p> : null}
+          <h1>{displayText(story.title)}</h1>
+          {story.caption ? <p className="story-detail__kicker">{displayText(story.caption)}</p> : null}
         </div>
       </header>
 
@@ -69,21 +69,19 @@ export default function SuccessStoryDetail() {
         <Reveal as="dl" className="story-detail__par" variant="up">
           <div>
             <dt>Problem</dt>
-            <dd>{story.problem}</dd>
+            <dd>{renderRichText(story.problem)}</dd>
           </div>
           <div>
             <dt>Action</dt>
-            <dd>{story.action}</dd>
+            <dd>{renderRichText(story.action)}</dd>
           </div>
           <div>
             <dt>Result</dt>
-            <dd>{story.result}</dd>
+            <dd>{renderRichText(story.result)}</dd>
           </div>
         </Reveal>
 
-        {paragraphs.map((p, i) => (
-          <p key={i}>{p}</p>
-        ))}
+        <RichParagraphs value={story.fullBody} />
 
         {story.gallery?.length > 0 && (
           <div className="story-detail__gallery">

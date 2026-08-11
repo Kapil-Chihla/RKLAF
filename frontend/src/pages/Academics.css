@@ -202,6 +202,9 @@
   text-transform: uppercase;
   letter-spacing: 0.02em;
   color: var(--ink);
+  text-align: start;
+  overflow-wrap: break-word;
+  max-width: 100%;
 }
 
 .acad-featured__summary {

@@ -9,6 +9,8 @@ import {
   BlogCover,
   BlogMeta,
 } from '../components/blog/BlogParts';
+import { displayText } from '../lib/displayText';
+import { renderRichText } from '../lib/richText';
 import './Blogs.css';
 
 function ArticleBody({ content }) {
@@ -20,7 +22,7 @@ function ArticleBody({ content }) {
     <div className="blog-article__content">
       {paragraphs.map((paragraph, index) => (
         <p key={index} className={index === 0 ? 'blog-article__lead-para' : undefined}>
-          {paragraph.trim()}
+          {renderRichText(paragraph.trim())}
         </p>
       ))}
     </div>
@@ -104,8 +106,8 @@ export default function BlogDetail() {
               <span>Article</span>
             </nav>
             <BlogMeta blog={blog} variant="masthead" />
-            <h1>{blog.title}</h1>
-            {excerpt && <p className="blog-article__deck">{excerpt}</p>}
+            <h1>{displayText(blog.title)}</h1>
+            {excerpt && <p className="blog-article__deck">{displayText(excerpt)}</p>}
             <BlogAuthorChip name={author} large />
           </div>
 

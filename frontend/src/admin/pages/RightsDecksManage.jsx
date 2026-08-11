@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import api from '../api';
 import { useAuth } from '../AuthContext';
+import AdminRichHint from '../components/AdminRichHint';
 
 const emptyForm = {
   title: '',
@@ -132,6 +133,7 @@ export default function RightsDecksManage() {
           </label>
           <label>
             PDF description
+            <AdminRichHint />
             <textarea
               rows={3}
               value={form.description}

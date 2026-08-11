@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import api from '../api';
 import { useAuth } from '../AuthContext';
+import AdminRichHint from '../components/AdminRichHint';
 
 const emptyForm = {
   status: 'In trial',
@@ -94,6 +95,7 @@ export default function RunningNowManage() {
           </label>
           <label>
             Allegation
+            <AdminRichHint />
             <textarea
               rows={3}
               value={form.allegation}
@@ -102,6 +104,7 @@ export default function RunningNowManage() {
           </label>
           <label>
             Relief sought
+            <AdminRichHint />
             <textarea
               rows={3}
               value={form.reliefSought}
@@ -110,6 +113,7 @@ export default function RunningNowManage() {
           </label>
           <label>
             Stage
+            <AdminRichHint />
             <textarea rows={2} value={form.stage} onChange={(e) => setForm({ ...form, stage: e.target.value })} />
           </label>
           <label>

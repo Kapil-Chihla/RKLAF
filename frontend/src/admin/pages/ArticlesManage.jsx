@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import api from '../api';
 import { useAuth } from '../AuthContext';
+import AdminRichHint from '../components/AdminRichHint';
 
 const emptyForm = { title: '', summary: '', body: '', category: 'General' };
 
@@ -107,6 +108,7 @@ export default function ArticlesManage() {
           </label>
           <label>
             Description / summary
+            <AdminRichHint />
             <input value={form.summary} onChange={(e) => setForm({ ...form, summary: e.target.value })} />
           </label>
           <label>
@@ -126,6 +128,7 @@ export default function ArticlesManage() {
           </label>
           <label>
             Extra notes (optional)
+            <AdminRichHint />
             <textarea value={form.body} onChange={(e) => setForm({ ...form, body: e.target.value })} />
           </label>
           <label>

@@ -5,6 +5,7 @@ import { API_BASE } from '../lib/api';
 import { campPhotoCount, formatCampDate, getCampHero } from '../lib/campUtils';
 import CampPhotoGallery from '../components/camps/CampPhotoGallery';
 import { CampCard, CampMeta } from '../components/camps/CampParts';
+import { renderRichText } from '../lib/richText';
 import './Camps.css';
 
 export default function CampDetail() {
@@ -152,11 +153,11 @@ export default function CampDetail() {
               {camp.description ? (
                 camp.description.split(/\n+/).filter(Boolean).map((paragraph, index) => (
                   <p key={index} className={index === 0 ? 'camp-detail__story-lead' : undefined}>
-                    {paragraph.trim()}
+                    {renderRichText(paragraph.trim())}
                   </p>
                 ))
               ) : (
-                <p className="camp-detail__story-lead">{camp.summary}</p>
+                <p className="camp-detail__story-lead">{renderRichText(camp.summary)}</p>
               )}
             </div>
           </div>

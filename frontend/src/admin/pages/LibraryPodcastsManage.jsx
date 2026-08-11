@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import api from '../api';
 import { useAuth } from '../AuthContext';
+import AdminRichHint from '../components/AdminRichHint';
 
 const emptyForm = {
   kind: 'audio',
@@ -148,6 +149,7 @@ export default function LibraryPodcastsManage() {
           </label>
           <label>
             Short description
+            <AdminRichHint />
             <textarea
               rows={3}
               value={form.description}

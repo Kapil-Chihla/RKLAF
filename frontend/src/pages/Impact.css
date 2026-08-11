@@ -84,6 +84,9 @@
   font-weight: 600;
   line-height: 1.05;
   color: #f7f4ee;
+  text-align: start;
+  overflow-wrap: break-word;
+  max-width: 100%;
 }
 
 .impact-hero p {
@@ -92,6 +95,7 @@
   margin: 14px 0 0;
   max-width: 34ch;
   line-height: 1.55;
+  text-align: start;
 }
 
 .impact-film {
@@ -573,6 +577,8 @@
   font-weight: 600;
   line-height: 1.32;
   margin: 10px 0 12px;
+  text-align: start;
+  overflow-wrap: break-word;
 }
 
 .impact-par div {
@@ -852,6 +858,8 @@ a.impact-story:hover .impact-readmore {
   font-weight: 600;
   line-height: 1.3;
   margin: 8px 0 12px;
+  text-align: start;
+  overflow-wrap: break-word;
 }
 
 .impact-caseline {

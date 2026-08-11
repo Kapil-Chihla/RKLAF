@@ -4,6 +4,7 @@ import { DeskEntry, WorkPageBanner } from '../components/our-work/WorkParts';
 import publicApi from '../lib/publicApi';
 import { assetUrl } from '../lib/api';
 import { FALLBACK_DESK } from '../data/deskStories';
+import { displayText } from '../lib/displayText';
 import './OurWork.css';
 
 export default function ProgrammesInitiatives() {
@@ -43,7 +44,7 @@ export default function ProgrammesInitiatives() {
         <div className="work-desk__banner" style={bannerStyle}>
           <div className="work-desk__banner-inner">
             <h2 className="work-desk__title">
-              {featured?.fullHeader || featured?.title || 'Featured programme'}
+              {displayText(featured?.fullHeader || featured?.title, 'Featured programme')}
             </h2>
             {!featured?.heroImage ? (
               <p className="work-desk__ph">

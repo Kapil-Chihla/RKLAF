@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import api from '../api';
 import { useAuth } from '../AuthContext';
+import AdminRichHint from '../components/AdminRichHint';
 
 const emptyForm = { name: '', role: '', bio: '' };
 
@@ -96,6 +97,7 @@ export default function TeamManage() {
             </label>
             <label>
               Bio
+              <AdminRichHint />
               <textarea rows={4} value={form.bio} onChange={(e) => setForm({ ...form, bio: e.target.value })} />
             </label>
             <label>

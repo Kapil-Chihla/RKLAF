@@ -1,12 +1,14 @@
 import { Link } from 'react-router-dom';
 import Reveal from '../motion/Reveal';
 import { assetUrl } from '../../lib/api';
+import { displayText } from '../../lib/displayText';
+import { renderRichText } from '../../lib/richText';
 import { deskStoryHref } from '../../data/deskStories';
 import ourWorkBanner from '../../assets/ourworkbanner.jpeg';
 
 export function DeskEntry({ story, index }) {
   const num = String(story.number || index + 1).padStart(2, '0');
-  const displayTitle = (story.fullHeader || story.title || '').trim();
+  const displayTitle = displayText(story.fullHeader || story.title);
   const paras = (story.listingDescription || '')
     .split(/\n+/)
     .filter((p) => p.trim());
@@ -28,7 +30,7 @@ export function DeskEntry({ story, index }) {
               <p className="work-desk__kicker">{story.kicker || 'Programmes & Initiatives'}</p>
               {showTitle ? <h3>{displayTitle}</h3> : null}
               {paras.map((p, i) => (
-                <p key={i}>{p}</p>
+                <p key={i}>{renderRichText(p)}</p>
               ))}
               {storyHref ? (
                 <Link to={storyHref} className="work-pill">
@@ -64,8 +66,8 @@ export function ProgrammeBlock({ item }) {
     <article className={`work-prog ${item.flip ? 'work-prog--flip' : ''}`} id={`prog-${item.num}`}>
       <div className="work-prog__copy">
         <p className="work-prog__meta">{item.meta}</p>
-        <h3 className="work-prog__title">{item.title}</h3>
-        <p className="work-prog__desc">{item.desc}</p>
+        <h3 className="work-prog__title">{displayText(item.title)}</h3>
+        <p className="work-prog__desc">{displayText(item.desc)}</p>
         <div className="work-prog__stats">
           {item.stats.map((s) => (
             <div key={s.label} className="work-prog__stat">

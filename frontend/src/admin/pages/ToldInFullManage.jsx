@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import api from '../api';
 import { useAuth } from '../AuthContext';
 import { assetUrl } from '../../lib/api';
+import AdminRichHint from '../components/AdminRichHint';
 
 const emptyForm = {
   title: '',
@@ -132,14 +133,17 @@ export default function ToldInFullManage() {
           </label>
           <label>
             Problem
+            <AdminRichHint />
             <textarea rows={3} value={form.problem} onChange={(e) => setForm({ ...form, problem: e.target.value })} />
           </label>
           <label>
             Action
+            <AdminRichHint />
             <textarea rows={3} value={form.action} onChange={(e) => setForm({ ...form, action: e.target.value })} />
           </label>
           <label>
             Result
+            <AdminRichHint />
             <textarea rows={3} value={form.result} onChange={(e) => setForm({ ...form, result: e.target.value })} />
           </label>
           <label>

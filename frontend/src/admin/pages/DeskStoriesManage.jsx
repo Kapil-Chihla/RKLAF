@@ -3,6 +3,7 @@ import api from '../api';
 import { useAuth } from '../AuthContext';
 import { assetUrl } from '../../lib/api';
 import AdminExistingMedia from '../components/AdminExistingMedia';
+import AdminRichHint from '../components/AdminRichHint';
 
 const emptyForm = {
   title: '',
@@ -313,6 +314,7 @@ export default function DeskStoriesManage() {
           </label>
           <label>
             Home feature blurb (2 short lines)
+            <AdminRichHint />
             <textarea
               rows={2}
               maxLength={220}
@@ -322,6 +324,7 @@ export default function DeskStoriesManage() {
           </label>
           <label>
             Listing description
+            <AdminRichHint />
             <textarea
               rows={4}
               required
@@ -363,7 +366,10 @@ export default function DeskStoriesManage() {
           <div className="admin-story-blocks">
             <div className="admin-story-blocks__head">
               <strong>Full story</strong>
-              <span>Add a paragraph, then optionally add a photo under it.</span>
+              <span>
+                Add a paragraph, then optionally add a photo under it. Use{' '}
+                <code>**bold**</code> around any word or a whole paragraph to bold it on the site.
+              </span>
             </div>
 
             {blocks.map((block, index) => (

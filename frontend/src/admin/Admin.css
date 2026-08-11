@@ -400,6 +400,27 @@
   resize: vertical;
 }
 
+.admin-rich-hint {
+  margin: -0.15rem 0 0.35rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  line-height: 1.45;
+  color: #6a635c;
+}
+
+.admin-rich-hint code {
+  font-size: 0.8em;
+  padding: 0.08em 0.35em;
+  border-radius: 4px;
+  background: #f3eee6;
+  color: #3a342e;
+}
+
+.admin-rich-hint strong {
+  font-weight: 700;
+  color: #2c4359;
+}
+
 .admin-btn {
   padding: 0.75rem 1.25rem;
   border: none;

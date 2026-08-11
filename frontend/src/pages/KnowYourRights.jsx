@@ -12,6 +12,8 @@ import { assetUrl } from '../lib/api';
 import { guidePdfDownloadUrl, guidePdfViewUrl, rightsDeckPdfDownloadUrl } from '../lib/pdfDownload';
 import PdfPreviewModal from '../components/pdf/PdfPreviewModal';
 import { looksLikeEmail, submitContact } from '../lib/submitContact';
+import { displayText } from '../lib/displayText';
+import { renderRichText } from '../lib/richText';
 import './KnowYourRights.css';
 
 const GUIDE_TONES = ['plum', 'cream', 'ink', 'sage', 'gold', 'clay', 'olive'];
@@ -595,16 +597,16 @@ export default function KnowYourRights() {
                   <span className="kyr-pdf__badge">PDF</span>
                   {!g.coverImage ? <strong>{g.coverLabel || g.cover}</strong> : null}
                 </button>
-                <h3 className="kyr-pdf__title" title={g.title}>
+                <h3 className="kyr-pdf__title" title={displayText(g.title)}>
                   {canPreview ? (
                     <button type="button" className="kyr-pdf__title-btn" onClick={() => setActiveGuide(g)}>
-                      {g.title}
+                      {displayText(g.title)}
                     </button>
                   ) : (
-                    g.title
+                    displayText(g.title)
                   )}
                 </h3>
-                {g.description ? <p className="kyr-pdf__desc">{g.description}</p> : null}
+                {g.description ? <p className="kyr-pdf__desc">{renderRichText(g.description)}</p> : null}
                 {canPreview ? (
                   <div className="kyr-pdf__actions">
                     <button
@@ -689,14 +691,14 @@ export default function KnowYourRights() {
                         <span className="kyr-deck-card__cat">
                           {deck.category || deck.smallTitle || 'Know your rights'}
                         </span>
-                        <span className="kyr-deck-card__title">{deck.title}</span>
+                        <span className="kyr-deck-card__title">{displayText(deck.title)}</span>
                         <span className="kyr-deck-card__num" aria-hidden="true">
                           {n}
                         </span>
                         <span className="kyr-deck-card__arc" aria-hidden="true" />
                       </button>
                       <div className="kyr-deck-card__meta">
-                        <span className="kyr-deck-card__meta-title">{deck.title}</span>
+                        <span className="kyr-deck-card__meta-title">{displayText(deck.title)}</span>
                         {deck.slideCount ? (
                           <span className="kyr-deck-card__slides">{deck.slideCount} slides</span>
                         ) : (
@@ -728,13 +730,13 @@ export default function KnowYourRights() {
                   <p className="kyr-deck-stage__brand">Know your rights · RKLAF</p>
                   <div className="kyr-deck-stage__copy">
                     {activeDeck.smallTitle ? (
-                      <p className="kyr-deck-stage__small">{activeDeck.smallTitle}</p>
+                      <p className="kyr-deck-stage__small">{displayText(activeDeck.smallTitle)}</p>
                     ) : activeDeck.category ? (
-                      <p className="kyr-deck-stage__small">{activeDeck.category}</p>
+                      <p className="kyr-deck-stage__small">{displayText(activeDeck.category)}</p>
                     ) : null}
-                    <h3 className="kyr-deck-stage__title">{activeDeck.title}</h3>
+                    <h3 className="kyr-deck-stage__title">{displayText(activeDeck.title)}</h3>
                     {activeDeck.description ? (
-                      <p className="kyr-deck-stage__desc">{activeDeck.description}</p>
+                      <p className="kyr-deck-stage__desc">{renderRichText(activeDeck.description)}</p>
                     ) : null}
                   </div>
                   <span className="kyr-deck-stage__arc" aria-hidden="true" />
@@ -833,7 +835,7 @@ export default function KnowYourRights() {
                       </span>
                     </button>
                     <div className="kyr-video__meta">
-                      <h3>{v.title}</h3>
+                      <h3>{displayText(v.title)}</h3>
                       {v.meta ? <p>{v.meta}</p> : null}
                     </div>
                   </Reveal>

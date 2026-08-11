@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import api from '../api';
 import { useAuth } from '../AuthContext';
 import AdminExistingMedia from '../components/AdminExistingMedia';
+import AdminRichHint from '../components/AdminRichHint';
 
 const emptyForm = {
   title: '',
@@ -166,6 +167,7 @@ export default function SuccessStoriesManage() {
           </label>
           <label>
             Problem
+            <AdminRichHint />
             <textarea
               rows={2}
               required
@@ -175,6 +177,7 @@ export default function SuccessStoriesManage() {
           </label>
           <label>
             Action
+            <AdminRichHint />
             <textarea
               rows={2}
               required
@@ -184,6 +187,7 @@ export default function SuccessStoriesManage() {
           </label>
           <label>
             Result
+            <AdminRichHint />
             <textarea
               rows={2}
               required
@@ -193,6 +197,7 @@ export default function SuccessStoriesManage() {
           </label>
           <label>
             Full story text
+            <AdminRichHint />
             <textarea rows={6} value={form.fullBody} onChange={(e) => setForm({ ...form, fullBody: e.target.value })} />
           </label>
 
