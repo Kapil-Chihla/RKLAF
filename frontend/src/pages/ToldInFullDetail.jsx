@@ -111,9 +111,6 @@ export default function ToldInFullDetail() {
                       aria-label={`Preview ${title}`}
                     >
                       <span className="story-doc-card__badge">PDF</span>
-                      {!cover ? (
-                        <strong>{doc.name?.replace(/\.pdf$/i, '') || 'Document'}</strong>
-                      ) : null}
                     </button>
                     <h3 className="story-doc-card__title">
                       <button
