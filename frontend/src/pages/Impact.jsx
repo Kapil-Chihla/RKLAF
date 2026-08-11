@@ -397,57 +397,59 @@ export default function Impact() {
             </p>
           </div>
 
-          <Strand
-            label="Argued in full"
-            note="The complete record: what walked in, what we filed, what the order finally said."
-          />
-          {stories.length ? (
-            <div className="impact-story-grid">
-              {stories.map((story, i) => {
-                const href = story.slug ? `/impact/stories/${story.slug}` : null;
-                const photo = story.heroImage ? assetUrl(story.heroImage) : null;
-                const inner = (
-                  <>
-                    <PhotoBox
-                      image={photo}
-                      label="Portrait"
-                      caption={story.caption}
-                      className="impact-phbox--flush impact-phbox--story"
-                      fit="contain"
-                      position="center center"
-                    />
-                    <TornMini />
-                    <div className="impact-sbody">
-                      {story.tag ? <span className="impact-tag">{story.tag}</span> : null}
-                      <h3>{displayText(story.title)}</h3>
-                      {story.caseLine ? <span className="impact-caseline">{story.caseLine}</span> : null}
-                      <ParRows
-                        rows={[
-                          ['Problem', story.problem],
-                          ['Action', story.action],
-                          ['Result', story.result],
-                        ]}
+          <div id="stories">
+            <Strand
+              label="Argued in full"
+              note="The complete record: what walked in, what we filed, what the order finally said."
+            />
+            {stories.length ? (
+              <div className="impact-story-grid">
+                {stories.map((story, i) => {
+                  const href = story.slug ? `/impact/stories/${story.slug}` : null;
+                  const photo = story.heroImage ? assetUrl(story.heroImage) : null;
+                  const inner = (
+                    <>
+                      <PhotoBox
+                        image={photo}
+                        label="Portrait"
+                        caption={story.caption}
+                        className="impact-phbox--flush impact-phbox--story"
+                        fit="contain"
+                        position="center center"
                       />
-                      {href ? <span className="impact-readmore">Read more →</span> : null}
-                    </div>
-                  </>
-                );
-                return (
-                  <Reveal key={story.id || story.title} variant="up" delay={i * 40}>
-                    {href ? (
-                      <Link to={href} className="impact-story">
-                        {inner}
-                      </Link>
-                    ) : (
-                      <article className="impact-story">{inner}</article>
-                    )}
-                  </Reveal>
-                );
-              })}
-            </div>
-          ) : (
-            <p className="impact-empty">No argued-in-full stories published yet.</p>
-          )}
+                      <TornMini />
+                      <div className="impact-sbody">
+                        {story.tag ? <span className="impact-tag">{story.tag}</span> : null}
+                        <h3>{displayText(story.title)}</h3>
+                        {story.caseLine ? <span className="impact-caseline">{story.caseLine}</span> : null}
+                        <ParRows
+                          rows={[
+                            ['Problem', story.problem],
+                            ['Action', story.action],
+                            ['Result', story.result],
+                          ]}
+                        />
+                        {href ? <span className="impact-readmore">Read more →</span> : null}
+                      </div>
+                    </>
+                  );
+                  return (
+                    <Reveal key={story.id || story.title} variant="up" delay={i * 40}>
+                      {href ? (
+                        <Link to={href} className="impact-story">
+                          {inner}
+                        </Link>
+                      ) : (
+                        <article className="impact-story">{inner}</article>
+                      )}
+                    </Reveal>
+                  );
+                })}
+              </div>
+            ) : (
+              <p className="impact-empty">No argued-in-full stories published yet.</p>
+            )}
+          </div>
 
           <Strand
             label="Also on record"

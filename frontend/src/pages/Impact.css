@@ -486,6 +486,10 @@
   border-top: 1px solid var(--line);
 }
 
+#stories {
+  scroll-margin-top: calc(var(--header-h, 96px) + 1rem);
+}
+
 .impact-strand b {
   font-size: 0.8rem;
   font-weight: 700;
