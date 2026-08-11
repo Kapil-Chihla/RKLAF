@@ -893,6 +893,54 @@
   font-size: 0.75rem;
 }
 
+.admin-new-pdfs {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.admin-new-pdfs__hint {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #5a6f82;
+}
+
+.admin-new-pdfs__list {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.admin-new-pdfs__card {
+  display: grid;
+  gap: 0.65rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid #d9e0e8;
+  border-radius: 10px;
+  background: #f8fafc;
+}
+
+.admin-new-pdfs__card-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.85rem;
+}
+
+.admin-new-pdfs__filename {
+  flex: 1 1 12rem;
+  font-size: 0.82rem;
+  color: #5a6f82;
+  word-break: break-all;
+}
+
+.admin-new-pdfs__cover-name {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #5a6f82;
+}
+
 .admin-story-blocks {
   display: grid;
   gap: 0.85rem;

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import api from '../api';
 import { useAuth } from '../AuthContext';
 import AdminExistingMedia from '../components/AdminExistingMedia';
+import AdminNewPdfBatch, { appendNewPdfBatch } from '../components/AdminNewPdfBatch';
 import AdminRichHint from '../components/AdminRichHint';
 
 const emptyForm = {
@@ -12,8 +13,6 @@ const emptyForm = {
   action: '',
   result: '',
   sortOrder: '0',
-  newDocTitle: '',
-  newDocDescription: '',
 };
 
 export default function ToldInFullManage() {
@@ -22,8 +21,7 @@ export default function ToldInFullManage() {
   const [msg, setMsg] = useState('');
   const [busy, setBusy] = useState(false);
   const [form, setForm] = useState(emptyForm);
-  const [documents, setDocuments] = useState([]);
-  const [documentCovers, setDocumentCovers] = useState([]);
+  const [newPdfs, setNewPdfs] = useState([]);
   const [coverReplacements, setCoverReplacements] = useState({});
   const [keptDocuments, setKeptDocuments] = useState([]);
   const [editing, setEditing] = useState(null);
@@ -37,8 +35,7 @@ export default function ToldInFullManage() {
 
   const resetForm = () => {
     setForm(emptyForm);
-    setDocuments([]);
-    setDocumentCovers([]);
+    setNewPdfs([]);
     setCoverReplacements({});
     setKeptDocuments([]);
     setEditing(null);
@@ -54,11 +51,8 @@ export default function ToldInFullManage() {
       action: item.action || '',
       result: item.result || '',
       sortOrder: String(item.sortOrder ?? 0),
-      newDocTitle: '',
-      newDocDescription: '',
     });
-    setDocuments([]);
-    setDocumentCovers([]);
+    setNewPdfs([]);
     setCoverReplacements({});
     setKeptDocuments(item.documents || []);
     setMsg('');
@@ -89,18 +83,7 @@ export default function ToldInFullManage() {
       if (form[k] !== '') fd.append(k, form[k]);
     });
 
-    documents.forEach((f) => fd.append('documents', f));
-    documentCovers.forEach((f) => fd.append('documentCovers', f));
-    if (documents.length) {
-      const meta = documents.map((file, index) => ({
-        title:
-          index === 0 && form.newDocTitle.trim()
-            ? form.newDocTitle.trim()
-            : file.name.replace(/\.pdf$/i, ''),
-        description: index === 0 ? form.newDocDescription.trim() : '',
-      }));
-      fd.append('documentsMeta', JSON.stringify(meta));
-    }
+    appendNewPdfBatch(fd, newPdfs);
 
     const replaceEntries = Object.entries(coverReplacements).filter(([, file]) => file);
     if (replaceEntries.length) {
@@ -133,8 +116,8 @@ export default function ToldInFullManage() {
       <div className="admin-card">
         <h2>{editing ? 'Edit told in full' : 'Impact — Told in full'}</h2>
         <p style={{ color: '#5a6f82', marginTop: 0 }}>
-          Prison programme stories (problem / action / result). Story cards stay photo-free; attach PDFs with
-          optional preview images (same pattern as Practical Guides / Programmes).
+          Prison programme stories (problem / action / result). Story cards stay photo-free; each PDF can
+          have its own title, description, and preview image.
         </p>
         {msg && (
           <div
@@ -198,42 +181,7 @@ export default function ToldInFullManage() {
             />
           ) : null}
 
-          <label>
-            PDF documents — select multiple
-            <input
-              type="file"
-              accept="application/pdf,.pdf"
-              multiple
-              onChange={(e) => setDocuments(Array.from(e.target.files || []))}
-            />
-          </label>
-          <label>
-            Preview images for new PDFs (optional)
-            <span style={{ display: 'block', fontWeight: 500, color: '#5a6f82', fontSize: '0.82rem' }}>
-              Same order as the PDFs above — 1st image covers the 1st PDF (like Practical Guides).
-            </span>
-            <input
-              type="file"
-              accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
-              multiple
-              onChange={(e) => setDocumentCovers(Array.from(e.target.files || []))}
-            />
-          </label>
-          <label>
-            Title for first new PDF (optional)
-            <input
-              value={form.newDocTitle}
-              onChange={(e) => setForm({ ...form, newDocTitle: e.target.value })}
-            />
-          </label>
-          <label>
-            Description for first new PDF (optional)
-            <textarea
-              rows={2}
-              value={form.newDocDescription}
-              onChange={(e) => setForm({ ...form, newDocDescription: e.target.value })}
-            />
-          </label>
+          <AdminNewPdfBatch items={newPdfs} onChange={setNewPdfs} />
 
           <label>
             Sort order

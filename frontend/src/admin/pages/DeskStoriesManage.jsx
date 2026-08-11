@@ -3,6 +3,7 @@ import api from '../api';
 import { useAuth } from '../AuthContext';
 import { assetUrl } from '../../lib/api';
 import AdminExistingMedia from '../components/AdminExistingMedia';
+import AdminNewPdfBatch, { appendNewPdfBatch } from '../components/AdminNewPdfBatch';
 import AdminRichHint from '../components/AdminRichHint';
 
 const emptyForm = {
@@ -12,8 +13,6 @@ const emptyForm = {
   featureBlurb: '',
   fullHeader: '',
   number: '',
-  newDocTitle: '',
-  newDocDescription: '',
 };
 
 let blockKey = 0;
@@ -88,8 +87,7 @@ export default function DeskStoriesManage() {
   const [form, setForm] = useState(emptyForm);
   const [hero, setHero] = useState(null);
   const [blocks, setBlocks] = useState([{ key: nextKey('p'), type: 'paragraph', text: '' }]);
-  const [documents, setDocuments] = useState([]);
-  const [documentCovers, setDocumentCovers] = useState([]);
+  const [newPdfs, setNewPdfs] = useState([]);
   const [coverReplacements, setCoverReplacements] = useState({});
   const [editing, setEditing] = useState(null);
   const [keptDocuments, setKeptDocuments] = useState([]);
@@ -112,8 +110,7 @@ export default function DeskStoriesManage() {
     setForm(emptyForm);
     setHero(null);
     setBlocks([{ key: nextKey('p'), type: 'paragraph', text: '' }]);
-    setDocuments([]);
-    setDocumentCovers([]);
+    setNewPdfs([]);
     setCoverReplacements({});
     setEditing(null);
     setKeptDocuments([]);
@@ -129,13 +126,10 @@ export default function DeskStoriesManage() {
       featureBlurb: story.featureBlurb || '',
       fullHeader: story.fullHeader || '',
       number: story.number != null ? String(story.number) : '',
-      newDocTitle: '',
-      newDocDescription: '',
     });
     setHero(null);
     setBlocks(blocksFromStory(story));
-    setDocuments([]);
-    setDocumentCovers([]);
+    setNewPdfs([]);
     setCoverReplacements({});
     setKeptDocuments([...(story.documents || [])]);
     setClearHero(false);
@@ -246,18 +240,7 @@ export default function DeskStoriesManage() {
     });
     fd.append('bodyBlocks', JSON.stringify(payload));
 
-    documents.forEach((f) => fd.append('documents', f));
-    documentCovers.forEach((f) => fd.append('documentCovers', f));
-    if (documents.length) {
-      const meta = documents.map((file, index) => ({
-        title:
-          index === 0 && form.newDocTitle.trim()
-            ? form.newDocTitle.trim()
-            : file.name.replace(/\.pdf$/i, ''),
-        description: index === 0 ? form.newDocDescription.trim() : '',
-      }));
-      fd.append('documentsMeta', JSON.stringify(meta));
-    }
+    appendNewPdfBatch(fd, newPdfs);
 
     const replaceEntries = Object.entries(coverReplacements).filter(([, file]) => file);
     if (replaceEntries.length) {
@@ -466,42 +449,7 @@ export default function DeskStoriesManage() {
             />
           ) : null}
 
-          <label>
-            PDF documents — select multiple
-            <input
-              type="file"
-              accept="application/pdf,.pdf"
-              multiple
-              onChange={(e) => setDocuments(Array.from(e.target.files || []))}
-            />
-          </label>
-          <label>
-            Preview images for new PDFs (optional)
-            <span style={{ display: 'block', fontWeight: 500, color: '#5a6f82', fontSize: '0.82rem' }}>
-              Same order as the PDFs above — 1st image covers the 1st PDF (like Practical Guides).
-            </span>
-            <input
-              type="file"
-              accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
-              multiple
-              onChange={(e) => setDocumentCovers(Array.from(e.target.files || []))}
-            />
-          </label>
-          <label>
-            Title for first new PDF (optional)
-            <input
-              value={form.newDocTitle}
-              onChange={(e) => setForm({ ...form, newDocTitle: e.target.value })}
-            />
-          </label>
-          <label>
-            Description for first new PDF (optional)
-            <textarea
-              rows={2}
-              value={form.newDocDescription}
-              onChange={(e) => setForm({ ...form, newDocDescription: e.target.value })}
-            />
-          </label>
+          <AdminNewPdfBatch items={newPdfs} onChange={setNewPdfs} />
 
           <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
             <button type="submit" className="admin-btn admin-btn--primary" disabled={busy}>

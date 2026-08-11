@@ -26,18 +26,33 @@ function isImage(file) {
   return file?.mimetype?.startsWith('image/');
 }
 
-async function buildDocuments(files, metaRaw, coverFiles) {
+async function buildDocuments(files, metaRaw, coverFiles, coverIndexesRaw) {
   if (!files?.length) return [];
   const pdfs = files.filter(isPdf);
   if (!pdfs.length) return [];
   const metaParsed = parseJsonArray(metaRaw, 'documentsMeta');
   const meta = metaParsed.ok && metaParsed.value ? metaParsed.value : [];
   const covers = (coverFiles || []).filter(isImage);
+  const indexParsed = parseJsonArray(coverIndexesRaw, 'documentCoverIndexes');
+  const coverIndexes =
+    indexParsed.ok && Array.isArray(indexParsed.value) ? indexParsed.value.map(Number) : [];
+
+  const coverByPdfIndex = new Map();
+  if (coverIndexes.length) {
+    covers.forEach((file, i) => {
+      const pdfIndex = coverIndexes[i];
+      if (Number.isFinite(pdfIndex)) coverByPdfIndex.set(pdfIndex, file);
+    });
+  } else {
+    covers.forEach((file, i) => coverByPdfIndex.set(i, file));
+  }
+
   const urls = await Promise.all(pdfs.map((f) => uploadBuffer(f, 'told-in-full-docs')));
   const coverUrls = await Promise.all(
-    pdfs.map((_, index) =>
-      covers[index] ? uploadBuffer(covers[index], 'told-in-full-docs') : Promise.resolve(null),
-    ),
+    pdfs.map((_, index) => {
+      const cover = coverByPdfIndex.get(index);
+      return cover ? uploadBuffer(cover, 'told-in-full-docs') : Promise.resolve(null);
+    }),
   );
   const now = new Date().toISOString();
   return urls.map((url, index) => {
@@ -131,13 +146,15 @@ router.get('/:slugOrId', async (req, res) => {
 
 router.post('/', protect, contentManagers, uploadToldDocs, async (req, res) => {
   try {
-    const { title, tag, caption, problem, action, result, sortOrder, published, documentsMeta } = req.body;
+    const { title, tag, caption, problem, action, result, sortOrder, published, documentsMeta, documentCoverIndexes } =
+      req.body;
     if (!title?.trim()) return res.status(400).json({ message: 'Title is required' });
 
     const documents = await buildDocuments(
       req.files?.documents,
       documentsMeta,
       req.files?.documentCovers,
+      documentCoverIndexes,
     );
 
     const item = await ToldInFull.create({
@@ -212,6 +229,7 @@ router.put('/:id', protect, contentManagers, uploadToldDocs, async (req, res) =>
       req.files?.documents,
       documentsMeta,
       req.files?.documentCovers,
+      req.body.documentCoverIndexes,
     );
     if (added.length) docs = [...docs, ...added];
 
