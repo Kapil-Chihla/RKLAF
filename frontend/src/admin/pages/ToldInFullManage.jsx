@@ -23,6 +23,8 @@ export default function ToldInFullManage() {
   const [busy, setBusy] = useState(false);
   const [form, setForm] = useState(emptyForm);
   const [documents, setDocuments] = useState([]);
+  const [documentCovers, setDocumentCovers] = useState([]);
+  const [coverReplacements, setCoverReplacements] = useState({});
   const [keptDocuments, setKeptDocuments] = useState([]);
   const [editing, setEditing] = useState(null);
   const canDelete = ['super_admin', 'admin'].includes(user?.role);
@@ -36,6 +38,8 @@ export default function ToldInFullManage() {
   const resetForm = () => {
     setForm(emptyForm);
     setDocuments([]);
+    setDocumentCovers([]);
+    setCoverReplacements({});
     setKeptDocuments([]);
     setEditing(null);
   };
@@ -54,6 +58,8 @@ export default function ToldInFullManage() {
       newDocDescription: '',
     });
     setDocuments([]);
+    setDocumentCovers([]);
+    setCoverReplacements({});
     setKeptDocuments(item.documents || []);
     setMsg('');
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -63,6 +69,15 @@ export default function ToldInFullManage() {
     setKeptDocuments((prev) =>
       prev.map((doc) => ((doc.id || doc.url) === id ? { ...doc, ...patch } : doc)),
     );
+  };
+
+  const setDocCoverFile = (docId, file) => {
+    setCoverReplacements((prev) => {
+      const next = { ...prev };
+      if (file) next[docId] = file;
+      else delete next[docId];
+      return next;
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -75,6 +90,7 @@ export default function ToldInFullManage() {
     });
 
     documents.forEach((f) => fd.append('documents', f));
+    documentCovers.forEach((f) => fd.append('documentCovers', f));
     if (documents.length) {
       const meta = documents.map((file, index) => ({
         title:
@@ -84,6 +100,12 @@ export default function ToldInFullManage() {
         description: index === 0 ? form.newDocDescription.trim() : '',
       }));
       fd.append('documentsMeta', JSON.stringify(meta));
+    }
+
+    const replaceEntries = Object.entries(coverReplacements).filter(([, file]) => file);
+    if (replaceEntries.length) {
+      fd.append('coverReplaceIds', JSON.stringify(replaceEntries.map(([id]) => id)));
+      replaceEntries.forEach(([, file]) => fd.append('coverReplacements', file));
     }
 
     try {
@@ -111,8 +133,8 @@ export default function ToldInFullManage() {
       <div className="admin-card">
         <h2>{editing ? 'Edit told in full' : 'Impact — Told in full'}</h2>
         <p style={{ color: '#5a6f82', marginTop: 0 }}>
-          Prison programme stories (problem / action / result). No photos — attach multiple PDFs for the
-          detail page (same pattern as Programmes &amp; Initiatives).
+          Prison programme stories (problem / action / result). Story cards stay photo-free; attach PDFs with
+          optional preview images (same pattern as Practical Guides / Programmes).
         </p>
         {msg && (
           <div
@@ -166,7 +188,12 @@ export default function ToldInFullManage() {
               title="Current PDF documents"
               kind="document"
               items={keptDocuments}
-              onRemove={(id) => setKeptDocuments((prev) => prev.filter((doc) => (doc.id || doc.url) !== id))}
+              coverFiles={coverReplacements}
+              onCoverFile={setDocCoverFile}
+              onRemove={(id) => {
+                setKeptDocuments((prev) => prev.filter((doc) => (doc.id || doc.url) !== id));
+                setDocCoverFile(id, null);
+              }}
               onChangeItem={patchKeptDocument}
             />
           ) : null}
@@ -178,6 +205,18 @@ export default function ToldInFullManage() {
               accept="application/pdf,.pdf"
               multiple
               onChange={(e) => setDocuments(Array.from(e.target.files || []))}
+            />
+          </label>
+          <label>
+            Preview images for new PDFs (optional)
+            <span style={{ display: 'block', fontWeight: 500, color: '#5a6f82', fontSize: '0.82rem' }}>
+              Same order as the PDFs above — 1st image covers the 1st PDF (like Practical Guides).
+            </span>
+            <input
+              type="file"
+              accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
+              multiple
+              onChange={(e) => setDocumentCovers(Array.from(e.target.files || []))}
             />
           </label>
           <label>

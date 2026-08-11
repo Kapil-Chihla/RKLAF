@@ -90,6 +90,7 @@ export default function DeskStoriesManage() {
   const [blocks, setBlocks] = useState([{ key: nextKey('p'), type: 'paragraph', text: '' }]);
   const [documents, setDocuments] = useState([]);
   const [documentCovers, setDocumentCovers] = useState([]);
+  const [coverReplacements, setCoverReplacements] = useState({});
   const [editing, setEditing] = useState(null);
   const [keptDocuments, setKeptDocuments] = useState([]);
   const [clearHero, setClearHero] = useState(false);
@@ -113,6 +114,7 @@ export default function DeskStoriesManage() {
     setBlocks([{ key: nextKey('p'), type: 'paragraph', text: '' }]);
     setDocuments([]);
     setDocumentCovers([]);
+    setCoverReplacements({});
     setEditing(null);
     setKeptDocuments([]);
     setClearHero(false);
@@ -134,6 +136,7 @@ export default function DeskStoriesManage() {
     setBlocks(blocksFromStory(story));
     setDocuments([]);
     setDocumentCovers([]);
+    setCoverReplacements({});
     setKeptDocuments([...(story.documents || [])]);
     setClearHero(false);
     setMsg('');
@@ -144,6 +147,15 @@ export default function DeskStoriesManage() {
     setKeptDocuments((prev) =>
       prev.map((doc) => ((doc.id || doc.url) === id ? { ...doc, ...patch } : doc)),
     );
+  };
+
+  const setDocCoverFile = (docId, file) => {
+    setCoverReplacements((prev) => {
+      const next = { ...prev };
+      if (file) next[docId] = file;
+      else delete next[docId];
+      return next;
+    });
   };
 
   const updateBlock = (key, patch) => {
@@ -245,6 +257,12 @@ export default function DeskStoriesManage() {
         description: index === 0 ? form.newDocDescription.trim() : '',
       }));
       fd.append('documentsMeta', JSON.stringify(meta));
+    }
+
+    const replaceEntries = Object.entries(coverReplacements).filter(([, file]) => file);
+    if (replaceEntries.length) {
+      fd.append('coverReplaceIds', JSON.stringify(replaceEntries.map(([id]) => id)));
+      replaceEntries.forEach(([, file]) => fd.append('coverReplacements', file));
     }
 
     try {
@@ -438,7 +456,12 @@ export default function DeskStoriesManage() {
               title="Current PDF documents"
               kind="document"
               items={keptDocuments}
-              onRemove={(id) => setKeptDocuments((prev) => prev.filter((doc) => (doc.id || doc.url) !== id))}
+              coverFiles={coverReplacements}
+              onCoverFile={setDocCoverFile}
+              onRemove={(id) => {
+                setKeptDocuments((prev) => prev.filter((doc) => (doc.id || doc.url) !== id));
+                setDocCoverFile(id, null);
+              }}
               onChangeItem={patchKeptDocument}
             />
           ) : null}
@@ -450,6 +473,18 @@ export default function DeskStoriesManage() {
               accept="application/pdf,.pdf"
               multiple
               onChange={(e) => setDocuments(Array.from(e.target.files || []))}
+            />
+          </label>
+          <label>
+            Preview images for new PDFs (optional)
+            <span style={{ display: 'block', fontWeight: 500, color: '#5a6f82', fontSize: '0.82rem' }}>
+              Same order as the PDFs above — 1st image covers the 1st PDF (like Practical Guides).
+            </span>
+            <input
+              type="file"
+              accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
+              multiple
+              onChange={(e) => setDocumentCovers(Array.from(e.target.files || []))}
             />
           </label>
           <label>
@@ -465,17 +500,6 @@ export default function DeskStoriesManage() {
               rows={2}
               value={form.newDocDescription}
               onChange={(e) => setForm({ ...form, newDocDescription: e.target.value })}
-            />
-          </label>
-          <label>
-            Cover image for first new PDF (optional)
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                setDocumentCovers(file ? [file] : []);
-              }}
             />
           </label>
 

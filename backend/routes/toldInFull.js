@@ -11,20 +11,34 @@ const { sendPdfDownload } = require('../lib/pdfDownload');
 
 const router = express.Router();
 
-const uploadToldDocs = uploadAny.fields([{ name: 'documents', maxCount: 12 }]);
+const uploadToldDocs = uploadAny.fields([
+  { name: 'documents', maxCount: 12 },
+  { name: 'documentCovers', maxCount: 12 },
+  { name: 'coverReplacements', maxCount: 12 },
+]);
 
 function isPdf(file) {
   const ext = path.extname(file?.originalname || '').toLowerCase();
   return file?.mimetype === 'application/pdf' || ext === '.pdf';
 }
 
-async function buildDocuments(files, metaRaw) {
+function isImage(file) {
+  return file?.mimetype?.startsWith('image/');
+}
+
+async function buildDocuments(files, metaRaw, coverFiles) {
   if (!files?.length) return [];
   const pdfs = files.filter(isPdf);
   if (!pdfs.length) return [];
   const metaParsed = parseJsonArray(metaRaw, 'documentsMeta');
   const meta = metaParsed.ok && metaParsed.value ? metaParsed.value : [];
+  const covers = (coverFiles || []).filter(isImage);
   const urls = await Promise.all(pdfs.map((f) => uploadBuffer(f, 'told-in-full-docs')));
+  const coverUrls = await Promise.all(
+    pdfs.map((_, index) =>
+      covers[index] ? uploadBuffer(covers[index], 'told-in-full-docs') : Promise.resolve(null),
+    ),
+  );
   const now = new Date().toISOString();
   return urls.map((url, index) => {
     const m = meta[index] || {};
@@ -35,6 +49,7 @@ async function buildDocuments(files, metaRaw) {
       name: filename,
       title: String(m.title || '').trim() || filename.replace(/\.pdf$/i, ''),
       description: String(m.description || '').trim(),
+      coverImage: coverUrls[index] || null,
       createdAt: now,
     };
   });
@@ -47,8 +62,29 @@ function mapKeptDocuments(items) {
     name: doc.name || 'document.pdf',
     title: String(doc.title || '').trim(),
     description: String(doc.description || '').trim(),
+    coverImage: doc.coverImage || null,
     createdAt: doc.createdAt || new Date().toISOString(),
   }));
+}
+
+/** Replace preview images on existing docs (paired by coverReplaceIds order). */
+async function applyCoverReplacements(docs, files, idsRaw) {
+  const parsed = parseJsonArray(idsRaw, 'coverReplaceIds');
+  if (!parsed.ok) return { ok: false, error: parsed.error };
+  const ids = parsed.value || [];
+  const images = (files || []).filter(isImage);
+  if (!ids.length || !images.length) return { ok: true, docs };
+
+  const next = [...docs];
+  const count = Math.min(ids.length, images.length);
+  for (let i = 0; i < count; i += 1) {
+    const docId = String(ids[i] || '');
+    const idx = next.findIndex((d) => d.id === docId);
+    if (idx === -1) continue;
+    const url = await uploadBuffer(images[i], 'told-in-full-docs');
+    next[idx] = { ...next[idx], coverImage: url };
+  }
+  return { ok: true, docs: next };
 }
 
 function publicFilter(req) {
@@ -98,7 +134,11 @@ router.post('/', protect, contentManagers, uploadToldDocs, async (req, res) => {
     const { title, tag, caption, problem, action, result, sortOrder, published, documentsMeta } = req.body;
     if (!title?.trim()) return res.status(400).json({ message: 'Title is required' });
 
-    const documents = await buildDocuments(req.files?.documents, documentsMeta);
+    const documents = await buildDocuments(
+      req.files?.documents,
+      documentsMeta,
+      req.files?.documentCovers,
+    );
 
     const item = await ToldInFull.create({
       id: generateId('told'),
@@ -127,8 +167,19 @@ router.put('/:id', protect, contentManagers, uploadToldDocs, async (req, res) =>
     const item = await ToldInFull.findOne({ id: req.params.id });
     if (!item) return res.status(404).json({ message: 'Told in full story not found' });
 
-    const { title, tag, caption, problem, action, result, sortOrder, published, documentsMeta, documentsJson } =
-      req.body;
+    const {
+      title,
+      tag,
+      caption,
+      problem,
+      action,
+      result,
+      sortOrder,
+      published,
+      documentsMeta,
+      documentsJson,
+      coverReplaceIds,
+    } = req.body;
 
     if (title?.trim()) {
       item.title = title.trim();
@@ -142,15 +193,29 @@ router.put('/:id', protect, contentManagers, uploadToldDocs, async (req, res) =>
     if (sortOrder !== undefined) item.sortOrder = Number(sortOrder) || 0;
     if (published !== undefined) item.published = published === 'false' || published === false ? false : true;
 
+    let docs = item.documents || [];
     if (documentsJson !== undefined) {
       const parsed = parseJsonArray(documentsJson, 'documentsJson');
       if (!parsed.ok) return res.status(400).json({ message: parsed.error });
-      item.documents = mapKeptDocuments(parsed.value || []);
+      docs = mapKeptDocuments(parsed.value || []);
     }
 
-    const added = await buildDocuments(req.files?.documents, documentsMeta);
-    if (added.length) item.documents = [...(item.documents || []), ...added];
+    const replaced = await applyCoverReplacements(
+      docs,
+      req.files?.coverReplacements,
+      coverReplaceIds,
+    );
+    if (!replaced.ok) return res.status(400).json({ message: replaced.error });
+    docs = replaced.docs;
 
+    const added = await buildDocuments(
+      req.files?.documents,
+      documentsMeta,
+      req.files?.documentCovers,
+    );
+    if (added.length) docs = [...docs, ...added];
+
+    item.documents = docs;
     item.updatedAt = new Date().toISOString();
     await item.save();
     const out = item.toObject();

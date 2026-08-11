@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import publicApi from '../lib/publicApi';
+import { assetUrl } from '../lib/api';
 import Reveal from '../components/motion/Reveal';
 import {
   toldDocumentDownloadUrl,
@@ -95,18 +96,24 @@ export default function ToldInFullDetail() {
                 const downloadHref = toldDocumentDownloadUrl(storyKey, doc.id);
                 const viewHref = toldDocumentViewUrl(storyKey, doc.id);
                 const tone = DOC_TONES[i % DOC_TONES.length];
+                const cover = doc.coverImage ? assetUrl(doc.coverImage) : null;
                 return (
                   <article key={doc.id} className="story-doc-card">
                     <button
                       type="button"
-                      className={`story-doc-card__cover story-doc-card__cover--${tone}`}
+                      className={`story-doc-card__cover story-doc-card__cover--${tone}${
+                        cover ? ' story-doc-card__cover--photo' : ''
+                      }`}
+                      style={cover ? { backgroundImage: `url(${cover})` } : undefined}
                       onClick={() =>
                         setActiveDoc({ title, viewUrl: viewHref, downloadUrl: downloadHref })
                       }
                       aria-label={`Preview ${title}`}
                     >
                       <span className="story-doc-card__badge">PDF</span>
-                      <strong>{doc.name?.replace(/\.pdf$/i, '') || 'Document'}</strong>
+                      {!cover ? (
+                        <strong>{doc.name?.replace(/\.pdf$/i, '') || 'Document'}</strong>
+                      ) : null}
                     </button>
                     <h3 className="story-doc-card__title">
                       <button

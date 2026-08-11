@@ -11,6 +11,8 @@ export default function AdminExistingMedia({
   kind = 'image',
   onRemove,
   onChangeItem,
+  onCoverFile,
+  coverFiles = {},
   onClearHero,
   heroUrl,
   clearHero,
@@ -77,36 +79,71 @@ export default function AdminExistingMedia({
 
       {kind === 'document' && items?.length ? (
         <ul className="admin-existing-media__docs">
-          {items.map((doc) => (
-            <li key={doc.id || doc.url} style={{ display: 'grid', gap: '0.45rem' }}>
-              <a href={cloudinaryPdfAttachmentUrl(doc.url)} target="_blank" rel="noopener noreferrer">
-                {doc.title || doc.name || 'Document.pdf'}
-              </a>
-              {onChangeItem ? (
-                <>
-                  <input
-                    type="text"
-                    placeholder="Public title"
-                    value={doc.title || ''}
-                    onChange={(e) => onChangeItem(doc.id || doc.url, { title: e.target.value })}
-                  />
-                  <textarea
-                    rows={2}
-                    placeholder="Short description (like KYR practical guides)"
-                    value={doc.description || ''}
-                    onChange={(e) => onChangeItem(doc.id || doc.url, { description: e.target.value })}
-                  />
-                </>
-              ) : null}
-              <button
-                type="button"
-                className="admin-btn admin-btn--danger admin-btn--sm"
-                onClick={() => onRemove(doc.id || doc.url)}
-              >
-                Remove
-              </button>
-            </li>
-          ))}
+          {items.map((doc) => {
+            const docId = doc.id || doc.url;
+            const pendingCover = coverFiles?.[docId];
+            return (
+              <li key={docId} className="admin-existing-media__doc">
+                <a href={cloudinaryPdfAttachmentUrl(doc.url)} target="_blank" rel="noopener noreferrer">
+                  {doc.title || doc.name || 'Document.pdf'}
+                </a>
+                {pendingCover ? (
+                  <p className="admin-existing-media__doc-cover-empty">
+                    New preview selected: {pendingCover.name}
+                  </p>
+                ) : doc.coverImage ? (
+                  <img className="admin-existing-media__doc-cover" src={assetUrl(doc.coverImage)} alt="" />
+                ) : (
+                  <p className="admin-existing-media__doc-cover-empty">No preview image yet</p>
+                )}
+                {onChangeItem ? (
+                  <>
+                    <input
+                      type="text"
+                      placeholder="Public title"
+                      value={doc.title || ''}
+                      onChange={(e) => onChangeItem(docId, { title: e.target.value })}
+                    />
+                    <textarea
+                      rows={2}
+                      placeholder="Short description (like KYR practical guides)"
+                      value={doc.description || ''}
+                      onChange={(e) => onChangeItem(docId, { description: e.target.value })}
+                    />
+                  </>
+                ) : null}
+                {onCoverFile ? (
+                  <label className="admin-existing-media__cover-label">
+                    Preview image (card cover)
+                    <input
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
+                      onChange={(e) => onCoverFile(docId, e.target.files?.[0] || null)}
+                    />
+                  </label>
+                ) : null}
+                {doc.coverImage || pendingCover ? (
+                  <button
+                    type="button"
+                    className="admin-btn admin-btn--ghost admin-btn--sm"
+                    onClick={() => {
+                      if (onCoverFile) onCoverFile(docId, null);
+                      if (onChangeItem) onChangeItem(docId, { coverImage: null });
+                    }}
+                  >
+                    Clear preview image
+                  </button>
+                ) : null}
+                <button
+                  type="button"
+                  className="admin-btn admin-btn--danger admin-btn--sm"
+                  onClick={() => onRemove(docId)}
+                >
+                  Remove
+                </button>
+              </li>
+            );
+          })}
         </ul>
       ) : null}
     </div>

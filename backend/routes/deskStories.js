@@ -22,6 +22,7 @@ const uploadDeskMedia = uploadAny.fields([
   { name: 'blockImages', maxCount: 24 },
   { name: 'documents', maxCount: 12 },
   { name: 'documentCovers', maxCount: 12 },
+  { name: 'coverReplacements', maxCount: 12 },
 ]);
 
 function isImage(file) {
@@ -70,6 +71,25 @@ function mapKeptDocuments(items) {
     coverImage: doc.coverImage || null,
     createdAt: doc.createdAt || new Date().toISOString(),
   }));
+}
+
+async function applyCoverReplacements(docs, files, idsRaw) {
+  const parsed = parseJsonArray(idsRaw, 'coverReplaceIds');
+  if (!parsed.ok) return { ok: false, error: parsed.error };
+  const ids = parsed.value || [];
+  const images = (files || []).filter(isImage);
+  if (!ids.length || !images.length) return { ok: true, docs };
+
+  const next = [...docs];
+  const count = Math.min(ids.length, images.length);
+  for (let i = 0; i < count; i += 1) {
+    const docId = String(ids[i] || '');
+    const idx = next.findIndex((d) => d.id === docId);
+    if (idx === -1) continue;
+    const url = await uploadBuffer(images[i], 'desk-docs');
+    next[idx] = { ...next[idx], coverImage: url };
+  }
+  return { ok: true, docs: next };
 }
 
 /**
@@ -285,6 +305,14 @@ router.put('/:id', protect, contentManagers, uploadDeskMedia, async (req, res) =
     if (keptDocs.value) {
       story.documents = mapKeptDocuments(keptDocs.value);
     }
+
+    const coverSwap = await applyCoverReplacements(
+      story.documents || [],
+      req.files?.coverReplacements,
+      req.body.coverReplaceIds,
+    );
+    if (!coverSwap.ok) return res.status(400).json({ message: coverSwap.error });
+    story.documents = coverSwap.docs;
 
     if (clearHero === 'true' || clearHero === true) {
       story.heroImage = null;

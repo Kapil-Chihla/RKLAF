@@ -8,6 +8,7 @@ const toldDocumentSchema = new mongoose.Schema(
     name: { type: String, default: 'document.pdf' },
     title: { type: String, default: '' },
     description: { type: String, default: '' },
+    coverImage: { type: String, default: null },
     createdAt: { type: String, default: '' },
   },
   { _id: false }
