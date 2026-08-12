@@ -8,7 +8,7 @@ import {
 } from '../data/navigation';
 import publicApi from '../lib/publicApi';
 import { assetUrl } from '../lib/api';
-import { isAudioMediaUrl, isDirectMediaUrl, mediaEmbedUrl } from '../lib/mediaEmbed';
+import { isAudioMediaUrl, isHttpUrl, mediaEmbedUrl, toDirectMediaUrl } from '../lib/mediaEmbed';
 import { displayText } from '../lib/displayText';
 import { renderRichText } from '../lib/richText';
 import libraryBanner from '../assets/librarybanner.jpeg';
@@ -99,14 +99,13 @@ function PlatformIcon({ name }) {
   );
 }
 
-/** Renders Spotify/YouTube iframe or native audio/video from CMS fields. */
+/** Renders Spotify/YouTube iframe or native audio/video from CMS file or pasted URL. */
 function PodcastMedia({ item, className = '', autoplay = false, compact = false }) {
   if (!item) return null;
   const fileUrl = assetUrl(item.media);
-  const external = item.externalUrl || '';
+  const external = (item.externalUrl || '').trim();
   const embed = mediaEmbedUrl(external, { autoplay });
-  const directExternal = isDirectMediaUrl(external) ? external : null;
-  const playUrl = fileUrl || directExternal;
+  const playUrl = fileUrl || toDirectMediaUrl(external) || (isHttpUrl(external) ? external : null);
 
   if (embed) {
     return (
@@ -117,6 +116,7 @@ function PodcastMedia({ item, className = '', autoplay = false, compact = false 
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowFullScreen
           loading="lazy"
+          referrerPolicy="strict-origin-when-cross-origin"
         />
       </div>
     );
@@ -135,7 +135,13 @@ function PodcastMedia({ item, className = '', autoplay = false, compact = false 
     }
     return (
       <div className={`lib-media lib-media--video ${className}`.trim()}>
-        <video controls src={playUrl} playsInline preload="metadata" poster={assetUrl(item.thumbnail) || undefined}>
+        <video
+          controls
+          src={playUrl}
+          playsInline
+          preload="metadata"
+          poster={assetUrl(item.thumbnail) || undefined}
+        >
           Your browser does not support video playback.
         </video>
       </div>
