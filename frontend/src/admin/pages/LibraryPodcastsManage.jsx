@@ -180,7 +180,9 @@ export default function LibraryPodcastsManage() {
           </label>
           <label>
             Or external URL{' '}
-            {form.kind === 'audio' ? '(Spotify episode / show / direct audio)' : '(YouTube / Vimeo / direct)'}
+            {form.kind === 'audio'
+              ? '(Spotify episode / show / direct .mp3)'
+              : '(YouTube / Vimeo / Google Drive / direct .mp4 — not OneDrive share pages)'}
             <input
               type="url"
               value={form.externalUrl}

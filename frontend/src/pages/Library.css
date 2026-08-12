@@ -440,6 +440,51 @@
   background: linear-gradient(150deg, #6e5638, #3a2d1f);
 }
 
+.lib-media--external {
+  aspect-ratio: 16 / 9;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.65rem;
+  padding: 1.25rem 1.4rem;
+  background: linear-gradient(150deg, #3a2d1f, #1a1510);
+  color: #efe7d6;
+}
+
+.lib-media--external p {
+  margin: 0;
+  max-width: 36rem;
+  font-size: 0.98rem;
+  line-height: 1.5;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.lib-media__hint {
+  opacity: 0.8;
+  font-size: 0.9rem !important;
+}
+
+.lib-media__open {
+  display: inline-flex;
+  margin-top: 0.35rem;
+  padding: 0.55rem 0.95rem;
+  border-radius: 999px;
+  background: #f7f2ea;
+  color: #1f1c19;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.lib-media__open:hover {
+  background: #fff;
+  color: #1f1c19;
+}
+
 .lib-empty {
   margin: 1.25rem 0 0;
   font-size: 1rem;

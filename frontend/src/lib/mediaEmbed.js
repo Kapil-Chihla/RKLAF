@@ -1,6 +1,7 @@
 /**
  * Build an embeddable iframe src (or null) from YouTube / Vimeo / Spotify / Drive / SoundCloud.
  * Direct media files return null — callers should use <audio> / <video> instead.
+ * OneDrive / SharePoint share pages are not embeddable reliably — see isCloudSharePageUrl.
  */
 
 function hostname(url) {
@@ -56,6 +57,19 @@ function driveFileId(u) {
   return u.pathname.match(/\/file\/d\/([^/]+)/)?.[1] || u.searchParams.get('id') || null;
 }
 
+/** Viewer/share pages that cannot be used as <video src> or a reliable iframe. */
+export function isCloudSharePageUrl(url) {
+  const host = hostname(url);
+  if (!host) return false;
+  return (
+    host === 'onedrive.live.com' ||
+    host === '1drv.ms' ||
+    host.endsWith('.sharepoint.com') ||
+    host === 'sharepoint.com' ||
+    host === 'my.microsoftpersonalcontent.com'
+  );
+}
+
 export function mediaEmbedUrl(url, { autoplay = false } = {}) {
   if (!url) return null;
   try {
@@ -81,6 +95,19 @@ export function mediaEmbedUrl(url, { autoplay = false } = {}) {
 
     if (host === 'soundcloud.com' || host === 'on.soundcloud.com') {
       return `https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&color=%23854f0b&auto_play=${autoplay ? 'true' : 'false'}&hide_related=true&show_comments=false&visual=true`;
+    }
+
+    // OneDrive “Embed” URLs only — share/viewer pages still return null
+    if (host === 'onedrive.live.com' && (u.pathname === '/embed' || u.searchParams.has('resid'))) {
+      if (u.pathname === '/embed' || u.searchParams.get('em')) return url;
+      const cid = u.searchParams.get('cid');
+      const resid = u.searchParams.get('resid') || u.searchParams.get('id');
+      const authkey = u.searchParams.get('authkey');
+      if (cid && resid) {
+        const q = new URLSearchParams({ cid, resid, em: '2' });
+        if (authkey) q.set('authkey', authkey);
+        return `https://onedrive.live.com/embed?${q.toString()}`;
+      }
     }
   } catch {
     /* not a URL */
@@ -132,4 +159,13 @@ export function isHttpUrl(url) {
   } catch {
     return false;
   }
+}
+
+/** Label for external open CTA when in-page play is impossible. */
+export function cloudShareLabel(url) {
+  const host = hostname(url);
+  if (host.includes('onedrive') || host === '1drv.ms' || host.includes('sharepoint')) {
+    return 'OneDrive';
+  }
+  return 'external link';
 }

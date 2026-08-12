@@ -8,7 +8,14 @@ import {
 } from '../data/navigation';
 import publicApi from '../lib/publicApi';
 import { assetUrl } from '../lib/api';
-import { isAudioMediaUrl, isHttpUrl, mediaEmbedUrl, toDirectMediaUrl } from '../lib/mediaEmbed';
+import {
+  cloudShareLabel,
+  isAudioMediaUrl,
+  isCloudSharePageUrl,
+  isHttpUrl,
+  mediaEmbedUrl,
+  toDirectMediaUrl,
+} from '../lib/mediaEmbed';
 import { displayText } from '../lib/displayText';
 import { renderRichText } from '../lib/richText';
 import libraryBanner from '../assets/librarybanner.jpeg';
@@ -56,7 +63,7 @@ const socialShelves = [
     name: 'Facebook',
     sub: 'Community & camps',
     cta: 'Follow →',
-    href: 'https://facebook.com/',
+    href: socialLinks.find((s) => s.name === 'Facebook')?.href || '#',
     icon: 'f',
     tone: 'fb',
     preview: 'Latest post preview',
@@ -105,7 +112,11 @@ function PodcastMedia({ item, className = '', autoplay = false, compact = false 
   const fileUrl = assetUrl(item.media);
   const external = (item.externalUrl || '').trim();
   const embed = mediaEmbedUrl(external, { autoplay });
-  const playUrl = fileUrl || toDirectMediaUrl(external) || (isHttpUrl(external) ? external : null);
+  const direct = fileUrl || toDirectMediaUrl(external);
+  // Never put OneDrive/SharePoint viewer pages into <video> — browsers cannot play them
+  const playUrl =
+    direct ||
+    (isHttpUrl(external) && !isCloudSharePageUrl(external) && !mediaEmbedUrl(external) ? external : null);
 
   if (embed) {
     return (
@@ -144,6 +155,23 @@ function PodcastMedia({ item, className = '', autoplay = false, compact = false 
         >
           Your browser does not support video playback.
         </video>
+      </div>
+    );
+  }
+
+  if (external && isCloudSharePageUrl(external)) {
+    const where = cloudShareLabel(external);
+    return (
+      <div className={`lib-media lib-media--external ${className}`.trim()}>
+        <p>
+          This {where} share link can’t play inside the page (it’s a viewer page, not a video file).
+        </p>
+        <p className="lib-media__hint">
+          Upload the video file in admin, or paste a YouTube / Google Drive link instead.
+        </p>
+        <a href={external} target="_blank" rel="noopener noreferrer" className="lib-media__open">
+          Open on {where} →
+        </a>
       </div>
     );
   }
