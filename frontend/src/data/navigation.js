@@ -1,6 +1,6 @@
 export const socialLinks = [
   { name: 'Instagram', href: 'https://www.instagram.com/rklegalaidfoundation', icon: 'instagram' },
-  { name: 'Facebook', href: 'https://facebook.com/', icon: 'facebook' },
+  { name: 'Facebook', href: 'https://www.facebook.com/people/Radhey-Krishna-Legal-Aid-Foundation/61592847643687/', icon: 'facebook' },
   { name: 'YouTube', href: 'https://www.youtube.com/@radheykrishnalegalaid', icon: 'youtube' },
   { name: 'LinkedIn', href: 'https://www.linkedin.com/company/radhey-krishna-legal-aid-foundation/', icon: 'linkedin' },
   {
