@@ -105,29 +105,56 @@ export function DeskEntry(props) {
 }
 
 export function ProgrammeBlock({ item }) {
-  const isRoute = item.href?.startsWith('/') && !item.href.includes('#');
+  const paragraphs = (item.paragraphs || [item.desc]).filter(Boolean);
+  const stats = Array.isArray(item.stats) ? item.stats : [];
+  const highlights = Array.isArray(item.highlights) ? item.highlights : [];
+  const hasHref = Boolean(item.href);
+  const isRoute = hasHref && item.href.startsWith('/') && !item.href.includes('#');
   const More = isRoute ? Link : 'a';
-  const moreProps = isRoute ? { to: item.href } : { href: item.href };
+  const moreProps = isRoute ? { to: item.href } : hasHref ? { href: item.href } : {};
 
   return (
     <article className={`work-prog ${item.flip ? 'work-prog--flip' : ''}`} id={`prog-${item.num}`}>
       <div className="work-prog__copy">
         <p className="work-prog__meta">{item.meta}</p>
         <h3 className="work-prog__title">{displayText(item.title)}</h3>
-        <p className="work-prog__desc">{displayText(item.desc)}</p>
-        <div className="work-prog__stats">
-          {item.stats.map((s) => (
-            <div key={s.label} className="work-prog__stat">
-              <strong>{s.value}</strong>
-              <span>{s.label}</span>
-            </div>
+        <div className="work-prog__body">
+          {paragraphs.map((p, i) => (
+            <p key={i} className="work-prog__desc">
+              {renderRichText(p)}
+            </p>
           ))}
         </div>
-        <More {...moreProps} className="work-prog__more">
-          Learn more {isRoute ? '→' : '↓'}
-        </More>
+        {stats.length > 0 ? (
+          <div className="work-prog__stats">
+            {stats.map((s) => (
+              <div key={s.label} className="work-prog__stat">
+                <strong>{s.value}</strong>
+                <span>{s.label}</span>
+              </div>
+            ))}
+          </div>
+        ) : null}
+        {highlights.length > 0 ? (
+          <p className="work-prog__highlights">
+            {highlights.map((h, i) => (
+              <span key={h}>
+                {i > 0 ? <span className="work-prog__dot" aria-hidden="true"> · </span> : null}
+                {h}
+              </span>
+            ))}
+          </p>
+        ) : null}
+        {item.tags ? <p className="work-prog__tags">{item.tags}</p> : null}
+        {hasHref ? (
+          <More {...moreProps} className="work-prog__more">
+            Learn more →
+          </More>
+        ) : item.status ? (
+          <p className="work-prog__status">{item.status}</p>
+        ) : null}
       </div>
-      <div className={`work-prog__num work-prog__num--${item.stripe}`} aria-hidden="true">
+      <div className={`work-prog__num work-prog__num--${item.stripe || 'brown'}`} aria-hidden="true">
         {item.num}
       </div>
     </article>

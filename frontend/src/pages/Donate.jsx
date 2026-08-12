@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import CountUp from '../components/motion/CountUp';
 import Reveal from '../components/motion/Reveal';
 import { submitContact } from '../lib/submitContact';
@@ -383,7 +384,7 @@ export default function Donate() {
                 </li>
                 <li>
                   <TrustIcon name="ledger" />
-                  <span>Public ledger</span>
+                  <Link to="/our-work/reports">Public ledger</Link>
                 </li>
                 <li>
                   <TrustIcon name="refund" />

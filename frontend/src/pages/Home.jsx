@@ -3,10 +3,13 @@ import { Link } from 'react-router-dom';
 import HeroVideo from '../components/home/HeroVideo';
 import CountUp from '../components/motion/CountUp';
 import Reveal from '../components/motion/Reveal';
-import { WHATSAPP_DISPLAY, WHATSAPP_URL, CONTACT_EMAIL, CONTACT_MAILTO, OFFICE_DELHI } from '../data/navigation';
+import { WHATSAPP_URL } from '../data/navigation';
 import publicApi from '../lib/publicApi';
 import { assetUrl } from '../lib/api';
 import { renderRichText } from '../lib/richText';
+import academicsHomeImg from '../assets/academicshome.jpeg';
+import knowYourRightsHomeImg from '../assets/knowyourightshome.jpeg';
+import libraryHomeImg from '../assets/libraryhome.jpeg';
 import './Home.css';
 
 const snapModules = import.meta.glob('../assets/{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}.jpeg', {
@@ -90,7 +93,6 @@ const sideNav = [
   { id: 'expertise', label: 'Expertise' },
   { id: 'resources', label: 'Resources' },
   { id: 'join-help', label: 'Join Us & Help' },
-  { id: 'contact-home', label: 'Contact' },
 ];
 
 const FALLBACK_PROGRAMMES = [
@@ -207,7 +209,8 @@ const resourceShelves = [
     title: 'Academics',
     sub: 'Blogs · Research · Papers',
     icon: 'grad',
-    preview: 'Latest piece preview',
+    image: academicsHomeImg,
+    imageAlt: 'Academics — blogs, research and papers',
     links: ['Field notes from camps', 'Research & papers', 'Policy briefs'],
     cta: 'Open Academics',
     href: '/academics',
@@ -216,7 +219,8 @@ const resourceShelves = [
     title: 'Know Your Rights',
     sub: 'Guides · Glossary · Videos',
     icon: 'shield',
-    preview: 'Latest guide preview',
+    image: knowYourRightsHomeImg,
+    imageAlt: 'Know Your Rights — guides, glossary and videos',
     links: ['Downloadable guides', 'Legal glossary', 'Emergency contacts'],
     cta: 'Open Rights Desk',
     href: '/know-your-rights',
@@ -225,7 +229,8 @@ const resourceShelves = [
     title: 'Library',
     sub: 'Podcast · Films · Socials',
     icon: 'books',
-    preview: 'Latest episode art',
+    image: libraryHomeImg,
+    imageAlt: 'Library — podcast, films and socials',
     links: ['Noted judgments', 'Media coverage', 'Annual reports'],
     cta: 'Open Library',
     href: '/library',
@@ -624,7 +629,9 @@ export default function Home() {
                     <p>{shelf.sub}</p>
                   </div>
                 </header>
-                <MediaPlaceholder label={shelf.preview} ratio="16 / 8" />
+                <div className="home-shelf__photo">
+                  <img src={shelf.image} alt={shelf.imageAlt} loading="lazy" decoding="async" />
+                </div>
                 <ul className="home-shelf__links">
                   {shelf.links.map((label) => (
                     <li key={label}>
@@ -679,7 +686,8 @@ export default function Home() {
               <h2 className="home-display">Your donation funds someone’s day in court</h2>
               <p>
                 ₹1,500 covers one full case filing. ₹500 runs a village rights camp for an hour.
-                Every rupee is accounted for in our public ledger.
+                Every rupee is accounted for in our{' '}
+                <Link to="/our-work/reports">public ledger</Link>.
               </p>
             </div>
             <Link to="/donate" className="home-pill home-pill--light home-donate__btn">
@@ -689,52 +697,6 @@ export default function Home() {
               Donate now →
             </Link>
           </article>
-        </div>
-      </section>
-
-      <section id="contact-home" className="home-contact">
-        <div className="container home-contact__grid">
-          <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="home-contact__item">
-            <span className="home-contact__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" />
-              </svg>
-            </span>
-            <div className="home-contact__body">
-              <strong>WhatsApp</strong>
-              <span>{WHATSAPP_DISPLAY}</span>
-            </div>
-          </a>
-          <a href={CONTACT_MAILTO} className="home-contact__item">
-            <span className="home-contact__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="3" y="5" width="18" height="14" rx="2" />
-                <path d="M3 7l9 7 9-7" />
-              </svg>
-            </span>
-            <div className="home-contact__body">
-              <strong>Email</strong>
-              <span>{CONTACT_EMAIL}</span>
-            </div>
-          </a>
-          <a
-            href={OFFICE_DELHI.mapsUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="home-contact__item"
-          >
-            <span className="home-contact__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 21s7-5.5 7-11a7 7 0 10-14 0c0 5.5 7 11 7 11z" />
-                <circle cx="12" cy="10" r="2.5" />
-              </svg>
-            </span>
-            <div className="home-contact__body">
-              <strong>Head office</strong>
-              <span>{OFFICE_DELHI.short}</span>
-              <small>Open map</small>
-            </div>
-          </a>
         </div>
       </section>
     </div>

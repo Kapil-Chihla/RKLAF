@@ -263,12 +263,20 @@
   max-width: 100%;
 }
 
+.work-prog__body {
+  margin: 0.95rem 0 0;
+  max-width: 40rem;
+}
+
 .work-prog__desc {
-  margin: 0.95rem 0 1.35rem;
-  max-width: 38rem;
-  font-size: 1.15rem;
+  margin: 0 0 0.95rem;
+  font-size: 1.1rem;
   line-height: 1.7;
   color: var(--muted);
+}
+
+.work-prog__desc:last-child {
+  margin-bottom: 1.15rem;
 }
 
 .work-prog__stats {
@@ -295,12 +303,62 @@
   color: var(--muted);
 }
 
+.work-prog__highlights {
+  margin: 0 0 1.1rem;
+  max-width: 40rem;
+  font-size: 1.02rem;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.work-prog__dot {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.work-prog__tags {
+  margin: 0 0 1.2rem;
+  max-width: 40rem;
+  font-size: 0.98rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.work-prog__status {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
 .work-prog__more {
   font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent);
+}
+
+.work-areas__note {
+  margin: clamp(1.75rem, 4vw, 2.5rem) 0 0;
+  max-width: 44rem;
+  font-size: 1.08rem;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+.work-areas__note a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.work-areas__note a:hover {
+  color: var(--ink);
 }
 
 .work-prog__num {

@@ -903,6 +903,22 @@ a.home-story--link:hover .home-story__more {
 
 .home-shelf .home-ph { border-radius: 12px; }
 
+.home-shelf__photo {
+  width: 100%;
+  aspect-ratio: 16 / 8;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #ebe4d6;
+}
+
+.home-shelf__photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
 .home-shelf__links {
   list-style: none;
   margin: 0;
@@ -989,6 +1005,16 @@ a.home-story--link:hover .home-story__more {
 
 .home-donate .home-display,
 .home-donate p { color: #fff; }
+
+.home-donate p a {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.home-donate p a:hover {
+  opacity: 0.85;
+}
 
 .home-donate p {
   margin: 0;
