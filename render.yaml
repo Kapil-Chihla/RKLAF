@@ -37,5 +37,9 @@ services:
         sync: false
       - key: SMTP_FROM
         sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: RESEND_FROM
+        value: "RKLAF Website <onboarding@resend.dev>"
       - key: CONTACT_RECEIVER_EMAIL
         sync: false
