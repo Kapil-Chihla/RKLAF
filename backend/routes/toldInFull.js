@@ -75,7 +75,7 @@ function mapKeptDocuments(items) {
     id: doc.id || generateId('doc'),
     url: doc.url,
     name: doc.name || 'document.pdf',
-    title: String(doc.title || '').trim(),
+    title: String(doc.title || '').trim() || String(doc.name || '').replace(/\.pdf$/i, ''),
     description: String(doc.description || '').trim(),
     coverImage: doc.coverImage || null,
     createdAt: doc.createdAt || new Date().toISOString(),

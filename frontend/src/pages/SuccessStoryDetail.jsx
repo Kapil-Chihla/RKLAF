@@ -99,7 +99,7 @@ export default function SuccessStoryDetail() {
             <h2>Documents</h2>
             <ul>
               {story.documents.map((doc) => {
-                const label = doc.name || 'Document.pdf';
+                const label = doc.title || doc.name || 'Document.pdf';
                 const href = successDocumentDownloadUrl(story.id || story.slug, doc.id);
                 return (
                   <li key={doc.id}>

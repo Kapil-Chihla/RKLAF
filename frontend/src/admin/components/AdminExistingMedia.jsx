@@ -17,6 +17,8 @@ export default function AdminExistingMedia({
   onClearHero,
   heroUrl,
   clearHero,
+  /** Hide description + cover editors — only public title */
+  titleOnly = false,
 }) {
   if (!items?.length && !(kind === 'hero' && heroUrl)) return null;
 
@@ -88,32 +90,36 @@ export default function AdminExistingMedia({
                 <a href={cloudinaryPdfAttachmentUrl(doc.url)} target="_blank" rel="noopener noreferrer">
                   {doc.title || doc.name || 'Document.pdf'}
                 </a>
-                {pendingCover ? (
-                  <p className="admin-existing-media__doc-cover-empty">
-                    New preview selected: {pendingCover.name}
-                  </p>
-                ) : doc.coverImage ? (
-                  <img className="admin-existing-media__doc-cover" src={assetUrl(doc.coverImage)} alt="" />
-                ) : (
-                  <p className="admin-existing-media__doc-cover-empty">No preview image yet</p>
-                )}
+                {!titleOnly ? (
+                  pendingCover ? (
+                    <p className="admin-existing-media__doc-cover-empty">
+                      New preview selected: {pendingCover.name}
+                    </p>
+                  ) : doc.coverImage ? (
+                    <img className="admin-existing-media__doc-cover" src={assetUrl(doc.coverImage)} alt="" />
+                  ) : (
+                    <p className="admin-existing-media__doc-cover-empty">No preview image yet</p>
+                  )
+                ) : null}
                 {onChangeItem ? (
                   <>
                     <input
                       type="text"
-                      placeholder="Public title"
+                      placeholder="Public name (shown on website)"
                       value={doc.title || ''}
                       onChange={(e) => onChangeItem(docId, { title: e.target.value })}
                     />
-                    <textarea
-                      rows={2}
-                      placeholder="Short description (like KYR practical guides)"
-                      value={doc.description || ''}
-                      onChange={(e) => onChangeItem(docId, { description: e.target.value })}
-                    />
+                    {!titleOnly ? (
+                      <textarea
+                        rows={2}
+                        placeholder="Short description (like KYR practical guides)"
+                        value={doc.description || ''}
+                        onChange={(e) => onChangeItem(docId, { description: e.target.value })}
+                      />
+                    ) : null}
                   </>
                 ) : null}
-                {onCoverFile ? (
+                {!titleOnly && onCoverFile ? (
                   <label className="admin-existing-media__cover-label">
                     Preview image (card cover)
                     <input
@@ -124,7 +130,7 @@ export default function AdminExistingMedia({
                     <AdminImageHint size="600×800 px" note="3:4 portrait card cover" />
                   </label>
                 ) : null}
-                {doc.coverImage || pendingCover ? (
+                {!titleOnly && (doc.coverImage || pendingCover) ? (
                   <button
                     type="button"
                     className="admin-btn admin-btn--ghost admin-btn--sm"

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import api from '../api';
 import { useAuth } from '../AuthContext';
 import AdminExistingMedia from '../components/AdminExistingMedia';
+import AdminNewPdfBatch, { appendNewPdfBatch } from '../components/AdminNewPdfBatch';
 import AdminRichHint from '../components/AdminRichHint';
 
 const emptyForm = {
@@ -22,7 +23,7 @@ export default function ToldInFullManage() {
   const [msg, setMsg] = useState('');
   const [busy, setBusy] = useState(false);
   const [form, setForm] = useState(emptyForm);
-  const [documents, setDocuments] = useState([]);
+  const [newPdfs, setNewPdfs] = useState([]);
   const [keptDocuments, setKeptDocuments] = useState([]);
   const [editing, setEditing] = useState(null);
   const canDelete = ['super_admin', 'admin'].includes(user?.role);
@@ -35,7 +36,7 @@ export default function ToldInFullManage() {
 
   const resetForm = () => {
     setForm(emptyForm);
-    setDocuments([]);
+    setNewPdfs([]);
     setKeptDocuments([]);
     setEditing(null);
   };
@@ -53,10 +54,21 @@ export default function ToldInFullManage() {
       fullBody: item.fullBody || '',
       sortOrder: String(item.sortOrder ?? 0),
     });
-    setDocuments([]);
-    setKeptDocuments(item.documents || []);
+    setNewPdfs([]);
+    setKeptDocuments(
+      (item.documents || []).map((doc) => ({
+        ...doc,
+        title: doc.title || (doc.name || '').replace(/\.pdf$/i, ''),
+      })),
+    );
     setMsg('');
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const patchKeptDocument = (id, patch) => {
+    setKeptDocuments((prev) =>
+      prev.map((doc) => ((doc.id || doc.url) === id ? { ...doc, ...patch } : doc)),
+    );
   };
 
   const handleSubmit = async (e) => {
@@ -69,7 +81,7 @@ export default function ToldInFullManage() {
         if (form[k] !== '') fd.append(k, form[k]);
       },
     );
-    documents.forEach((f) => fd.append('documents', f));
+    appendNewPdfBatch(fd, newPdfs);
 
     try {
       if (editing) {
@@ -97,8 +109,9 @@ export default function ToldInFullManage() {
         <h2>{editing ? 'Edit told in full' : 'Impact — Told in full'}</h2>
         <p style={{ color: '#5a6f82', marginTop: 0 }}>
           Prison programme stories — same story fields as Argued in full (tag, case line, problem / action /
-          result, full story text, PDFs). No photos. Public PDFs show the file name with Preview and Download.
-          {editing ? ' Remove existing PDFs below, or add more files.' : ''}
+          result, full story text, PDFs). No photos. Set a custom public name for each PDF (shown instead of
+          the uploaded filename).
+          {editing ? ' Remove or rename existing PDFs below, or add more files.' : ''}
         </p>
         {msg && (
           <div
@@ -183,27 +196,14 @@ export default function ToldInFullManage() {
             <AdminExistingMedia
               title="Current PDF documents"
               kind="document"
+              titleOnly
               items={keptDocuments}
+              onChangeItem={patchKeptDocument}
               onRemove={(id) => setKeptDocuments((prev) => prev.filter((doc) => (doc.id || doc.url) !== id))}
             />
           ) : null}
 
-          <label>
-            PDF documents — select multiple
-            <input
-              type="file"
-              accept="application/pdf,.pdf"
-              multiple
-              onChange={(e) => setDocuments(Array.from(e.target.files || []))}
-            />
-            <small style={{ display: 'block', marginTop: 4, color: '#5a6f82' }}>
-              The public page shows each file&apos;s original name. Rename the file on your computer before
-              upload if you want a clearer label. No preview image needed.
-            </small>
-            {documents.length > 0 ? (
-              <small style={{ display: 'block', marginTop: 4 }}>{documents.length} new PDF(s) selected</small>
-            ) : null}
-          </label>
+          <AdminNewPdfBatch items={newPdfs} onChange={setNewPdfs} variant="titleOnly" />
 
           <label>
             Sort order

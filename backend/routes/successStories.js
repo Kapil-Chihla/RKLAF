@@ -40,17 +40,26 @@ async function buildGallery(files, captionsRaw, startOrder = 0) {
   }));
 }
 
-async function buildDocuments(files) {
+async function buildDocuments(files, metaRaw) {
   if (!files?.length) return [];
   const pdfs = files.filter(isPdf);
+  if (!pdfs.length) return [];
+  const metaParsed = parseJsonArray(metaRaw, 'documentsMeta');
+  const meta = metaParsed.ok && metaParsed.value ? metaParsed.value : [];
   const urls = await Promise.all(pdfs.map((f) => uploadBuffer(f, 'success-docs')));
   const now = new Date().toISOString();
-  return urls.map((url, index) => ({
-    id: generateId('doc'),
-    url,
-    name: pdfs[index].originalname || 'document.pdf',
-    createdAt: now,
-  }));
+  return urls.map((url, index) => {
+    const filename = pdfs[index].originalname || 'document.pdf';
+    const m = meta[index] || {};
+    const custom = String(m.title || '').trim();
+    return {
+      id: generateId('doc'),
+      url,
+      name: filename,
+      title: custom || filename.replace(/\.pdf$/i, ''),
+      createdAt: now,
+    };
+  });
 }
 
 router.get('/', async (req, res) => {
@@ -97,7 +106,7 @@ router.post('/', protect, contentManagers, uploadStoryMedia, async (req, res) =>
     let heroImage = null;
     if (heroFile) heroImage = await uploadBuffer(heroFile, 'success');
     const gallery = await buildGallery(req.files?.gallery, galleryCaptions);
-    const documents = await buildDocuments(req.files?.documents);
+    const documents = await buildDocuments(req.files?.documents, req.body.documentsMeta);
 
     const story = await SuccessStory.create({
       id: generateId('success'),
@@ -175,6 +184,7 @@ router.put('/:id', protect, contentManagers, uploadStoryMedia, async (req, res) 
         id: doc.id || generateId('doc'),
         url: doc.url,
         name: doc.name || 'document.pdf',
+        title: String(doc.title || '').trim() || String(doc.name || '').replace(/\.pdf$/i, ''),
         createdAt: doc.createdAt || new Date().toISOString(),
       }));
     }
@@ -198,7 +208,7 @@ router.put('/:id', protect, contentManagers, uploadStoryMedia, async (req, res) 
     );
     if (newGallery.length) story.gallery = [...(story.gallery || []), ...newGallery];
 
-    const newDocs = await buildDocuments(req.files?.documents);
+    const newDocs = await buildDocuments(req.files?.documents, req.body.documentsMeta);
     if (newDocs.length) story.documents = [...(story.documents || []), ...newDocs];
 
     story.updatedAt = new Date().toISOString();

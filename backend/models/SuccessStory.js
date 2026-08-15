@@ -15,6 +15,8 @@ const documentSchema = new mongoose.Schema(
     id: { type: String, required: true },
     url: { type: String, required: true },
     name: { type: String, default: '' },
+    /** Public label — preferred over original filename on the website */
+    title: { type: String, default: '' },
     createdAt: { type: String, default: '' },
   },
   { _id: false }

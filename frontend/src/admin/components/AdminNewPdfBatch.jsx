@@ -1,10 +1,12 @@
 import AdminImageHint from './AdminImageHint';
 
 /**
- * Multi-PDF picker with per-file title, description, and preview cover.
- * Used by Programmes and Told in Full admin forms.
+ * Multi-PDF picker with per-file public title.
+ * @param {'full'|'titleOnly'} variant — full includes description + cover; titleOnly is name only.
  */
-export default function AdminNewPdfBatch({ items, onChange }) {
+export default function AdminNewPdfBatch({ items, onChange, variant = 'full' }) {
+  const titleOnly = variant === 'titleOnly';
+
   const setFiles = (files) => {
     const list = Array.from(files || []);
     onChange(
@@ -43,7 +45,16 @@ export default function AdminNewPdfBatch({ items, onChange }) {
       {items.length ? (
         <div className="admin-new-pdfs__list">
           <p className="admin-new-pdfs__hint">
-            Set title, description, and preview image for <strong>each</strong> PDF below.
+            {titleOnly ? (
+              <>
+                Set a <strong>custom public name</strong> for each PDF (shown on the website instead of the
+                uploaded filename).
+              </>
+            ) : (
+              <>
+                Set title, description, and preview image for <strong>each</strong> PDF below.
+              </>
+            )}
           </p>
           {items.map((item, index) => (
             <div key={`${item.file.name}-${index}`} className="admin-new-pdfs__card">
@@ -51,7 +62,7 @@ export default function AdminNewPdfBatch({ items, onChange }) {
                 <strong>
                   PDF {index + 1} of {items.length}
                 </strong>
-                <span className="admin-new-pdfs__filename">{item.file.name}</span>
+                <span className="admin-new-pdfs__filename">File: {item.file.name}</span>
                 <button
                   type="button"
                   className="admin-btn admin-btn--danger admin-btn--sm"
@@ -61,35 +72,40 @@ export default function AdminNewPdfBatch({ items, onChange }) {
                 </button>
               </div>
               <label>
-                Public title
+                Public name (shown on website)
                 <input
                   type="text"
                   value={item.title}
                   onChange={(e) => patchItem(index, { title: e.target.value })}
-                  placeholder="Shown on the website card"
+                  placeholder="e.g. Court order — Bail granted"
+                  required
                 />
               </label>
-              <label>
-                Description (optional)
-                <textarea
-                  rows={2}
-                  value={item.description}
-                  onChange={(e) => patchItem(index, { description: e.target.value })}
-                  placeholder="Short line under the title"
-                />
-              </label>
-              <label>
-                Preview image (optional)
-                <input
-                  type="file"
-                  accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
-                  onChange={(e) => patchItem(index, { cover: e.target.files?.[0] || null })}
-                />
-                <AdminImageHint size="600×800 px" note="3:4 portrait card cover on the public story page" />
-                {item.cover ? (
-                  <span className="admin-new-pdfs__cover-name">Selected: {item.cover.name}</span>
-                ) : null}
-              </label>
+              {!titleOnly ? (
+                <>
+                  <label>
+                    Description (optional)
+                    <textarea
+                      rows={2}
+                      value={item.description}
+                      onChange={(e) => patchItem(index, { description: e.target.value })}
+                      placeholder="Short line under the title"
+                    />
+                  </label>
+                  <label>
+                    Preview image (optional)
+                    <input
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
+                      onChange={(e) => patchItem(index, { cover: e.target.files?.[0] || null })}
+                    />
+                    <AdminImageHint size="600×800 px" note="3:4 portrait card cover on the public story page" />
+                    {item.cover ? (
+                      <span className="admin-new-pdfs__cover-name">Selected: {item.cover.name}</span>
+                    ) : null}
+                  </label>
+                </>
+              ) : null}
             </div>
           ))}
         </div>

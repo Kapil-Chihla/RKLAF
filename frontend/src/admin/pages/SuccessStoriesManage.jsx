@@ -3,6 +3,7 @@ import api from '../api';
 import { useAuth } from '../AuthContext';
 import AdminExistingMedia from '../components/AdminExistingMedia';
 import AdminImageHint from '../components/AdminImageHint';
+import AdminNewPdfBatch, { appendNewPdfBatch } from '../components/AdminNewPdfBatch';
 import AdminRichHint from '../components/AdminRichHint';
 
 const emptyForm = {
@@ -24,7 +25,7 @@ export default function SuccessStoriesManage() {
   const [form, setForm] = useState(emptyForm);
   const [hero, setHero] = useState(null);
   const [gallery, setGallery] = useState([]);
-  const [documents, setDocuments] = useState([]);
+  const [newPdfs, setNewPdfs] = useState([]);
   const [editing, setEditing] = useState(null);
   const [keptGallery, setKeptGallery] = useState([]);
   const [keptDocuments, setKeptDocuments] = useState([]);
@@ -41,7 +42,7 @@ export default function SuccessStoriesManage() {
     setForm(emptyForm);
     setHero(null);
     setGallery([]);
-    setDocuments([]);
+    setNewPdfs([]);
     setEditing(null);
     setKeptGallery([]);
     setKeptDocuments([]);
@@ -63,12 +64,23 @@ export default function SuccessStoriesManage() {
     });
     setHero(null);
     setGallery([]);
-    setDocuments([]);
+    setNewPdfs([]);
     setKeptGallery([...(story.gallery || [])]);
-    setKeptDocuments([...(story.documents || [])]);
+    setKeptDocuments(
+      (story.documents || []).map((doc) => ({
+        ...doc,
+        title: doc.title || (doc.name || '').replace(/\.pdf$/i, ''),
+      })),
+    );
     setClearHero(false);
     setMsg('');
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const patchKeptDocument = (id, patch) => {
+    setKeptDocuments((prev) =>
+      prev.map((doc) => ((doc.id || doc.url) === id ? { ...doc, ...patch } : doc)),
+    );
   };
 
   const handleSubmit = async (e) => {
@@ -80,7 +92,7 @@ export default function SuccessStoriesManage() {
     });
     if (hero) fd.append('hero', hero);
     gallery.forEach((f) => fd.append('gallery', f));
-    documents.forEach((f) => fd.append('documents', f));
+    appendNewPdfBatch(fd, newPdfs);
     try {
       if (editing) {
         fd.append('galleryJson', JSON.stringify(keptGallery));
@@ -106,7 +118,8 @@ export default function SuccessStoriesManage() {
       <div className="admin-card">
         <h2>{editing ? 'Edit argued in full' : 'Impact — Argued in full'}</h2>
         <p style={{ color: '#5a6f82', marginTop: 0 }}>
-          Success stories on Impact (tag, title, case line, problem / action / result). Multiple images and PDFs supported.
+          Success stories on Impact (tag, title, case line, problem / action / result). Multiple images and PDFs
+          supported. Set a custom public name for each PDF (shown instead of the uploaded filename).
           {editing ? ' Remove existing media below, or add more files.' : ''}
         </p>
         {msg && (
@@ -241,27 +254,14 @@ export default function SuccessStoriesManage() {
             <AdminExistingMedia
               title="Current PDF documents"
               kind="document"
+              titleOnly
               items={keptDocuments}
+              onChangeItem={patchKeptDocument}
               onRemove={(id) => setKeptDocuments((prev) => prev.filter((doc) => (doc.id || doc.url) !== id))}
             />
           ) : null}
 
-          <label>
-            PDF documents — select multiple
-            <input
-              type="file"
-              accept="application/pdf,.pdf"
-              multiple
-              onChange={(e) => setDocuments(Array.from(e.target.files || []))}
-            />
-            <small style={{ display: 'block', marginTop: 4, color: '#5a6f82' }}>
-              The public page shows each file&apos;s original name (e.g. ngo-2.pdf). Rename the file on your
-              computer before upload if you want a clearer label.
-            </small>
-            {documents.length > 0 ? (
-              <small style={{ display: 'block', marginTop: 4 }}>{documents.length} new PDF(s) selected</small>
-            ) : null}
-          </label>
+          <AdminNewPdfBatch items={newPdfs} onChange={setNewPdfs} variant="titleOnly" />
           <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
             <button type="submit" className="admin-btn admin-btn--primary">
               {editing ? 'Save changes' : 'Publish success story'}
