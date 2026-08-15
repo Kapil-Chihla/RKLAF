@@ -881,12 +881,43 @@
   border: 2px solid transparent;
   border-radius: 18px;
   background: var(--deck-ink);
+  background-size: cover;
+  background-position: center;
   color: #f7f2ea;
   text-align: left;
   cursor: pointer;
   box-shadow: 0 10px 28px rgba(43, 31, 22, 0.16);
   transition: border-color 0.2s ease, transform 0.2s ease;
   overflow: hidden;
+}
+
+.kyr-deck-card.has-photo {
+  background-color: var(--deck-deep);
+}
+
+.kyr-deck-card__veil {
+  display: none;
+}
+
+.kyr-deck-card.has-photo .kyr-deck-card__veil {
+  display: block;
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    160deg,
+    rgba(26, 18, 14, 0.72) 0%,
+    rgba(26, 18, 14, 0.45) 45%,
+    rgba(26, 18, 14, 0.78) 100%
+  );
+  pointer-events: none;
+}
+
+.kyr-deck-card__cat,
+.kyr-deck-card__title,
+.kyr-deck-card__num,
+.kyr-deck-card__arc {
+  position: relative;
+  z-index: 1;
 }
 
 .kyr-deck-card:hover {
@@ -978,17 +1009,96 @@
   overflow: hidden;
   background: #fff;
   box-shadow: 0 18px 40px rgba(43, 31, 22, 0.12);
+  padding: 0;
+}
+
+/* Shared stage surface — cover + PDF same size so transition doesn’t jump.
+   Width shrinks when max-height binds so 16:9 is never clipped. */
+.kyr-deck-stage__banner,
+.kyr-deck-stage__pdf {
+  --deck-stage-h: min(62vh, 32rem);
+  position: relative;
+  width: min(100%, calc(var(--deck-stage-h) * 16 / 9));
+  max-width: 100%;
+  margin-inline: auto;
+  aspect-ratio: 16 / 9;
+  height: auto;
+  max-height: var(--deck-stage-h);
+  overflow: hidden;
+  overscroll-behavior: none;
 }
 
 .kyr-deck-stage__banner {
-  position: relative;
-  min-height: clamp(16rem, 38vw, 22rem);
-  padding: clamp(1.4rem, 3vw, 2.1rem);
+  padding: clamp(1.2rem, 2.5vw, 1.85rem);
   background: linear-gradient(145deg, #4a3426 0%, var(--deck-deep) 55%, #1a120e 100%);
   background-size: cover;
   background-position: center;
   color: #f7f2ea;
+}
+
+.kyr-deck-stage__pdf {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ebe4d6;
+}
+
+.kyr-deck-stage__page-frame {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
   overflow: hidden;
+  touch-action: pan-x;
+  background: #fff;
+  padding: 0;
+}
+
+.kyr-deck-stage__page-canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: none;
+}
+
+.kyr-deck-stage__pdf-frame {
+  display: none;
+}
+
+.kyr-deck-stage__pdf-status {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-content: center;
+  gap: 0.75rem;
+  padding: 2rem;
+  text-align: center;
+  color: rgba(42, 33, 24, 0.75);
+  font-size: 0.95rem;
+  background: #ebe4d6;
+}
+
+.kyr-deck-stage__pdf-status a {
+  color: var(--deck-ink, #2b1f16);
+  font-weight: 700;
+}
+
+.kyr-deck-stage__pdf-status--error {
+  color: #6b3a2a;
+}
+
+.kyr-deck-stage__pdf .kyr-deck-stage__count {
+  z-index: 2;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(26, 18, 14, 0.72);
+  color: #f7f2ea;
 }
 
 .kyr-deck-stage__banner.has-photo {
@@ -1101,8 +1211,11 @@
 .kyr-deck-stage__dot {
   width: 0.45rem;
   height: 0.45rem;
+  padding: 0;
+  border: 0;
   border-radius: 50%;
   background: rgba(43, 31, 22, 0.18);
+  cursor: pointer;
 }
 
 .kyr-deck-stage__dot.is-on {

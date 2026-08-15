@@ -2,9 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import sketchSrc from '../../assets/herosketch.jpeg';
 
 /**
- * Sketch reveal that always looks like a drawing in progress:
- * the real illustration is unveiled left → right with a soft pencil edge.
- * Never scattered fragments (those came from broken path-tracing).
+ * Sketch appears as if drawn left → right (CSS mask wipe on the JPEG).
  */
 export default function HeroSketch({
   className = '',
@@ -40,7 +38,6 @@ export default function HeroSketch({
     el.style.setProperty('--draw', '0%');
     setPhase('drawing');
 
-    // Ease-out: starts deliberate, then covers ground — like a hand sketching
     const ease = (t) => 1 - (1 - t) ** 2.6;
 
     const tick = (now) => {

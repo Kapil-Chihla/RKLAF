@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import api from '../api';
 import { useAuth } from '../AuthContext';
+import AdminImageHint from '../components/AdminImageHint';
 import AdminRichHint from '../components/AdminRichHint';
 
 const emptyForm = {
@@ -144,6 +145,10 @@ export default function BlogsManage() {
           <label>
             Hero image {editingId ? '(leave empty to keep current)' : ''}
             <input type="file" accept="image/*" onChange={(e) => setImage(e.target.files?.[0] || null)} />
+            <AdminImageHint
+              size="2400×1600 px"
+              note="landscape — blog detail + Academics cards; keep the subject centered for cover crops"
+            />
           </label>
           <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
             <button type="submit" className="admin-btn admin-btn--primary">

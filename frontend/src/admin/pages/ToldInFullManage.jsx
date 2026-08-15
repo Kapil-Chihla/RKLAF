@@ -2,16 +2,17 @@ import { useEffect, useState } from 'react';
 import api from '../api';
 import { useAuth } from '../AuthContext';
 import AdminExistingMedia from '../components/AdminExistingMedia';
-import AdminNewPdfBatch, { appendNewPdfBatch } from '../components/AdminNewPdfBatch';
 import AdminRichHint from '../components/AdminRichHint';
 
 const emptyForm = {
   title: '',
   tag: '',
   caption: '',
+  caseLine: '',
   problem: '',
   action: '',
   result: '',
+  fullBody: '',
   sortOrder: '0',
 };
 
@@ -21,8 +22,7 @@ export default function ToldInFullManage() {
   const [msg, setMsg] = useState('');
   const [busy, setBusy] = useState(false);
   const [form, setForm] = useState(emptyForm);
-  const [newPdfs, setNewPdfs] = useState([]);
-  const [coverReplacements, setCoverReplacements] = useState({});
+  const [documents, setDocuments] = useState([]);
   const [keptDocuments, setKeptDocuments] = useState([]);
   const [editing, setEditing] = useState(null);
   const canDelete = ['super_admin', 'admin'].includes(user?.role);
@@ -35,8 +35,7 @@ export default function ToldInFullManage() {
 
   const resetForm = () => {
     setForm(emptyForm);
-    setNewPdfs([]);
-    setCoverReplacements({});
+    setDocuments([]);
     setKeptDocuments([]);
     setEditing(null);
   };
@@ -47,31 +46,17 @@ export default function ToldInFullManage() {
       title: item.title || '',
       tag: item.tag || '',
       caption: item.caption || '',
+      caseLine: item.caseLine || '',
       problem: item.problem || '',
       action: item.action || '',
       result: item.result || '',
+      fullBody: item.fullBody || '',
       sortOrder: String(item.sortOrder ?? 0),
     });
-    setNewPdfs([]);
-    setCoverReplacements({});
+    setDocuments([]);
     setKeptDocuments(item.documents || []);
     setMsg('');
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const patchKeptDocument = (id, patch) => {
-    setKeptDocuments((prev) =>
-      prev.map((doc) => ((doc.id || doc.url) === id ? { ...doc, ...patch } : doc)),
-    );
-  };
-
-  const setDocCoverFile = (docId, file) => {
-    setCoverReplacements((prev) => {
-      const next = { ...prev };
-      if (file) next[docId] = file;
-      else delete next[docId];
-      return next;
-    });
   };
 
   const handleSubmit = async (e) => {
@@ -79,17 +64,12 @@ export default function ToldInFullManage() {
     setMsg('');
     setBusy(true);
     const fd = new FormData();
-    ['title', 'tag', 'caption', 'problem', 'action', 'result', 'sortOrder'].forEach((k) => {
-      if (form[k] !== '') fd.append(k, form[k]);
-    });
-
-    appendNewPdfBatch(fd, newPdfs);
-
-    const replaceEntries = Object.entries(coverReplacements).filter(([, file]) => file);
-    if (replaceEntries.length) {
-      fd.append('coverReplaceIds', JSON.stringify(replaceEntries.map(([id]) => id)));
-      replaceEntries.forEach(([, file]) => fd.append('coverReplacements', file));
-    }
+    ['title', 'tag', 'caption', 'caseLine', 'problem', 'action', 'result', 'fullBody', 'sortOrder'].forEach(
+      (k) => {
+        if (form[k] !== '') fd.append(k, form[k]);
+      },
+    );
+    documents.forEach((f) => fd.append('documents', f));
 
     try {
       if (editing) {
@@ -116,8 +96,9 @@ export default function ToldInFullManage() {
       <div className="admin-card">
         <h2>{editing ? 'Edit told in full' : 'Impact — Told in full'}</h2>
         <p style={{ color: '#5a6f82', marginTop: 0 }}>
-          Prison programme stories (problem / action / result). Story cards stay photo-free; each PDF can
-          have its own title, description, and preview image.
+          Prison programme stories — same story fields as Argued in full (tag, case line, problem / action /
+          result, full story text, PDFs). No photos. Public PDFs show the file name with Preview and Download.
+          {editing ? ' Remove existing PDFs below, or add more files.' : ''}
         </p>
         {msg && (
           <div
@@ -134,7 +115,7 @@ export default function ToldInFullManage() {
             <input required value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
           </label>
           <label>
-            Tag
+            Category tag
             <input
               required
               placeholder="Appeal restored"
@@ -151,19 +132,51 @@ export default function ToldInFullManage() {
             />
           </label>
           <label>
+            Case line
+            <input
+              placeholder="Delhi High Court · Bail · File XXX/2024"
+              value={form.caseLine}
+              onChange={(e) => setForm({ ...form, caseLine: e.target.value })}
+            />
+          </label>
+          <label>
             Problem
             <AdminRichHint />
-            <textarea rows={3} value={form.problem} onChange={(e) => setForm({ ...form, problem: e.target.value })} />
+            <textarea
+              rows={2}
+              required
+              value={form.problem}
+              onChange={(e) => setForm({ ...form, problem: e.target.value })}
+            />
           </label>
           <label>
             Action
             <AdminRichHint />
-            <textarea rows={3} value={form.action} onChange={(e) => setForm({ ...form, action: e.target.value })} />
+            <textarea
+              rows={2}
+              required
+              value={form.action}
+              onChange={(e) => setForm({ ...form, action: e.target.value })}
+            />
           </label>
           <label>
             Result
             <AdminRichHint />
-            <textarea rows={3} value={form.result} onChange={(e) => setForm({ ...form, result: e.target.value })} />
+            <textarea
+              rows={2}
+              required
+              value={form.result}
+              onChange={(e) => setForm({ ...form, result: e.target.value })}
+            />
+          </label>
+          <label>
+            Full story text
+            <AdminRichHint />
+            <textarea
+              rows={6}
+              value={form.fullBody}
+              onChange={(e) => setForm({ ...form, fullBody: e.target.value })}
+            />
           </label>
 
           {editing ? (
@@ -171,17 +184,26 @@ export default function ToldInFullManage() {
               title="Current PDF documents"
               kind="document"
               items={keptDocuments}
-              coverFiles={coverReplacements}
-              onCoverFile={setDocCoverFile}
-              onRemove={(id) => {
-                setKeptDocuments((prev) => prev.filter((doc) => (doc.id || doc.url) !== id));
-                setDocCoverFile(id, null);
-              }}
-              onChangeItem={patchKeptDocument}
+              onRemove={(id) => setKeptDocuments((prev) => prev.filter((doc) => (doc.id || doc.url) !== id))}
             />
           ) : null}
 
-          <AdminNewPdfBatch items={newPdfs} onChange={setNewPdfs} />
+          <label>
+            PDF documents — select multiple
+            <input
+              type="file"
+              accept="application/pdf,.pdf"
+              multiple
+              onChange={(e) => setDocuments(Array.from(e.target.files || []))}
+            />
+            <small style={{ display: 'block', marginTop: 4, color: '#5a6f82' }}>
+              The public page shows each file&apos;s original name. Rename the file on your computer before
+              upload if you want a clearer label. No preview image needed.
+            </small>
+            {documents.length > 0 ? (
+              <small style={{ display: 'block', marginTop: 4 }}>{documents.length} new PDF(s) selected</small>
+            ) : null}
+          </label>
 
           <label>
             Sort order

@@ -48,6 +48,9 @@ function FeaturedShelf({ category, posts }) {
             {category.id === 'experiences' ? 'Experiences · From the ground' : 'Blogs · Read the latest'}
           </p>
           <h2>{featured.title}</h2>
+          {featured.author?.trim() ? (
+            <p className="acad-featured__author">By {featured.author.trim()}</p>
+          ) : null}
           <p className="acad-featured__summary">{featured.excerpt || ''}</p>
           <Link to={featuredHref} className="acad-btn">
             Read post
@@ -78,6 +81,9 @@ function FeaturedShelf({ category, posts }) {
             </div>
             <div className="acad-card__body">
               <h3>{post.title}</h3>
+              {post.author?.trim() ? (
+                <p className="acad-card__author">By {post.author.trim()}</p>
+              ) : null}
               <p>{post.excerpt}</p>
               <Link to={`/academics/post/${post.slug}`} className="acad-card__more">
                 Read more →

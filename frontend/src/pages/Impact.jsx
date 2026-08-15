@@ -38,51 +38,122 @@ const milestones = [
   {
     year: '2016',
     title: 'The Trust is registered',
-    body: 'Registered as a Charitable Trust on 25 November, named for the two people whose quiet pro bono work it continues.',
+    body: 'Registered as a Charitable Trust on 25 November, named after Late Sh. R.S. Garg and Late Smt. Krishna Garg.',
+    chip: 'Registered · 25 November 2016',
+    side: 'up',
+  },
+  {
+    year: '2016',
+    title: "Presence established across Delhi's courts",
+    body: "Our lawyers establish a presence across Delhi's major District Courts as well as the Delhi High Court and the Supreme Court of India.",
+    side: 'down',
+  },
+  {
+    year: '2016',
+    title: 'Legal aid inside Tihar Central Jail',
+    body: 'RKLAF begins one of its most significant initiatives: free legal aid for inmates of Tihar Central Jail.',
+    side: 'up',
+  },
+  {
+    year: '2017',
+    title: 'Compensation secured for families of workers who never came home',
+    body: 'Within about a year of our founding, RKLAF secures the first of six resolutions in a case for the families of Indian workers who died in 2016 while employed at companies in the UAE. Across all six cases, spanning families from Uttar Pradesh to Tamil Nadu, RKLAF helps secure a combined INR 3.5 crore in compensation, entirely free of cost.',
+    chip: '21 January 2017',
+    side: 'down',
+  },
+  {
+    year: '2017',
+    title: 'RKLAF proposes the Checklist to Delhi Police',
+    body: 'RKLAF writes to the Government of India and the Commissioner of Delhi Police, proposing that every Investigating Officer be equipped with a Checklist for Police Investigation.',
+    side: 'up',
+  },
+  {
+    year: '2017',
+    title: 'Delhi Police requests our Checklist',
+    body: 'Delhi Police writes back to RKLAF, requesting that the checklist be shared for consideration in officer training.',
+    chip: '18 December 2017',
+    side: 'down',
+  },
+  {
+    year: '2018',
+    title: 'Checklist shared with Delhi Police',
+    body: 'RKLAF shares its completed General and Specific Checklists with Delhi Police for consideration in officer training.',
+    chip: '19 February 2018',
     side: 'up',
   },
   {
     year: '2018',
-    title: 'First legal aid camps',
-    body: 'Weekend camps begin in the Braj region, taking filings and pension claims out of the courthouse and into the villages.',
-    chip: '22 camps in year one',
+    title: 'Checklist recognized by Delhi Police',
+    body: "The Delhi Police Legal Cell confirms receipt of RKLAF's checklist, calls its suggestions useful, and notes it is being analysed for inclusion in the Basic Training Course of Delhi Police — appreciating RKLAF's effort.",
+    chip: '26 March 2018',
     side: 'down',
+  },
+  {
+    year: '2018',
+    title: 'Recognized by Delhi Prisons',
+    body: 'RKLAF is officially recognized by Delhi Prisons as an approved legal aid provider, a recognition renewed every year since, including 2022 and 2023, across Jails 1, 2, 6, 7, 8/9, 10, 14 & 16.',
+    side: 'up',
   },
   {
     year: '2019',
-    title: 'Senior Citizens Desk opens',
-    body: 'A dedicated desk for maintenance and eviction matters, after elders turn out to be the largest group walking in.',
-    side: 'up',
-  },
-  {
-    year: '2021',
-    title: 'Legal aid inside Delhi prisons',
-    body: 'A weekly desk begins inside Tihar for undertrials with no lawyer and no bail application on record.',
+    title: 'Ghar Ghar Nyaya, Legal Aid Camps & Community Outreach',
+    body: 'The offline arm of our Know Your Rights campaign begins — door-to-door legal awareness, legal aid camps, and on-ground community outreach, carried out by our interns and volunteers, taking legal literacy and on-the-spot legal aid directly to homes and communities across Delhi.',
+    chip: 'Ongoing',
     side: 'down',
   },
   {
-    year: '2023',
-    title: 'Know Your Rights published',
-    body: 'Plain-language handbooks on FIRs, arrest, bail and search go out to camps, schools and the prison clinic.',
-    chip: 'Digital literacy hub',
+    year: '2020',
+    title: 'Landmark advocacy before a Constitution Bench of the Supreme Court',
+    body: 'We appear before a five-judge Constitution Bench of the Supreme Court of India in Mukesh Singh vs. State (Narcotic Branch of Delhi), among the rarest and most significant forms a case can take, reserved for questions of genuine national importance.',
+    chip: '31 August 2020',
     side: 'up',
   },
   {
-    year: '2024',
-    title: 'Branch office in Imphal',
-    body: 'The first office outside Delhi, extending the work into the North East.',
+    year: 'Ongoing',
+    title: 'Major court representations',
+    body: "Alongside this landmark matter, RKLAF's litigation record includes 1,315+ vacancies for job-seekers, 50+ recruitment rights cases won at the Delhi High Court, and 100+ bails secured — a sample of the case record, not the full picture, which continues to grow with every matter we take on.",
+    chip: 'Ongoing',
     side: 'down',
+  },
+  {
+    year: '2022',
+    title: 'Branch office opens in Imphal',
+    body: 'RKLAF opens its first office outside Delhi, in Imphal, extending free legal aid into the North East.',
+    side: 'up',
   },
   {
     year: '2025',
-    title: 'Reported Supreme Court judgments',
-    body: 'Matters argued pro bono up to the Supreme Court, several of which now stand as reported judgments.',
+    title: 'Digital Know Your Rights',
+    body: 'Our Know Your Rights Campaign goes digital — an ongoing stream of practical guides, explainer videos, condensed visual guides, and podcasts published on our social media channels, taking legal literacy beyond in-person sessions.',
+    chip: 'Ongoing',
+    side: 'down',
+  },
+  {
+    year: '2026',
+    title: 'The Safe School Project: our first RTI & social survey initiative',
+    body: "Launched on Republic Day, this two-pronged institutional accountability drive combined 86 RTI applications across 10 States/UTs and 19 districts with offline and digital social surveys reaching 1,700+ students, parents, and teachers, examining whether legal child-safety protections actually reach the schools and communities meant to use them. Findings were compiled into the Foundation's report, The National Child Safety Audit 2026.",
+    chip: '26 January 2026',
+    side: 'up',
+  },
+  {
+    year: '2026',
+    title: '10 years completed',
+    body: "A decade since RKLAF's founding in November 2016 — a decade of free, pro bono legal aid, and the foundation for everything still ahead.",
+    chip: '10 years',
+    side: 'down',
+  },
+  {
+    year: 'Ongoing',
+    title: "People we've reached, across every program",
+    body: 'Over 1,000 individuals and families directly assisted through case representation, 500+ inmates supported through our Tihar & Rohini Jail legal aid program, and 1,700+ students, parents, and teachers reached through the Safe School Project alone, alongside ongoing reach through Ghar Ghar Nyaya, legal aid camps, and our digital Know Your Rights content, which continues to grow with every visit, camp, and post.',
+    chip: 'Ongoing',
     side: 'up',
   },
   {
     year: 'Next',
     title: 'International programme',
-    body: 'Launching soon, to extend the same support to Indians and their families abroad.',
+    body: 'Extending the same model of free legal aid and legal awareness to Indians and their families abroad.',
+    chip: 'Launching soon',
     side: 'down',
     soon: true,
   },
@@ -248,8 +319,8 @@ export default function Impact() {
             </div>
             <div>
               <p>
-                From one borrowed office beside the district court to desks, camps and a prison programme
-                running across North India. The turns that changed what we were able to take on.
+                From registration in 2016 to a decade of free legal aid — courts, prisons, police reform,
+                community outreach, and the work still ahead.
               </p>
               <p className="impact-mstamp">Registered 25 November 2016</p>
             </div>
@@ -257,8 +328,8 @@ export default function Impact() {
 
           <div className="impact-hrail">
             <div className="impact-htrack">
-              {milestones.map((m) => (
-                <div key={m.year + m.title} className={`impact-hitem ${m.side}${m.soon ? ' soon' : ''}`}>
+              {milestones.map((m, i) => (
+                <div key={`${m.year}-${m.title}-${i}`} className={`impact-hitem ${m.side}${m.soon ? ' soon' : ''}`}>
                   <div className="impact-hcard">
                     <b>{m.title}</b>
                     <span>{m.body}</span>
@@ -364,6 +435,7 @@ export default function Impact() {
                     <div className="impact-sbody">
                       {story.tag ? <span className="impact-tag">{story.tag}</span> : null}
                       <h3>{displayText(story.title)}</h3>
+                      {story.caseLine ? <span className="impact-caseline">{story.caseLine}</span> : null}
                       <ParRows
                         rows={[
                           ['Problem', story.problem],

@@ -7,9 +7,9 @@ import { WHATSAPP_URL } from '../data/navigation';
 import publicApi from '../lib/publicApi';
 import { assetUrl } from '../lib/api';
 import { renderRichText } from '../lib/richText';
-import academicsHomeImg from '../assets/academicshome.jpeg';
-import knowYourRightsHomeImg from '../assets/knowyourightshome.jpeg';
-import libraryHomeImg from '../assets/libraryhome.jpeg';
+import academicsHomeImg from '../assets/academicshomebanner.jpeg';
+import knowYourRightsHomeImg from '../assets/kyrhomebanner.jpeg';
+import libraryHomeImg from '../assets/libraryhomebanner.jpeg';
 import './Home.css';
 
 const snapModules = import.meta.glob('../assets/{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}.jpeg', {
@@ -194,14 +194,30 @@ function mapHomeStory(s, i) {
 }
 
 const expertise = [
-  { title: 'Senior Citizens', desc: 'Maintenance, property protection and elder abuse under the 2007 Act' },
-  { title: 'Family & Women', desc: 'Domestic violence, custody, maintenance and safe separation' },
-  { title: 'Labour & Wages', desc: 'Unpaid wages, wrongful termination and injury claims' },
-  { title: 'Property & Tenancy', desc: 'Illegal possession, tenancy disputes and title guidance' },
-  { title: 'Consumer Rights', desc: 'Defective goods, insurance rejections and service failures' },
-  { title: 'RTI & Govt Schemes', desc: 'Pensions, ration cards and entitlements unlocked' },
-  { title: 'Diaspora & NRI', desc: 'Cross-border property and family matters for Indians abroad' },
-  { title: 'Noted Judgments', desc: 'The rulings we argue by, annotated in plain words' },
+  {
+    title: 'Constitutional & Public Law',
+    desc: 'Writ petitions and constitutional matters before the Hon\'ble High Courts and Supreme Court',
+  },
+  {
+    title: 'Criminal & Custodial Justice',
+    desc: 'Bail, trial representation and appeals, including in-jail legal aid for undertrials',
+  },
+  {
+    title: 'Labour & Employment',
+    desc: 'Unpaid wages, wrongful termination and workplace entitlements',
+  },
+  {
+    title: 'Consumer & Service Matters',
+    desc: 'Defective goods, denied services, and government/institutional service disputes',
+  },
+  {
+    title: 'Public Interest Litigation',
+    desc: 'Causes of public importance before the Hon\'ble High Courts and Supreme Court',
+  },
+  {
+    title: 'Human Rights & Vulnerable Communities',
+    desc: 'Undertrials, senior citizens, women, children and other marginalized groups',
+  },
 ];
 
 const resourceShelves = [
@@ -211,6 +227,7 @@ const resourceShelves = [
     icon: 'grad',
     image: academicsHomeImg,
     imageAlt: 'Academics — blogs, research and papers',
+    imagePosition: 'down',
     links: ['Field notes from camps', 'Research & papers', 'Policy briefs'],
     cta: 'Open Academics',
     href: '/academics',
@@ -221,6 +238,7 @@ const resourceShelves = [
     icon: 'shield',
     image: knowYourRightsHomeImg,
     imageAlt: 'Know Your Rights — guides, glossary and videos',
+    imagePosition: 'down',
     links: ['Downloadable guides', 'Legal glossary', 'Emergency contacts'],
     cta: 'Open Rights Desk',
     href: '/know-your-rights',
@@ -375,11 +393,18 @@ export default function Home() {
   return (
     <div className="home home--v2">
       <section className="home-hero" aria-label="Home hero">
-        <div className="home-hero__stage home-hero__stage--video">
-          <HeroVideo />
+        <div className="home-hero__stage">
+          <div className="home-hero__art">
+            <HeroVideo className="home-hero__media" />
+            <h1 className="home-hero__tagline">
+              <span className="home-hero__with">With You.</span>{' '}
+              <span className="home-hero__for">For You.</span>{' '}
+              <span className="home-hero__nyay">Nyaya Tak.</span>
+            </h1>
+          </div>
         </div>
 
-        <Reveal as="div" className="home-hero__stats" variant="up" delay={120}>
+        <div className="home-hero__stats">
           <div className="container home-hero__stats-row">
             {introStats.map((stat, i) => (
               <article
@@ -396,13 +421,14 @@ export default function Home() {
                     end={stat.end}
                     suffix={stat.suffix}
                     duration={stat.duration}
+                    startOnMount
                   />
                   <span className="home-stat__label">{stat.label}</span>
                 </div>
               </article>
             ))}
           </div>
-        </Reveal>
+        </div>
       </section>
 
       <nav className="home-rail" aria-label="Page sections">
@@ -591,7 +617,7 @@ export default function Home() {
             <p className="home-eyebrow">Expertise</p>
             <h2 className="home-display">Where we can step in</h2>
             <p>
-              Eight areas of practice, each with its own desk, its own guides, and its own case record.
+              Six areas of practice, each with its own desk, its own guides, and its own case record.
             </p>
           </Reveal>
 
@@ -629,7 +655,9 @@ export default function Home() {
                     <p>{shelf.sub}</p>
                   </div>
                 </header>
-                <div className="home-shelf__photo">
+                <div
+                  className={`home-shelf__photo${shelf.imagePosition === 'down' ? ' home-shelf__photo--down' : ''}`}
+                >
                   <img src={shelf.image} alt={shelf.imageAlt} loading="lazy" decoding="async" />
                 </div>
                 <ul className="home-shelf__links">

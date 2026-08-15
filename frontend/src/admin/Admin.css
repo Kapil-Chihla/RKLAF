@@ -421,6 +421,32 @@
   color: #2c4359;
 }
 
+.admin-image-hint {
+  margin: 0.35rem 0 0;
+  padding: 0.45rem 0.65rem;
+  border-radius: 6px;
+  border-left: 3px solid #834256;
+  background: #f7f2eb;
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1.45;
+  color: #5a534c;
+}
+
+.admin-image-hint strong {
+  font-weight: 700;
+  color: #2c4359;
+  font-variant-numeric: tabular-nums;
+}
+
+.admin-image-hint__note {
+  color: #6a635c;
+}
+
+label > .admin-image-hint {
+  margin-top: 0.4rem;
+}
+
 .admin-btn {
   padding: 0.75rem 1.25rem;
   border: none;

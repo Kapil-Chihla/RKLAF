@@ -67,7 +67,9 @@ export default function AcademicPostDetail() {
             {post.kind === 'experience' ? 'Experience from the ground' : 'Blog'}
           </p>
           <h1>{displayText(post.title)}</h1>
-          {post.excerpt ? <p className="story-detail__kicker">{displayText(post.excerpt)}</p> : null}
+          {post.author?.trim() ? (
+            <p className="story-detail__author">By {post.author.trim()}</p>
+          ) : null}
         </div>
       </header>
 

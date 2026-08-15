@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import api from '../api';
 import { useAuth } from '../AuthContext';
+import AdminImageHint from '../components/AdminImageHint';
 import AdminRichHint from '../components/AdminRichHint';
 
 const emptyForm = {
@@ -163,6 +164,10 @@ export default function LibraryPodcastsManage() {
               type="file"
               accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
               onChange={(e) => setThumbnail(e.target.files?.[0] || null)}
+            />
+            <AdminImageHint
+              size="1280×720 px"
+              note="16:9 preferred for video; square art is cropped from the center for audio cards"
             />
           </label>
           <label>

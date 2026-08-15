@@ -3,6 +3,7 @@ import api from '../api';
 import { useAuth } from '../AuthContext';
 import { assetUrl } from '../../lib/api';
 import AdminExistingMedia from '../components/AdminExistingMedia';
+import AdminImageHint from '../components/AdminImageHint';
 import AdminNewPdfBatch, { appendNewPdfBatch } from '../components/AdminNewPdfBatch';
 import AdminRichHint from '../components/AdminRichHint';
 
@@ -354,6 +355,10 @@ export default function DeskStoriesManage() {
                 if (e.target.files?.[0]) setClearHero(false);
               }}
             />
+            <AdminImageHint
+              size="2400×800 px"
+              note="wide banner on programme pages; also cropped to 4:3 on cards — keep the subject centered"
+            />
           </label>
           <label>
             Alternate public title (optional)
@@ -372,6 +377,7 @@ export default function DeskStoriesManage() {
                 <code>**bold**</code> around any word or a whole paragraph to bold it on the site.
               </span>
             </div>
+            <AdminImageHint size="1600×1200 px" note="4:3 landscape for story body photos" />
 
             {blocks.map((block, index) => (
               <div key={block.key} className={`admin-story-block admin-story-block--${block.type}`}>

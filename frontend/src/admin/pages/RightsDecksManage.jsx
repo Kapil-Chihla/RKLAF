@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import api from '../api';
 import { useAuth } from '../AuthContext';
+import AdminImageHint from '../components/AdminImageHint';
 import AdminRichHint from '../components/AdminRichHint';
 
 const emptyForm = {
@@ -142,7 +143,7 @@ export default function RightsDecksManage() {
             />
           </label>
           <label>
-            Slide count (optional — shows as “5 SLIDES”)
+            Slide count (PDF pages — used for on-page slide arrows)
             <input
               type="number"
               min="1"
@@ -158,6 +159,7 @@ export default function RightsDecksManage() {
               accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
               onChange={(e) => setBanner(e.target.files?.[0] || null)}
             />
+            <AdminImageHint size="1920×1080 px" note="16:9 landscape — fills the KYR deck stage and cards" />
           </label>
           <label>
             PDF file {editingId ? '(optional — leave empty to keep current)' : ''}

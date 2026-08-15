@@ -139,6 +139,7 @@ router.get('/:slugOrId', async (req, res) => {
   const { slugOrId } = req.params;
   const item = await ToldInFull.findOne({
     $or: [{ slug: slugOrId }, { id: slugOrId }],
+    ...publicFilter(req),
   }).lean();
   if (!item) return res.status(404).json({ message: 'Told in full story not found' });
   res.json(item);
@@ -146,7 +147,7 @@ router.get('/:slugOrId', async (req, res) => {
 
 router.post('/', protect, contentManagers, uploadToldDocs, async (req, res) => {
   try {
-    const { title, tag, caption, problem, action, result, sortOrder, published, documentsMeta, documentCoverIndexes } =
+    const { title, tag, caption, caseLine, problem, action, result, fullBody, sortOrder, published, documentsMeta, documentCoverIndexes } =
       req.body;
     if (!title?.trim()) return res.status(400).json({ message: 'Title is required' });
 
@@ -163,9 +164,11 @@ router.post('/', protect, contentManagers, uploadToldDocs, async (req, res) => {
       tag: tag || '',
       title: title.trim(),
       caption: caption || '',
+      caseLine: caseLine || '',
       problem: problem || '',
       action: action || '',
       result: result || '',
+      fullBody: fullBody || '',
       documents,
       sortOrder: Number(sortOrder) || 0,
       published: published === 'false' || published === false ? false : true,
@@ -188,9 +191,11 @@ router.put('/:id', protect, contentManagers, uploadToldDocs, async (req, res) =>
       title,
       tag,
       caption,
+      caseLine,
       problem,
       action,
       result,
+      fullBody,
       sortOrder,
       published,
       documentsMeta,
@@ -204,9 +209,11 @@ router.put('/:id', protect, contentManagers, uploadToldDocs, async (req, res) =>
     }
     if (tag !== undefined) item.tag = tag;
     if (caption !== undefined) item.caption = caption;
+    if (caseLine !== undefined) item.caseLine = caseLine;
     if (problem !== undefined) item.problem = problem;
     if (action !== undefined) item.action = action;
     if (result !== undefined) item.result = result;
+    if (fullBody !== undefined) item.fullBody = fullBody;
     if (sortOrder !== undefined) item.sortOrder = Number(sortOrder) || 0;
     if (published !== undefined) item.published = published === 'false' || published === false ? false : true;
 

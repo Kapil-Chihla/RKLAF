@@ -1,18 +1,15 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import publicApi from '../lib/publicApi';
-import { assetUrl } from '../lib/api';
 import Reveal from '../components/motion/Reveal';
 import {
   toldDocumentDownloadUrl,
   toldDocumentViewUrl,
 } from '../lib/pdfDownload';
 import { displayText } from '../lib/displayText';
-import { renderRichText } from '../lib/richText';
+import { renderRichText, RichParagraphs } from '../lib/richText';
 import PdfPreviewModal from '../components/pdf/PdfPreviewModal';
 import './StoryDetail.css';
-
-const DOC_TONES = ['plum', 'cream', 'ink', 'sage', 'gold', 'clay', 'olive'];
 
 export default function ToldInFullDetail() {
   const { slug } = useParams();
@@ -64,6 +61,7 @@ export default function ToldInFullDetail() {
           <p className="story-detail__kicker">Told in full · Impact</p>
           {story.tag ? <p className="story-detail__tag">{displayText(story.tag)}</p> : null}
           <h1>{displayText(story.title)}</h1>
+          {story.caseLine ? <p className="story-detail__caseline">{displayText(story.caseLine)}</p> : null}
           {story.caption ? <p className="story-detail__kicker">{displayText(story.caption)}</p> : null}
         </div>
       </header>
@@ -84,70 +82,43 @@ export default function ToldInFullDetail() {
           </div>
         </Reveal>
 
+        <RichParagraphs value={story.fullBody} />
+
         {story.documents?.length > 0 ? (
           <div className="story-detail__docs">
             <h2>Documents</h2>
-            <p className="story-detail__docs-lede">
-              Open any document to preview, zoom, and download the PDF.
-            </p>
-            <div className="story-detail__doc-grid">
-              {story.documents.map((doc, i) => {
-                const title = doc.title || doc.name || 'Document.pdf';
+            <ul>
+              {story.documents.map((doc) => {
+                const label = doc.title || doc.name || 'Document.pdf';
                 const downloadHref = toldDocumentDownloadUrl(storyKey, doc.id);
                 const viewHref = toldDocumentViewUrl(storyKey, doc.id);
-                const tone = DOC_TONES[i % DOC_TONES.length];
-                const cover = doc.coverImage ? assetUrl(doc.coverImage) : null;
                 return (
-                  <article key={doc.id} className="story-doc-card">
-                    <button
-                      type="button"
-                      className={`story-doc-card__cover story-doc-card__cover--${tone}${
-                        cover ? ' story-doc-card__cover--photo' : ''
-                      }`}
-                      style={cover ? { backgroundImage: `url(${cover})` } : undefined}
-                      onClick={() =>
-                        setActiveDoc({ title, viewUrl: viewHref, downloadUrl: downloadHref })
-                      }
-                      aria-label={`Preview ${title}`}
-                    >
-                      <span className="story-doc-card__badge">PDF</span>
-                    </button>
-                    <h3 className="story-doc-card__title">
-                      <button
-                        type="button"
-                        className="story-doc-card__title-btn"
-                        onClick={() =>
-                          setActiveDoc({ title, viewUrl: viewHref, downloadUrl: downloadHref })
-                        }
-                      >
-                        {title}
-                      </button>
-                    </h3>
-                    {doc.description ? (
-                      <p className="story-doc-card__desc">{renderRichText(doc.description)}</p>
-                    ) : null}
-                    <div className="story-doc-card__actions">
-                      <button
-                        type="button"
-                        className="story-doc-card__dl"
-                        onClick={() =>
-                          setActiveDoc({ title, viewUrl: viewHref, downloadUrl: downloadHref })
-                        }
-                      >
-                        Preview
-                      </button>
-                      <a
-                        className="story-doc-card__dl story-doc-card__dl--secondary"
-                        href={downloadHref}
-                        download
-                      >
-                        Download
-                      </a>
+                  <li key={doc.id}>
+                    <div className="story-detail__doc story-detail__doc--split">
+                      <span className="story-detail__doc-name">{label}</span>
+                      <span className="story-detail__doc-actions">
+                        <button
+                          type="button"
+                          className="story-detail__doc-btn"
+                          onClick={() =>
+                            setActiveDoc({ title: label, viewUrl: viewHref, downloadUrl: downloadHref })
+                          }
+                        >
+                          Preview
+                        </button>
+                        <a
+                          className="story-detail__doc-btn story-detail__doc-btn--ghost"
+                          href={downloadHref}
+                          download
+                        >
+                          Download
+                        </a>
+                      </span>
                     </div>
-                  </article>
+                  </li>
                 );
               })}
-            </div>
+            </ul>
           </div>
         ) : null}
 

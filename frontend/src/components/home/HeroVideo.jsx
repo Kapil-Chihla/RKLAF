@@ -2,8 +2,7 @@ import { useEffect, useRef } from 'react';
 import heroVideoSrc from '../../assets/herovideo.mp4';
 
 /**
- * Ambient hero media — autoplays muted on a loop.
- * No controls, no pause UI; reads as motion artwork, not a player.
+ * Hero media — autoplays muted once. No loop, no controls.
  */
 export default function HeroVideo({ className = '' }) {
   const ref = useRef(null);
@@ -13,6 +12,7 @@ export default function HeroVideo({ className = '' }) {
     if (!el) return undefined;
 
     const tryPlay = () => {
+      if (el.ended) return;
       el.muted = true;
       const p = el.play();
       if (p && typeof p.catch === 'function') p.catch(() => {});
@@ -24,10 +24,13 @@ export default function HeroVideo({ className = '' }) {
       if (document.visibilityState === 'visible') tryPlay();
     };
 
-    document.addEventListener('visibilitychange', onVisibility);
     const onPause = () => {
+      // Don't restart after the clip has finished
+      if (el.ended) return;
       if (document.visibilityState === 'visible') tryPlay();
     };
+
+    document.addEventListener('visibilitychange', onVisibility);
     el.addEventListener('pause', onPause);
 
     return () => {
@@ -43,7 +46,6 @@ export default function HeroVideo({ className = '' }) {
       src={heroVideoSrc}
       autoPlay
       muted
-      loop
       playsInline
       preload="auto"
       disablePictureInPicture

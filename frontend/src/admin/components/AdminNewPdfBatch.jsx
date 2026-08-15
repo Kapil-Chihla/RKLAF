@@ -1,3 +1,5 @@
+import AdminImageHint from './AdminImageHint';
+
 /**
  * Multi-PDF picker with per-file title, description, and preview cover.
  * Used by Programmes and Told in Full admin forms.
@@ -83,6 +85,7 @@ export default function AdminNewPdfBatch({ items, onChange }) {
                   accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
                   onChange={(e) => patchItem(index, { cover: e.target.files?.[0] || null })}
                 />
+                <AdminImageHint size="600×800 px" note="3:4 portrait card cover on the public story page" />
                 {item.cover ? (
                   <span className="admin-new-pdfs__cover-name">Selected: {item.cover.name}</span>
                 ) : null}

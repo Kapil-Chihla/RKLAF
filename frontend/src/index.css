@@ -107,12 +107,10 @@ p {
 .blog-article__content p,
 .blog-detail__body p,
 .about-message p,
-.about-story__head p,
 .about-chapter__body p,
 .about-office p,
 .about-work p,
 .about-where__intro,
-.about-closing > p,
 .kyr-az__card dd,
 .faq-accordion__panel p {
   text-align: justify;

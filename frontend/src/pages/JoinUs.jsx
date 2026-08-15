@@ -2,6 +2,17 @@ import { Link } from 'react-router-dom';
 import Reveal from '../components/motion/Reveal';
 import './JoinUs.css';
 
+const FORMS = {
+  volunteer:
+    'https://docs.google.com/forms/d/e/1FAIpQLSezA4msVzQ6o0W28-s1l4s6x93Xe-hFVV4gN_5MpfK6dwan8A/viewform',
+  internship:
+    'https://docs.google.com/forms/d/e/1FAIpQLSfBre-N6uFviHz1wdxCVbm378xSvY49d5m13Hql-7X3g8fY8w/viewform',
+  member:
+    'https://docs.google.com/forms/d/e/1FAIpQLSfftpM999p7Eo1Ngtst06MrxOTZs1ftmsCOKzN7WM8_wAXbQg/viewform',
+  collaborate:
+    'https://docs.google.com/forms/d/e/1FAIpQLSeposIeYJy02FNj08yCJr2MV_n_ORIZ-zv7VECach9i1CdrUw/viewform',
+};
+
 const tracks = [
   {
     id: 'volunteer',
@@ -27,7 +38,7 @@ const tracks = [
     ],
     badge: '2 to 6 hrs / week',
     cta: 'Apply as volunteer →',
-    href: '/contact',
+    href: FORMS.volunteer,
     icon: 'hands',
   },
   {
@@ -55,7 +66,7 @@ const tracks = [
     ],
     badge: 'Cohorts open quarterly',
     cta: 'Apply for internship →',
-    href: '/contact',
+    href: FORMS.internship,
     icon: 'grad',
   },
   {
@@ -82,7 +93,7 @@ const tracks = [
     ],
     badge: '80G receipts · cancel anytime',
     cta: 'Become a member →',
-    href: '/contact',
+    href: FORMS.member,
     icon: 'leaf',
   },
   {
@@ -109,7 +120,7 @@ const tracks = [
     ],
     badge: '12 partners · 4 states',
     cta: 'Start a conversation →',
-    href: '/contact',
+    href: FORMS.collaborate,
     icon: 'building',
   },
 ];
@@ -130,13 +141,6 @@ const steps = [
     title: 'Begin with an oath',
     desc: "Training, a mentor, and the volunteer's oath taken at your first camp or clinic day.",
   },
-];
-
-const orbs = [
-  { label: 'Volunteer at camp desk', pill: 'Volunteer', cls: 'a' },
-  { label: 'Intern in court', pill: 'Intern', cls: 'b' },
-  { label: 'Member briefing', pill: 'Member', cls: 'c' },
-  { label: 'Partner college', pill: 'Collaborate', cls: 'd' },
 ];
 
 function TrackIcon({ name }) {
@@ -207,9 +211,14 @@ function TrackCard({ track }) {
 
       <div className="join-card__foot">
         <span className="join-card__badge">{track.badge}</span>
-        <Link to={track.href} className="join-card__cta">
+        <a
+          href={track.href}
+          className="join-card__cta"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           {track.cta}
-        </Link>
+        </a>
       </div>
     </article>
   );
@@ -237,15 +246,6 @@ export default function JoinUs() {
             <p className="join-hero__stats">
               ✦ 240 volunteers · 80+ student interns · 12 partner institutions and counting
             </p>
-          </Reveal>
-
-          <Reveal as="div" className="join-hero__visual" variant="scale" delay={60} aria-hidden="true">
-            {orbs.map((o) => (
-              <div key={o.cls} className={`join-orb join-orb--${o.cls}`}>
-                <span className="join-orb__label">{o.label}</span>
-                <span className="join-orb__pill">{o.pill}</span>
-              </div>
-            ))}
           </Reveal>
         </div>
       </header>
@@ -277,15 +277,6 @@ export default function JoinUs() {
               </Reveal>
             ))}
           </div>
-
-          <Reveal as="figure" className="join-photo" variant="up" delay={80}>
-            <div className="join-photo__tape" aria-hidden="true" />
-            <div className="join-photo__frame">
-              <span>Wide group photo placeholder</span>
-              <small>Oath day: the 2026 cohort of volunteers and interns on the court steps.</small>
-            </div>
-            <figcaption>Oath day, cohort of 2026</figcaption>
-          </Reveal>
         </div>
       </section>
 

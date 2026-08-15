@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import api from '../api';
 import { useAuth } from '../AuthContext';
+import AdminImageHint from '../components/AdminImageHint';
 import AdminRichHint from '../components/AdminRichHint';
 
 const emptyForm = { name: '', role: '', bio: '' };
@@ -103,6 +104,7 @@ export default function TeamManage() {
             <label>
               Photo {editingId ? '(leave empty to keep current)' : ''}
               <input type="file" accept="image/*" onChange={(e) => setImage(e.target.files?.[0] || null)} />
+              <AdminImageHint size="800×1000 px" note="3:4 portrait headshot" />
             </label>
             <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
               <button type="submit" className="admin-btn admin-btn--primary">

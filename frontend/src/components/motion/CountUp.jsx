@@ -27,12 +27,20 @@ export default function CountUp({
   locale = 'en-US',
   className = '',
   as: Tag = 'strong',
+  threshold = 0.4,
+  rootMargin = '0px 0px -8% 0px',
+  startOnMount = false,
 }) {
   const ref = useRef(null);
   const [display, setDisplay] = useState(0);
   const [active, setActive] = useState(false);
 
   useEffect(() => {
+    if (startOnMount) {
+      setActive(true);
+      return undefined;
+    }
+
     const el = ref.current;
     if (!el) return undefined;
 
@@ -43,12 +51,12 @@ export default function CountUp({
           observer.disconnect();
         }
       },
-      { threshold: 0.4, rootMargin: '0px 0px -8% 0px' },
+      { threshold, rootMargin },
     );
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, []);
+  }, [rootMargin, startOnMount, threshold]);
 
   useEffect(() => {
     if (!active) return undefined;

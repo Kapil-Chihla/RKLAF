@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import api from '../api';
 import { useAuth } from '../AuthContext';
 import { assetUrl } from '../../lib/api';
+import AdminImageHint from '../components/AdminImageHint';
 
 const emptyForm = {
   title: '',
@@ -226,6 +227,7 @@ export default function CampsManage() {
               accept="image/*"
               onChange={(e) => setHeroFile(e.target.files?.[0] || null)}
             />
+            <AdminImageHint size="1600×1200 px" note="~4:3 landscape — shown in full (not cropped) on camp cards and detail" />
           </label>
 
           {currentHeroPreview && (
@@ -247,6 +249,7 @@ export default function CampsManage() {
                 if (!editing && !heroFile) setHeroPickerIndex(0);
               }}
             />
+            <AdminImageHint size="1920×1280 px" note="landscape — thumbs in the album, full size in the lightbox" />
           </label>
 
           {editing && keptImages.length > 0 && (

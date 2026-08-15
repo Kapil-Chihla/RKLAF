@@ -9,8 +9,9 @@ import mapImage from '../assets/map.webp';
 import kyrBanner from '../assets/knowyourrightsbanner.jpeg';
 import publicApi from '../lib/publicApi';
 import { assetUrl } from '../lib/api';
-import { guidePdfDownloadUrl, guidePdfViewUrl, rightsDeckPdfDownloadUrl } from '../lib/pdfDownload';
+import { guidePdfDownloadUrl, guidePdfViewUrl, rightsDeckPdfDownloadUrl, rightsDeckPdfViewUrl } from '../lib/pdfDownload';
 import PdfPreviewModal from '../components/pdf/PdfPreviewModal';
+import DeckPdfSlide, { useDeckPdfDocument } from '../components/pdf/DeckPdfSlide';
 import { looksLikeEmail, submitContact } from '../lib/submitContact';
 import { displayText } from '../lib/displayText';
 import { renderRichText } from '../lib/richText';
@@ -145,6 +146,7 @@ const FALLBACK_DECKS = [
     banner: null,
     hasPdf: false,
     downloadHref: '#',
+    viewHref: '#',
     slideCount: 5,
   },
   {
@@ -156,6 +158,7 @@ const FALLBACK_DECKS = [
     banner: null,
     hasPdf: false,
     downloadHref: '#',
+    viewHref: '#',
     slideCount: 5,
   },
   {
@@ -167,6 +170,7 @@ const FALLBACK_DECKS = [
     banner: null,
     hasPdf: false,
     downloadHref: '#',
+    viewHref: '#',
     slideCount: 5,
   },
   {
@@ -178,6 +182,7 @@ const FALLBACK_DECKS = [
     banner: null,
     hasPdf: false,
     downloadHref: '#',
+    viewHref: '#',
     slideCount: 5,
   },
 ];
@@ -250,6 +255,7 @@ export default function KnowYourRights() {
   const [activeGuide, setActiveGuide] = useState(null);
   const [deckList, setDeckList] = useState(FALLBACK_DECKS);
   const [activeDeckIdx, setActiveDeckIdx] = useState(0);
+  const [deckSlide, setDeckSlide] = useState(0);
   const [videoList, setVideoList] = useState(FALLBACK_VIDEOS);
   const [activeVideo, setActiveVideo] = useState(null);
   const [glossaryLetter, setGlossaryLetter] = useState('A');
@@ -261,6 +267,34 @@ export default function KnowYourRights() {
   const glossaryTotal = Object.values(legalGlossaryByLetter).reduce((n, list) => n + list.length, 0);
   const glossaryPreview = glossaryEntries.map((e) => e.term).join('  ·  ');
   const activeDeck = deckList[activeDeckIdx] || null;
+
+  const {
+    pdf: deckPdf,
+    numPages: deckPdfPages,
+    loading: deckPdfLoading,
+    error: deckPdfError,
+  } = useDeckPdfDocument(
+    activeDeck?.viewHref,
+    activeDeck?.downloadHref,
+    Boolean(activeDeck?.hasPdf),
+  );
+
+  const pdfPageCount = activeDeck?.hasPdf
+    ? Math.max(1, deckPdfPages || Number(activeDeck.slideCount) || 1)
+    : 0;
+  /** Slide 0 = cover banner; slides 1..pdfPageCount = PDF pages (one page each) */
+  const deckSlideTotal = pdfPageCount > 0 ? pdfPageCount + 1 : 1;
+  const showingPdfSlide = Boolean(activeDeck?.hasPdf && deckSlide > 0);
+  const pdfPageNum = showingPdfSlide ? deckSlide : 1;
+
+  useEffect(() => {
+    setDeckSlide(0);
+  }, [activeDeckIdx, activeDeck?.id]);
+
+  useEffect(() => {
+    if (!showingPdfSlide) return;
+    setDeckSlide((s) => Math.min(s, deckSlideTotal - 1));
+  }, [deckSlideTotal, showingPdfSlide]);
 
   const scrollGlossary = (dir) => {
     const el = glossaryTrackRef.current;
@@ -326,6 +360,7 @@ export default function KnowYourRights() {
             banner: d.banner ? assetUrl(d.banner) : null,
             hasPdf: Boolean(d.pdf),
             downloadHref: d.pdf ? rightsDeckPdfDownloadUrl(d.id) : '#',
+            viewHref: d.pdf ? rightsDeckPdfViewUrl(d.id) : '#',
             slideCount: d.slideCount || null,
           })),
         );
@@ -682,12 +717,18 @@ export default function KnowYourRights() {
                         aria-selected={selected}
                         aria-controls="kyr-deck-panel"
                         id={`kyr-deck-tab-${deck.id}`}
-                        className={`kyr-deck-card${selected ? ' is-active' : ''}`}
+                        className={`kyr-deck-card${selected ? ' is-active' : ''}${deck.banner ? ' has-photo' : ''}`}
+                        style={
+                          deck.banner
+                            ? { backgroundImage: `url(${deck.banner})` }
+                            : undefined
+                        }
                         onClick={() => {
                           deckTabClickRef.current = true;
                           setActiveDeckIdx(i);
                         }}
                       >
+                        <span className="kyr-deck-card__veil" aria-hidden="true" />
                         <span className="kyr-deck-card__cat">
                           {deck.category || deck.smallTitle || 'Know your rights'}
                         </span>
@@ -718,69 +759,96 @@ export default function KnowYourRights() {
                 aria-labelledby={`kyr-deck-tab-${activeDeck.id}`}
                 className="kyr-deck-stage"
               >
-                <div
-                  className={`kyr-deck-stage__banner${activeDeck.banner ? ' has-photo' : ''}`}
-                  style={
-                    activeDeck.banner
-                      ? { backgroundImage: `url(${activeDeck.banner})` }
-                      : undefined
-                  }
-                >
-                  <div className="kyr-deck-stage__veil" aria-hidden="true" />
-                  <p className="kyr-deck-stage__brand">Know your rights · RKLAF</p>
-                  <div className="kyr-deck-stage__copy">
-                    {activeDeck.smallTitle ? (
-                      <p className="kyr-deck-stage__small">{displayText(activeDeck.smallTitle)}</p>
-                    ) : activeDeck.category ? (
-                      <p className="kyr-deck-stage__small">{displayText(activeDeck.category)}</p>
-                    ) : null}
-                    <h3 className="kyr-deck-stage__title">{displayText(activeDeck.title)}</h3>
-                    {activeDeck.description ? (
-                      <p className="kyr-deck-stage__desc">{renderRichText(activeDeck.description)}</p>
-                    ) : null}
+                {showingPdfSlide ? (
+                  <div className="kyr-deck-stage__pdf">
+                    {deckPdfLoading ? (
+                      <p className="kyr-deck-stage__pdf-status">Loading slides…</p>
+                    ) : deckPdfError || !deckPdf ? (
+                      <div className="kyr-deck-stage__pdf-status kyr-deck-stage__pdf-status--error">
+                        <p>{deckPdfError || 'PDF could not be loaded.'}</p>
+                        {activeDeck.hasPdf ? (
+                          <a href={activeDeck.downloadHref} target="_blank" rel="noopener noreferrer">
+                            Download deck instead →
+                          </a>
+                        ) : null}
+                      </div>
+                    ) : (
+                      <DeckPdfSlide
+                        pdf={deckPdf}
+                        pageNumber={pdfPageNum}
+                        title={`${activeDeck.title} — page ${pdfPageNum}`}
+                      />
+                    )}
+                    <span className="kyr-deck-stage__count" aria-hidden="true">
+                      {pdfPageNum} / {pdfPageCount}
+                    </span>
                   </div>
-                  <span className="kyr-deck-stage__arc" aria-hidden="true" />
-                  <span className="kyr-deck-stage__count" aria-hidden="true">
-                    {activeDeck.slideCount
-                      ? `1 / ${activeDeck.slideCount}`
-                      : String(activeDeckIdx + 1).padStart(2, '0')}
-                  </span>
-                </div>
+                ) : (
+                  <div
+                    className={`kyr-deck-stage__banner${activeDeck.banner ? ' has-photo' : ''}`}
+                    style={
+                      activeDeck.banner
+                        ? { backgroundImage: `url(${activeDeck.banner})` }
+                        : undefined
+                    }
+                  >
+                    <div className="kyr-deck-stage__veil" aria-hidden="true" />
+                    <p className="kyr-deck-stage__brand">Know your rights · RKLAF</p>
+                    <div className="kyr-deck-stage__copy">
+                      {activeDeck.smallTitle ? (
+                        <p className="kyr-deck-stage__small">{displayText(activeDeck.smallTitle)}</p>
+                      ) : activeDeck.category ? (
+                        <p className="kyr-deck-stage__small">{displayText(activeDeck.category)}</p>
+                      ) : null}
+                      <h3 className="kyr-deck-stage__title">{displayText(activeDeck.title)}</h3>
+                      {activeDeck.description ? (
+                        <p className="kyr-deck-stage__desc">{renderRichText(activeDeck.description)}</p>
+                      ) : null}
+                    </div>
+                    <span className="kyr-deck-stage__arc" aria-hidden="true" />
+                    <span className="kyr-deck-stage__count" aria-hidden="true">
+                      {showingPdfSlide
+                        ? `${pdfPageNum} / ${pdfPageCount}`
+                        : pdfPageCount
+                          ? `Cover · ${pdfPageCount} slides`
+                          : '01'}
+                    </span>
+                  </div>
+                )}
 
                 <div className="kyr-deck-stage__bar">
                   <div className="kyr-deck-stage__dots" aria-hidden="true">
-                    {deckList.map((d, i) => (
-                      <span
-                        key={d.id}
-                        className={`kyr-deck-stage__dot${i === activeDeckIdx ? ' is-on' : ''}`}
+                    {Array.from({ length: deckSlideTotal }, (_, i) => (
+                      <button
+                        key={`slide-dot-${i}`}
+                        type="button"
+                        className={`kyr-deck-stage__dot${i === deckSlide ? ' is-on' : ''}`}
+                        aria-label={`Go to slide ${i + 1}`}
+                        onClick={() => setDeckSlide(i)}
                       />
                     ))}
                   </div>
                   <p className="kyr-deck-stage__bar-label">
-                    {activeDeck.category || activeDeck.smallTitle || 'Know your rights'}
+                    {showingPdfSlide
+                      ? `Page ${pdfPageNum} of ${pdfPageCount}`
+                      : activeDeck.category || activeDeck.smallTitle || 'Know your rights'}
                   </p>
                   <div className="kyr-deck-stage__nav">
                     <button
                       type="button"
                       className="kyr-deck-stage__arrow"
-                      aria-label="Previous deck"
-                      disabled={activeDeckIdx <= 0}
-                      onClick={() => {
-                        deckTabClickRef.current = true;
-                        setActiveDeckIdx((i) => Math.max(0, i - 1));
-                      }}
+                      aria-label="Previous slide"
+                      disabled={deckSlide <= 0}
+                      onClick={() => setDeckSlide((s) => Math.max(0, s - 1))}
                     >
                       ←
                     </button>
                     <button
                       type="button"
                       className="kyr-deck-stage__arrow"
-                      aria-label="Next deck"
-                      disabled={activeDeckIdx >= deckList.length - 1}
-                      onClick={() => {
-                        deckTabClickRef.current = true;
-                        setActiveDeckIdx((i) => Math.min(deckList.length - 1, i + 1));
-                      }}
+                      aria-label="Next slide"
+                      disabled={deckSlide >= deckSlideTotal - 1}
+                      onClick={() => setDeckSlide((s) => Math.min(deckSlideTotal - 1, s + 1))}
                     >
                       →
                     </button>

@@ -54,6 +54,14 @@
   max-width: 100%;
 }
 
+.story-detail__author {
+  margin: 0.85rem 0 0;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.88);
+}
+
 .story-detail__body {
   padding: clamp(2.5rem, 5vw, 4rem) 1.25rem clamp(4rem, 8vw, 6rem);
   max-width: 56rem;
@@ -445,6 +453,71 @@
   flex-shrink: 0;
   font-size: 1rem;
   letter-spacing: 0.02em;
+}
+
+/* Told in full — horizontal PDF name row (no cover image) */
+.story-detail__doc--split {
+  cursor: default;
+  border-radius: 16px;
+}
+
+.story-detail__doc--split:hover {
+  background: #fff;
+}
+
+.story-detail__doc-actions {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.story-detail__doc-btn {
+  appearance: none;
+  border: none;
+  border-radius: 999px;
+  padding: 0.45rem 0.95rem;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  background: var(--ink, #1a1510);
+  color: #fff;
+  line-height: 1.2;
+}
+
+.story-detail__doc-btn:hover {
+  opacity: 0.9;
+  text-decoration: none;
+  color: #fff;
+}
+
+.story-detail__doc-btn--ghost {
+  background: #fff;
+  color: var(--accent, #b08a3c);
+  border: 1px solid rgba(176, 138, 60, 0.55);
+}
+
+.story-detail__doc-btn--ghost:hover {
+  color: var(--ink, #1a1510);
+  border-color: var(--ink, #1a1510);
+  background: rgba(176, 138, 60, 0.06);
+}
+
+.story-detail__caseline {
+  margin: 0.35rem 0 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.story-detail__hero--text .story-detail__caseline {
+  color: var(--soft, #6b6358);
 }
 
 .story-detail__docs a {

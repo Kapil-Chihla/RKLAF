@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import api from '../api';
 import { useAuth } from '../AuthContext';
 import { assetUrl } from '../../lib/api';
+import AdminImageHint from '../components/AdminImageHint';
 
 const LAYOUTS = [
   { value: 'clip', label: 'Article clip (outlet + headline + optional link/image)' },
@@ -286,6 +287,7 @@ export default function PressMentionsManage() {
             <label>
               Image {form.layout === 'image' && !editing ? '(required)' : '(optional / leave empty to keep)'}
               <input type="file" accept="image/*" onChange={(e) => setImage(e.target.files?.[0] || null)} />
+              <AdminImageHint size="900×1200 px" note="3:4 portrait — Impact press mosaic tiles" />
             </label>
           ) : null}
 
@@ -312,6 +314,7 @@ export default function PressMentionsManage() {
                   accept="image/*"
                   onChange={(e) => setThumbnail(e.target.files?.[0] || null)}
                 />
+                <AdminImageHint size="1280×720 px" note="16:9 video poster for press embeds" />
               </label>
               {editing?.video && !clearVideo ? (
                 <div style={{ marginBottom: '0.75rem' }}>

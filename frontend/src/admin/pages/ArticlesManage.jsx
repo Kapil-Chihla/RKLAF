@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import api from '../api';
 import { useAuth } from '../AuthContext';
+import AdminImageHint from '../components/AdminImageHint';
 import AdminRichHint from '../components/AdminRichHint';
 
 const emptyForm = { title: '', summary: '', body: '', category: 'General' };
@@ -143,6 +144,7 @@ export default function ArticlesManage() {
           <label>
             Cover image {editingId ? '(leave empty to keep current)' : ''}
             <input type="file" accept="image/*" onChange={(e) => setCover(e.target.files?.[0] || null)} />
+            <AdminImageHint size="720×960 px" note="3:4 portrait — KYR practical guide cards" />
           </label>
           <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
             <button type="submit" className="admin-btn admin-btn--primary">

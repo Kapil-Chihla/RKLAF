@@ -1,5 +1,6 @@
 import { assetUrl } from '../../lib/api';
 import { cloudinaryPdfAttachmentUrl } from '../../lib/pdfDownload';
+import AdminImageHint from './AdminImageHint';
 
 /**
  * Editable list of already-uploaded gallery images or PDF documents.
@@ -120,6 +121,7 @@ export default function AdminExistingMedia({
                       accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
                       onChange={(e) => onCoverFile(docId, e.target.files?.[0] || null)}
                     />
+                    <AdminImageHint size="600×800 px" note="3:4 portrait card cover" />
                   </label>
                 ) : null}
                 {doc.coverImage || pendingCover ? (

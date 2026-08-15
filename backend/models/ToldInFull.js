@@ -21,9 +21,13 @@ const toldInFullSchema = new mongoose.Schema(
     tag: { type: String, default: '' },
     title: { type: String, required: true },
     caption: { type: String, default: '' },
+    /** Forum / file line under the title (same pattern as Argued in full) */
+    caseLine: { type: String, default: '' },
     problem: { type: String, default: '' },
     action: { type: String, default: '' },
     result: { type: String, default: '' },
+    /** Long narrative — same role as SuccessStory.fullBody */
+    fullBody: { type: String, default: '' },
     documents: { type: [toldDocumentSchema], default: [] },
     sortOrder: { type: Number, default: 0 },
     published: { type: Boolean, default: true },

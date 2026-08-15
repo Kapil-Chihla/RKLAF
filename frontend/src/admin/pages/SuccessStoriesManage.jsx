@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import api from '../api';
 import { useAuth } from '../AuthContext';
 import AdminExistingMedia from '../components/AdminExistingMedia';
+import AdminImageHint from '../components/AdminImageHint';
 import AdminRichHint from '../components/AdminRichHint';
 
 const emptyForm = {
@@ -164,6 +165,10 @@ export default function SuccessStoriesManage() {
                 if (e.target.files?.[0]) setClearHero(false);
               }}
             />
+            <AdminImageHint
+              size="1920×1320 px"
+              note="16:11 landscape — home story cards crop to this; keep the face/subject centered"
+            />
           </label>
           <label>
             Problem
@@ -218,6 +223,7 @@ export default function SuccessStoriesManage() {
               multiple
               onChange={(e) => setGallery(Array.from(e.target.files || []))}
             />
+            <AdminImageHint size="1800×1200 px" note="landscape photos for the story gallery" />
             {gallery.length > 0 ? (
               <small style={{ display: 'block', marginTop: 4 }}>{gallery.length} new image(s) selected</small>
             ) : null}

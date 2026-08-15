@@ -220,12 +220,21 @@
   position: relative;
   overflow: hidden;
   min-height: 460px;
+  /* Height follows the text column — don't let the portrait asset expand the hero */
+  align-self: stretch;
 }
 
 .about-hero__photo {
-  height: 100%;
-  min-height: 460px;
+  position: absolute;
+  inset: 0;
+  height: auto;
+  min-height: 0;
   border-radius: 0;
+}
+
+.about-hero__photo img {
+  /* Crop excess ceiling/shelves; keep desk conversation in frame */
+  object-position: center 72%;
 }
 
 .about-hero__vcap {
@@ -507,7 +516,19 @@ button.about-vid__play:hover span {
 }
 
 .about-story__head {
+  width: 100%;
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
+}
+
+.about-story__head .about-kicker {
+  text-align: center;
+  width: 100%;
 }
 
 .about-story__head h2 {
@@ -515,6 +536,8 @@ button.about-vid__play:hover span {
   font-size: clamp(1.6rem, 3vw, 2.3rem);
   font-weight: 600;
   margin: 0.5rem 0 0;
+  text-align: center;
+  width: 100%;
 }
 
 .about-story__head p {
@@ -523,7 +546,9 @@ button.about-vid__play:hover span {
   color: var(--au-soft);
   max-width: 60ch;
   margin: 0.75rem auto 0;
-  text-align: justify;
+  text-align: center;
+  text-justify: auto;
+  hyphens: none;
 }
 
 .about-lineage {
@@ -713,6 +738,12 @@ button.about-vid__play:hover span {
   box-shadow: 0 18px 40px rgba(42, 33, 24, 0.12);
   min-height: 280px;
   align-items: stretch;
+}
+
+.about-chapter--text {
+  grid-template-columns: 1fr;
+  max-width: 42rem;
+  min-height: 0;
 }
 
 .about-chapter__photo {
@@ -1071,36 +1102,61 @@ button.about-vid__play:hover span {
 /* ===== CLOSING ===== */
 .about-closing {
   padding: clamp(2.5rem, 5vw, 3.5rem) clamp(1.4rem, 4vw, 2.75rem) clamp(2.75rem, 5vw, 3.75rem);
-  text-align: center;
   background: var(--au-cream);
   border-top: 1px solid var(--au-line);
+}
+
+.about-closing__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 52rem;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .about-closing__line {
   font-family: var(--au-serif);
   font-style: italic;
-  font-size: clamp(1.3rem, 2.8vw, 2rem);
+  font-size: clamp(1.05rem, 2.2vw, 1.65rem);
   font-weight: 500;
+  line-height: 1.35;
   color: var(--au-ink);
-  max-width: 26ch;
-  margin: 0 auto;
+  margin: 0;
+  width: max-content;
+  max-width: 100%;
+  white-space: nowrap;
+  text-align: center;
 }
 
-.about-closing > p:not(.about-closing__line):not(.about-closing__echo) {
+.about-closing__body {
   font-size: 1.05rem;
   line-height: 1.75;
   color: var(--au-soft);
-  max-width: 56ch;
-  margin: 1.1rem auto 0;
-  text-align: justify;
+  max-width: 42ch;
+  margin: 1.15rem auto 0;
+  text-align: center;
+  text-justify: auto;
+  hyphens: none;
 }
 
 .about-closing__echo {
   font-family: var(--au-serif);
-  font-size: 1.1rem;
+  font-size: clamp(1.05rem, 2vw, 1.2rem);
   letter-spacing: 0.1em;
   color: var(--au-brown);
-  margin: 1.5rem 0 0;
+  margin: 1.5rem auto 0;
+  max-width: 100%;
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .about-closing__line {
+    white-space: normal;
+    width: auto;
+    max-width: 22rem;
+  }
 }
 
 /* ===== CONTACT ===== */
@@ -1212,9 +1268,13 @@ button.about-vid__play:hover span {
     grid-template-columns: 1fr;
   }
 
-  .about-hero__right,
+  .about-hero__right {
+    min-height: 320px;
+    aspect-ratio: 4 / 3;
+  }
+
   .about-hero__photo {
-    min-height: 280px;
+    min-height: 0;
   }
 
   .about-pillars {

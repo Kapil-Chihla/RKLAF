@@ -123,10 +123,14 @@ svg {
     padding-inline: 0;
   }
 
-  .home-hero__sketch,
-  .hero-sketch {
-    max-height: min(46vh, 280px);
-    width: min(100%, 360px);
+  .home-hero__art {
+    min-height: min(48vh, 300px);
+  }
+
+  .home-hero__media,
+  .home-hero__video {
+    max-height: min(48vh, 300px);
+    width: 100%;
   }
 
   .home-pill,

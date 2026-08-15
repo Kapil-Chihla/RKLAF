@@ -3,7 +3,7 @@ import { OFFICE_DELHI, OFFICE_IMPHAL } from '../data/navigation';
 import Reveal from '../components/motion/Reveal';
 import photoDada from '../assets/_unused/dada.jpeg';
 import photoDadi from '../assets/_unused/dadi.jpeg';
-import photoAjayHero from '../assets/aboutusi.jpeg';
+import photoAjayHero from '../assets/aboutusbanner.jpeg';
 import photoAjayStory from '../assets/_unused/father.jpeg';
 import photoOffice from '../assets/_unused/comunityoutreach.jpeg';
 import officeVideo from '../assets/officevideo.mp4';
@@ -297,6 +297,7 @@ export default function About() {
             hint="Advocate with a client outside court"
             dark
             image={photoAjayHero}
+            position="center 72%"
           />
           <span className="about-hero__vcap">Delhi · since 2016</span>
         </div>
@@ -406,15 +407,20 @@ export default function About() {
           </div>
         </div>
 
-        <article className="about-chapter" key={chapter.id}>
-          <PhBox
-            className="about-chapter__photo"
-            label="Photo"
-            hint={chapter.photoHint}
-            image={chapter.photo}
-            fit={chapter.photoFit || 'cover'}
-            position={chapter.photoPos}
-          />
+        <article
+          className={`about-chapter${chapter.photo ? '' : ' about-chapter--text'}`}
+          key={chapter.id}
+        >
+          {chapter.photo ? (
+            <PhBox
+              className="about-chapter__photo"
+              label="Photo"
+              hint={chapter.photoHint}
+              image={chapter.photo}
+              fit={chapter.photoFit || 'cover'}
+              position={chapter.photoPos}
+            />
+          ) : null}
           <div className="about-chapter__body">
             <span className="about-chapter__role">{chapter.role}</span>
             <h3>{chapter.name}</h3>
@@ -575,12 +581,14 @@ export default function About() {
 
       {/* 8 · CLOSING */}
       <section className="about-closing" id="closing">
-        <p className="about-closing__line">One case, one person, and one right restored at a time.</p>
-        <p>
-          Radhey Krishna Legal Aid Foundation continues to grow, extending free legal aid and support
-          to an ever-increasing number of impoverished and underprivileged people.
-        </p>
-        <p className="about-closing__echo">With You. For You. Nyaya Tak.</p>
+        <div className="about-closing__inner">
+          <p className="about-closing__line">One case, one person, and one right restored at a time.</p>
+          <p className="about-closing__body">
+            Radhey Krishna Legal Aid Foundation continues to grow, extending free legal aid and support
+            to an ever-increasing number of impoverished and underprivileged people.
+          </p>
+          <p className="about-closing__echo">With You. For You. Nyaya Tak.</p>
+        </div>
       </section>
     </div>
   );

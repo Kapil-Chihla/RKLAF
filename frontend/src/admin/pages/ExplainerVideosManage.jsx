@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import api from '../api';
 import { useAuth } from '../AuthContext';
+import AdminImageHint from '../components/AdminImageHint';
 
 const emptyForm = { title: '', meta: '', externalUrl: '' };
 
@@ -129,6 +130,7 @@ export default function ExplainerVideosManage() {
               accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
               onChange={(e) => setThumbnail(e.target.files?.[0] || null)}
             />
+            <AdminImageHint size="960×600 px" note="16:10 — KYR explainer video carousel thumbs" />
           </label>
           <label>
             Video file {editingId ? '(optional — leave empty to keep current)' : ''}
