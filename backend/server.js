@@ -14,6 +14,9 @@ const seedTestSuperAdmin = require('./seed/testSuperAdmin');
 
 const app = express();
 
+// Render (and other reverse proxies) set X-Forwarded-For; required by express-rate-limit
+app.set('trust proxy', 1);
+
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
 const allowedOrigins = [
   process.env.FRONTEND_URL,

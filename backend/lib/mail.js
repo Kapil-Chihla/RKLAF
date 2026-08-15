@@ -21,8 +21,12 @@ function createTransporter() {
     secure,
     auth: {
       user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
+      // App passwords may be pasted with spaces — strip them
+      pass: String(process.env.SMTP_PASS || '').replace(/\s+/g, ''),
     },
+    connectionTimeout: 12_000,
+    greetingTimeout: 12_000,
+    socketTimeout: 20_000,
   });
 }
 
@@ -35,7 +39,11 @@ async function sendOrgMail({ subject, text, html, replyTo }) {
     console.warn(
       '[mail] SMTP_USER / SMTP_PASS not set — message saved to DB only. Configure Gmail App Password to deliver mail.',
     );
-    return { sent: false, skipped: true };
+    return {
+      sent: false,
+      skipped: true,
+      error: 'SMTP_USER / SMTP_PASS not set on the server',
+    };
   }
 
   const transporter = createTransporter();

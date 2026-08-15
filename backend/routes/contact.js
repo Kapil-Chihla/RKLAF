@@ -119,6 +119,9 @@ router.post('/', async (req, res) => {
       message: 'Message received. We will reply soon.',
       contact: contact.toObject(),
       emailed: Boolean(mailResult.sent),
+      // Helps debug Render SMTP without opening logs
+      mailError: mailResult.sent ? undefined : mailResult.error || undefined,
+      mailSkipped: Boolean(mailResult.skipped),
     });
   } catch (err) {
     console.error('[contact]', err);
