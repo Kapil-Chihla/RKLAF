@@ -199,6 +199,14 @@ const expertise = [
     desc: 'Writ petitions and constitutional matters before the Hon\'ble High Courts and Supreme Court',
   },
   {
+    title: 'Public Interest Litigation',
+    desc: 'Causes of public importance before the Hon\'ble High Courts and Supreme Court',
+  },
+  {
+    title: 'Human Rights & Vulnerable Communities',
+    desc: 'Undertrials, senior citizens, women, children and other marginalized groups',
+  },
+  {
     title: 'Criminal & Custodial Justice',
     desc: 'Bail, trial representation and appeals, including in-jail legal aid for undertrials',
   },
@@ -207,16 +215,16 @@ const expertise = [
     desc: 'Unpaid wages, wrongful termination and workplace entitlements',
   },
   {
-    title: 'Consumer & Service Matters',
-    desc: 'Defective goods, denied services, and government/institutional service disputes',
+    title: 'Public Employment & Service Matters',
+    desc: 'Recruitment, promotions, disciplinary proceedings and pension disputes',
   },
   {
-    title: 'Public Interest Litigation',
-    desc: 'Causes of public importance before the Hon\'ble High Courts and Supreme Court',
+    title: 'Environmental Law',
+    desc: 'Environmental protection and public interest matters affecting communities and ecosystems',
   },
   {
-    title: 'Human Rights & Vulnerable Communities',
-    desc: 'Undertrials, senior citizens, women, children and other marginalized groups',
+    title: 'Cyber Law',
+    desc: 'Cybercrime, digital offences and matters arising from online conduct',
   },
 ];
 
@@ -616,9 +624,6 @@ export default function Home() {
           <Reveal as="div" className="home-expertise__intro" variant="up">
             <p className="home-eyebrow">Expertise</p>
             <h2 className="home-display">Where we can step in</h2>
-            <p>
-              Six areas of practice, each with its own desk, its own guides, and its own case record.
-            </p>
           </Reveal>
 
           <ul className="home-expertise__list">
