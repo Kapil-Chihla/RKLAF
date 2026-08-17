@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 .vercel
 .env*
+
+# Original iPhone capture — too large / HEVC; use whowearefilm.mp4 instead
+src/assets/IMG_9326.MOV
