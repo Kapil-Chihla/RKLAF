@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import HeroVideo from '../components/home/HeroVideo';
 import CountUp from '../components/motion/CountUp';
@@ -10,6 +10,8 @@ import { renderRichText } from '../lib/richText';
 import academicsHomeImg from '../assets/academicshomebanner.jpeg';
 import knowYourRightsHomeImg from '../assets/kyrhomebanner.jpeg';
 import libraryHomeImg from '../assets/libraryhomebanner.jpeg';
+import whoWeAreFilm from '../assets/whowearefilm.mp4';
+import whoWeArePoster from '../assets/whowearefilm.jpg';
 import './Home.css';
 
 const snapModules = import.meta.glob('../assets/{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}.jpeg', {
@@ -336,6 +338,63 @@ function MediaPlaceholder({ label, caption, ratio = '4 / 3' }) {
   );
 }
 
+function WhoWeAreFilm() {
+  const videoRef = useRef(null);
+  const [playing, setPlaying] = useState(false);
+
+  const start = () => {
+    const el = videoRef.current;
+    if (!el) return;
+    el.muted = false;
+    el.play()
+      .then(() => setPlaying(true))
+      .catch(() => {
+        el.muted = true;
+        el.play()
+          .then(() => {
+            setPlaying(true);
+            el.muted = false;
+          })
+          .catch(() => {});
+      });
+  };
+
+  return (
+    <div className={`home-film${playing ? ' is-playing' : ''}`}>
+      <div className="home-film__frame">
+        <video
+          ref={videoRef}
+          className="home-film__video"
+          src={whoWeAreFilm}
+          poster={whoWeArePoster}
+          controls={playing}
+          controlsList="nodownload"
+          playsInline
+          preload="metadata"
+          onEnded={() => setPlaying(false)}
+          onPause={() => {
+            const el = videoRef.current;
+            if (el && el.paused && !el.ended) setPlaying(false);
+          }}
+          onPlay={() => setPlaying(true)}
+        />
+        {!playing ? <span className="home-film__badge">Film · 3 min</span> : null}
+        {!playing ? (
+          <button type="button" className="home-film__play" onClick={start} aria-label="Play film">
+            <span />
+          </button>
+        ) : null}
+      </div>
+      <p className="home-film__caption">The first clinic, told in three minutes.</p>
+      {!playing ? (
+        <aside className="home-film__quote">
+          “No one else’s story ends in the queue.”
+        </aside>
+      ) : null}
+    </div>
+  );
+}
+
 /** Square window + cover fill — every photo edges the frame the same way. */
 function PolaroidPhoto({ src, label, focus = 'center center' }) {
   return (
@@ -471,19 +530,7 @@ export default function Home() {
           </Reveal>
 
           <Reveal as="div" className="home-who__media" variant="up" delay={120}>
-            <div className="home-film">
-              <div className="home-film__frame">
-                <MediaPlaceholder label="Film still" caption="The first clinic, the founder at the table" ratio="16 / 10" />
-                <span className="home-film__badge">Film · 3 min</span>
-                <button type="button" className="home-film__play" aria-label="Play film (coming soon)" disabled>
-                  <span />
-                </button>
-              </div>
-              <p className="home-film__caption">The first clinic, told in three minutes.</p>
-              <aside className="home-film__quote">
-                “No one else’s story ends in the queue.”
-              </aside>
-            </div>
+            <WhoWeAreFilm />
           </Reveal>
         </div>
       </section>
