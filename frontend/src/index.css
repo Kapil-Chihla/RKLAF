@@ -483,7 +483,7 @@ select,
 .brand-name-line {
   font-family: var(--font-sans, 'Inter', system-ui, sans-serif);
   color: #1a2744;
-  font-size: clamp(0.95rem, 1.45vw, 1.1rem);
+  font-size: 1.05rem;
   font-weight: 800;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -494,7 +494,7 @@ select,
 
 .brand-name-line--mid,
 .brand-name-line--sub {
-  font-size: clamp(0.95rem, 1.45vw, 1.1rem);
+  font-size: 1.05rem;
   font-weight: 800;
   color: #1a2744;
 }
@@ -625,7 +625,7 @@ select,
 
 .nav-link,
 .nav-dropdown-trigger {
-  font-size: clamp(0.9rem, 0.95vw, 1rem);
+  font-size: 1rem;
   font-weight: 500;
   letter-spacing: 0.01em;
   color: var(--text);

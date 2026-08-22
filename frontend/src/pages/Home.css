@@ -201,19 +201,19 @@
   pointer-events: none;
   user-select: none;
   -webkit-user-select: none;
-  /* Tight hole over tagline — less clearance below the line */
+  /* Clear ink behind tagline — biased left so “With You” is covered */
   -webkit-mask-image: radial-gradient(
-    ellipse 30% 7.5% at 50% 70.5%,
+    ellipse 40% 11% at 46% 72%,
     transparent 0%,
-    transparent 55%,
-    #000 86%,
+    transparent 64%,
+    #000 92%,
     #000 100%
   );
   mask-image: radial-gradient(
-    ellipse 30% 7.5% at 50% 70.5%,
+    ellipse 40% 11% at 46% 72%,
     transparent 0%,
-    transparent 55%,
-    #000 86%,
+    transparent 64%,
+    #000 92%,
     #000 100%
   );
 }
@@ -237,20 +237,29 @@
 .home-hero__tagline::before {
   content: '';
   position: absolute;
-  left: 50%;
+  left: 46%;
   top: 50%;
-  transform: translate(-50%, -52%);
-  width: 100%;
-  height: 92%;
+  transform: translate(-50%, -50%);
+  width: 118%;
+  height: 130%;
   z-index: -1;
   pointer-events: none;
-  background: radial-gradient(
-    ellipse 50% 32% at 42% 42%,
-    var(--bg, var(--cream)) 0%,
-    var(--bg, var(--cream)) 50%,
-    color-mix(in srgb, var(--bg, var(--cream)) 28%, transparent) 72%,
-    transparent 100%
-  );
+  border-radius: 999px;
+  background:
+    radial-gradient(
+      ellipse 42% 62% at 22% 50%,
+      var(--bg, var(--cream)) 0%,
+      var(--bg, var(--cream)) 55%,
+      color-mix(in srgb, var(--bg, var(--cream)) 55%, transparent) 78%,
+      transparent 100%
+    ),
+    radial-gradient(
+      ellipse 58% 55% at 48% 50%,
+      var(--bg, var(--cream)) 0%,
+      var(--bg, var(--cream)) 50%,
+      color-mix(in srgb, var(--bg, var(--cream)) 65%, transparent) 76%,
+      transparent 100%
+    );
 }
 
 .home-hero__with,
@@ -1256,17 +1265,17 @@ a.home-story--link:hover .home-story__more {
     height: auto;
     max-height: min(62vh, 520px);
     -webkit-mask-image: radial-gradient(
-      ellipse 36% 9% at 50% 72.5%,
+      ellipse 42% 12% at 50% 73%,
       transparent 0%,
-      transparent 54%,
-      #000 84%,
+      transparent 60%,
+      #000 88%,
       #000 100%
     );
     mask-image: radial-gradient(
-      ellipse 36% 9% at 50% 72.5%,
+      ellipse 42% 12% at 50% 73%,
       transparent 0%,
-      transparent 54%,
-      #000 84%,
+      transparent 60%,
+      #000 88%,
       #000 100%
     );
   }
