@@ -197,12 +197,15 @@
   transform: translateY(-50%);
   color: var(--muted);
   font-weight: 600;
+  font-size: 1.1rem;
+  line-height: 1;
   pointer-events: none;
+  z-index: 1;
 }
 
 .donate__custom input {
   width: 100%;
-  padding: 0.85rem 1rem 0.85rem 2rem;
+  padding: 0.85rem 1rem 0.85rem 2.85rem;
   border-radius: 14px;
   border: 1px solid rgba(43, 38, 33, 0.12);
   background: #f5f2ed;

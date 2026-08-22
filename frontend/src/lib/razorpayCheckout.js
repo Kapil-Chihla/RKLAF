@@ -23,15 +23,19 @@ function loadCheckoutScript() {
 }
 
 async function resolveKeyId() {
+  // Prefer backend public-config so Key ID always matches the secret in use
+  try {
+    const res = await fetch(`${API_BASE}/payment/public-config`);
+    const data = await res.json().catch(() => ({}));
+    if (res.ok && data.key) return data.key;
+  } catch {
+    /* fall through to Vite env */
+  }
+
   const fromEnv = import.meta.env.VITE_RAZORPAY_KEY_ID;
   if (fromEnv) return fromEnv;
 
-  const res = await fetch(`${API_BASE}/payment/public-config`);
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok || !data.key) {
-    throw new Error(data.message || 'Razorpay key is not configured');
-  }
-  return data.key;
+  throw new Error('Razorpay key is not configured');
 }
 
 /**
