@@ -197,19 +197,19 @@
   pointer-events: none;
   user-select: none;
   -webkit-user-select: none;
-  /* Tight hole over tagline — biased left so “With You” is covered; right stops at Nyaya Tak */
+  /* Tight hole over tagline — less clearance below the line */
   -webkit-mask-image: radial-gradient(
-    ellipse 30% 11% at 50% 72%,
+    ellipse 30% 7.5% at 50% 70.5%,
     transparent 0%,
-    transparent 58%,
-    #000 88%,
+    transparent 55%,
+    #000 86%,
     #000 100%
   );
   mask-image: radial-gradient(
-    ellipse 30% 11% at 50% 72%,
+    ellipse 30% 7.5% at 50% 70.5%,
     transparent 0%,
-    transparent 58%,
-    #000 88%,
+    transparent 55%,
+    #000 86%,
     #000 100%
   );
 }
@@ -235,16 +235,16 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -52%);
   width: 100%;
-  height: 108%;
+  height: 92%;
   z-index: -1;
   pointer-events: none;
   background: radial-gradient(
-    ellipse 50% 42% at 42% 50%,
+    ellipse 50% 32% at 42% 42%,
     var(--bg, var(--cream)) 0%,
-    var(--bg, var(--cream)) 54%,
-    color-mix(in srgb, var(--bg, var(--cream)) 30%, transparent) 76%,
+    var(--bg, var(--cream)) 50%,
+    color-mix(in srgb, var(--bg, var(--cream)) 28%, transparent) 72%,
     transparent 100%
   );
 }
@@ -1251,17 +1251,17 @@ a.home-story--link:hover .home-story__more {
     width: 100%;
     height: auto;
     -webkit-mask-image: radial-gradient(
-      ellipse 36% 14% at 50% 74%,
+      ellipse 36% 9% at 50% 72.5%,
       transparent 0%,
-      transparent 56%,
-      #000 86%,
+      transparent 54%,
+      #000 84%,
       #000 100%
     );
     mask-image: radial-gradient(
-      ellipse 36% 14% at 50% 74%,
+      ellipse 36% 9% at 50% 72.5%,
       transparent 0%,
-      transparent 56%,
-      #000 86%,
+      transparent 54%,
+      #000 84%,
       #000 100%
     );
   }
