@@ -25,5 +25,6 @@ dist-ssr
 .vercel
 .env*
 
-# Original iPhone capture — too large / HEVC; use whowearefilm.mp4 instead
+# Original iPhone captures — too large / HEVC; use web H.264 mp4 instead
 src/assets/IMG_9326.MOV
+src/assets/homepagevideonew.mov

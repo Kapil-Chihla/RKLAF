@@ -4,7 +4,7 @@ import AdminImageHint from './AdminImageHint';
  * Multi-PDF picker with per-file public title.
  * @param {'full'|'titleOnly'} variant — full includes description + cover; titleOnly is name only.
  */
-export default function AdminNewPdfBatch({ items, onChange, variant = 'full' }) {
+export default function AdminNewPdfBatch({ items, onChange, variant = 'titleOnly' }) {
   const titleOnly = variant === 'titleOnly';
 
   const setFiles = (files) => {

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import CountUp from '../components/motion/CountUp';
 import Reveal from '../components/motion/Reveal';
 import { submitContact } from '../lib/submitContact';
+import { startDonationCheckout } from '../lib/razorpayCheckout';
 import './Donate.css';
 
 const programs = [
@@ -217,23 +218,43 @@ export default function Donate() {
     setError('');
     setBusy(true);
     try {
-      await submitContact({
+      const payment = await startDonationCheckout({
+        amountInr: effectiveAmount,
         name: name.trim(),
         email: email.trim(),
-        message: [
-          `Donation interest from the website.`,
-          `Programme: ${programMeta.title}`,
-          `Amount: ₹${formatInr(effectiveAmount)}`,
-          pan.trim() ? `PAN: ${pan.trim()}` : null,
-        ]
-          .filter(Boolean)
-          .join('\n'),
-        source: 'donate',
-        subject: `[RKLAF] Donate interest — ₹${formatInr(effectiveAmount)}`,
+        programTitle: programMeta.title,
+        pan: pan.trim(),
       });
+
+      try {
+        await submitContact({
+          name: name.trim(),
+          email: email.trim(),
+          message: [
+            `Donation received via Razorpay.`,
+            `Programme: ${programMeta.title}`,
+            `Amount: ₹${formatInr(effectiveAmount)}`,
+            pan.trim() ? `PAN: ${pan.trim()}` : null,
+            `Payment ID: ${payment.razorpay_payment_id}`,
+            `Order ID: ${payment.razorpay_order_id}`,
+          ]
+            .filter(Boolean)
+            .join('\n'),
+          source: 'donate',
+          subject: `[RKLAF] Donation paid — ₹${formatInr(effectiveAmount)}`,
+        });
+      } catch {
+        /* payment already verified; inbox notify is best-effort */
+      }
+
       setSent(true);
     } catch (err) {
-      setError(err.response?.data?.message || 'Could not submit. Please email or WhatsApp us.');
+      const msg = err?.message || '';
+      if (msg === 'Payment cancelled') {
+        setError('Payment was cancelled. You can try again when ready.');
+      } else {
+        setError(msg || 'Payment could not be completed. Please try again or WhatsApp us.');
+      }
     } finally {
       setBusy(false);
     }
@@ -361,15 +382,15 @@ export default function Donate() {
               ) : null}
               {sent && !error ? (
                 <p className="donate__form-status donate__form-status--ok" role="status">
-                  Thank you — we received your details and will confirm next steps by email.
+                  Thank you — your donation was received. A receipt will be sent to your email.
                 </p>
               ) : null}
 
               <button type="submit" className="donate__submit" disabled={busy || sent}>
                 {busy
-                  ? 'Sending…'
+                  ? 'Opening secure checkout…'
                   : sent
-                    ? 'Request received →'
+                    ? 'Donation received →'
                     : `Donate ₹${formatInr(effectiveAmount)} securely →`}
               </button>
 

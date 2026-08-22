@@ -89,7 +89,6 @@ export default function DeskStoriesManage() {
   const [hero, setHero] = useState(null);
   const [blocks, setBlocks] = useState([{ key: nextKey('p'), type: 'paragraph', text: '' }]);
   const [newPdfs, setNewPdfs] = useState([]);
-  const [coverReplacements, setCoverReplacements] = useState({});
   const [editing, setEditing] = useState(null);
   const [keptDocuments, setKeptDocuments] = useState([]);
   const [clearHero, setClearHero] = useState(false);
@@ -112,7 +111,6 @@ export default function DeskStoriesManage() {
     setHero(null);
     setBlocks([{ key: nextKey('p'), type: 'paragraph', text: '' }]);
     setNewPdfs([]);
-    setCoverReplacements({});
     setEditing(null);
     setKeptDocuments([]);
     setClearHero(false);
@@ -131,7 +129,6 @@ export default function DeskStoriesManage() {
     setHero(null);
     setBlocks(blocksFromStory(story));
     setNewPdfs([]);
-    setCoverReplacements({});
     setKeptDocuments([...(story.documents || [])]);
     setClearHero(false);
     setMsg('');
@@ -142,15 +139,6 @@ export default function DeskStoriesManage() {
     setKeptDocuments((prev) =>
       prev.map((doc) => ((doc.id || doc.url) === id ? { ...doc, ...patch } : doc)),
     );
-  };
-
-  const setDocCoverFile = (docId, file) => {
-    setCoverReplacements((prev) => {
-      const next = { ...prev };
-      if (file) next[docId] = file;
-      else delete next[docId];
-      return next;
-    });
   };
 
   const updateBlock = (key, patch) => {
@@ -242,12 +230,6 @@ export default function DeskStoriesManage() {
     fd.append('bodyBlocks', JSON.stringify(payload));
 
     appendNewPdfBatch(fd, newPdfs);
-
-    const replaceEntries = Object.entries(coverReplacements).filter(([, file]) => file);
-    if (replaceEntries.length) {
-      fd.append('coverReplaceIds', JSON.stringify(replaceEntries.map(([id]) => id)));
-      replaceEntries.forEach(([, file]) => fd.append('coverReplacements', file));
-    }
 
     try {
       if (editing) {
@@ -444,18 +426,14 @@ export default function DeskStoriesManage() {
             <AdminExistingMedia
               title="Current PDF documents"
               kind="document"
+              titleOnly
               items={keptDocuments}
-              coverFiles={coverReplacements}
-              onCoverFile={setDocCoverFile}
-              onRemove={(id) => {
-                setKeptDocuments((prev) => prev.filter((doc) => (doc.id || doc.url) !== id));
-                setDocCoverFile(id, null);
-              }}
               onChangeItem={patchKeptDocument}
+              onRemove={(id) => setKeptDocuments((prev) => prev.filter((doc) => (doc.id || doc.url) !== id))}
             />
           ) : null}
 
-          <AdminNewPdfBatch items={newPdfs} onChange={setNewPdfs} />
+          <AdminNewPdfBatch items={newPdfs} onChange={setNewPdfs} variant="titleOnly" />
 
           <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
             <button type="submit" className="admin-btn admin-btn--primary" disabled={busy}>

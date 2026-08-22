@@ -10,8 +10,6 @@ import { renderRichText } from '../lib/richText';
 import PdfPreviewModal from '../components/pdf/PdfPreviewModal';
 import './StoryDetail.css';
 
-const DOC_TONES = ['plum', 'cream', 'ink', 'sage', 'gold', 'clay', 'olive'];
-
 function PhotoGrid({ images, altFallback }) {
   const list = (images || []).filter((img) => img?.url);
   if (!list.length) return null;
@@ -158,68 +156,39 @@ export default function DeskStoryDetail() {
         {documents.length > 0 ? (
           <div className="story-detail__docs">
             <h2>Documents</h2>
-            <p className="story-detail__docs-lede">
-              Open any handbook to preview, zoom, and download the PDF.
-            </p>
-            <div className="story-detail__doc-grid">
+            <ul>
               {documents.map((doc, i) => {
                 const title = doc.title || doc.name || 'Document.pdf';
                 const docId = doc.id || `doc-${i}`;
                 const downloadHref = deskDocumentDownloadUrl(storyKey, doc.id);
                 const viewHref = deskDocumentViewUrl(storyKey, doc.id);
-                const tone = DOC_TONES[i % DOC_TONES.length];
-                const cover = doc.coverImage ? assetUrl(doc.coverImage) : null;
                 return (
-                  <article key={docId} className="story-doc-card">
-                    <button
-                      type="button"
-                      className={`story-doc-card__cover story-doc-card__cover--${tone}${
-                        cover ? ' story-doc-card__cover--photo' : ''
-                      }`}
-                      style={cover ? { backgroundImage: `url(${cover})` } : undefined}
-                      onClick={() =>
-                        setActiveDoc({ title, viewUrl: viewHref, downloadUrl: downloadHref })
-                      }
-                      aria-label={`Preview ${title}`}
-                    >
-                      <span className="story-doc-card__badge">PDF</span>
-                    </button>
-                    <h3 className="story-doc-card__title">
-                      <button
-                        type="button"
-                        className="story-doc-card__title-btn"
-                        onClick={() =>
-                          setActiveDoc({ title, viewUrl: viewHref, downloadUrl: downloadHref })
-                        }
-                      >
-                        {title}
-                      </button>
-                    </h3>
-                    {doc.description ? (
-                      <p className="story-doc-card__desc">{renderRichText(doc.description)}</p>
-                    ) : null}
-                    <div className="story-doc-card__actions">
-                      <button
-                        type="button"
-                        className="story-doc-card__dl"
-                        onClick={() =>
-                          setActiveDoc({ title, viewUrl: viewHref, downloadUrl: downloadHref })
-                        }
-                      >
-                        Preview
-                      </button>
-                      <a
-                        className="story-doc-card__dl story-doc-card__dl--secondary"
-                        href={downloadHref}
-                        download
-                      >
-                        Download
-                      </a>
+                  <li key={docId}>
+                    <div className="story-detail__doc story-detail__doc--split">
+                      <span className="story-detail__doc-name">{title}</span>
+                      <span className="story-detail__doc-actions">
+                        <button
+                          type="button"
+                          className="story-detail__doc-btn"
+                          onClick={() =>
+                            setActiveDoc({ title, viewUrl: viewHref, downloadUrl: downloadHref })
+                          }
+                        >
+                          Preview
+                        </button>
+                        <a
+                          className="story-detail__doc-btn story-detail__doc-btn--ghost"
+                          href={downloadHref}
+                          download
+                        >
+                          Download
+                        </a>
+                      </span>
                     </div>
-                  </article>
+                  </li>
                 );
               })}
-            </div>
+            </ul>
           </div>
         ) : null}
 

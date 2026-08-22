@@ -28,3 +28,13 @@ export function deskStoryHref(story) {
       .replace(/^-|-$/g, '');
   return slug ? `/our-work/desk/${slug}` : null;
 }
+
+/** Newest programmes first (createdAt, then project number). */
+export function sortDeskStoriesLatest(list) {
+  return [...(list || [])].sort((a, b) => {
+    const da = Date.parse(a?.createdAt) || 0;
+    const db = Date.parse(b?.createdAt) || 0;
+    if (db !== da) return db - da;
+    return (Number(b?.number) || 0) - (Number(a?.number) || 0);
+  });
+}

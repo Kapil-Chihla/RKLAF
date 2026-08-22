@@ -21,8 +21,6 @@ const uploadDeskMedia = uploadAny.fields([
   { name: 'hero', maxCount: 1 },
   { name: 'blockImages', maxCount: 24 },
   { name: 'documents', maxCount: 12 },
-  { name: 'documentCovers', maxCount: 12 },
-  { name: 'coverReplacements', maxCount: 12 },
 ]);
 
 function isImage(file) {
@@ -34,34 +32,14 @@ function isPdf(file) {
   return file?.mimetype === 'application/pdf' || ext === '.pdf';
 }
 
-async function buildDocuments(files, metaRaw, coverFiles, coverIndexesRaw) {
+async function buildDocuments(files, metaRaw) {
   if (!files?.length) return [];
   const pdfs = files.filter(isPdf);
   if (!pdfs.length) return [];
   const metaParsed = parseJsonArray(metaRaw, 'documentsMeta');
   const meta = metaParsed.ok && metaParsed.value ? metaParsed.value : [];
-  const covers = (coverFiles || []).filter(isImage);
-  const indexParsed = parseJsonArray(coverIndexesRaw, 'documentCoverIndexes');
-  const coverIndexes =
-    indexParsed.ok && Array.isArray(indexParsed.value) ? indexParsed.value.map(Number) : [];
-
-  const coverByPdfIndex = new Map();
-  if (coverIndexes.length) {
-    covers.forEach((file, i) => {
-      const pdfIndex = coverIndexes[i];
-      if (Number.isFinite(pdfIndex)) coverByPdfIndex.set(pdfIndex, file);
-    });
-  } else {
-    covers.forEach((file, i) => coverByPdfIndex.set(i, file));
-  }
 
   const urls = await Promise.all(pdfs.map((f) => uploadBuffer(f, 'desk-docs')));
-  const coverUrls = await Promise.all(
-    pdfs.map((_, index) => {
-      const cover = coverByPdfIndex.get(index);
-      return cover ? uploadBuffer(cover, 'desk-docs') : Promise.resolve(null);
-    }),
-  );
   const now = new Date().toISOString();
   return urls.map((url, index) => {
     const m = meta[index] || {};
@@ -72,7 +50,7 @@ async function buildDocuments(files, metaRaw, coverFiles, coverIndexesRaw) {
       name: filename,
       title: String(m.title || '').trim() || filename.replace(/\.pdf$/i, ''),
       description: String(m.description || '').trim(),
-      coverImage: coverUrls[index] || null,
+      coverImage: null,
       createdAt: now,
     };
   });
@@ -85,28 +63,9 @@ function mapKeptDocuments(items) {
     name: doc.name || 'document.pdf',
     title: String(doc.title || '').trim(),
     description: String(doc.description || '').trim(),
-    coverImage: doc.coverImage || null,
+    coverImage: null,
     createdAt: doc.createdAt || new Date().toISOString(),
   }));
-}
-
-async function applyCoverReplacements(docs, files, idsRaw) {
-  const parsed = parseJsonArray(idsRaw, 'coverReplaceIds');
-  if (!parsed.ok) return { ok: false, error: parsed.error };
-  const ids = parsed.value || [];
-  const images = (files || []).filter(isImage);
-  if (!ids.length || !images.length) return { ok: true, docs };
-
-  const next = [...docs];
-  const count = Math.min(ids.length, images.length);
-  for (let i = 0; i < count; i += 1) {
-    const docId = String(ids[i] || '');
-    const idx = next.findIndex((d) => d.id === docId);
-    if (idx === -1) continue;
-    const url = await uploadBuffer(images[i], 'desk-docs');
-    next[idx] = { ...next[idx], coverImage: url };
-  }
-  return { ok: true, docs: next };
 }
 
 /**
@@ -177,16 +136,20 @@ async function renumberDeskStories() {
 
 function withResolvedBlocks(item) {
   if (!item) return item;
-  if (Array.isArray(item.bodyBlocks) && item.bodyBlocks.length) return item;
+  const documents = (item.documents || []).map((doc) => ({ ...doc, coverImage: null }));
+  if (Array.isArray(item.bodyBlocks) && item.bodyBlocks.length) {
+    return { ...item, documents };
+  }
   return {
     ...item,
+    documents,
     bodyBlocks: blocksFromLegacy(item.fullBody, item.gallery, item.heroImage),
   };
 }
 
 router.get('/', async (req, res) => {
   const filter = req.query.all === 'true' ? {} : { published: { $ne: false } };
-  const items = await DeskStory.find(filter).sort({ number: 1, createdAt: 1 }).lean();
+  const items = await DeskStory.find(filter).sort({ createdAt: -1, number: -1 }).lean();
   res.json(items.map(withResolvedBlocks));
 });
 
@@ -247,12 +210,7 @@ router.post('/', protect, contentManagers, uploadDeskMedia, async (req, res) => 
     );
     if (!blocksResult.ok) return res.status(400).json({ message: blocksResult.error });
 
-    const documents = await buildDocuments(
-      req.files?.documents,
-      documentsMeta,
-      req.files?.documentCovers,
-      req.body.documentCoverIndexes,
-    );
+    const documents = await buildDocuments(req.files?.documents, documentsMeta);
 
     const count = await DeskStory.countDocuments();
     let storyNumber = count + 1;
@@ -324,14 +282,6 @@ router.put('/:id', protect, contentManagers, uploadDeskMedia, async (req, res) =
       story.documents = mapKeptDocuments(keptDocs.value);
     }
 
-    const coverSwap = await applyCoverReplacements(
-      story.documents || [],
-      req.files?.coverReplacements,
-      req.body.coverReplaceIds,
-    );
-    if (!coverSwap.ok) return res.status(400).json({ message: coverSwap.error });
-    story.documents = coverSwap.docs;
-
     if (clearHero === 'true' || clearHero === true) {
       story.heroImage = null;
     }
@@ -357,12 +307,7 @@ router.put('/:id', protect, contentManagers, uploadDeskMedia, async (req, res) =
       story.gallery = blocksResult.gallery;
     }
 
-    const newDocs = await buildDocuments(
-      req.files?.documents,
-      documentsMeta,
-      req.files?.documentCovers,
-      req.body.documentCoverIndexes,
-    );
+    const newDocs = await buildDocuments(req.files?.documents, documentsMeta);
     if (newDocs.length) story.documents = [...(story.documents || []), ...newDocs];
 
     story.updatedAt = new Date().toISOString();

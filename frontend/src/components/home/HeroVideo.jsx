@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import heroVideoSrc from '../../assets/herovideo.mp4';
+import heroVideoSrc from '../../assets/herovideonew.mp4';
 
 /**
  * Hero media — autoplays muted once. No loop, no controls.

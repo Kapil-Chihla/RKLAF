@@ -7,11 +7,12 @@ import { WHATSAPP_URL } from '../data/navigation';
 import publicApi from '../lib/publicApi';
 import { assetUrl } from '../lib/api';
 import { renderRichText } from '../lib/richText';
+import { sortDeskStoriesLatest } from '../data/deskStories';
 import academicsHomeImg from '../assets/academicshomebanner.jpeg';
 import knowYourRightsHomeImg from '../assets/kyrhomebanner.jpeg';
 import libraryHomeImg from '../assets/libraryhomebanner.jpeg';
-import whoWeAreFilm from '../assets/whowearefilm.mp4';
-import whoWeArePoster from '../assets/whowearefilm.jpg';
+import whoWeAreFilm from '../assets/homepagevideonew.mp4';
+import whoWeArePoster from '../assets/homepagevideonew.jpg';
 import './Home.css';
 
 const snapModules = import.meta.glob('../assets/{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}.jpeg', {
@@ -430,8 +431,7 @@ export default function Home() {
       .get('/desk-stories')
       .then((r) => {
         if (!Array.isArray(r.data) || !r.data.length) return;
-        // Feature three programmes — rest via View all
-        setFeaturedProgrammes(r.data.slice(0, 3).map(mapHomeProgramme));
+        setFeaturedProgrammes(sortDeskStoriesLatest(r.data).slice(0, 3).map(mapHomeProgramme));
       })
       .catch(() => {});
   }, []);
