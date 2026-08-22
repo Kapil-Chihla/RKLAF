@@ -147,7 +147,7 @@
   height: calc(100svh - var(--header-h));
   max-height: calc(100svh - var(--header-h));
   padding: 0.25rem 0 0.75rem;
-  background: #fff;
+  background: var(--bg, var(--cream));
   box-sizing: border-box;
   width: 100%;
 }
@@ -164,7 +164,7 @@
   max-width: none;
   margin: 0;
   padding: 0.15rem 0.35rem 0;
-  background: #fff;
+  background: var(--bg, var(--cream));
   overflow: visible;
 }
 
@@ -175,7 +175,7 @@
   height: auto;
   max-height: 100%;
   margin: 0 auto;
-  background: #fff;
+  background: var(--bg, var(--cream));
   isolation: isolate;
 }
 
@@ -189,34 +189,69 @@
   max-height: calc(100svh - var(--header-h) - 7.5rem);
   object-fit: contain;
   object-position: center center;
-  background: #fff;
-  /* Clip stores “white” as warm grey (~198). Lift it to paper white, then
-     multiply so ink still sits over the HTML tagline. */
+  background: var(--bg, var(--cream));
+  /* Clip stores “white” as warm grey (~198). Lift it, then multiply so
+     ink sits on the site khaki and paper areas pick up --bg. */
   filter: brightness(1.3) contrast(1.28);
   mix-blend-mode: multiply;
   pointer-events: none;
   user-select: none;
   -webkit-user-select: none;
+  /* Tight hole over tagline — biased left so “With You” is covered; right stops at Nyaya Tak */
+  -webkit-mask-image: radial-gradient(
+    ellipse 30% 11% at 50% 72%,
+    transparent 0%,
+    transparent 58%,
+    #000 88%,
+    #000 100%
+  );
+  mask-image: radial-gradient(
+    ellipse 30% 11% at 50% 72%,
+    transparent 0%,
+    transparent 58%,
+    #000 88%,
+    #000 100%
+  );
 }
 
-/* Under the video — shows through white, ink draws over it */
+/* Above the video — clear of sketch ink so the line reads cleanly */
 .home-hero__tagline {
   position: absolute;
   left: 54%;
   top: auto;
-  bottom: 18%;
+  bottom: 26%;
   transform: translateX(-50%);
   width: min(80%, 720px);
   margin: 0;
   text-align: center;
-  z-index: 1;
+  z-index: 3;
   pointer-events: none;
   opacity: 1;
   line-height: 1.15;
 }
 
+.home-hero__tagline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 108%;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 50% 42% at 42% 50%,
+    var(--bg, var(--cream)) 0%,
+    var(--bg, var(--cream)) 54%,
+    color-mix(in srgb, var(--bg, var(--cream)) 30%, transparent) 76%,
+    transparent 100%
+  );
+}
+
 .home-hero__with,
-.home-hero__for {
+.home-hero__for,
+.home-hero__nyay {
   font-family: var(--font-serif);
   font-size: clamp(1.55rem, 3.8vw, 2.85rem);
   font-weight: 700;
@@ -224,14 +259,9 @@
   color: var(--ink);
 }
 
-.home-hero__for { color: var(--accent); }
-
 .home-hero__nyay {
-  font-family: var(--font-script);
-  font-size: clamp(1.75rem, 4.2vw, 3.1rem);
-  font-weight: 400;
+  color: var(--accent);
   font-style: normal;
-  color: var(--ink);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1220,12 +1250,26 @@ a.home-story--link:hover .home-story__more {
     max-height: min(58vh, 420px);
     width: 100%;
     height: auto;
+    -webkit-mask-image: radial-gradient(
+      ellipse 36% 14% at 50% 74%,
+      transparent 0%,
+      transparent 56%,
+      #000 86%,
+      #000 100%
+    );
+    mask-image: radial-gradient(
+      ellipse 36% 14% at 50% 74%,
+      transparent 0%,
+      transparent 56%,
+      #000 86%,
+      #000 100%
+    );
   }
 
   .home-hero__tagline {
     left: 54%;
     top: auto;
-    bottom: 16%;
+    bottom: 24%;
   }
 
   .home-who__grid,
