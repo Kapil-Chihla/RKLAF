@@ -29,14 +29,18 @@
 }
 
 .site-header .lang-switch__btn {
-  border-color: rgba(239, 231, 214, 0.28);
-  background: rgba(255, 255, 255, 0.08);
+  border-color: transparent;
+  border: none;
+  background: transparent;
   color: #efe7d6;
+  min-height: 34px;
+  padding: 0.3rem 0.45rem;
+  font-size: 0.82rem;
 }
 
 .site-header .lang-switch__btn:hover {
-  background: rgba(255, 255, 255, 0.14);
-  border-color: rgba(196, 169, 122, 0.55);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: transparent;
 }
 
 .lang-switch__icon {

@@ -27,15 +27,15 @@
   }
 
   .brand-mark {
-    width: 64px;
-    height: 64px;
+    width: 44px;
+    height: 44px;
     padding: 1px;
   }
 }
 
 @media (max-width: 380px) {
   :root {
-    --header-h: 80px;
+    --header-h: 64px;
   }
 }
 
