@@ -10,12 +10,11 @@ const SOURCE_LABELS = {
 };
 
 export default function ContactsManage() {
-  const { user } = useAuth();
+  const { canDelete } = useAuth();
   const [items, setItems] = useState([]);
   const [msg, setMsg] = useState('');
   const [filter, setFilter] = useState('all');
-  const canDelete = ['super_admin', 'admin'].includes(user?.role);
-
+  
   const load = () => {
     const q = filter === 'unread' ? '?unread=true' : '';
     return api

@@ -19,7 +19,7 @@ const emptyForm = {
 };
 
 export default function SuccessStoriesManage() {
-  const { user } = useAuth();
+  const { canDelete } = useAuth();
   const [items, setItems] = useState([]);
   const [msg, setMsg] = useState('');
   const [form, setForm] = useState(emptyForm);
@@ -30,8 +30,7 @@ export default function SuccessStoriesManage() {
   const [keptGallery, setKeptGallery] = useState([]);
   const [keptDocuments, setKeptDocuments] = useState([]);
   const [clearHero, setClearHero] = useState(false);
-  const canDelete = ['super_admin', 'admin'].includes(user?.role);
-
+  
   const load = () => api.get('/success-stories?all=true').then((r) => setItems(r.data)).catch(() => {});
 
   useEffect(() => {

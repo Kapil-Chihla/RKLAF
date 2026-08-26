@@ -28,7 +28,7 @@ const emptyForm = {
 };
 
 export default function PressMentionsManage() {
-  const { user } = useAuth();
+  const { canDelete } = useAuth();
   const [items, setItems] = useState([]);
   const [msg, setMsg] = useState('');
   const [busy, setBusy] = useState(false);
@@ -42,8 +42,7 @@ export default function PressMentionsManage() {
   const [clearThumbnail, setClearThumbnail] = useState(false);
   const [clearVideo, setClearVideo] = useState(false);
   const [clearPdf, setClearPdf] = useState(false);
-  const canDelete = ['super_admin', 'admin'].includes(user?.role);
-
+  
   const load = () => api.get('/press-mentions?all=true').then((r) => setItems(r.data)).catch(() => {});
 
   useEffect(() => {

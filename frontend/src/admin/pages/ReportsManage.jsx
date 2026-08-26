@@ -9,14 +9,13 @@ const emptyForm = {
 };
 
 export default function ReportsManage() {
-  const { user } = useAuth();
+  const { canDelete } = useAuth();
   const [items, setItems] = useState([]);
   const [msg, setMsg] = useState('');
   const [form, setForm] = useState(emptyForm);
   const [file, setFile] = useState(null);
   const [editingId, setEditingId] = useState(null);
-  const canDelete = ['super_admin', 'admin'].includes(user?.role);
-
+  
   const load = () => api.get('/reports?all=true').then((r) => setItems(r.data)).catch(() => {});
 
   useEffect(() => {

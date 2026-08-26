@@ -7,14 +7,13 @@ import AdminRichHint from '../components/AdminRichHint';
 const emptyForm = { name: '', role: '', bio: '' };
 
 export default function TeamManage() {
-  const { user } = useAuth();
+  const { canDelete, canManageContent } = useAuth();
   const [items, setItems] = useState([]);
   const [msg, setMsg] = useState('');
   const [form, setForm] = useState(emptyForm);
   const [image, setImage] = useState(null);
   const [editingId, setEditingId] = useState(null);
-  const canEdit = ['super_admin', 'admin'].includes(user?.role);
-  const canDelete = canEdit;
+  const canEdit = canManageContent;
 
   const load = () => api.get('/team').then((r) => setItems(r.data)).catch(() => {});
 

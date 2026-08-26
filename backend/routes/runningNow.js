@@ -1,7 +1,7 @@
 const express = require('express');
 const { RunningNow } = require('../models');
 const generateId = require('../lib/generateId');
-const { protect, contentManagers, adminOrSuper } = require('../auth');
+const { protect, contentManagers, superAdminOnly } = require('../auth');
 
 const router = express.Router();
 
@@ -54,7 +54,7 @@ router.put('/:id', protect, contentManagers, async (req, res) => {
   res.json(item.toObject());
 });
 
-router.delete('/:id', protect, adminOrSuper, async (req, res) => {
+router.delete('/:id', protect, superAdminOnly, async (req, res) => {
   const result = await RunningNow.deleteOne({ id: req.params.id });
   if (result.deletedCount === 0) return res.status(404).json({ message: 'Running now item not found' });
   res.json({ message: 'Running now item deleted' });

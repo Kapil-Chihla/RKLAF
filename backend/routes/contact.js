@@ -2,7 +2,7 @@ const express = require('express');
 const { Contact } = require('../models');
 const generateId = require('../lib/generateId');
 const { sendOrgMail, receiverEmail } = require('../lib/mail');
-const { protect, contentManagers, adminOrSuper } = require('../auth');
+const { protect, contentManagers, superAdminOnly } = require('../auth');
 
 const router = express.Router();
 
@@ -36,7 +36,7 @@ router.patch('/:id', protect, contentManagers, async (req, res) => {
   res.json(item.toObject());
 });
 
-router.delete('/:id', protect, adminOrSuper, async (req, res) => {
+router.delete('/:id', protect, superAdminOnly, async (req, res) => {
   const result = await Contact.deleteOne({ id: req.params.id });
   if (result.deletedCount === 0) return res.status(404).json({ message: 'Message not found' });
   res.json({ message: 'Message deleted' });

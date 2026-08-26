@@ -10,7 +10,7 @@ const {
   blocksFromLegacy,
   normalizeUrl,
 } = require('../lib/deskBodyBlocks');
-const { protect, contentManagers, adminOrSuper } = require('../auth');
+const { protect, contentManagers, superAdminOnly } = require('../auth');
 const { uploadAny } = require('../upload');
 const { uploadBuffer } = require('../lib/cloudinaryUpload');
 const { sendPdfDownload } = require('../lib/pdfDownload');
@@ -334,7 +334,7 @@ router.get('/:slugOrId', async (req, res) => {
   res.json(withResolvedBlocks(item));
 });
 
-router.delete('/:id', protect, adminOrSuper, async (req, res) => {
+router.delete('/:id', protect, superAdminOnly, async (req, res) => {
   const result = await DeskStory.deleteOne({ id: req.params.id });
   if (result.deletedCount === 0) return res.status(404).json({ message: 'Programme not found' });
   await renumberDeskStories();

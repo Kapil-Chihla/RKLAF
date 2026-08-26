@@ -39,8 +39,11 @@ const requireRoles = (...roles) => (req, res, next) => {
   next();
 };
 
+/** Full control: invites, user management, and irreversible deletes */
 const superAdminOnly = requireRoles(ROLES.SUPER_ADMIN);
+/** Upload + edit site content (no delete) */
 const contentManagers = requireRoles(ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.EDITOR);
+/** @deprecated Prefer superAdminOnly for deletes; kept for any admin+super checks */
 const adminOrSuper = requireRoles(ROLES.SUPER_ADMIN, ROLES.ADMIN);
 
 const adminOnly = adminOrSuper;

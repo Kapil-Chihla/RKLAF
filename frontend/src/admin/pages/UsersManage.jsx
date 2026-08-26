@@ -3,18 +3,39 @@ import { Navigate } from 'react-router-dom';
 import api from '../api';
 import { useAuth } from '../AuthContext';
 
+/** Always use the current site host so production invites are never localhost */
+function siteInviteLink(tokenOrLink) {
+  const origin = typeof window !== 'undefined' ? window.location.origin : '';
+  let token = tokenOrLink || '';
+  try {
+    if (token.includes('token=')) {
+      token = new URL(token, origin || 'http://localhost').searchParams.get('token') || '';
+    }
+  } catch {
+    /* keep as-is */
+  }
+  return `${origin}/admin/register?token=${token}`;
+}
+
 export default function UsersManage() {
   const { isSuperAdmin } = useAuth();
   const [users, setUsers] = useState([]);
   const [invites, setInvites] = useState([]);
-  const [inviteForm, setInviteForm] = useState({ email: '', role: 'editor' });
+  const [inviteForm, setInviteForm] = useState({ email: '', role: 'admin' });
   const [lastInvite, setLastInvite] = useState('');
   const [msg, setMsg] = useState('');
   const [copiedId, setCopiedId] = useState('');
 
   const load = () => {
     api.get('/users').then((r) => setUsers(r.data)).catch(() => {});
-    api.get('/invites').then((r) => setInvites(r.data)).catch(() => {});
+    api.get('/invites').then((r) => {
+      setInvites(
+        (r.data || []).map((i) => ({
+          ...i,
+          inviteLink: siteInviteLink(i.token || i.inviteLink),
+        }))
+      );
+    }).catch(() => {});
   };
 
   useEffect(() => { load(); }, []);
@@ -26,9 +47,9 @@ export default function UsersManage() {
     setMsg('');
     try {
       const { data } = await api.post('/invites', inviteForm);
-      setLastInvite(data.inviteLink);
+      setLastInvite(siteInviteLink(data.token || data.inviteLink));
       setMsg('Invite created. Copy the link and send it to your team member.');
-      setInviteForm({ email: '', role: 'editor' });
+      setInviteForm({ email: '', role: 'admin' });
       load();
     } catch (err) {
       setMsg(err.response?.data?.message || 'Failed to create invite');
@@ -55,8 +76,9 @@ export default function UsersManage() {
       <div className="admin-card">
         <h2>Invite team member</h2>
         <p style={{ color: '#5a6f82', fontSize: '0.9rem' }}>
-          Same flow used by most organizations: super admin sends an invite link → employee registers
-          with their own password → role controls what they can do.
+          Only you (super admin) control who can open the admin panel. Invite someone by email →
+          copy the link → they register with their own password. Invited people can <strong>upload and edit</strong> content;
+          they <strong>cannot delete</strong> anything or invite others.
         </p>
         {msg && <div className="admin-alert admin-alert--success">{msg}</div>}
         {lastInvite && (
@@ -73,12 +95,15 @@ export default function UsersManage() {
           <label>
             Role
             <select value={inviteForm.role} onChange={(e) => setInviteForm({ ...inviteForm, role: e.target.value })}>
-              <option value="editor">Editor — upload content only</option>
-              <option value="admin">Admin — upload + delete content</option>
+              <option value="admin">Admin — upload &amp; edit (no delete)</option>
+              <option value="editor">Editor — upload &amp; edit (no delete)</option>
             </select>
           </label>
           <button type="submit" className="admin-btn admin-btn--primary">Generate invite link</button>
         </form>
+        <p style={{ color: '#5a6f82', fontSize: '0.85rem', marginTop: '0.75rem' }}>
+          Admin and Editor both manage content the same way. Delete and team invites stay with the super admin only.
+        </p>
       </div>
 
       <div className="admin-card" style={{ marginTop: '1.5rem' }}>

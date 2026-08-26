@@ -33,18 +33,9 @@ export default function Login() {
       <div className="admin-auth-card">
         <h1>Admin Login</h1>
         <p>Sign in to upload Programmes &amp; Initiatives stories, success stories, KYR guides, blogs, and papers.</p>
-        <div className="admin-alert admin-alert--success" style={{ fontSize: '0.9rem' }}>
-          <strong>Test login</strong>
-          <br />
-          Email: <code>admin@rklaf.test</code>
-          <br />
-          Password: <code>Admin@12345</code>
-          <br />
-          <span style={{ opacity: 0.85 }}>(seeded when the backend starts)</span>
-        </div>
         {needsSetup && (
           <p>
-            Or first-time setup: <Link to="/admin/setup">Create super admin account</Link>
+            First-time setup: <Link to="/admin/setup">Create super admin account</Link>
           </p>
         )}
         <form className="admin-form" onSubmit={handleSubmit}>
@@ -55,7 +46,7 @@ export default function Login() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="admin@rklaf.test"
+              placeholder="admin@rklaf.org"
             />
           </label>
           <label>
@@ -65,7 +56,7 @@ export default function Login() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Admin@12345"
+              placeholder="Your password"
             />
           </label>
           {error && <div className="admin-alert admin-alert--error">{error}</div>}

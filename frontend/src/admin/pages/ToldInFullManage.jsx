@@ -18,7 +18,7 @@ const emptyForm = {
 };
 
 export default function ToldInFullManage() {
-  const { user } = useAuth();
+  const { canDelete } = useAuth();
   const [items, setItems] = useState([]);
   const [msg, setMsg] = useState('');
   const [busy, setBusy] = useState(false);
@@ -26,8 +26,7 @@ export default function ToldInFullManage() {
   const [newPdfs, setNewPdfs] = useState([]);
   const [keptDocuments, setKeptDocuments] = useState([]);
   const [editing, setEditing] = useState(null);
-  const canDelete = ['super_admin', 'admin'].includes(user?.role);
-
+  
   const load = () => api.get('/told-in-full?all=true').then((r) => setItems(r.data)).catch(() => {});
 
   useEffect(() => {

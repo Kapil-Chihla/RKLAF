@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const { PressMention } = require('../models');
 const generateId = require('../lib/generateId');
-const { protect, contentManagers, adminOrSuper } = require('../auth');
+const { protect, contentManagers, superAdminOnly } = require('../auth');
 const { uploadAny } = require('../upload');
 const { uploadBuffer } = require('../lib/cloudinaryUpload');
 const { sendPdfDownload, assertPdfUpload } = require('../lib/pdfDownload');
@@ -256,7 +256,7 @@ router.put('/:id', protect, contentManagers, uploadPressMedia, async (req, res) 
   }
 });
 
-router.delete('/:id', protect, adminOrSuper, async (req, res) => {
+router.delete('/:id', protect, superAdminOnly, async (req, res) => {
   const result = await PressMention.deleteOne({ id: req.params.id });
   if (result.deletedCount === 0) return res.status(404).json({ message: 'Press mention not found' });
   res.json({ message: 'Press mention deleted' });

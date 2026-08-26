@@ -34,9 +34,14 @@ export function AuthProvider({ children }) {
   };
 
   const isSuperAdmin = user?.role === 'super_admin';
+  /** Only super admin can delete content or manage team access */
+  const canDelete = isSuperAdmin;
+  const canManageContent = ['super_admin', 'admin', 'editor'].includes(user?.role);
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, isSuperAdmin, setUser }}>
+    <AuthContext.Provider
+      value={{ user, loading, login, logout, isSuperAdmin, canDelete, canManageContent, setUser }}
+    >
       {children}
     </AuthContext.Provider>
   );

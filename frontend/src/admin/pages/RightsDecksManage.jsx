@@ -13,7 +13,7 @@ const emptyForm = {
 };
 
 export default function RightsDecksManage() {
-  const { user } = useAuth();
+  const { canDelete } = useAuth();
   const [items, setItems] = useState([]);
   const [msg, setMsg] = useState('');
   const [busy, setBusy] = useState(false);
@@ -21,8 +21,7 @@ export default function RightsDecksManage() {
   const [banner, setBanner] = useState(null);
   const [pdf, setPdf] = useState(null);
   const [editingId, setEditingId] = useState(null);
-  const canDelete = ['super_admin', 'admin'].includes(user?.role);
-
+  
   const load = () =>
     api.get('/rights-decks?all=true').then((r) => setItems(r.data)).catch(() => {});
 

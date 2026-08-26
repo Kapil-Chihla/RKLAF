@@ -1,7 +1,7 @@
 const express = require('express');
 const { AlsoOnRecord } = require('../models');
 const generateId = require('../lib/generateId');
-const { protect, contentManagers, adminOrSuper } = require('../auth');
+const { protect, contentManagers, superAdminOnly } = require('../auth');
 const { uploadPDF } = require('../upload');
 const { uploadBuffer } = require('../lib/cloudinaryUpload');
 const { createPdfDownloadHandler, assertPdfUpload } = require('../lib/pdfDownload');
@@ -69,7 +69,7 @@ router.put('/:id', protect, contentManagers, uploadPDF.single('file'), async (re
   res.json(item.toObject());
 });
 
-router.delete('/:id', protect, adminOrSuper, async (req, res) => {
+router.delete('/:id', protect, superAdminOnly, async (req, res) => {
   const result = await AlsoOnRecord.deleteOne({ id: req.params.id });
   if (result.deletedCount === 0) return res.status(404).json({ message: 'Record not found' });
   res.json({ message: 'Record deleted' });

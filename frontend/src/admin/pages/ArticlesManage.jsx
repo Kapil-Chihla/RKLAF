@@ -7,7 +7,7 @@ import AdminRichHint from '../components/AdminRichHint';
 const emptyForm = { title: '', summary: '', body: '', category: 'General' };
 
 export default function ArticlesManage() {
-  const { user } = useAuth();
+  const { canDelete } = useAuth();
   const [items, setItems] = useState([]);
   const [categories, setCategories] = useState([]);
   const [msg, setMsg] = useState('');
@@ -15,8 +15,7 @@ export default function ArticlesManage() {
   const [file, setFile] = useState(null);
   const [cover, setCover] = useState(null);
   const [editingId, setEditingId] = useState(null);
-  const canDelete = ['super_admin', 'admin'].includes(user?.role);
-
+  
   const loadCategories = () =>
     api.get('/guide-categories').then((r) => setCategories(r.data)).catch(() => {});
 

@@ -22,14 +22,13 @@ function sectionsToText(sections) {
 }
 
 export default function BlogsManage() {
-  const { user } = useAuth();
+  const { user, canDelete } = useAuth();
   const [items, setItems] = useState([]);
   const [msg, setMsg] = useState('');
   const [form, setForm] = useState(emptyForm);
   const [image, setImage] = useState(null);
   const [editingId, setEditingId] = useState(null);
-  const canDelete = ['super_admin', 'admin'].includes(user?.role);
-
+  
   const load = () => api.get('/blogs?all=true').then((r) => setItems(r.data)).catch(() => {});
 
   useEffect(() => {

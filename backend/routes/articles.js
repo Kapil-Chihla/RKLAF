@@ -2,7 +2,7 @@ const express = require('express');
 const slugify = require('slugify');
 const { Article } = require('../models');
 const generateId = require('../lib/generateId');
-const { protect, contentManagers, adminOrSuper } = require('../auth');
+const { protect, contentManagers, superAdminOnly } = require('../auth');
 const { uploadAny } = require('../upload');
 const { uploadBuffer } = require('../lib/cloudinaryUpload');
 const { createPdfDownloadHandler, assertPdfUpload } = require('../lib/pdfDownload');
@@ -113,7 +113,7 @@ router.put('/:id', protect, contentManagers, uploadGuide, async (req, res) => {
   res.json(article.toObject());
 });
 
-router.delete('/:id', protect, adminOrSuper, async (req, res) => {
+router.delete('/:id', protect, superAdminOnly, async (req, res) => {
   const result = await Article.deleteOne({ id: req.params.id });
   if (result.deletedCount === 0) return res.status(404).json({ message: 'Guide not found' });
   res.json({ message: 'Guide deleted' });

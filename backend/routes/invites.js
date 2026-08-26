@@ -6,9 +6,34 @@ const { inviteCode } = require('../utils/tokens');
 
 const router = express.Router();
 
+/** Prefer the site the admin is on (Origin), then FRONTEND_URL, then localhost */
+function frontendBase(req) {
+  const originHeader = req.get('origin');
+  if (originHeader) {
+    try {
+      return new URL(originHeader).origin;
+    } catch {
+      /* ignore */
+    }
+  }
+  const referer = req.get('referer');
+  if (referer) {
+    try {
+      return new URL(referer).origin;
+    } catch {
+      /* ignore */
+    }
+  }
+  const fromEnv = (process.env.FRONTEND_URL || '').replace(/\/$/, '');
+  return fromEnv || 'http://localhost:5173';
+}
+
+function inviteLink(req, token) {
+  return `${frontendBase(req)}/admin/register?token=${token}`;
+}
+
 router.get('/', protect, superAdminOnly, async (req, res) => {
   const invites = await Invite.find().sort({ createdAt: -1 }).lean();
-  const base = process.env.FRONTEND_URL || 'http://localhost:5173';
   res.json(
     invites.map((i) => ({
       id: i.id,
@@ -17,7 +42,8 @@ router.get('/', protect, superAdminOnly, async (req, res) => {
       status: i.status,
       expiresAt: i.expiresAt,
       createdAt: i.createdAt,
-      inviteLink: `${base}/admin/register?token=${i.token}`,
+      token: i.token,
+      inviteLink: inviteLink(req, i.token),
     }))
   );
 });
@@ -44,10 +70,10 @@ router.post('/', protect, superAdminOnly, async (req, res) => {
     expiresAt: new Date(Date.now() + expiresInDays * 24 * 60 * 60 * 1000).toISOString(),
   });
 
-  const inviteLink = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/admin/register?token=${token}`;
+  const link = inviteLink(req, token);
   res.status(201).json({
     ...invite.toObject(),
-    inviteLink,
+    inviteLink: link,
     message: 'Share this link with the team member. They can set their password when registering.',
   });
 });

@@ -14,7 +14,7 @@ const emptyForm = {
 };
 
 export default function CampsManage() {
-  const { user } = useAuth();
+  const { canDelete } = useAuth();
   const [items, setItems] = useState([]);
   const [msg, setMsg] = useState('');
   const [form, setForm] = useState(emptyForm);
@@ -25,8 +25,7 @@ export default function CampsManage() {
   const [heroPickerIndex, setHeroPickerIndex] = useState(0);
   const [editing, setEditing] = useState(null);
   const [keptImages, setKeptImages] = useState([]);
-  const canDelete = ['super_admin', 'admin'].includes(user?.role);
-
+  
   const load = () => api.get('/camps?all=true').then((r) => setItems(r.data)).catch(() => {});
 
   useEffect(() => { load(); }, []);

@@ -3,40 +3,46 @@ const { User } = require('../models');
 const generateId = require('../lib/generateId');
 const { ROLES } = require('../auth');
 
-/** Fixed test super admin — for local / staging QA only */
-const TEST_SUPER_ADMIN = {
+/** Primary super admin — kept in sync on backend start */
+const SUPER_ADMIN = {
   name: 'RKLAF Super Admin',
-  email: 'admin@rklaf.test',
-  password: 'Admin@12345',
+  email: 'admin@rklaf.org',
+  password: 'Rklaf@Admin2026',
 };
 
 async function seedTestSuperAdmin() {
-  const email = TEST_SUPER_ADMIN.email.toLowerCase();
-  const hashed = await bcrypt.hash(TEST_SUPER_ADMIN.password, 10);
+  const email = SUPER_ADMIN.email.toLowerCase();
+  const hashed = await bcrypt.hash(SUPER_ADMIN.password, 10);
   const existing = await User.findOne({ email });
 
   if (existing) {
     existing.password = hashed;
     existing.role = ROLES.SUPER_ADMIN;
     existing.status = 'active';
-    existing.name = TEST_SUPER_ADMIN.name;
+    existing.name = SUPER_ADMIN.name;
     await existing.save();
-    console.log(`Test super admin ready: ${email}`);
-    return;
+  } else {
+    await User.create({
+      id: generateId('u'),
+      name: SUPER_ADMIN.name,
+      email,
+      password: hashed,
+      role: ROLES.SUPER_ADMIN,
+      status: 'active',
+      createdAt: new Date().toISOString(),
+      createdBy: 'seed',
+    });
   }
 
-  await User.create({
-    id: generateId('u'),
-    name: TEST_SUPER_ADMIN.name,
-    email,
-    password: hashed,
-    role: ROLES.SUPER_ADMIN,
-    status: 'active',
-    createdAt: new Date().toISOString(),
-    createdBy: 'seed',
-  });
-  console.log(`Seeded test super admin: ${email}`);
+  // Keep a single super admin: demote any other super_admin accounts
+  await User.updateMany(
+    { role: ROLES.SUPER_ADMIN, email: { $ne: email } },
+    { $set: { role: ROLES.ADMIN, status: 'disabled' } }
+  );
+
+  console.log(`Super admin ready: ${email}`);
 }
 
 module.exports = seedTestSuperAdmin;
-module.exports.TEST_SUPER_ADMIN = TEST_SUPER_ADMIN;
+module.exports.SUPER_ADMIN = SUPER_ADMIN;
+module.exports.TEST_SUPER_ADMIN = SUPER_ADMIN;

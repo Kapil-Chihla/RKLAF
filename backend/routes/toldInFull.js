@@ -4,7 +4,7 @@ const slugify = require('slugify');
 const { ToldInFull } = require('../models');
 const generateId = require('../lib/generateId');
 const { parseJsonArray } = require('../lib/contentHelpers');
-const { protect, contentManagers, adminOrSuper } = require('../auth');
+const { protect, contentManagers, superAdminOnly } = require('../auth');
 const { uploadAny } = require('../upload');
 const { uploadBuffer } = require('../lib/cloudinaryUpload');
 const { sendPdfDownload } = require('../lib/pdfDownload');
@@ -185,7 +185,7 @@ router.put('/:id', protect, contentManagers, uploadToldDocs, async (req, res) =>
   }
 });
 
-router.delete('/:id', protect, adminOrSuper, async (req, res) => {
+router.delete('/:id', protect, superAdminOnly, async (req, res) => {
   const result = await ToldInFull.deleteOne({ id: req.params.id });
   if (result.deletedCount === 0) return res.status(404).json({ message: 'Told in full story not found' });
   res.json({ message: 'Told in full story deleted' });

@@ -1,7 +1,7 @@
 const express = require('express');
 const { TeamMember } = require('../models');
 const generateId = require('../lib/generateId');
-const { protect, adminOnly, adminOrSuper } = require('../auth');
+const { protect, contentManagers, superAdminOnly } = require('../auth');
 const { uploadImage } = require('../upload');
 const { uploadBuffer } = require('../lib/cloudinaryUpload');
 
@@ -18,7 +18,7 @@ router.get('/:id', async (req, res) => {
   res.json(member);
 });
 
-router.post('/', protect, adminOnly, uploadImage.single('image'), async (req, res) => {
+router.post('/', protect, contentManagers, uploadImage.single('image'), async (req, res) => {
   const { name, role, bio } = req.body;
   if (!name || !role) return res.status(400).json({ message: 'Name and role are required' });
   let image = null;
@@ -33,7 +33,7 @@ router.post('/', protect, adminOnly, uploadImage.single('image'), async (req, re
   res.status(201).json(member.toObject());
 });
 
-router.put('/:id', protect, adminOnly, uploadImage.single('image'), async (req, res) => {
+router.put('/:id', protect, contentManagers, uploadImage.single('image'), async (req, res) => {
   const member = await TeamMember.findOne({ id: req.params.id });
   if (!member) return res.status(404).json({ message: 'Team member not found' });
 
@@ -48,7 +48,7 @@ router.put('/:id', protect, adminOnly, uploadImage.single('image'), async (req, 
   res.json(member.toObject());
 });
 
-router.delete('/:id', protect, adminOrSuper, async (req, res) => {
+router.delete('/:id', protect, superAdminOnly, async (req, res) => {
   const result = await TeamMember.deleteOne({ id: req.params.id });
   if (result.deletedCount === 0) return res.status(404).json({ message: 'Team member not found' });
   res.json({ message: 'Team member deleted' });

@@ -13,7 +13,7 @@ const emptyForm = {
 };
 
 export default function LibraryPodcastsManage() {
-  const { user } = useAuth();
+  const { canDelete } = useAuth();
   const [items, setItems] = useState([]);
   const [msg, setMsg] = useState('');
   const [busy, setBusy] = useState(false);
@@ -21,8 +21,7 @@ export default function LibraryPodcastsManage() {
   const [media, setMedia] = useState(null);
   const [thumbnail, setThumbnail] = useState(null);
   const [editingId, setEditingId] = useState(null);
-  const canDelete = ['super_admin', 'admin'].includes(user?.role);
-
+  
   const load = () =>
     api.get('/library-podcasts?all=true').then((r) => setItems(r.data)).catch(() => {});
 

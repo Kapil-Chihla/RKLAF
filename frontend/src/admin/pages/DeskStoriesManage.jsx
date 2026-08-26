@@ -81,7 +81,7 @@ function blocksFromStory(story) {
 }
 
 export default function DeskStoriesManage() {
-  const { user } = useAuth();
+  const { canDelete } = useAuth();
   const [items, setItems] = useState([]);
   const [msg, setMsg] = useState('');
   const [busy, setBusy] = useState(false);
@@ -92,8 +92,7 @@ export default function DeskStoriesManage() {
   const [editing, setEditing] = useState(null);
   const [keptDocuments, setKeptDocuments] = useState([]);
   const [clearHero, setClearHero] = useState(false);
-  const canDelete = ['super_admin', 'admin'].includes(user?.role);
-
+  
   const load = () =>
     api
       .post('/desk-stories/renumber')

@@ -217,7 +217,7 @@ export default function Dashboard() {
                 <h3>Team access</h3>
                 {stats ? <span>{stats.pendingInvites ?? 0} pending invites</span> : null}
               </div>
-              <p>Invite editors/admins by email and share the registration link.</p>
+              <p>Invite people by email. They can upload &amp; edit; only you can delete or invite others.</p>
               <span className="admin-card__cta">Manage team →</span>
             </Link>
           </div>

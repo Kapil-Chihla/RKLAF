@@ -6,7 +6,7 @@ import AdminImageHint from '../components/AdminImageHint';
 const emptyForm = { title: '', meta: '', externalUrl: '' };
 
 export default function ExplainerVideosManage() {
-  const { user } = useAuth();
+  const { canDelete } = useAuth();
   const [items, setItems] = useState([]);
   const [msg, setMsg] = useState('');
   const [busy, setBusy] = useState(false);
@@ -14,8 +14,7 @@ export default function ExplainerVideosManage() {
   const [video, setVideo] = useState(null);
   const [thumbnail, setThumbnail] = useState(null);
   const [editingId, setEditingId] = useState(null);
-  const canDelete = ['super_admin', 'admin'].includes(user?.role);
-
+  
   const load = () =>
     api.get('/explainer-videos?all=true').then((r) => setItems(r.data)).catch(() => {});
 

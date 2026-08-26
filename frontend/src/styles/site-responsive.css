@@ -105,7 +105,7 @@ svg {
   .home-hero__with,
   .home-hero__for,
   .home-hero__nyay {
-    font-size: clamp(1.35rem, 6.5vw, 2.2rem);
+    font-size: clamp(1.15rem, 5.2vw + 0.35rem, 2.1rem);
   }
 
   .home-display {
@@ -121,16 +121,14 @@ svg {
 @media (max-width: 480px) {
   .home-hero {
     padding-inline: 0;
+    --hero-art-max-h: min(52vh, 360px);
   }
 
   .home-hero__art {
-    min-height: min(56vh, 380px);
-  }
-
-  .home-hero__media,
-  .home-hero__video {
-    max-height: min(56vh, 380px);
-    width: 100%;
+    width: min(
+      100%,
+      calc(var(--hero-art-max-h) * var(--hero-ar-w) / var(--hero-ar-h))
+    );
   }
 
   .home-pill,

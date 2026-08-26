@@ -138,14 +138,18 @@
   opacity: 0.75;
 }
 
-/* Hero — video art on white so it matches the clip background */
+/* Hero — aspect-locked frame so sketch + tagline match on every screen */
 .home-hero {
+  --hero-stats-h: 7.25rem;
+  --hero-art-max-h: calc(100svh - var(--header-h, 96px) - var(--hero-stats-h) - 0.75rem);
+  --hero-ar-w: 1126;
+  --hero-ar-h: 720;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  min-height: calc(100svh - var(--header-h));
-  height: calc(100svh - var(--header-h));
-  max-height: calc(100svh - var(--header-h));
+  min-height: calc(100svh - var(--header-h, 96px));
+  height: calc(100svh - var(--header-h, 96px));
+  max-height: calc(100svh - var(--header-h, 96px));
   padding: 0.25rem 0 0.75rem;
   background: var(--bg, var(--cream));
   box-sizing: border-box;
@@ -163,20 +167,24 @@
   width: 100%;
   max-width: none;
   margin: 0;
-  padding: 0.15rem 0.35rem 0;
+  padding: 0.15rem clamp(0.5rem, 2vw, 1rem) 0;
   background: var(--bg, var(--cream));
-  overflow: visible;
+  overflow: hidden;
 }
 
+/* Same aspect as herovideonew (1126×720) — scales as one unit */
 .home-hero__art {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: min(100%, 1680px);
-  height: 100%;
-  min-height: 0;
-  max-height: 100%;
+  display: grid;
+  place-items: center;
+  width: min(
+    100%,
+    1680px,
+    calc(var(--hero-art-max-h) * var(--hero-ar-w) / var(--hero-ar-h))
+  );
+  aspect-ratio: 1126 / 720;
+  height: auto;
+  max-height: var(--hero-art-max-h);
   margin: 0 auto;
   background: var(--bg, var(--cream));
   isolation: isolate;
@@ -184,13 +192,12 @@
 
 .home-hero__media,
 .home-hero__video {
+  grid-area: 1 / 1;
   position: relative;
   z-index: 2;
   display: block;
-  width: auto;
+  width: 100%;
   height: 100%;
-  max-width: 100%;
-  max-height: 100%;
   object-fit: contain;
   object-position: center center;
   background: var(--bg, var(--cream));
@@ -203,14 +210,14 @@
   -webkit-user-select: none;
   /* Clear ink behind tagline — wider horizontally, still tight vertically */
   -webkit-mask-image: radial-gradient(
-    ellipse 48% 7% at 46% 72%,
+    ellipse 48% 7% at 50% 72%,
     transparent 0%,
     transparent 42%,
     #000 72%,
     #000 100%
   );
   mask-image: radial-gradient(
-    ellipse 48% 7% at 46% 72%,
+    ellipse 48% 7% at 50% 72%,
     transparent 0%,
     transparent 42%,
     #000 72%,
@@ -218,47 +225,53 @@
   );
 }
 
-/* Above the video — clear of sketch ink so the line reads cleanly */
+/* Anchored to the art frame (same % on every viewport) */
 .home-hero__tagline {
-  position: absolute;
-  left: 54%;
-  top: auto;
-  bottom: 26%;
-  transform: translateX(-50%);
-  width: min(80%, 720px);
-  margin: 0;
-  text-align: center;
+  grid-area: 1 / 1;
+  position: relative;
   z-index: 3;
+  align-self: end;
+  justify-self: center;
+  width: min(88%, 36em);
+  margin: 0 0 18%;
+  padding: 0;
+  text-align: center;
   pointer-events: none;
   opacity: 1;
   line-height: 1.15;
+  left: auto;
+  right: auto;
+  bottom: auto;
+  top: auto;
+  transform: none;
 }
 
 .home-hero__tagline::before {
   content: '';
   position: absolute;
-  left: 46%;
+  left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
   width: 128%;
-  height: 100%;
+  height: 115%;
   z-index: -1;
   pointer-events: none;
   border-radius: 999px;
+  /* True white soft glow — not --bg/cream (that read as a beige smudge) */
   background:
     radial-gradient(
-      ellipse 48% 48% at 18% 50%,
-      var(--bg, var(--cream)) 0%,
-      var(--bg, var(--cream)) 42%,
-      color-mix(in srgb, var(--bg, var(--cream)) 40%, transparent) 68%,
-      transparent 88%
+      ellipse 48% 52% at 18% 50%,
+      #fff 0%,
+      #fff 40%,
+      rgba(255, 255, 255, 0.55) 68%,
+      transparent 90%
     ),
     radial-gradient(
-      ellipse 68% 42% at 48% 50%,
-      var(--bg, var(--cream)) 0%,
-      var(--bg, var(--cream)) 38%,
-      color-mix(in srgb, var(--bg, var(--cream)) 45%, transparent) 66%,
-      transparent 88%
+      ellipse 72% 48% at 50% 50%,
+      #fff 0%,
+      #fff 36%,
+      rgba(255, 255, 255, 0.6) 64%,
+      transparent 90%
     );
 }
 
@@ -266,7 +279,7 @@
 .home-hero__for,
 .home-hero__nyay {
   font-family: var(--font-serif);
-  font-size: clamp(1.55rem, 3.8vw, 2.85rem);
+  font-size: clamp(1.2rem, 2.8vw + 0.55rem, 2.85rem);
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--ink);
@@ -1246,24 +1259,26 @@ a.home-story--link:hover .home-story__more {
     height: auto;
     max-height: none;
     min-height: 0;
+    --hero-stats-h: 0;
+    --hero-art-max-h: min(58vh, 480px);
     padding-top: 0.35rem;
   }
 
   .home-hero__stage {
-    padding-inline: 0.5rem;
+    padding-inline: clamp(0.5rem, 3vw, 1rem);
+    overflow: visible;
   }
 
   .home-hero__art {
-    width: 100%;
-    height: auto;
-    min-height: 0;
+    width: min(
+      100%,
+      calc(var(--hero-art-max-h) * var(--hero-ar-w) / var(--hero-ar-h))
+    );
+    max-height: var(--hero-art-max-h);
   }
 
   .home-hero__media,
   .home-hero__video {
-    width: 100%;
-    height: auto;
-    max-height: min(62vh, 520px);
     -webkit-mask-image: radial-gradient(
       ellipse 52% 8% at 50% 73%,
       transparent 0%,
@@ -1281,9 +1296,8 @@ a.home-story--link:hover .home-story__more {
   }
 
   .home-hero__tagline {
-    left: 54%;
-    top: auto;
-    bottom: 24%;
+    margin-bottom: 16%;
+    width: min(92%, 36em);
   }
 
   .home-who__grid,

@@ -3,7 +3,7 @@ const path = require('path');
 const slugify = require('slugify');
 const { ExplainerVideo } = require('../models');
 const generateId = require('../lib/generateId');
-const { protect, contentManagers, adminOrSuper } = require('../auth');
+const { protect, contentManagers, superAdminOnly } = require('../auth');
 const { uploadAny } = require('../upload');
 const { uploadBuffer } = require('../lib/cloudinaryUpload');
 
@@ -142,7 +142,7 @@ router.put('/:id', protect, contentManagers, uploadVideoFields, async (req, res)
   res.json(item.toObject());
 });
 
-router.delete('/:id', protect, adminOrSuper, async (req, res) => {
+router.delete('/:id', protect, superAdminOnly, async (req, res) => {
   const result = await ExplainerVideo.deleteOne({ id: req.params.id });
   if (result.deletedCount === 0) return res.status(404).json({ message: 'Video not found' });
   res.json({ message: 'Video deleted' });
