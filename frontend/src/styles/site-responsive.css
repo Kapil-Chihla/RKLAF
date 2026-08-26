@@ -105,7 +105,7 @@ svg {
   .home-hero__with,
   .home-hero__for,
   .home-hero__nyay {
-    font-size: clamp(1.15rem, 5.2vw + 0.35rem, 2.1rem);
+    font-size: clamp(0.88rem, 3.4vw + 0.25rem, 1.65rem);
   }
 
   .home-display {

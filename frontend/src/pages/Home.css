@@ -208,42 +208,40 @@
   pointer-events: none;
   user-select: none;
   -webkit-user-select: none;
-  /* Clear ink behind tagline — wider horizontally, still tight vertically */
+  /* Soft hole only behind the gap tagline (54% / 68% of frame) */
   -webkit-mask-image: radial-gradient(
-    ellipse 48% 7% at 50% 72%,
+    ellipse 26% 10% at 54% 68%,
     transparent 0%,
-    transparent 42%,
-    #000 72%,
+    transparent 38%,
+    #000 78%,
     #000 100%
   );
   mask-image: radial-gradient(
-    ellipse 48% 7% at 50% 72%,
+    ellipse 26% 10% at 54% 68%,
     transparent 0%,
-    transparent 42%,
-    #000 72%,
+    transparent 38%,
+    #000 78%,
     #000 100%
   );
 }
 
-/* Anchored to the art frame (same % on every viewport) */
+/* Sit in the open space between the left group and the suited figure */
 .home-hero__tagline {
   grid-area: 1 / 1;
-  position: relative;
+  position: absolute;
+  left: 54%;
+  top: 68%;
+  transform: translate(-50%, -50%);
   z-index: 3;
-  align-self: end;
-  justify-self: center;
-  width: min(88%, 36em);
-  margin: 0 0 18%;
-  padding: 0;
+  width: max-content;
+  max-width: 46%;
+  margin: 0;
+  padding: 0.15em 0.35em;
   text-align: center;
+  white-space: nowrap;
   pointer-events: none;
   opacity: 1;
-  line-height: 1.15;
-  left: auto;
-  right: auto;
-  bottom: auto;
-  top: auto;
-  transform: none;
+  line-height: 1.12;
 }
 
 .home-hero__tagline::before {
@@ -252,34 +250,27 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 128%;
-  height: 115%;
+  /* Tight white glow hugging the text — same relative size on all screens */
+  width: 108%;
+  height: 155%;
   z-index: -1;
   pointer-events: none;
   border-radius: 999px;
-  /* True white soft glow — not --bg/cream (that read as a beige smudge) */
-  background:
-    radial-gradient(
-      ellipse 48% 52% at 18% 50%,
-      #fff 0%,
-      #fff 40%,
-      rgba(255, 255, 255, 0.55) 68%,
-      transparent 90%
-    ),
-    radial-gradient(
-      ellipse 72% 48% at 50% 50%,
-      #fff 0%,
-      #fff 36%,
-      rgba(255, 255, 255, 0.6) 64%,
-      transparent 90%
-    );
+  background: radial-gradient(
+    ellipse 70% 55% at 50% 50%,
+    #fff 0%,
+    #fff 42%,
+    rgba(255, 255, 255, 0.7) 62%,
+    rgba(255, 255, 255, 0.25) 78%,
+    transparent 92%
+  );
 }
 
 .home-hero__with,
 .home-hero__for,
 .home-hero__nyay {
   font-family: var(--font-serif);
-  font-size: clamp(1.2rem, 2.8vw + 0.55rem, 2.85rem);
+  font-size: clamp(0.92rem, 1.65vw + 0.55rem, 2.75rem);
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--ink);
@@ -1280,24 +1271,25 @@ a.home-story--link:hover .home-story__more {
   .home-hero__media,
   .home-hero__video {
     -webkit-mask-image: radial-gradient(
-      ellipse 52% 8% at 50% 73%,
+      ellipse 28% 11% at 54% 68%,
       transparent 0%,
-      transparent 40%,
-      #000 70%,
+      transparent 38%,
+      #000 78%,
       #000 100%
     );
     mask-image: radial-gradient(
-      ellipse 52% 8% at 50% 73%,
+      ellipse 28% 11% at 54% 68%,
       transparent 0%,
-      transparent 40%,
-      #000 70%,
+      transparent 38%,
+      #000 78%,
       #000 100%
     );
   }
 
   .home-hero__tagline {
-    margin-bottom: 16%;
-    width: min(92%, 36em);
+    left: 54%;
+    top: 68%;
+    max-width: 50%;
   }
 
   .home-who__grid,
