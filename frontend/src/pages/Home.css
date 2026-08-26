@@ -1320,20 +1320,9 @@ a.home-story--link:hover .home-story__more {
     mix-blend-mode: normal;
     /* Lift baked-in beige toward white so plate ≠ muddy on phones */
     filter: brightness(1.52) saturate(0.72) contrast(1.06);
-    -webkit-mask-image: radial-gradient(
-      ellipse var(--hero-mask-w) var(--hero-mask-h) at 52% 72%,
-      transparent 0%,
-      transparent 48%,
-      #000 86%,
-      #000 100%
-    );
-    mask-image: radial-gradient(
-      ellipse var(--hero-mask-w) var(--hero-mask-h) at 52% 72%,
-      transparent 0%,
-      transparent 48%,
-      #000 86%,
-      #000 100%
-    );
+    /* Remove soft mask hole — it read as a blur smudge on mobile */
+    -webkit-mask-image: none;
+    mask-image: none;
   }
 
   .home-hero__tagline {
@@ -1343,10 +1332,16 @@ a.home-story--link:hover .home-story__more {
     padding: 0.12em 0.3em;
   }
 
-  /* No soft blur on mobile — beige video plate made it look wrong */
-  .home-hero__tagline::before {
-    content: none;
-    display: none;
+  /* Kill every blur layer on mobile */
+  .home-hero__tagline::before,
+  .home-hero__tagline::after {
+    content: none !important;
+    display: none !important;
+    opacity: 0 !important;
+    filter: none !important;
+    background: none !important;
+    width: 0 !important;
+    height: 0 !important;
   }
 
   .home-hero__with,
