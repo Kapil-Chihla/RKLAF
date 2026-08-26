@@ -122,6 +122,12 @@ svg {
   .home-hero {
     padding-inline: 0;
     --hero-art-max-h: min(52vh, 360px);
+    /* Smallest screens — blur hugs the text */
+    --hero-blur-w: 104%;
+    --hero-blur-h: 128%;
+    --hero-blur-ellipse: 66% 48%;
+    --hero-mask-w: 50%;
+    --hero-mask-h: 18%;
   }
 
   .home-hero__art {

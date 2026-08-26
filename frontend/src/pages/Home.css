@@ -142,6 +142,12 @@
 .home-hero {
   /* Light plate: dark --bg + multiply made the sketch look muddy on mobile */
   --hero-plate: #faf8f4;
+  /* Blur / mask scale with viewport (overridden at breakpoints) */
+  --hero-blur-w: 120%;
+  --hero-blur-h: 180%;
+  --hero-blur-ellipse: 74% 60%;
+  --hero-mask-w: 38%;
+  --hero-mask-h: 13%;
   --hero-stats-h: 7.25rem;
   --hero-art-max-h: calc(100svh - var(--header-h, 96px) - var(--hero-stats-h) - 0.75rem);
   --hero-ar-w: 1126;
@@ -210,17 +216,16 @@
   pointer-events: none;
   user-select: none;
   -webkit-user-select: none;
-  /* Punch sketch ink out under the tagline — soft edges so it blends;
-     no separate white plate. Ink never sits on the words. */
+  /* Punch sketch ink out under the tagline — size from --hero-mask-* */
   -webkit-mask-image: radial-gradient(
-    ellipse 40% 14% at 54% 66%,
+    ellipse var(--hero-mask-w) var(--hero-mask-h) at 54% 66%,
     transparent 0%,
     transparent 55%,
     #000 88%,
     #000 100%
   );
   mask-image: radial-gradient(
-    ellipse 40% 14% at 54% 66%,
+    ellipse var(--hero-mask-w) var(--hero-mask-h) at 54% 66%,
     transparent 0%,
     transparent 55%,
     #000 88%,
@@ -248,23 +253,24 @@
   /* No solid/white plate — text sits on the clear hole in the sketch */
 }
 
-/* Soft paper wash only — matches stage so it never reads as a white band */
+/* Soft wash — width/height from --hero-blur-* (responsive) */
 .home-hero__tagline::before {
   content: '';
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 112%;
-  height: 165%;
+  width: var(--hero-blur-w);
+  height: var(--hero-blur-h);
   z-index: -1;
   pointer-events: none;
   border-radius: 999px;
   background: radial-gradient(
-    ellipse 72% 58% at 50% 50%,
-    var(--hero-plate, #faf8f4) 0%,
-    var(--hero-plate, #faf8f4) 48%,
-    color-mix(in srgb, var(--hero-plate, #faf8f4) 40%, transparent) 72%,
+    ellipse var(--hero-blur-ellipse) at 50% 50%,
+    #fff 0%,
+    #fff 40%,
+    color-mix(in srgb, #fff 55%, var(--hero-plate, #faf8f4)) 62%,
+    color-mix(in srgb, #fff 20%, transparent) 78%,
     transparent 92%
   );
 }
@@ -1248,6 +1254,16 @@ a.home-story--link:hover .home-story__more {
   .home-expertise__arrow { display: none; }
 }
 
+@media (max-width: 1100px) {
+  .home-hero {
+    --hero-blur-w: 114%;
+    --hero-blur-h: 160%;
+    --hero-blur-ellipse: 70% 56%;
+    --hero-mask-w: 40%;
+    --hero-mask-h: 14%;
+  }
+}
+
 @media (max-width: 900px) {
   .home-hero {
     height: auto;
@@ -1255,6 +1271,12 @@ a.home-story--link:hover .home-story__more {
     min-height: 0;
     --hero-stats-h: 0;
     --hero-art-max-h: min(58vh, 480px);
+    /* Tighter blur on tablet/phone so it hugs the line */
+    --hero-blur-w: 108%;
+    --hero-blur-h: 138%;
+    --hero-blur-ellipse: 68% 52%;
+    --hero-mask-w: 46%;
+    --hero-mask-h: 16%;
     padding-top: 0.35rem;
   }
 
@@ -1269,24 +1291,6 @@ a.home-story--link:hover .home-story__more {
       calc(var(--hero-art-max-h) * var(--hero-ar-w) / var(--hero-ar-h))
     );
     max-height: var(--hero-art-max-h);
-  }
-
-  .home-hero__media,
-  .home-hero__video {
-    -webkit-mask-image: radial-gradient(
-      ellipse 44% 16% at 54% 66%,
-      transparent 0%,
-      transparent 55%,
-      #000 88%,
-      #000 100%
-    );
-    mask-image: radial-gradient(
-      ellipse 44% 16% at 54% 66%,
-      transparent 0%,
-      transparent 55%,
-      #000 88%,
-      #000 100%
-    );
   }
 
   .home-hero__tagline {
