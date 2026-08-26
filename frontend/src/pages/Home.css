@@ -1343,6 +1343,12 @@ a.home-story--link:hover .home-story__more {
     padding: 0.12em 0.3em;
   }
 
+  /* No soft blur on mobile — beige video plate made it look wrong */
+  .home-hero__tagline::before {
+    content: none;
+    display: none;
+  }
+
   .home-hero__with,
   .home-hero__for,
   .home-hero__nyay {
