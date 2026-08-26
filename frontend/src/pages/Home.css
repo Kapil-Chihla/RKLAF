@@ -140,13 +140,15 @@
 
 /* Hero — aspect-locked frame so sketch + tagline match on every screen */
 .home-hero {
-  /* Match page paper — pure #fff made the hero “shine” on mobile */
+  /* Match page paper */
   --hero-plate: var(--paper, #faf8f4);
-  /* Soft clear under text (no bright white bloom) */
-  --hero-blur-pad-x: 1.5em;
-  --hero-blur-pad-y: 1.1em;
-  --hero-mask-w: 38%;
-  --hero-mask-h: 13%;
+  /* Visible soft blur under tagline — scales with viewport */
+  --hero-blur-pad-x: clamp(0.85em, 0.4em + 2.2vw, 1.9em);
+  --hero-blur-pad-y: clamp(0.55em, 0.3em + 1.4vw, 1.35em);
+  --hero-blur-soft: clamp(10px, 0.55vw + 9px, 20px);
+  --hero-blur-opacity: 0.78;
+  --hero-mask-w: clamp(36%, 32% + 5vw, 56%);
+  --hero-mask-h: clamp(12%, 11% + 1.8vw, 22%);
   --hero-stats-h: 7.25rem;
   --hero-art-max-h: calc(100svh - var(--header-h, 96px) - var(--hero-stats-h) - 0.75rem);
   --hero-ar-w: 1126;
@@ -251,25 +253,21 @@
   /* No solid/white plate — text sits on the clear hole in the sketch */
 }
 
-/* Soft paper clear — same color as plate (no white glow / shine) */
+/* Soft white blur behind text — visible over sketch lines, sized from text */
 .home-hero__tagline::before {
   content: '';
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: calc(100% + var(--hero-blur-pad-x, 1.5em));
-  height: calc(100% + var(--hero-blur-pad-y, 1.1em));
+  width: calc(100% + var(--hero-blur-pad-x));
+  height: calc(100% + var(--hero-blur-pad-y));
   z-index: -1;
   pointer-events: none;
   border-radius: 999px;
-  background: radial-gradient(
-    ellipse 72% 58% at 50% 50%,
-    var(--hero-plate) 0%,
-    var(--hero-plate) 42%,
-    color-mix(in srgb, var(--hero-plate) 45%, transparent) 68%,
-    transparent 90%
-  );
+  background: #fff;
+  opacity: var(--hero-blur-opacity);
+  filter: blur(var(--hero-blur-soft));
 }
 
 .home-hero__with,
@@ -1251,12 +1249,25 @@ a.home-story--link:hover .home-story__more {
   .home-expertise__arrow { display: none; }
 }
 
+@media (max-width: 1280px) {
+  .home-hero {
+    --hero-blur-pad-x: clamp(0.9em, 0.45em + 1.6vw, 1.6em);
+    --hero-blur-pad-y: clamp(0.6em, 0.3em + 1vw, 1.15em);
+    --hero-blur-soft: 15px;
+    --hero-blur-opacity: 0.8;
+    --hero-mask-w: 40%;
+    --hero-mask-h: 14%;
+  }
+}
+
 @media (max-width: 1100px) {
   .home-hero {
     --hero-blur-pad-x: 1.25em;
     --hero-blur-pad-y: 0.95em;
-    --hero-mask-w: 40%;
-    --hero-mask-h: 14%;
+    --hero-blur-soft: 13px;
+    --hero-blur-opacity: 0.82;
+    --hero-mask-w: 42%;
+    --hero-mask-h: 15%;
   }
 }
 
@@ -1267,12 +1278,13 @@ a.home-story--link:hover .home-story__more {
     min-height: 0;
     --hero-stats-h: 0;
     --hero-art-max-h: min(62vh, 520px);
-    /* Explicit white on mobile — no cream/grey plate, no shine flash */
     --hero-plate: #ffffff;
-    --hero-blur-pad-x: 0.9em;
-    --hero-blur-pad-y: 0.7em;
-    --hero-mask-w: 52%;
-    --hero-mask-h: 18%;
+    --hero-blur-pad-x: 1.15em;
+    --hero-blur-pad-y: 0.85em;
+    --hero-blur-soft: 12px;
+    --hero-blur-opacity: 0.88;
+    --hero-mask-w: 50%;
+    --hero-mask-h: 17%;
     padding-top: 0.35rem;
     background: #ffffff;
   }
@@ -1295,10 +1307,6 @@ a.home-story--link:hover .home-story__more {
     max-height: var(--hero-art-max-h);
   }
 
-  /*
-   * Mobile: solid white + no multiply.
-   * Multiply + brightness was flashing/shining on first paint and left a dark grey plate.
-   */
   .home-hero__media,
   .home-hero__video {
     background: #ffffff;
@@ -1317,16 +1325,6 @@ a.home-story--link:hover .home-story__more {
       transparent 48%,
       #000 86%,
       #000 100%
-    );
-  }
-
-  .home-hero__tagline::before {
-    background: radial-gradient(
-      ellipse 72% 58% at 50% 50%,
-      #ffffff 0%,
-      #ffffff 42%,
-      rgba(255, 255, 255, 0.45) 68%,
-      transparent 90%
     );
   }
 
