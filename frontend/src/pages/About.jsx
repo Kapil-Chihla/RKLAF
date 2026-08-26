@@ -64,8 +64,8 @@ const LINEAGE = [
     discLabel: 'AJAY GARG',
     discPos: 'left center',
     label: 'Mr. Ajay Garg',
-    tag: 'Chief Trustee',
-    role: 'Chief Trustee and Founder',
+    tag: 'Founder',
+    role: 'Founder',
     name: 'Mr. Ajay Garg, Advocate',
     sub: 'Supreme Court of India and Delhi High Court',
     photo: photoAjayStory,
@@ -87,7 +87,7 @@ const LINEAGE = [
     photo: null,
     photoFit: 'cover',
     photoHint: 'Ms. Ruchi Garg',
-    text: 'Trustee of the Foundation, whose support has been integral to its work, standing alongside the Chief Trustee in carrying this institution forward. The same quiet partnership that began a generation ago continues into this one.',
+    text: 'Trustee of the Foundation, whose support has been integral to its work, standing alongside the Founder in carrying this institution forward. The same quiet partnership that began a generation ago continues into this one.',
   },
   {
     id: 'today',
@@ -303,34 +303,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* 2 · CHIEF TRUSTEE MESSAGE */}
-      <section className="about-message" id="message">
-        <Reveal as="div" variant="up">
-          <VideoCard
-            tag="A MESSAGE FROM OUR CHIEF TRUSTEE"
-            label="Video"
-            hint="Mr. Ajay Garg, Advocate"
-            image={photoAjayHero}
-          />
-        </Reveal>
-        <Reveal as="div" variant="up" delay={80}>
-          <span className="about-kicker">Hear it first</span>
-          <h2>Before you read our story in words, hear it in his own voice.</h2>
-          <p>
-            In this short message, our Chief Trustee shares why Radhey Krishna Legal Aid Foundation
-            exists, what it stands for, and what it does for the people who come to us.
-          </p>
-          <div className="about-nameplate">
-            <b>Mr. Ajay Garg, Advocate</b>
-            <span>Chief Trustee and Founder</span>
-          </div>
-          <a className="about-watch" href="#message">
-            Watch the message →
-          </a>
-        </Reveal>
-      </section>
-
-      {/* 3 · PHILOSOPHY */}
+      {/* 2 · PHILOSOPHY */}
       <section className="about-phil" id="philosophy">
         <span className="about-kicker">Our philosophy</span>
         <h2 className="about-phil__conviction">

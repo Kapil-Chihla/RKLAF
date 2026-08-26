@@ -122,10 +122,8 @@ svg {
   .home-hero {
     padding-inline: 0;
     --hero-art-max-h: min(56vh, 400px);
-    --hero-blur-pad-x: 0.7em;
+    --hero-blur-pad-x: 0.75em;
     --hero-blur-pad-y: 0.55em;
-    --hero-blur-soft: 9px;
-    --hero-blur-opacity: 0.97;
     --hero-mask-w: 58%;
     --hero-mask-h: 20%;
   }
