@@ -317,14 +317,7 @@
 }
 
 .home-stat__icon {
-  flex-shrink: 0;
-  width: 2.35rem;
-  height: 2.35rem;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  background: var(--accent-soft);
-  color: var(--accent);
+  display: none;
 }
 
 .home-stat__icon svg,
@@ -356,6 +349,7 @@
   line-height: 1.05;
   font-variant-numeric: tabular-nums;
   min-width: 4.5ch;
+  color: var(--ink);
 }
 
 @media (prefers-reduced-motion: reduce) {

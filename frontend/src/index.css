@@ -403,20 +403,20 @@ select,
   top: 0;
   z-index: 100;
   overflow: visible;
-  /* Solid so scrolled content never shows through */
-  background: var(--ivory);
-  border-bottom: 1px solid var(--border);
+  /* Match About “Our philosophy” dark */
+  background: #211d18;
+  border-bottom: 1px solid rgba(239, 231, 214, 0.1);
   padding-top: 0;
 }
 
 .site-header--v2 {
-  background: var(--ivory);
-  border-bottom: 1px solid rgba(31, 28, 25, 0.08);
-  box-shadow: 0 1px 0 rgba(31, 28, 25, 0.04);
+  background: #211d18;
+  border-bottom: 1px solid rgba(239, 231, 214, 0.1);
+  box-shadow: none;
 }
 
 .site-header--v2.is-scrolled {
-  box-shadow: 0 8px 24px rgba(26, 21, 16, 0.08);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
 }
 
 .header-bar {
@@ -467,7 +467,7 @@ select,
   flex-shrink: 0;
   width: 1px;
   height: 3.6rem;
-  background: rgba(31, 28, 25, 0.28);
+  background: rgba(239, 231, 214, 0.28);
   align-self: center;
 }
 
@@ -481,7 +481,7 @@ select,
 
 .brand-name-line {
   font-family: var(--font-sans, 'Inter', system-ui, sans-serif);
-  color: #1a2744;
+  color: #efe7d6;
   font-size: 1.05rem;
   font-weight: 800;
   letter-spacing: 0.04em;
@@ -495,7 +495,7 @@ select,
 .brand-name-line--sub {
   font-size: 1.05rem;
   font-weight: 800;
-  color: #1a2744;
+  color: #efe7d6;
 }
 
 .brand-tagline {
@@ -506,7 +506,7 @@ select,
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: none;
-  color: #a8895f;
+  color: #c4a97a;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -551,18 +551,18 @@ select,
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  border: 1px solid var(--border);
-  background: #fff;
-  color: var(--text);
+  border: 1px solid rgba(239, 231, 214, 0.28);
+  background: transparent;
+  color: #efe7d6;
   display: grid;
   place-items: center;
   transition: background 0.2s, color 0.2s, border-color 0.2s;
 }
 
 .header-social__btn:hover {
-  background: var(--text);
-  color: #fff;
-  border-color: var(--text);
+  background: #efe7d6;
+  color: #211d18;
+  border-color: #efe7d6;
 }
 
 .header-social__btn .social-icon,
@@ -627,7 +627,7 @@ select,
   font-size: 1rem;
   font-weight: 500;
   letter-spacing: 0.01em;
-  color: var(--text);
+  color: #efe7d6;
   padding: 0.45rem 0.7rem;
   border-radius: 999px;
   border: none;
@@ -643,14 +643,14 @@ select,
 
 .nav-link:hover,
 .nav-dropdown-trigger:hover {
-  color: var(--text);
-  background: rgba(31, 28, 25, 0.05);
+  color: #efe7d6;
+  background: rgba(239, 231, 214, 0.08);
 }
 
 .nav-link.active,
 .nav-dropdown.active > .nav-dropdown-trigger {
-  color: var(--text);
-  background: rgba(31, 28, 25, 0.08);
+  color: #efe7d6;
+  background: rgba(239, 231, 214, 0.12);
 }
 
 .chevron {
@@ -741,7 +741,7 @@ select,
   display: block;
   width: 20px;
   height: 2px;
-  background: var(--blue);
+  background: #efe7d6;
   transition: transform 0.2s, opacity 0.2s;
 }
 
@@ -841,6 +841,19 @@ select,
     white-space: normal;
     text-align: left;
     box-sizing: border-box;
+    color: var(--text);
+  }
+
+  .nav-link:hover,
+  .nav-dropdown-trigger:hover {
+    color: var(--text);
+    background: rgba(31, 28, 25, 0.05);
+  }
+
+  .nav-link.active,
+  .nav-dropdown.active > .nav-dropdown-trigger {
+    color: var(--text);
+    background: rgba(31, 28, 25, 0.08);
   }
 
   .nav-dropdown-menu {

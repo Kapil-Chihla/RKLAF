@@ -28,6 +28,17 @@
   border-color: rgba(176, 138, 60, 0.45);
 }
 
+.site-header .lang-switch__btn {
+  border-color: rgba(239, 231, 214, 0.28);
+  background: rgba(255, 255, 255, 0.08);
+  color: #efe7d6;
+}
+
+.site-header .lang-switch__btn:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(196, 169, 122, 0.55);
+}
+
 .lang-switch__icon {
   display: grid;
   place-items: center;
