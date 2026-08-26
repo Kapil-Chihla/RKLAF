@@ -105,7 +105,7 @@ svg {
   .home-hero__with,
   .home-hero__for,
   .home-hero__nyay {
-    font-size: clamp(0.88rem, 3.4vw + 0.25rem, 1.65rem);
+    font-size: clamp(0.95rem, 4.6vw, 1.55rem);
   }
 
   .home-display {
@@ -121,13 +121,13 @@ svg {
 @media (max-width: 480px) {
   .home-hero {
     padding-inline: 0;
-    --hero-art-max-h: min(52vh, 360px);
-    /* Smallest screens — blur hugs the text */
-    --hero-blur-w: 104%;
-    --hero-blur-h: 128%;
-    --hero-blur-ellipse: 66% 48%;
-    --hero-mask-w: 50%;
-    --hero-mask-h: 18%;
+    --hero-art-max-h: min(56vh, 400px);
+    --hero-blur-pad-x: 0.7em;
+    --hero-blur-pad-y: 0.55em;
+    --hero-blur-soft: 9px;
+    --hero-blur-opacity: 0.97;
+    --hero-mask-w: 58%;
+    --hero-mask-h: 20%;
   }
 
   .home-hero__art {
@@ -135,6 +135,18 @@ svg {
       100%,
       calc(var(--hero-art-max-h) * var(--hero-ar-w) / var(--hero-ar-h))
     );
+  }
+
+  .home-hero__tagline {
+    left: 52%;
+    top: 73%;
+    max-width: 92%;
+  }
+
+  .home-hero__with,
+  .home-hero__for,
+  .home-hero__nyay {
+    font-size: clamp(0.88rem, 4.8vw, 1.35rem);
   }
 
   .home-pill,

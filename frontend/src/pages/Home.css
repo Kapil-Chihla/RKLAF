@@ -141,11 +141,12 @@
 /* Hero — aspect-locked frame so sketch + tagline match on every screen */
 .home-hero {
   /* Light plate: dark --bg + multiply made the sketch look muddy on mobile */
-  --hero-plate: #faf8f4;
-  /* Blur / mask scale with viewport (overridden at breakpoints) */
-  --hero-blur-w: 120%;
-  --hero-blur-h: 180%;
-  --hero-blur-ellipse: 74% 60%;
+  --hero-plate: #ffffff;
+  /* Blur pads tied to text size; mask clears sketch under words */
+  --hero-blur-pad-x: 1.6em;
+  --hero-blur-pad-y: 1.2em;
+  --hero-blur-soft: 18px;
+  --hero-blur-opacity: 0.92;
   --hero-mask-w: 38%;
   --hero-mask-h: 13%;
   --hero-stats-h: 7.25rem;
@@ -253,26 +254,21 @@
   /* No solid/white plate — text sits on the clear hole in the sketch */
 }
 
-/* Soft wash — width/height from --hero-blur-* (responsive) */
+/* Soft white fog — sized from the text (em), not the whole art frame */
 .home-hero__tagline::before {
   content: '';
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: var(--hero-blur-w);
-  height: var(--hero-blur-h);
+  width: calc(100% + var(--hero-blur-pad-x, 1.5em));
+  height: calc(100% + var(--hero-blur-pad-y, 1.15em));
   z-index: -1;
   pointer-events: none;
   border-radius: 999px;
-  background: radial-gradient(
-    ellipse var(--hero-blur-ellipse) at 50% 50%,
-    #fff 0%,
-    #fff 40%,
-    color-mix(in srgb, #fff 55%, var(--hero-plate, #faf8f4)) 62%,
-    color-mix(in srgb, #fff 20%, transparent) 78%,
-    transparent 92%
-  );
+  background: #fff;
+  opacity: var(--hero-blur-opacity, 0.9);
+  filter: blur(var(--hero-blur-soft, 18px));
 }
 
 .home-hero__with,
@@ -1256,9 +1252,9 @@ a.home-story--link:hover .home-story__more {
 
 @media (max-width: 1100px) {
   .home-hero {
-    --hero-blur-w: 114%;
-    --hero-blur-h: 160%;
-    --hero-blur-ellipse: 70% 56%;
+    --hero-blur-pad-x: 1.35em;
+    --hero-blur-pad-y: 1em;
+    --hero-blur-soft: 15px;
     --hero-mask-w: 40%;
     --hero-mask-h: 14%;
   }
@@ -1270,18 +1266,20 @@ a.home-story--link:hover .home-story__more {
     max-height: none;
     min-height: 0;
     --hero-stats-h: 0;
-    --hero-art-max-h: min(58vh, 480px);
-    /* Tighter blur on tablet/phone so it hugs the line */
-    --hero-blur-w: 108%;
-    --hero-blur-h: 138%;
-    --hero-blur-ellipse: 68% 52%;
-    --hero-mask-w: 46%;
-    --hero-mask-h: 16%;
+    --hero-art-max-h: min(62vh, 520px);
+    --hero-plate: #ffffff;
+    /* Phone/tablet: tighter fog around the words */
+    --hero-blur-pad-x: 0.85em;
+    --hero-blur-pad-y: 0.65em;
+    --hero-blur-soft: 11px;
+    --hero-blur-opacity: 0.96;
+    --hero-mask-w: 52%;
+    --hero-mask-h: 18%;
     padding-top: 0.35rem;
   }
 
   .home-hero__stage {
-    padding-inline: clamp(0.5rem, 3vw, 1rem);
+    padding-inline: clamp(0.35rem, 2.5vw, 0.75rem);
     overflow: visible;
   }
 
@@ -1293,10 +1291,38 @@ a.home-story--link:hover .home-story__more {
     max-height: var(--hero-art-max-h);
   }
 
+  /* Multiply looks muddy on mobile Safari — keep ink, drop multiply */
+  .home-hero__media,
+  .home-hero__video {
+    mix-blend-mode: normal;
+    filter: brightness(1.55) contrast(1.12);
+    -webkit-mask-image: radial-gradient(
+      ellipse var(--hero-mask-w) var(--hero-mask-h) at 52% 72%,
+      transparent 0%,
+      transparent 48%,
+      #000 86%,
+      #000 100%
+    );
+    mask-image: radial-gradient(
+      ellipse var(--hero-mask-w) var(--hero-mask-h) at 52% 72%,
+      transparent 0%,
+      transparent 48%,
+      #000 86%,
+      #000 100%
+    );
+  }
+
   .home-hero__tagline {
-    left: 54%;
-    top: 66%;
-    max-width: 52%;
+    left: 52%;
+    top: 72%;
+    max-width: 88%;
+    padding: 0.12em 0.3em;
+  }
+
+  .home-hero__with,
+  .home-hero__for,
+  .home-hero__nyay {
+    font-size: clamp(0.95rem, 4.6vw, 1.55rem);
   }
 
   .home-who__grid,
