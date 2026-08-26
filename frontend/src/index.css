@@ -30,7 +30,7 @@
   --shadow-lg: 0 24px 56px rgba(26, 21, 16, 0.1);
   --radius: 12px;
   --radius-lg: 16px;
-  --header-h: 72px;
+  --header-h: 84px;
   --shell-max: 1680px;
   --shell-gutter: 0px;
   --font-sans: 'DM Sans', system-ui, sans-serif;
@@ -439,15 +439,15 @@ select,
 
 .brand-mark {
   flex-shrink: 0;
-  width: 56px;
-  height: 56px;
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
   overflow: hidden;
   background: #fff;
   border: 1px solid rgba(31, 28, 25, 0.1);
   display: grid;
   place-items: center;
-  padding: 2px;
+  padding: 0;
   box-sizing: border-box;
 }
 
@@ -459,14 +459,26 @@ select,
   object-fit: contain;
   object-position: center;
   display: block;
-  /* Do not scale — zoom was clipping the arched logo text */
-  transform: none;
+  /* Mild zoom-out only — keep logo large and readable */
+  transform: scale(0.94);
+  transform-origin: center center;
+}
+
+.site-header .brand-mark {
+  width: 76px;
+  height: 76px;
+  border: 2px solid rgba(239, 231, 214, 0.35);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+
+.site-header .brand-logo {
+  transform: scale(0.96);
 }
 
 .brand-rule {
   flex-shrink: 0;
   width: 1px;
-  height: 2.4rem;
+  height: 2.8rem;
   background: rgba(239, 231, 214, 0.28);
   align-self: center;
 }
@@ -1547,13 +1559,18 @@ select,
   }
 
   .brand-mark {
-    width: 48px;
-    height: 48px;
-    padding: 2px;
+    width: 62px;
+    height: 62px;
+    padding: 0;
+  }
+
+  .site-header .brand-mark {
+    width: 64px;
+    height: 64px;
   }
 
   .brand-rule {
-    height: 2.1rem;
+    height: 2.4rem;
   }
 
   .brand-tagline {
@@ -1579,9 +1596,14 @@ select,
   }
 
   .brand-mark {
-    width: 44px;
-    height: 44px;
-    padding: 1px;
+    width: 56px;
+    height: 56px;
+    padding: 0;
+  }
+
+  .site-header .brand-mark {
+    width: 58px;
+    height: 58px;
   }
 }
 
