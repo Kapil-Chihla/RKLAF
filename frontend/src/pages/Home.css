@@ -1267,12 +1267,19 @@ a.home-story--link:hover .home-story__more {
     min-height: 0;
     --hero-stats-h: 0;
     --hero-art-max-h: min(62vh, 520px);
-    --hero-plate: var(--paper, #faf8f4);
+    /* Explicit white on mobile — no cream/grey plate, no shine flash */
+    --hero-plate: #ffffff;
     --hero-blur-pad-x: 0.9em;
     --hero-blur-pad-y: 0.7em;
     --hero-mask-w: 52%;
     --hero-mask-h: 18%;
     padding-top: 0.35rem;
+    background: #ffffff;
+  }
+
+  .home-hero__stage,
+  .home-hero__art {
+    background: #ffffff;
   }
 
   .home-hero__stage {
@@ -1288,9 +1295,15 @@ a.home-story--link:hover .home-story__more {
     max-height: var(--hero-art-max-h);
   }
 
-  /* Same light plate + multiply as desktop (normal showed the grey video bg) */
+  /*
+   * Mobile: solid white + no multiply.
+   * Multiply + brightness was flashing/shining on first paint and left a dark grey plate.
+   */
   .home-hero__media,
   .home-hero__video {
+    background: #ffffff;
+    mix-blend-mode: normal;
+    filter: brightness(1.35) contrast(1.05);
     -webkit-mask-image: radial-gradient(
       ellipse var(--hero-mask-w) var(--hero-mask-h) at 52% 72%,
       transparent 0%,
@@ -1304,6 +1317,16 @@ a.home-story--link:hover .home-story__more {
       transparent 48%,
       #000 86%,
       #000 100%
+    );
+  }
+
+  .home-hero__tagline::before {
+    background: radial-gradient(
+      ellipse 72% 58% at 50% 50%,
+      #ffffff 0%,
+      #ffffff 42%,
+      rgba(255, 255, 255, 0.45) 68%,
+      transparent 90%
     );
   }
 
