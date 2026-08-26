@@ -212,7 +212,7 @@
   background: var(--hero-plate);
   /* Clip “white” is warm grey (~198). Lift hard so multiply stays bright
      on phone screens (they often crush midtones). */
-  filter: brightness(1.45) contrast(1.22);
+  filter: brightness(1.5) contrast(1.2);
   mix-blend-mode: multiply;
   pointer-events: none;
   user-select: none;
@@ -1291,11 +1291,9 @@ a.home-story--link:hover .home-story__more {
     max-height: var(--hero-art-max-h);
   }
 
-  /* Multiply looks muddy on mobile Safari — keep ink, drop multiply */
+  /* Same light plate + multiply as desktop (normal showed the grey video bg) */
   .home-hero__media,
   .home-hero__video {
-    mix-blend-mode: normal;
-    filter: brightness(1.55) contrast(1.12);
     -webkit-mask-image: radial-gradient(
       ellipse var(--hero-mask-w) var(--hero-mask-h) at 52% 72%,
       transparent 0%,
