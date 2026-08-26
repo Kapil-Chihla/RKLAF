@@ -120,10 +120,11 @@ svg {
 
 @media (max-width: 640px) {
   .home-hero {
+    --hero-blur-color: #e2dfd6;
     --hero-blur-pad-x: 0.95em;
     --hero-blur-pad-y: 0.7em;
-    --hero-blur-soft: 11px;
-    --hero-blur-opacity: 0.9;
+    --hero-blur-soft: 12px;
+    --hero-blur-opacity: 0.92;
     --hero-mask-w: 54%;
     --hero-mask-h: 19%;
   }
@@ -134,10 +135,11 @@ svg {
     padding-inline: 0;
     --hero-art-max-h: min(56vh, 400px);
     --hero-plate: #ffffff;
+    --hero-blur-color: #e0ddd4;
     --hero-blur-pad-x: 0.8em;
     --hero-blur-pad-y: 0.6em;
-    --hero-blur-soft: 10px;
-    --hero-blur-opacity: 0.92;
+    --hero-blur-soft: 11px;
+    --hero-blur-opacity: 0.93;
     --hero-mask-w: 58%;
     --hero-mask-h: 21%;
     background: #ffffff;
@@ -146,6 +148,11 @@ svg {
   .home-hero__stage,
   .home-hero__art {
     background: #ffffff;
+  }
+
+  .home-hero__media,
+  .home-hero__video {
+    filter: brightness(1.58) saturate(0.68) contrast(1.05);
   }
 
   .home-hero__art {

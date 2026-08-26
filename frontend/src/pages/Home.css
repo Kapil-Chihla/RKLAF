@@ -147,6 +147,7 @@
   --hero-blur-pad-y: clamp(0.55em, 0.3em + 1.4vw, 1.35em);
   --hero-blur-soft: clamp(10px, 0.55vw + 9px, 20px);
   --hero-blur-opacity: 0.78;
+  --hero-blur-color: #ffffff;
   --hero-mask-w: clamp(36%, 32% + 5vw, 56%);
   --hero-mask-h: clamp(12%, 11% + 1.8vw, 22%);
   --hero-stats-h: 7.25rem;
@@ -265,7 +266,7 @@
   z-index: -1;
   pointer-events: none;
   border-radius: 999px;
-  background: #fff;
+  background: var(--hero-blur-color, #fff);
   opacity: var(--hero-blur-opacity);
   filter: blur(var(--hero-blur-soft));
 }
@@ -1279,10 +1280,16 @@ a.home-story--link:hover .home-story__more {
     --hero-stats-h: 0;
     --hero-art-max-h: min(62vh, 520px);
     --hero-plate: #ffffff;
+    /*
+     * Video plate is warm beige (~#c6c4bb). On mobile (no multiply) that
+     * shows through — cold white blur looked wrong on it. Match blur to
+     * the lifted beige and wash the clip toward white.
+     */
+    --hero-blur-color: #e4e1d8;
     --hero-blur-pad-x: 1.15em;
     --hero-blur-pad-y: 0.85em;
-    --hero-blur-soft: 12px;
-    --hero-blur-opacity: 0.88;
+    --hero-blur-soft: 14px;
+    --hero-blur-opacity: 0.9;
     --hero-mask-w: 50%;
     --hero-mask-h: 17%;
     padding-top: 0.35rem;
@@ -1311,7 +1318,8 @@ a.home-story--link:hover .home-story__more {
   .home-hero__video {
     background: #ffffff;
     mix-blend-mode: normal;
-    filter: brightness(1.35) contrast(1.05);
+    /* Lift baked-in beige toward white so plate ≠ muddy on phones */
+    filter: brightness(1.52) saturate(0.72) contrast(1.06);
     -webkit-mask-image: radial-gradient(
       ellipse var(--hero-mask-w) var(--hero-mask-h) at 52% 72%,
       transparent 0%,
