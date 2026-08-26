@@ -208,60 +208,61 @@
   pointer-events: none;
   user-select: none;
   -webkit-user-select: none;
-  /* Soft hole only behind the gap tagline (54% / 68% of frame) */
+  /* Punch sketch ink out under the tagline — soft edges so it blends;
+     no separate white plate. Ink never sits on the words. */
   -webkit-mask-image: radial-gradient(
-    ellipse 26% 10% at 54% 68%,
+    ellipse 40% 14% at 54% 66%,
     transparent 0%,
-    transparent 38%,
-    #000 78%,
+    transparent 55%,
+    #000 88%,
     #000 100%
   );
   mask-image: radial-gradient(
-    ellipse 26% 10% at 54% 68%,
+    ellipse 40% 14% at 54% 66%,
     transparent 0%,
-    transparent 38%,
-    #000 78%,
+    transparent 55%,
+    #000 88%,
     #000 100%
   );
 }
 
-/* Sit in the open space between the left group and the suited figure */
+/* Gap between left group and suited figure — same % on every screen */
 .home-hero__tagline {
   grid-area: 1 / 1;
   position: absolute;
   left: 54%;
-  top: 68%;
+  top: 66%;
   transform: translate(-50%, -50%);
   z-index: 3;
   width: max-content;
-  max-width: 46%;
+  max-width: 48%;
   margin: 0;
-  padding: 0.15em 0.35em;
+  padding: 0.2em 0.45em;
   text-align: center;
   white-space: nowrap;
   pointer-events: none;
   opacity: 1;
   line-height: 1.12;
+  /* No solid/white plate — text sits on the clear hole in the sketch */
 }
 
+/* Soft paper wash only — matches stage so it never reads as a white band */
 .home-hero__tagline::before {
   content: '';
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  /* Tight white glow hugging the text — same relative size on all screens */
-  width: 108%;
-  height: 155%;
+  width: 112%;
+  height: 165%;
   z-index: -1;
   pointer-events: none;
   border-radius: 999px;
   background: radial-gradient(
-    ellipse 70% 55% at 50% 50%,
-    #fff 0%,
-    #fff 42%,
-    rgba(255, 255, 255, 0.7) 62%,
-    rgba(255, 255, 255, 0.25) 78%,
+    ellipse 72% 58% at 50% 50%,
+    var(--bg, var(--cream)) 0%,
+    var(--bg, var(--cream)) 48%,
+    color-mix(in srgb, var(--bg, var(--cream)) 35%, transparent) 72%,
     transparent 92%
   );
 }
@@ -1271,25 +1272,25 @@ a.home-story--link:hover .home-story__more {
   .home-hero__media,
   .home-hero__video {
     -webkit-mask-image: radial-gradient(
-      ellipse 28% 11% at 54% 68%,
+      ellipse 44% 16% at 54% 66%,
       transparent 0%,
-      transparent 38%,
-      #000 78%,
+      transparent 55%,
+      #000 88%,
       #000 100%
     );
     mask-image: radial-gradient(
-      ellipse 28% 11% at 54% 68%,
+      ellipse 44% 16% at 54% 66%,
       transparent 0%,
-      transparent 38%,
-      #000 78%,
+      transparent 55%,
+      #000 88%,
       #000 100%
     );
   }
 
   .home-hero__tagline {
     left: 54%;
-    top: 68%;
-    max-width: 50%;
+    top: 66%;
+    max-width: 52%;
   }
 
   .home-who__grid,
