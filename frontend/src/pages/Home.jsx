@@ -84,10 +84,38 @@ const snapshotsRow2 = Array.from({ length: 10 }, (_, i) => {
 });
 
 const introStats = [
-  { end: 2016, suffix: '', label: 'Registered as a Charitable Trust', icon: 'people', duration: 2200 },
-  { end: 3100, suffix: '+', label: 'People engaged through camps', icon: 'heart', duration: 2000 },
-  { end: 40, suffix: '+', label: 'On-ground legal aid camps', icon: 'scales', duration: 1400 },
-  { end: 80, suffix: '+', label: 'Law students in RTI drives', icon: 'gavel', duration: 1600 },
+  {
+    header: 'Since 2016',
+    end: 1000,
+    suffix: '+',
+    label: 'Individuals and families directly assisted through case representation',
+    icon: 'people',
+    duration: 2000,
+  },
+  {
+    header: 'Reach',
+    end: 100000,
+    suffix: '+',
+    label: 'People reached and helped through our dedicated programs and free phone consultations',
+    icon: 'heart',
+    duration: 2200,
+  },
+  {
+    header: 'Pro bono',
+    end: 25000,
+    suffix: '+',
+    label: 'Hours of free legal aid dedicated in defense of the underserved',
+    icon: 'scales',
+    duration: 2200,
+  },
+  {
+    header: 'Since 2018',
+    end: 2018,
+    suffix: '',
+    label: 'Officially recognized by Delhi Prisons as an approved legal aid provider',
+    icon: 'gavel',
+    duration: 1800,
+  },
 ];
 
 const sideNav = [
@@ -482,7 +510,8 @@ export default function Home() {
                 <span className="home-stat__icon" aria-hidden="true">
                   <StatIcon name={stat.icon} />
                 </span>
-                <div>
+                <div className="home-stat__body">
+                  <em className="home-stat__header">{stat.header}</em>
                   <CountUp
                     className="home-stat__value"
                     end={stat.end}

@@ -145,7 +145,7 @@ const milestones = [
   {
     year: 'Ongoing',
     title: "People we've reached, across every program",
-    body: 'Over 1,000 individuals and families directly assisted through case representation, 500+ inmates supported through our Tihar & Rohini Jail legal aid program, and 1,700+ students, parents, and teachers reached through the Safe School Project alone, alongside ongoing reach through Ghar Ghar Nyaya, legal aid camps, and our digital Know Your Rights content, which continues to grow with every visit, camp, and post.',
+    body: '1,000+ individuals and families directly assisted through case representation; 100,000+ people reached and helped through our dedicated programs and free phone consultations; 25,000+ hours of free legal aid dedicated in defense of the underserved; and officially recognized by Delhi Prisons as an approved legal aid provider since 2018.',
     chip: 'Ongoing',
     side: 'up',
   },
@@ -162,27 +162,27 @@ const milestones = [
 const stats = [
   {
     label: 'Since 2016',
-    end: 1390,
+    end: 1000,
     suffix: '+',
-    desc: 'cases won or settled, each traceable to a named file',
+    desc: 'individuals and families directly assisted through case representation',
   },
   {
-    label: 'Elders',
-    end: 400,
+    label: 'Reach',
+    end: 100000,
     suffix: '+',
-    desc: 'senior citizens protected from eviction and neglect',
+    desc: 'people reached and helped through our dedicated programs and free phone consultations',
   },
   {
-    label: 'Families',
-    end: 3100,
+    label: 'Pro bono',
+    end: 25000,
     suffix: '+',
-    desc: 'people engaged through camps and outreach',
+    desc: 'hours of free legal aid dedicated in defense of the underserved',
   },
   {
-    label: 'Verified',
-    end: 94,
-    suffix: '%',
-    desc: 'of maintenance orders actually complied with',
+    label: 'Since 2018',
+    end: 2018,
+    suffix: '',
+    desc: 'officially recognized by Delhi Prisons as an approved legal aid provider',
   },
 ];
 

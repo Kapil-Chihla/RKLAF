@@ -584,15 +584,38 @@ select,
   height: 15px;
 }
 
-.btn-header-touch {
+.btn-header-touch,
+.btn-header-donate {
   display: inline-flex;
-  padding: 0.55rem 1rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.25rem;
   border-radius: 999px;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.btn-header-touch {
   background: var(--text);
   color: #fff;
-  font-family: var(--font-sans);
-  font-size: 0.95rem;
-  font-weight: 600;
+}
+
+.btn-header-touch:hover {
+  background: #000;
+  color: #fff;
+}
+
+.btn-header-donate {
+  background: var(--wine);
+  color: #fff;
+}
+
+.btn-header-donate:hover {
+  background: var(--wine-deep);
+  color: #fff;
 }
 
 .nav-mobile-footer {
@@ -800,6 +823,7 @@ select,
   }
 
   .main-nav {
+    display: flex;
     position: fixed;
     top: calc(var(--header-h) + var(--shell-gutter, 0px) + var(--safe-top, 0px));
     left: var(--shell-gutter, 0px);
@@ -904,22 +928,50 @@ select,
   }
 
   .nav-mobile-footer {
-    display: block;
+    display: flex;
+    flex-direction: column;
     margin-top: auto;
     padding-top: 1.5rem;
     border-top: 1px solid var(--sand);
   }
 
-  .nav-social--mobile {
+  .header-social--mobile {
     display: flex;
     justify-content: center;
-    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
   }
 
-  .btn-donate--mobile {
+  .header-social--mobile .header-social__btn {
+    width: 42px;
+    height: 42px;
+    color: var(--text);
+    background: rgba(31, 28, 25, 0.06);
+    border: 1px solid rgba(31, 28, 25, 0.14);
+  }
+
+  .header-social--mobile .header-social__btn:hover {
+    color: var(--wine);
+    background: rgba(176, 138, 60, 0.12);
+    border-color: rgba(176, 138, 60, 0.35);
+  }
+
+  .header-social--mobile .header-social__btn .social-icon,
+  .header-social--mobile .header-social__btn .social-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .nav-mobile-footer__actions {
     display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .nav-mobile-footer__actions .btn-header-touch,
+  .nav-mobile-footer__actions .btn-header-donate {
     width: 100%;
-    justify-content: center;
   }
 }
 

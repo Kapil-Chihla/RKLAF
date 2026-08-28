@@ -47,7 +47,7 @@ export default function Header() {
             ))}
           </div>
           <div className="nav-mobile-footer">
-            <div className="header-social header-social--mobile">
+            <div className="header-social header-social--mobile" aria-label="Social links">
               {socialLinks.map((link) => (
                 <a
                   key={link.icon}
@@ -61,9 +61,14 @@ export default function Header() {
                 </a>
               ))}
             </div>
-            <Link to="/contact" className="btn-header-touch" onClick={closeMenu}>
-              Get in touch
-            </Link>
+            <div className="nav-mobile-footer__actions">
+              <Link to="/contact" className="btn-header-touch" onClick={closeMenu}>
+                Get in touch
+              </Link>
+              <Link to="/donate" className="btn-header-donate" onClick={closeMenu}>
+                Donate
+              </Link>
+            </div>
           </div>
         </nav>
 

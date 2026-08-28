@@ -16,6 +16,7 @@ function formatNumber(n, { decimals = 0, locale = 'en-US' } = {}) {
 
 /**
  * Counts from 0 → end when the element enters the viewport (once).
+ * Pass `text` for a fixed figure at one uniform size (e.g. "1 lac+").
  * Respects prefers-reduced-motion.
  */
 export default function CountUp({
@@ -23,6 +24,7 @@ export default function CountUp({
   duration = 1600,
   suffix = '',
   prefix = '',
+  text,
   decimals = 0,
   locale = 'en-US',
   className = '',
@@ -34,6 +36,7 @@ export default function CountUp({
   const ref = useRef(null);
   const [display, setDisplay] = useState(0);
   const [active, setActive] = useState(false);
+  const isText = typeof text === 'string' && text.length > 0;
 
   useEffect(() => {
     if (startOnMount) {
@@ -59,7 +62,7 @@ export default function CountUp({
   }, [rootMargin, startOnMount, threshold]);
 
   useEffect(() => {
-    if (!active) return undefined;
+    if (!active || isText) return undefined;
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduced) {
@@ -83,13 +86,19 @@ export default function CountUp({
 
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [active, end, duration]);
+  }, [active, end, duration, isText]);
 
   return (
     <Tag ref={ref} className={className}>
-      {prefix}
-      {formatNumber(display, { decimals, locale })}
-      {suffix}
+      {isText
+        ? (active ? text : '\u00A0')
+        : (
+          <>
+            {prefix}
+            {formatNumber(display, { decimals, locale })}
+            {suffix}
+          </>
+        )}
     </Tag>
   );
 }
