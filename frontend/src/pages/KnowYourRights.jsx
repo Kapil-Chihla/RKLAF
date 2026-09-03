@@ -23,28 +23,32 @@ const doors = [
   {
     icon: 'book',
     title: 'Legal Glossary',
-    desc: 'START WITH THE LAW. KNOW WHAT IT MEANS. Legal words shouldn\'t stand between people and their rights. Find plain language definitions of the terms that appear in FIRs, petitions, court orders and everyday legal processes.',
+    tagline: 'START WITH THE LAW. KNOW WHAT IT MEANS.',
+    desc: "Legal words shouldn't stand between people and their rights. Find plain language definitions of the terms that appear in FIRs, petitions, court orders and everyday legal processes.",
     cta: 'Browse A to Z →',
     href: '#glossary',
   },
   {
     icon: 'compass',
     title: 'Practical Guides',
-    desc: 'KNOW WHAT TO DO. Short, practical guides built around one situation at a time — what your rights are, what steps you can take, what documents you may need, and where to seek help.',
+    tagline: 'KNOW WHAT TO DO.',
+    desc: 'Short, practical guides built around one situation at a time — what your rights are, what steps you can take, what documents you may need, and where to seek help.',
     cta: 'Read a guide →',
     href: '#guides',
   },
   {
     icon: 'film',
     title: 'Explainer Videos',
-    desc: 'SEE THE LAW, EXPLAINED. Short, accessible explainers in Hindi and English that break down legal concepts and everyday rights, designed especially for first time readers, community outreach and legal-aid camps.',
+    tagline: 'SEE THE LAW, EXPLAINED.',
+    desc: 'Short, accessible explainers in Hindi and English that break down legal concepts and everyday rights, designed especially for first time readers, community outreach and legal-aid camps.',
     cta: 'Watch now →',
     href: '#videos',
   },
   {
     icon: 'phone',
     title: 'Emergency Contacts',
-    desc: 'KNOW WHERE TO TURN. Important helplines and support numbers to keep within reach — from national emergency and assistance services to legal-aid contacts.',
+    tagline: 'KNOW WHERE TO TURN.',
+    desc: 'Important helplines and support numbers to keep within reach — from national emergency and assistance services to legal-aid contacts.',
     cta: 'Save numbers →',
     href: '#emergency',
   },
@@ -439,8 +443,12 @@ export default function KnowYourRights() {
         <div className="container kyr-hero__grid">
           <Reveal as="div" className="kyr-hero__copy" variant="up">
             <span className="kyr-rule" aria-hidden="true" />
-            <h1>
-              Know the Law. Know Your Rights. Know Your <em>Next Step</em>.
+            <h1 className="kyr-hero__title">
+              <span>Know the Law.</span>
+              <span>Know Your Rights.</span>
+              <span>
+                Know Your <em>Next Step</em>
+              </span>
             </h1>
             <p className="kyr-hero__lead">
               “A right can only be exercised when it is known.” Legal awareness should not begin after a
@@ -480,8 +488,9 @@ export default function KnowYourRights() {
                 <span className="kyr-door__icon">
                   <DoorIcon name={d.icon} />
                 </span>
-                <h3>{d.title}</h3>
-                <p>{d.desc}</p>
+                <p className="kyr-door__title">{d.title}</p>
+                <h3 className="kyr-door__tagline">{d.tagline}</h3>
+                <p className="kyr-door__desc">{d.desc}</p>
                 <a href={d.href} className="kyr-door__cta">
                   {d.cta}
                 </a>
@@ -500,9 +509,10 @@ export default function KnowYourRights() {
         <div className="container kyr-glossary__inner">
           <Reveal as="header" className="kyr-glossary__head" variant="up">
             <p className="kyr-label">Legal glossary</p>
-            <h2>Legal words, made easier to understand.</h2>
+            <h2 className="kyr-section-tagline">START WITH THE LAW. KNOW WHAT IT MEANS.</h2>
             <p className="kyr-glossary__lede">
-              Legal words can be confusing when they appear in an FIR, petition, notice or a court order. This
+              Legal words shouldn&apos;t stand between people and their rights. Find plain language definitions
+              of the terms that appear in FIRs, petitions, court orders and everyday legal processes. This
               glossary explains them in plain language and in their practical legal context. Pick a letter to
               begin.
             </p>
@@ -602,9 +612,13 @@ export default function KnowYourRights() {
       <section id="guides" className="kyr-guides">
         <div className="container">
           <Reveal as="header" className="kyr-guides__head" variant="up">
-            <span className="kyr-rule" aria-hidden="true" />
+            <p className="kyr-label">Practical Guides</p>
             <h2>When you need to know what to do.</h2>
-            <p>Open any handbook to preview, zoom, and download the PDF.</p>
+            <p>
+              Each guide takes one legal situation at a time and turns it into clear, practical steps — what
+              you need to know, what you can do, and where to seek help. Explore a guide to preview and
+              download the PDF.
+            </p>
           </Reveal>
 
           <div className="kyr-guides__cards">
@@ -880,8 +894,13 @@ export default function KnowYourRights() {
       <section id="videos" className="kyr-videos">
         <div className="container">
           <Reveal as="header" className="kyr-center-head" variant="up">
-            <p className="kyr-label">Explainer videos</p>
+            <p className="kyr-label">Explainer Videos</p>
             <h2>The law, explained simply.</h2>
+            <p className="kyr-center-head__lede">
+              Short Hindi and English videos that break down legal rights, concepts and everyday situations
+              into clear, easy to understand explanations. Watch an explainer and understand the law in
+              minutes.
+            </p>
           </Reveal>
 
           <div className="kyr-videos__scroll" role="region" aria-label="Explainer videos carousel">
@@ -963,9 +982,13 @@ export default function KnowYourRights() {
 
       <section id="emergency" className="kyr-emergency">
         <div className="container">
-          <Reveal as="header" variant="up">
+          <Reveal as="header" className="kyr-emergency__head" variant="up">
             <p className="kyr-label kyr-label--on-dark">Emergency contacts</p>
-            <h2>Know where to turn.</h2>
+            <h2 className="kyr-section-tagline kyr-section-tagline--on-dark">KNOW WHERE TO TURN.</h2>
+            <p className="kyr-emergency__lede">
+              Important helplines and support numbers to keep within reach — from national emergency and
+              assistance services to legal-aid contacts.
+            </p>
           </Reveal>
 
           <div className="kyr-emergency__grid">

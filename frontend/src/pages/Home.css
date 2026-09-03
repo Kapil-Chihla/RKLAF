@@ -478,6 +478,9 @@
   font-size: 1.15rem;
   line-height: 1.75;
   max-width: 34rem;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
 }
 
 .home-who__byline {
@@ -486,6 +489,7 @@
   font-size: 0.98rem !important;
   font-style: italic;
   line-height: 1.55 !important;
+  text-align: start !important;
 }
 
 .home-film { position: relative; }
@@ -1002,6 +1006,9 @@ a.home-story--link:hover .home-story__more {
   color: var(--muted);
   font-size: 1.05rem;
   line-height: 1.7;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
 }
 
 .home-resources__grid {
@@ -1394,7 +1401,18 @@ a.home-story--link:hover .home-story__more {
 
   .home-section-head {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
+  }
+
+  .home-section-head > div {
+    width: 100%;
+    text-align: center;
+  }
+
+  .home-section-head .home-eyebrow,
+  .home-section-head .home-display {
+    text-align: center;
   }
 
   .home-film__quote {

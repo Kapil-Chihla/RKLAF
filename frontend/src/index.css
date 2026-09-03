@@ -102,7 +102,7 @@ p {
   font-size: 1.1rem;
 }
 
-/* Long-form body copy only — never apply to headings / short labels / cards */
+/* Long-form body copy — justify for readability; never on headings / chrome */
 .story-detail__body p,
 .blog-article__content p,
 .blog-detail__body p,
@@ -110,11 +110,111 @@ p {
 .about-office p,
 .about-work p,
 .about-where__intro,
+.about-phil__sub,
+.about-story__head p,
+.about-outlook__card p,
+.about-closing__body,
+.about-carry,
+.about-pillar p,
+.about-mode p,
+.home-who__copy > p,
+.home-resources__lede,
+.home-cta p,
+.home-donate p,
+.home-story__body p,
+.home-card__body p,
+.join-hero__lead,
+.join-card__blurb,
+.join-step p,
+.join-cta__band p,
+.donate__lead,
+.donate__impact p,
+.donate__side-card p,
+.donate__side-card blockquote p,
+.contact__lead,
+.contact__form-lead,
+.impact-mhead p,
+.impact-lead,
+.impact-intro,
+.impact-pnote,
+.kyr-hero__lead,
+.kyr-glossary__lede,
+.kyr-guides__head p,
+.kyr-center-head__lede,
+.kyr-decks__intro,
+.kyr-emergency__lede,
+.kyr-door__desc,
 .kyr-az__card dd,
-.faq-accordion__panel p {
+.faq-accordion__panel p,
+.lib-hero__lead,
+.lib-welcome__body,
+.lib-welcome__italic,
+.lib-episodes__lede,
+.lib-socials__lede,
+.lib-donate__lede,
+.acad-banner__lede {
   text-align: justify;
   text-justify: inter-word;
   hyphens: auto;
+}
+
+/* Centered section intros: keep the block centered; body still justified inside */
+.home-resources__head,
+.about-story__head,
+.about-closing__inner,
+.about-outlook__card,
+.join-how__head,
+.kyr-center-head,
+.kyr-glossary__head,
+.kyr-guides__head,
+.kyr-emergency__head,
+.lib-socials__head,
+.lib-donate,
+.lib-donate__content,
+.acad-banner,
+.acad-banner__inner {
+  text-align: center;
+}
+
+.home-resources__head .home-resources__lede,
+.about-story__head p,
+.about-outlook__card p,
+.about-closing__body,
+.kyr-center-head__lede,
+.kyr-glossary__lede,
+.kyr-guides__head p,
+.kyr-decks__intro,
+.kyr-emergency__lede,
+.lib-socials__lede,
+.lib-donate__lede,
+.acad-banner__lede {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Headings / labels inside centered intros stay centered */
+.home-resources__head .home-eyebrow,
+.home-resources__head .home-display,
+.about-story__head .about-kicker,
+.about-story__head h2,
+.about-outlook__card .about-kicker,
+.about-outlook__card h2,
+.join-how__head .join-label,
+.join-how__head h2,
+.kyr-center-head .kyr-label,
+.kyr-center-head h2,
+.kyr-glossary__head .kyr-label,
+.kyr-glossary__head h2,
+.kyr-guides__head .kyr-label,
+.kyr-guides__head h2,
+.kyr-emergency__head .kyr-label,
+.kyr-emergency__head h2,
+.lib-socials__head .lib-label,
+.lib-socials__head h2,
+.lib-donate h2,
+.acad-banner h1,
+.acad-banner__tagline {
+  text-align: center;
 }
 
 ul {

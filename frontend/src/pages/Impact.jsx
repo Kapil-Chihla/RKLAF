@@ -320,7 +320,7 @@ export default function Impact() {
 
       <section id="counted" className="impact-numbers">
         <div className="container">
-          <Reveal as="header" variant="up">
+          <Reveal as="header" className="impact-numbers__head" variant="up">
             <span className="impact-dash impact-dash--gold" aria-hidden="true" />
             <h2>A Decade of Work. Measured in People, Matters and Hours</h2>
           </Reveal>

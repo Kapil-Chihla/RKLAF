@@ -51,10 +51,11 @@
 
 .contact__lead {
   margin: 0 0 2rem;
-  max-width: 28rem;
+  max-width: 32rem;
   font-size: 1.05rem;
   line-height: 1.65;
   color: var(--muted);
+  text-align: justify;
 }
 
 .contact__channels {

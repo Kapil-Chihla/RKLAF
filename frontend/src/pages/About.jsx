@@ -1,38 +1,12 @@
 import { useRef, useState } from 'react';
 import { OFFICE_DELHI, OFFICE_IMPHAL } from '../data/navigation';
 import Reveal from '../components/motion/Reveal';
-import CountUp from '../components/motion/CountUp';
 import photoDada from '../assets/_unused/dada.jpeg';
 import photoDadi from '../assets/_unused/dadi.jpeg';
 import photoAjayHero from '../assets/aboutusbanner.jpeg';
 import photoAjayStory from '../assets/_unused/father.jpeg';
 import officeVideo from '../assets/officevideo.mp4';
 import './About.css';
-
-const PHILOSOPHY_STATS = [
-  {
-    header: 'Since 2016',
-    end: 30000,
-    suffix: '+',
-    label: 'Hours of Pro Bono Legal Service',
-    duration: 2200,
-  },
-  {
-    header: 'Assisted',
-    end: 12750,
-    suffix: '+',
-    label: 'Individuals & Families assisted through direct legal representation and free consultation',
-    duration: 2000,
-  },
-  {
-    header: 'Reach',
-    end: 100000,
-    suffix: '+',
-    label:
-      'People reached and benefited through our litigation, our jail visits, legal aid camps, outreach and other programmes.',
-    duration: 2200,
-  },
-];
 
 const LINEAGE = [
   {
@@ -170,6 +144,25 @@ const AIMS = [
   {
     title: 'Building a culture of service among young legal professionals',
     body: 'Giving lawyers, law students, interns and volunteers meaningful opportunities to contribute to public interest work.',
+  },
+];
+
+const WORK_MODES = [
+  {
+    title: 'Preventive',
+    body: 'Helping people understand their rights before a legal problem becomes a crisis through legal literacy, awareness and community outreach.',
+  },
+  {
+    title: 'Remedial',
+    body: 'Providing legal assistance and representation to people who are already facing a legal difficulty and may otherwise be unable to access a remedy.',
+  },
+  {
+    title: 'Public Interest',
+    body: 'Taking up issues that extend beyond individual disputes through public interest litigation, representations and other interventions concerning matters of wider public importance.',
+  },
+  {
+    title: 'Reformative',
+    body: 'Using research, RTIs, social surveys and institutional engagement to identify gaps between legal safeguards and their implementation and work towards better systems.',
   },
 ];
 
@@ -350,20 +343,6 @@ export default function About() {
           the law feels unfamiliar, inaccessible or intimidating, and helping them understand, navigate and
           exercise their rights.
         </p>
-        <div className="about-phil__stats" aria-label="Impact numbers">
-          {PHILOSOPHY_STATS.map((stat) => (
-            <article className="about-phil-stat" key={stat.label}>
-              <em className="about-phil-stat__header">{stat.header}</em>
-              <CountUp
-                className="about-phil-stat__value"
-                end={stat.end}
-                suffix={stat.suffix}
-                duration={stat.duration}
-              />
-              <span className="about-phil-stat__label">{stat.label}</span>
-            </article>
-          ))}
-        </div>
         <div className="about-pillars">
           {PILLARS.map((p) => (
             <div className="about-pillar" key={p.title}>
@@ -492,10 +471,12 @@ export default function About() {
             Our work operates across different stages of a person&apos;s relationship with the law.
           </p>
           <div className="about-modes">
-            <span>Preventive</span>
-            <span>Remedial</span>
-            <span>Public Interest</span>
-            <span>Reformative</span>
+            {WORK_MODES.map((mode) => (
+              <article className="about-mode" key={mode.title}>
+                <b>{mode.title}</b>
+                <p>{mode.body}</p>
+              </article>
+            ))}
           </div>
         </div>
         <div>
@@ -584,26 +565,35 @@ export default function About() {
               ))}
             </div>
           </div>
-          <div className="about-reach">
-            <div>
-              <b>Our vision</b>
-              <span>
-                A society where justice is within reach of everyone — where legal rights are not merely
-                written into law, but are understood, accessible and capable of being meaningfully exercised.
-              </span>
-            </div>
-            <div>
-              <b>Looking ahead</b>
-              <span>
-                Growth for us is not simply about reaching more people. It is about finding new ways to make
-                justice more accessible, more understandable and more responsive to the realities people face.
-              </span>
-            </div>
-          </div>
         </div>
       </section>
 
-      {/* 8 · CLOSING */}
+      {/* 8 · VISION + LOOKING AHEAD */}
+      <section className="about-outlook" id="outlook">
+        <Reveal as="article" className="about-outlook__card" variant="up">
+          <span className="about-kicker">Our vision</span>
+          <h2>A society where justice is within reach of everyone.</h2>
+          <p>
+            We envision a justice system in which legal rights are not merely written into law, but are
+            understood, accessible and capable of being meaningfully exercised. Our aim is to continue
+            building an institution that connects people, law and public interest, through legal assistance,
+            knowledge, research and action.
+          </p>
+        </Reveal>
+        <Reveal as="article" className="about-outlook__card" variant="up" delay={80}>
+          <span className="about-kicker">Looking ahead</span>
+          <h2>The promise continues.</h2>
+          <p>
+            RKLAF continues to grow, but growth for us is not simply about reaching more people. It is about
+            finding new ways to make justice more accessible, more understandable and more responsive to the
+            realities people face. From free legal aid and community outreach to research, digital legal
+            literacy and public-interest interventions, the next chapter of RKLAF will continue to build on
+            the same foundation with which it began.
+          </p>
+        </Reveal>
+      </section>
+
+      {/* 9 · CLOSING */}
       <section className="about-closing" id="closing">
         <div className="about-closing__inner">
           <p className="about-closing__line">One case. One person. One right at a time.</p>

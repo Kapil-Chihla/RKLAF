@@ -416,50 +416,9 @@ button.about-vid__play:hover span {
   margin: 1.1rem 0 0;
   position: relative;
   z-index: 2;
-}
-
-.about-phil__stats {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.5rem 1.75rem;
-  margin-top: 2.4rem;
-  padding-top: 1.75rem;
-  border-top: 1px solid rgba(216, 201, 174, 0.28);
-  position: relative;
-  z-index: 2;
-}
-
-.about-phil-stat {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  min-width: 0;
-}
-
-.about-phil-stat__header {
-  font-family: var(--au-sans);
-  font-size: 0.72rem;
-  font-style: normal;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #c4a97a;
-}
-
-.about-phil-stat__value {
-  font-family: var(--au-serif);
-  font-size: clamp(1.85rem, 3.2vw, 2.55rem);
-  font-weight: 700;
-  line-height: 1.1;
-  color: #efe7d6;
-}
-
-.about-phil-stat__label {
-  font-family: var(--au-sans);
-  font-size: 0.88rem;
-  line-height: 1.45;
-  color: rgba(239, 231, 214, 0.68);
-  max-width: 28ch;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
 }
 
 .about-pillars {
@@ -472,10 +431,6 @@ button.about-vid__play:hover span {
 }
 
 @media (max-width: 1100px) {
-  .about-phil__stats {
-    gap: 1.25rem 1.4rem;
-  }
-
   .about-pillars {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -878,22 +833,36 @@ button.about-vid__play:hover span {
 }
 
 .about-modes {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 1.1rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.85rem;
+  margin-top: 1.25rem;
 }
 
-.about-modes span {
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #6e5426;
+.about-mode {
   background: var(--au-card);
   border: 1px solid var(--au-line);
-  border-radius: 999px;
-  padding: 7px 14px;
+  border-radius: 12px;
+  padding: 0.95rem 1rem 1.05rem;
+}
+
+.about-mode b {
+  display: block;
+  font-family: var(--au-serif);
+  font-size: 1.02rem;
+  font-weight: 600;
+  color: #6e5426;
+  letter-spacing: 0.02em;
+  margin-bottom: 0.4rem;
+}
+
+.about-mode p {
+  margin: 0 !important;
+  max-width: none !important;
+  font-size: 0.92rem !important;
+  line-height: 1.55 !important;
+  color: var(--au-soft);
+  text-align: justify !important;
 }
 
 .about-aims {
@@ -1039,29 +1008,37 @@ button.about-vid__play:hover span {
   padding: 8px 14px;
 }
 
-.about-reach {
+.about-outlook {
+  padding: clamp(2.75rem, 6vw, 3.8rem) clamp(1.4rem, 4vw, 2.75rem);
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  margin-top: 1.1rem;
-}
-
-.about-reach div {
+  gap: clamp(1.5rem, 3vw, 2.25rem);
   border-top: 1px solid var(--au-line);
-  padding-top: 0.9rem;
+  background: var(--au-sand);
 }
 
-.about-reach b {
-  font-family: var(--au-serif);
-  font-size: 1.1rem;
-  font-weight: 600;
+.about-outlook__card .about-kicker {
   display: block;
-  margin-bottom: 0.3rem;
+  text-align: center;
 }
 
-.about-reach span {
-  font-size: 0.95rem;
+.about-outlook__card h2 {
+  font-family: var(--au-serif);
+  font-size: clamp(1.35rem, 2.4vw, 1.85rem);
+  font-weight: 600;
+  margin: 0.55rem 0 0;
+  line-height: 1.25;
+  color: var(--au-ink);
+  text-align: center;
+}
+
+.about-outlook__card p {
+  margin: 0.9rem auto 0;
+  font-size: 1.02rem;
+  line-height: 1.7;
   color: var(--au-soft);
+  max-width: 42ch;
+  text-align: justify;
 }
 
 .about-soon {
@@ -1249,7 +1226,12 @@ button.about-vid__play:hover span {
 @media (max-width: 920px) {
   .about-office,
   .about-work,
-  .about-where {
+  .about-where,
+  .about-outlook {
+    grid-template-columns: 1fr;
+  }
+
+  .about-modes {
     grid-template-columns: 1fr;
   }
 
@@ -1268,11 +1250,6 @@ button.about-vid__play:hover span {
 
   .about-hero__photo {
     min-height: 0;
-  }
-
-  .about-phil__stats {
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
   }
 
   .about-pillars {
@@ -1311,8 +1288,7 @@ button.about-vid__play:hover span {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .about-offices,
-  .about-reach {
+  .about-offices {
     grid-template-columns: 1fr;
   }
 

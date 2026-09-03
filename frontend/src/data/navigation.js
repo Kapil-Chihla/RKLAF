@@ -74,4 +74,5 @@ export const aboutSectionLinks = [
   { label: 'Our Story', path: '/about#story' },
   { label: 'What We Do', path: '/about#work' },
   { label: 'Where We Work', path: '/about#where' },
+  { label: 'Vision & Looking Ahead', path: '/about#outlook' },
 ];

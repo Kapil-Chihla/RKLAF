@@ -626,11 +626,12 @@ export default function Library() {
       </section>
 
       <section className="lib-donate">
-        <div className="container lib-donate__inner">
-          <Reveal as="div" variant="up">
+        <div className="container">
+          <Reveal as="div" className="lib-donate__content" variant="up">
             <h2>Listen, share, support the work</h2>
-            <p className="lib-donate__ph">
-              Background photo placeholder · Studio microphone &amp; recorder, shallow depth
+            <p className="lib-donate__lede">
+              Follow Nyaya Tak, share an episode, and help keep RKLAF&apos;s legal knowledge free for everyone
+              who needs it.
             </p>
             <Link to="/donate" className="lib-pill lib-pill--light">
               Donate to keep it free →

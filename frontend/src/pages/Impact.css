@@ -196,6 +196,9 @@
   color: var(--soft);
   max-width: 52ch;
   line-height: 1.55;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
 }
 
 .impact-mstamp {
@@ -207,6 +210,7 @@
   border-top: 1px dashed var(--line);
   padding-top: 12px;
   margin-top: 12px !important;
+  text-align: start;
 }
 
 .impact-hrail {
@@ -393,7 +397,7 @@
 .impact-numbers {
   background: var(--dark);
   color: #f1efe8;
-  padding: 56px 0;
+  padding: clamp(3rem, 6vw, 4rem) 0;
   position: relative;
   overflow-x: clip;
   overflow-y: visible;
@@ -409,27 +413,73 @@
   pointer-events: none;
 }
 
+.impact-numbers > .container {
+  width: min(1180px, calc(100% - var(--container-pad, 1.25rem) * 2));
+}
+
+.impact-numbers header,
+.impact-numbers__head {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.impact-numbers .impact-dash {
+  margin-inline: auto;
+  margin-bottom: 0.85rem;
+}
+
 .impact-numbers h2 {
-  margin: 0;
+  margin: 0 auto;
   font-family: var(--font-serif);
-  font-size: clamp(1.7rem, 3vw, 2.4rem);
+  font-size: clamp(1.05rem, 2.6vw, 2.25rem);
   font-weight: 600;
-  max-width: 22ch;
+  max-width: none;
   color: #f1efe8;
+  text-align: center;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .impact-numbers h2 {
+    white-space: normal;
+    font-size: clamp(1.15rem, 4.8vw, 1.45rem);
+  }
 }
 
 .impact-numgrid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 28px;
-  margin-top: 34px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.5rem, 4vw, 2.75rem);
+  margin-top: clamp(2rem, 4vw, 2.75rem);
+  width: 100%;
+  max-width: none;
   position: relative;
   z-index: 1;
+  box-sizing: border-box;
+}
+
+.impact-numgrid > .impact-num,
+.impact-numgrid > .reveal {
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+}
+
+.impact-num {
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .impact-num b {
   font-family: var(--font-serif);
-  font-size: clamp(2rem, 3.6vw, 2.9rem);
+  font-size: clamp(2.1rem, 4vw, 3.1rem);
   font-weight: 700;
   color: #d8c9ae;
   display: block;
@@ -437,12 +487,16 @@
 }
 
 .impact-num span {
-  font-size: 0.95rem;
-  color: rgba(247, 244, 238, 0.66);
+  font-size: 0.98rem;
+  color: rgba(247, 244, 238, 0.7);
   display: block;
-  margin-top: 6px;
-  max-width: 36ch;
-  line-height: 1.45;
+  margin-top: 0.55rem;
+  max-width: none;
+  width: 100%;
+  line-height: 1.5;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
 }
 
 .impact-num em {
@@ -453,7 +507,7 @@
   text-transform: uppercase;
   color: #b49b72;
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 0.55rem;
 }
 
 /* ─── Litigation ─── */
@@ -474,6 +528,9 @@
   max-width: 58ch;
   margin: 12px 0 0;
   line-height: 1.6;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
 }
 
 .impact-strand {
@@ -969,6 +1026,9 @@ a.impact-lrow:hover {
   max-width: 52ch;
   margin: 10px 0 0;
   line-height: 1.55;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
 }
 
 .impact-press-grid {
@@ -1133,7 +1193,11 @@ a.impact-clip:hover {
     min-height: 420px;
   }
 
-  .impact-numgrid,
+  .impact-numgrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
   .impact-story-grid,
   .impact-live-grid {
     grid-template-columns: 1fr 1fr;
@@ -1162,6 +1226,22 @@ a.impact-clip:hover {
 
   .impact-par b {
     white-space: normal;
+  }
+}
+
+@media (max-width: 720px) {
+  .impact-numgrid {
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+  }
+
+  .impact-num {
+    text-align: center;
+    align-items: center;
+  }
+
+  .impact-num span {
+    text-align: center;
   }
 }
 
