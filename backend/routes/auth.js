@@ -86,8 +86,9 @@ router.post('/register', async (req, res) => {
 });
 
 router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
-  const user = await User.findOne({ email: email?.toLowerCase() }).lean();
+  const email = typeof req.body.email === 'string' ? req.body.email.trim().toLowerCase() : '';
+  const password = typeof req.body.password === 'string' ? req.body.password : '';
+  const user = await User.findOne({ email }).lean();
   if (!user) return res.status(401).json({ message: 'Invalid credentials' });
   if (user.status === 'disabled') return res.status(403).json({ message: 'Account has been disabled' });
 

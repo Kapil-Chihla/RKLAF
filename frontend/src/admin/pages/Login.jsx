@@ -21,7 +21,7 @@ export default function Login() {
     e.preventDefault();
     setError('');
     try {
-      await login(email, password);
+      await login(email.trim(), password);
       navigate('/admin/dashboard');
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed');
