@@ -19,25 +19,29 @@ const tracks = [
     num: '01',
     tone: 'light',
     title: 'Volunteer',
-    who: 'For anyone · no legal background needed',
+    who: 'Give Your Time. Create an Impact.',
     blurb:
-      'The hands of the foundation. Two hours a week is enough to change what a week feels like for someone in the queue.',
-    listTitle: "What you'll do",
+      "You don't need to be a lawyer to contribute to access to justice. RKLAF welcomes individuals who want to use their time, skills, and energy to support our work across legal awareness, community outreach, research, campaigns, events, communications, and social-impact initiatives.",
+    listTitle: 'As a volunteer, you may contribute to',
     list: [
-      'Answer helpline shifts after a 2-day training',
-      'Assist at weekend legal camps near you',
-      'Accompany elderly clients to hearings',
-      'Translate rights modules into local languages',
-      'Maintain the tribute register at camp desks',
+      'Legal awareness and community outreach',
+      'Research and documentation',
+      'Public awareness campaigns',
+      'Social media and digital initiatives',
+      'Events and workshops',
+      'Data collection and compilation',
+      'Administrative and programme support',
+      'Other RKLAF initiatives based on your skills and interests',
     ],
-    knowTitle: 'Good to know',
+    knowTitle: 'Who can volunteer?',
     know: [
-      { k: '18+', v: 'Any background, no law degree needed' },
-      { k: '2 days', v: 'Paid-for training before your first shift' },
-      { k: '9 districts', v: 'Camp & helpline roles, some remote' },
+      {
+        k: 'Open to all',
+        v: 'Students, professionals, researchers, educators, creatives, social workers, and individuals from any background who share our commitment to access to justice.',
+      },
     ],
-    badge: '2 to 6 hrs / week',
-    cta: 'Apply as volunteer →',
+    badge: 'Your contribution matters',
+    cta: 'Become a Volunteer →',
     href: FORMS.volunteer,
     icon: 'hands',
   },
@@ -47,25 +51,35 @@ const tracks = [
     tone: 'dark',
     popular: true,
     title: 'Internship',
-    who: 'For law students · 4 to 12 week cohorts',
+    who: 'Learn Law Beyond the Classroom.',
     blurb:
-      'Real intake desks, real petitions, real hearings. The drafting you do here gets filed, not shelved.',
-    listTitle: "What you'll do",
+      'At RKLAF, an internship is not limited to observing legal work. It is an opportunity to understand how law operates in courtrooms, communities, institutions, and everyday life.',
+    listTitle: 'Interns may work on',
     list: [
-      'Run intake desks under advocate supervision',
-      'Draft petitions that get filed, with feedback on every draft',
-      'Court observation with weekly debriefs',
-      'Rebuild evidence records, the 42-worker wage method',
-      'Close with a case study presented to the founders',
+      'Legal research and case analysis',
+      'Drafting and documentation',
+      'Case and data compilation',
+      'RTI and public-interest initiatives',
+      'Legal awareness programmes',
+      'Community outreach',
+      'Policy and social research',
+      'Content and communication initiatives',
+      'Social media and public awareness campaigns',
+      'Other ongoing projects of the Foundation',
     ],
-    knowTitle: 'Good to know',
+    knowTitle: 'Duration & who can apply',
     know: [
-      { k: '2nd yr+', v: 'Law students, any university' },
-      { k: '20 seats', v: 'Per cohort · on-site & hybrid tracks' },
-      { k: 'Cert + LoR', v: 'On completion, tied to your case log' },
+      {
+        k: 'Minimum 2 months',
+        v: "Duration and nature may vary depending on the Foundation's ongoing projects and the particular engagement.",
+      },
+      {
+        k: 'Who',
+        v: 'Law students and, where relevant, students or young professionals from other disciplines interested in law, public policy, research, and social impact.',
+      },
     ],
-    badge: 'Cohorts open quarterly',
-    cta: 'Apply for internship →',
+    badge: 'Subject to requirements & availability',
+    cta: 'Apply for an Internship →',
     href: FORMS.internship,
     icon: 'grad',
   },
@@ -73,26 +87,29 @@ const tracks = [
     id: 'member',
     num: '03',
     tone: 'tan',
-    title: 'Member',
-    who: 'For professionals & well-wishers',
+    title: 'Become a Member',
+    who: "Don't Just Support the Mission. Become Part of It.",
     blurb:
-      'Steady hands behind the casework. Members fund filings through the year and see exactly where each rupee lands.',
-    listTitle: 'What membership carries',
+      'Membership is for individuals who want a long-term association with RKLAF and wish to contribute to its work beyond a single internship, programme, or volunteering opportunity.',
+    listTitle: 'Membership may provide opportunities to',
     list: [
-      'Fund a fixed number of case filings yearly',
-      'Quarterly impact briefings with the founders',
-      'Outcome letter for every filing you sponsor',
-      'Name listed in the annual report, if you wish',
-      'Advocates: join the pro bono panel',
+      'Participate in RKLAF initiatives and programmes',
+      'Contribute to research and advocacy projects',
+      'Attend member engagements and discussions',
+      'Support community and legal-awareness initiatives',
+      'Collaborate with other members and professionals',
+      'Contribute your expertise and skills to Foundation projects',
+      'Participate in special campaigns and institutional initiatives',
     ],
-    knowTitle: 'Tiers',
+    knowTitle: 'Who should join?',
     know: [
-      { k: '₹500', v: 'Friend · 4 filings a year' },
-      { k: '₹1,500', v: 'Patron · 12 filings a year' },
-      { k: '₹5,000', v: 'Guardian · a camp + filings' },
+      {
+        k: 'Community',
+        v: "Advocates, law students, academics, researchers, professionals, social-sector practitioners, and individuals who share RKLAF's vision.",
+      },
     ],
-    badge: '80G receipts · cancel anytime',
-    cta: 'Become a member →',
+    badge: 'Subject to membership framework',
+    cta: 'Become a Member →',
     href: FORMS.member,
     icon: 'leaf',
   },
@@ -100,26 +117,29 @@ const tracks = [
     id: 'collaborate',
     num: '04',
     tone: 'dashed',
-    title: 'Collaborate with us',
-    who: 'For colleges, law firms, NGOs & CSR teams',
+    title: 'Partner with Us',
+    who: "Let's Create Greater Impact, Together.",
     blurb:
-      'Bring your institution alongside ours. Partnerships run from campus clinics to co-hosted camps and funded research.',
-    listTitle: 'Partnership models',
+      'Some challenges cannot be solved by one institution alone. RKLAF collaborates with lawyers, law firms, educational institutions, NGOs, civil-society organisations, corporations, researchers, government and public institutions, and other stakeholders.',
+    listTitle: 'We welcome partnerships for',
     list: [
-      'Host a campus legal clinic with our curriculum',
-      'Co-run camps or literacy drives in your district',
-      'Fund research, a desk, or a fellowship via CSR',
-      'Law firms: second associates to the pro bono panel',
-      'NGOs: refer matters and cross-train field teams',
+      'Legal Aid & Access to Justice',
+      'Legal Literacy & Awareness',
+      'Research & Policy',
+      'School & Child Safety',
+      'CSR & Social Impact',
+      'Knowledge & Capacity Building',
+      'Media & Outreach',
     ],
-    knowTitle: 'How it runs',
+    knowTitle: 'Have an idea?',
     know: [
-      { k: 'MoU', v: 'Simple 3-page agreement, annual renewal' },
-      { k: 'We bring', v: 'Curriculum, training, supervision, brand' },
-      { k: 'You bring', v: 'Space, students or funds, local reach' },
+      {
+        k: "Let's build",
+        v: 'If your organisation has a programme, resource, expertise, network, or idea that can contribute to a more just and informed society, we would like to hear from you.',
+      },
     ],
-    badge: '12 partners · 4 states',
-    cta: 'Start a conversation →',
+    badge: 'Collaborative impact',
+    cta: 'Partner with RKLAF →',
     href: FORMS.collaborate,
     icon: 'building',
   },
@@ -129,17 +149,27 @@ const steps = [
   {
     n: '1',
     title: 'Apply',
-    desc: 'One short form. Tell us your track, your city and your hours. No CV needed for volunteering.',
+    desc: 'Tell us who you are, what you care about, and how you would like to contribute.',
   },
   {
     n: '2',
-    title: 'Hear from a human',
-    desc: 'A coordinator calls within 5 working days to match you to a desk, cohort or partnership lead.',
+    title: 'Review',
+    desc: 'Our team carefully reviews applications against the requirements and opportunities available at the time.',
   },
   {
     n: '3',
-    title: 'Begin with an oath',
-    desc: "Training, a mentor, and the volunteer's oath taken at your first camp or clinic day.",
+    title: 'Connect',
+    desc: 'Shortlisted applicants may be contacted for further information or an interaction, where required.',
+  },
+  {
+    n: '4',
+    title: 'Begin',
+    desc: 'Selected applicants receive confirmation and the information needed to begin their association with RKLAF.',
+  },
+  {
+    n: '5',
+    title: 'Make an Impact',
+    desc: 'Work alongside the RKLAF team and contribute to initiatives that advance access to justice and create meaningful social impact.',
   },
 ];
 
@@ -236,16 +266,15 @@ export default function JoinUs() {
             </div>
             <p className="join-label">Join us</p>
             <h1>
-              Justice is a <em>team</em> sport
+              Be Part of the <em>Work</em>
             </h1>
             <p className="join-hero__lead">
-              Four ways in, one promise out: every hour you give shortens somebody&apos;s queue. No legal
-              background needed for most roles, and every application gets a human reply within 5 working
-              days.
+              Justice is not created by institutions alone. It is built by people who choose to contribute
+              their time, knowledge, skills, and resources. Whether you are a student looking to learn, a
+              professional looking to contribute, an organisation looking to collaborate, or simply someone
+              who believes that access to justice should be universal, there is a place for you at RKLAF.
             </p>
-            <p className="join-hero__stats">
-              ✦ 240 volunteers · 80+ student interns · 12 partner institutions and counting
-            </p>
+            <p className="join-hero__stats">Choose how you want to contribute.</p>
           </Reveal>
         </div>
       </header>
@@ -263,8 +292,8 @@ export default function JoinUs() {
       <section id="how" className="join-how">
         <div className="container">
           <Reveal as="header" className="join-how__head" variant="up">
-            <p className="join-label">How it works</p>
-            <h2>Three steps, five working days</h2>
+            <p className="join-label">Your journey with RKLAF</p>
+            <h2>Apply → Review → Connect → Begin</h2>
           </Reveal>
 
           <div className="join-how__steps">
@@ -286,8 +315,9 @@ export default function JoinUs() {
             <div>
               <h2>Not sure which track fits?</h2>
               <p>
-                Write two lines about yourself and we will suggest one. Every message gets a human reply
-                within 5 working days.
+                Write to us about yourself and how you would like to contribute. Please note: submission of an
+                application does not guarantee selection or placement. Applications are reviewed on a rolling
+                basis and opportunities are subject to the requirements and availability of the Foundation.
               </p>
             </div>
             <Link to="/contact" className="join-cta__btn">

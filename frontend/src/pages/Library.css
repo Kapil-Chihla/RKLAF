@@ -1056,6 +1056,14 @@
   line-height: 1.15;
 }
 
+.lib-socials__lede {
+  margin: 0.85rem auto 0;
+  max-width: 40rem;
+  color: var(--muted);
+  font-size: 1.02rem;
+  line-height: 1.65;
+}
+
 .lib-socials__grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));

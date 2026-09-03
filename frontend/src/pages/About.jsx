@@ -1,13 +1,38 @@
 import { useRef, useState } from 'react';
 import { OFFICE_DELHI, OFFICE_IMPHAL } from '../data/navigation';
 import Reveal from '../components/motion/Reveal';
+import CountUp from '../components/motion/CountUp';
 import photoDada from '../assets/_unused/dada.jpeg';
 import photoDadi from '../assets/_unused/dadi.jpeg';
 import photoAjayHero from '../assets/aboutusbanner.jpeg';
 import photoAjayStory from '../assets/_unused/father.jpeg';
-import photoOffice from '../assets/_unused/comunityoutreach.jpeg';
 import officeVideo from '../assets/officevideo.mp4';
 import './About.css';
+
+const PHILOSOPHY_STATS = [
+  {
+    header: 'Since 2016',
+    end: 30000,
+    suffix: '+',
+    label: 'Hours of Pro Bono Legal Service',
+    duration: 2200,
+  },
+  {
+    header: 'Assisted',
+    end: 12750,
+    suffix: '+',
+    label: 'Individuals & Families assisted through direct legal representation and free consultation',
+    duration: 2000,
+  },
+  {
+    header: 'Reach',
+    end: 100000,
+    suffix: '+',
+    label:
+      'People reached and benefited through our litigation, our jail visits, legal aid camps, outreach and other programmes.',
+    duration: 2200,
+  },
+];
 
 const LINEAGE = [
   {
@@ -17,14 +42,14 @@ const LINEAGE = [
     discLabel: 'R.S. GARG',
     discPos: 'center 22%',
     label: 'Late Sh. R.S. Garg',
-    tag: 'The bench',
+    tag: 'Where it began',
     role: 'Where it began',
     name: 'Late Sh. R.S. Garg',
-    sub: 'Judicial Officer, then Advocate',
+    sub: 'Judicial Officer · Advocate',
     photo: photoDada,
     photoFit: 'contain',
     photoHint: 'Late Sh. R.S. Garg',
-    text: 'He started his career not as a courtroom advocate, but as a Judicial Officer in Haryana, sitting quite literally on the other side of the bench, seeing firsthand how the machinery of justice moved and who it so often left behind. That early vantage point stayed with him. When he later moved to Delhi and began practicing in the District Courts and the High Court of Delhi, one thing about him never changed: he could never say no to a person in need, fee or no fee. Case after case, quietly and without fanfare, his pro bono practice became the defining part of his career.',
+    text: 'He began his career as a Judicial Officer in Haryana, gaining an early and firsthand understanding of the functioning of the justice system. He later moved to Delhi and practised in the District Courts and the High Court of Delhi. Throughout his career, he remained deeply committed to assisting people who could not afford legal representation, taking up matters on a pro bono basis whenever someone came to him in need. For him, legal practice was never only about professional work. It was also about service. That commitment became the foundation upon which RKLAF was eventually built.',
   },
   {
     id: 'krishna-garg',
@@ -36,11 +61,11 @@ const LINEAGE = [
     tag: 'Beside him',
     role: 'Beside him, always',
     name: 'Late Smt. Krishna Garg',
-    sub: 'A woman of deep faith and quiet strength',
+    sub: 'A partnership in service',
     photo: photoDadi,
     photoFit: 'contain',
     photoHint: 'Late Smt. Krishna Garg',
-    text: 'He did not do this alone. His wife stood beside him through every one of those years, supporting his charitable work in the way that partners often do, without ever asking for recognition. The Foundation carries both their names because the work was always theirs together.',
+    text: 'Behind that work was a partnership. Smt. Krishna Garg stood beside her husband throughout his years of legal practice and charitable service, supporting his commitment to helping those in need. RKLAF carries their names because the values behind the Foundation were shaped by both of them.',
   },
   {
     id: 'registered',
@@ -49,13 +74,13 @@ const LINEAGE = [
     discLabel: '2016',
     label: '25 Nov 2016',
     tag: 'Registered',
-    role: 'A foundation born from memory',
-    name: '25th November, 2016',
-    sub: 'Registered as a Charitable Trust',
+    role: 'A Legacy in Service of Justice',
+    name: '25 November 2016',
+    sub: 'RKLAF was established as a registered charitable trust',
     photo: null,
     photoFit: 'cover',
     photoHint: 'Trust registration, 25 November 2016',
-    text: 'When they passed on, their son chose to give their life’s quiet work a permanent home. He registered the Radhey Krishna Legal Aid Foundation as a Charitable Trust, named for his parents and built on the very principle they had lived by.',
+    text: "Following the passing of his parents, Mr. Ajay Garg, Advocate, chose to give their legacy a permanent institutional home. The Radhey Krishna Legal Aid Foundation was established in their memory, carrying forward the principle that had guided his father's professional life: that access to justice should never depend solely on one's ability to pay.",
   },
   {
     id: 'ajay-garg',
@@ -64,15 +89,15 @@ const LINEAGE = [
     discLabel: 'AJAY GARG',
     discPos: 'left center',
     label: 'Mr. Ajay Garg',
-    tag: 'Founder',
-    role: 'Founder',
-    name: 'Mr. Ajay Garg, Advocate',
-    sub: 'Supreme Court of India and Delhi High Court',
+    tag: 'Chief Trustee',
+    role: 'The people carrying it forward',
+    name: 'Ajay Garg, Advocate',
+    sub: 'Chief Trustee · Supreme Court of India & Delhi High Court',
     photo: photoAjayStory,
     photoFit: 'cover',
     photoPos: 'left center',
     photoHint: 'Mr. Ajay Garg, Advocate',
-    text: 'A law graduate of Campus Law Centre, Delhi University, with over 30 years of experience as a practicing Advocate before the Supreme Court of India and the Delhi High Court. He has been awarded and honoured by eminent dignitaries in Indian academia for his contributions to the legal field, and has personally conducted numerous pro bono matters before the Supreme Court and the Delhi High Court, several of which now stand as reported judgments.',
+    text: "A graduate of the Campus Law Centre, University of Delhi, Mr. Ajay Garg has over three decades of experience as a practising Advocate before the Supreme Court of India and the Delhi High Court. Alongside his professional practice, he has personally undertaken numerous pro bono matters before the Supreme Court and the Delhi High Court, several of which have resulted in reported judgments. As Chief Trustee, he continues to guide the Foundation's work and carry forward the legacy upon which RKLAF was founded.",
   },
   {
     id: 'ruchi-garg',
@@ -82,12 +107,12 @@ const LINEAGE = [
     label: 'Ms. Ruchi Garg',
     tag: 'Trustee',
     role: 'Trustee',
-    name: 'Ms. Ruchi Garg',
-    sub: 'Standing beside him, as his mother once stood beside his father',
+    name: 'Ruchi Garg',
+    sub: 'Trustee',
     photo: null,
     photoFit: 'cover',
     photoHint: 'Ms. Ruchi Garg',
-    text: 'Trustee of the Foundation, whose support has been integral to its work, standing alongside the Founder in carrying this institution forward. The same quiet partnership that began a generation ago continues into this one.',
+    text: "Ms. Ruchi Garg serves as a Trustee of the Foundation and has been an integral part of carrying its work forward. Her involvement reflects the same spirit of partnership that has been part of the Foundation's story from the beginning.",
   },
   {
     id: 'today',
@@ -96,52 +121,60 @@ const LINEAGE = [
     discLabel: 'Now',
     label: 'Today',
     tag: 'Ongoing',
-    role: 'Carrying the work forward',
-    name: 'The work today',
-    sub: 'From one pro bono practice to a full institution',
-    photo: photoOffice,
+    role: 'From Helping One to Changing What Affects Many',
+    name: 'The work has grown. The purpose has not changed.',
+    sub: 'Individual Justice · Systemic Justice',
+    photo: null,
     photoFit: 'cover',
     photoHint: 'Legal aid outreach and Tihar Central Jail visits',
-    text: 'What began as one man’s pro bono practice has since grown into a full-fledged institution, providing free legal aid to hundreds of poor, deprived, disabled and downtrodden persons, including inmates inside Tihar Central Jail, and arguing matters all the way up to the Supreme Court of India, several of which now stand as reported judgments. Every case we take on today is a continuation of that first instinct on the judicial bench: that no one should be denied justice simply because they cannot afford it.',
+    text: "RKLAF's work has evolved with the understanding that access to justice cannot stop at individual representation. Some matters require a lawyer beside an individual. Others require a question to be taken to a court, an institution to be held accountable, a community to understand its rights, or a systemic gap to be identified and challenged. Our work therefore operates across two connected dimensions: Individual Justice — providing legal assistance, representation and guidance to people facing barriers to justice; and Systemic Justice — taking up issues of wider public importance through litigation, research, legal awareness, institutional engagement and public interest interventions. Our lawyers have represented individuals and communities before District Courts across Delhi, the Delhi High Court and the Supreme Court of India, while our programmes and initiatives take legal awareness and research beyond the courtroom. The scale of the work has changed over the years. The principle has not.",
   },
 ];
 
 const PILLARS = [
   {
-    title: 'We remove the fear',
-    body: 'Too often people avoid seeking legal help because they are afraid of the process itself: the paperwork, the language, the courts, the cost. We exist to take that fear out of the way.',
+    title: 'We remove the fear.',
+    body: 'Legal systems can be overwhelming: unfamiliar language, complex procedures, paperwork, costs and the uncertainty of not knowing what comes next. We work to make that process more understandable and approachable.',
   },
   {
-    title: 'We keep the doors open',
-    body: 'Justice must stay within reach of those who are financially constrained and at risk of being shut out entirely. No one should lose their right to be heard, to representation, or to a fair process because they cannot afford it.',
+    title: 'We keep the doors open.',
+    body: 'The ability to afford a lawyer should never determine whether a person can be heard, represented or seek a legal remedy. We provide free legal assistance to people who may otherwise be unable to access it.',
   },
   {
-    title: 'We go past the courtroom',
-    body: 'Through legal literacy, community outreach, youth engagement and policy advocacy, we reach people in every area of their lives, not only at their moment of crisis. Justice should reach people on their own terms, wherever they are.',
+    title: 'We go beyond the courtroom.',
+    body: 'Some barriers to justice cannot be resolved through litigation alone. Through legal literacy, community outreach, research, public-interest work and institutional interventions, we work to address problems before and beyond the courtroom.',
+  },
+  {
+    title: 'We stay with the issue.',
+    body: 'Whether the matter concerns an individual, a family, a community or a larger public question, our work is guided by the same commitment: to pursue meaningful access to justice.',
   },
 ];
 
 const AIMS = [
   {
-    title: 'Free, effective legal aid',
-    body: 'For the poor, deprived and marginalized, from first consultation to final judgment.',
+    title: 'Providing free, effective legal aid',
+    body: 'Supporting people who face financial or other barriers to legal representation.',
   },
   {
-    title: 'Legal literacy for everyone',
-    body: 'So people understand their rights long before they ever need a lawyer.',
+    title: 'Building legal literacy',
+    body: 'Helping people understand their rights and available remedies before they reach a moment of crisis.',
   },
   {
-    title: 'Causes of public importance',
-    body: 'From civil liberties to the environment, matters that affect entire communities, not just individuals.',
+    title: 'Pursuing causes of public importance',
+    body: 'Addressing issues whose consequences extend beyond individual clients and into wider communities.',
   },
   {
-    title: 'A generation of responsible lawyers',
-    body: 'Giving practicing advocates and law students real, hands-on pro bono experience.',
+    title: 'Strengthening institutions through research and engagement',
+    body: 'Identifying gaps between legal safeguards and their implementation through evidence based initiatives.',
+  },
+  {
+    title: 'Building a culture of service among young legal professionals',
+    body: 'Giving lawyers, law students, interns and volunteers meaningful opportunities to contribute to public interest work.',
   },
 ];
 
 const COURTS = [
-  'All District Courts of Delhi',
+  'District Courts of Delhi',
   'High Courts',
   'Tribunals',
   'Supreme Court of India',
@@ -265,9 +298,9 @@ export default function About() {
       <section className="about-hero" id="about-hero">
         <div className="about-hero__left">
           <h1 className="about-hero__title">About Us</h1>
-          <p className="about-epigraph">One man’s quiet compassion became a promise:</p>
+          <p className="about-epigraph">A belief, carried forward</p>
           <p className="about-promise">
-            “no one, however poor or powerless, would ever have to face the law alone.”
+            “No one, however poor or powerless, should ever have to face the law alone.”
           </p>
           <h2 className="about-tagline">
             With You.
@@ -276,8 +309,11 @@ export default function About() {
             <i>Nyaya Tak.</i>
           </h2>
           <p className="about-carry">
-            That promise is what we carry forward, for every person who still needs someone in their
-            corner.
+            That belief lies at the heart of the Radhey Krishna Legal Aid Foundation (RKLAF). Established on
+            25 November 2016, in memory of Late Sh. R.S. Garg, Advocate, and Late Smt. Krishna Garg, the
+            Foundation carries forward a legacy of service that began with individual pro bono representation
+            and has grown into work spanning legal aid, litigation, legal literacy, community outreach,
+            research and public-interest intervention.
           </p>
           <div className="about-stamp">
             <span className="about-stamp__seal" aria-hidden="true">
@@ -307,13 +343,27 @@ export default function About() {
       <section className="about-phil" id="philosophy">
         <span className="about-kicker">Our philosophy</span>
         <h2 className="about-phil__conviction">
-          To fight for people, not just represent them. And to stay by their side{' '}
-          <em>until the fight is won.</em>
+          To fight for people, not simply represent them.
         </h2>
         <p className="about-phil__sub">
-          That is the one conviction that guides us. Everything below follows from it: the law should
-          never feel distant, intimidating, or out of reach, for anyone.
+          For us, legal aid is not limited to appearing in court. It means standing alongside a person when
+          the law feels unfamiliar, inaccessible or intimidating, and helping them understand, navigate and
+          exercise their rights.
         </p>
+        <div className="about-phil__stats" aria-label="Impact numbers">
+          {PHILOSOPHY_STATS.map((stat) => (
+            <article className="about-phil-stat" key={stat.label}>
+              <em className="about-phil-stat__header">{stat.header}</em>
+              <CountUp
+                className="about-phil-stat__value"
+                end={stat.end}
+                suffix={stat.suffix}
+                duration={stat.duration}
+              />
+              <span className="about-phil-stat__label">{stat.label}</span>
+            </article>
+          ))}
+        </div>
         <div className="about-pillars">
           {PILLARS.map((p) => (
             <div className="about-pillar" key={p.title}>
@@ -328,10 +378,11 @@ export default function About() {
       <section className="about-story" id="story">
         <div className="about-story__head">
           <span className="about-kicker">Our story</span>
-          <h2>One thread, two generations</h2>
+          <h2>One thread. Two generations.</h2>
           <p>
-            Long before it became a registered institution, this story began in the life of one man,
-            and the woman who stood beside him. The same partnership carries it today.
+            RKLAF began with a family belief that law carries a responsibility to serve those who need it the
+            most. That belief first took shape in the professional life of one man, was sustained by the woman
+            who stood beside him, and was carried forward by the next generation.
           </p>
         </div>
 
@@ -418,10 +469,9 @@ export default function About() {
           <span className="about-kicker">Inside our office</span>
           <h2>Where the work actually happens</h2>
           <p>
-            A short tour of the space, and the team behind every case we take on. The Foundation is
-            run and managed voluntarily by practicing lawyers and law students, working together so
-            that the poor, deprived, needy, downtrodden and differently-abled can protect their
-            rights.
+            The work continues through people. RKLAF&apos;s work is supported by its trustees, practising
+            advocates, law students, interns, volunteers and collaborators who contribute their time, knowledge
+            and skills to the Foundation&apos;s work.
           </p>
         </Reveal>
         <Reveal as="div" variant="up" delay={80}>
@@ -436,26 +486,22 @@ export default function About() {
       {/* 6 · WHAT WE DO + MISSION */}
       <section className="about-work" id="work">
         <div>
-          <span className="about-kicker">What we do</span>
-          <h2>Legal aid that is preventive, remedial, activist and reformative</h2>
+          <span className="about-kicker">How we work</span>
+          <h2>Legal aid that is preventive, remedial, public interest and reformative.</h2>
           <p>
-            We assist people who would otherwise be unable to afford legal representation or access
-            to the court system, with particular focus on senior citizens, women, children, and other
-            underprivileged and marginalized groups, while generating public awareness on issues that
-            concern everyone.
+            Our work operates across different stages of a person&apos;s relationship with the law.
           </p>
           <div className="about-modes">
             <span>Preventive</span>
             <span>Remedial</span>
-            <span>Activist</span>
+            <span>Public Interest</span>
             <span>Reformative</span>
           </div>
         </div>
         <div>
           <span className="about-kicker">Our mission</span>
           <p className="about-work__mission-lead">
-            Our mission goes beyond winning cases. It is about making sure legal aid actually reaches
-            the people who need it.
+            To make justice more accessible, understandable and meaningful for those who need it most.
           </p>
           <div className="about-aims">
             {AIMS.map((aim) => (
@@ -475,10 +521,11 @@ export default function About() {
       <section className="about-where" id="where">
         <div>
           <span className="about-kicker">Where we work</span>
-          <h2>Two offices, one jurisdiction that keeps widening</h2>
+          <h2>From courtrooms to communities.</h2>
           <p className="about-where__intro">
-            We appear wherever the matter is listed, and we run awareness work far beyond the courts
-            we practice in.
+            RKLAF&apos;s work is not confined to the location of its offices. Alongside litigation, our legal
+            awareness, research and outreach initiatives extend beyond our physical offices and into
+            communities and institutions across India.
           </p>
           <div className="about-soon">
             <span className="about-soon__icon" aria-hidden="true">
@@ -486,7 +533,10 @@ export default function About() {
             </span>
             <div>
               <b>International programme</b>
-              <span>Launching soon, to extend the same support to Indians and families abroad.</span>
+              <span>
+                Coming soon — expanding our reach and creating new avenues of legal aid, assistance and
+                awareness for people and communities who need support, wherever they may be.
+              </span>
             </div>
           </div>
         </div>
@@ -536,16 +586,17 @@ export default function About() {
           </div>
           <div className="about-reach">
             <div>
-              <b>Awareness across India</b>
+              <b>Our vision</b>
               <span>
-                Legal literacy drives, camps and outreach initiatives run nationwide, not only where
-                our offices sit.
+                A society where justice is within reach of everyone — where legal rights are not merely
+                written into law, but are understood, accessible and capable of being meaningfully exercised.
               </span>
             </div>
             <div>
-              <b>Wherever the need is</b>
+              <b>Looking ahead</b>
               <span>
-                Case work is taken up on merit and need, whichever forum it belongs before.
+                Growth for us is not simply about reaching more people. It is about finding new ways to make
+                justice more accessible, more understandable and more responsive to the realities people face.
               </span>
             </div>
           </div>
@@ -555,10 +606,11 @@ export default function About() {
       {/* 8 · CLOSING */}
       <section className="about-closing" id="closing">
         <div className="about-closing__inner">
-          <p className="about-closing__line">One case, one person, and one right restored at a time.</p>
+          <p className="about-closing__line">One case. One person. One right at a time.</p>
           <p className="about-closing__body">
-            Radhey Krishna Legal Aid Foundation continues to grow, extending free legal aid and support
-            to an ever-increasing number of impoverished and underprivileged people.
+            The work continues. From free legal aid and community outreach to research, digital legal literacy
+            and public-interest interventions, the next chapter of RKLAF will continue to build on the same
+            foundation with which it began.
           </p>
           <p className="about-closing__echo">With You. For You. Nyaya Tak.</p>
         </div>

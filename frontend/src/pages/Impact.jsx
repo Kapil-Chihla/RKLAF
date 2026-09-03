@@ -37,152 +37,124 @@ function embedUrl(url) {
 const milestones = [
   {
     year: '2016',
-    title: 'The Trust is registered',
-    body: 'Registered as a Charitable Trust on 25 November, named after Late Sh. R.S. Garg and Late Smt. Krishna Garg.',
-    chip: 'Registered · 25 November 2016',
+    title: 'The Beginning',
+    body: 'RKLAF is registered, giving institutional form to a longstanding commitment to providing legal aid and pro bono assistance to those who need it.',
+    chip: '25 November 2016',
     side: 'up',
   },
   {
     year: '2016',
-    title: "Presence established across Delhi's courts",
-    body: "Our lawyers establish a presence across Delhi's major District Courts as well as the Delhi High Court and the Supreme Court of India.",
+    title: 'Commencement of Legal Representation',
+    body: "Our lawyers begin representing legal aid recipients across Delhi, from the city's District Courts to the Delhi High Court and the Supreme Court of India.",
     side: 'down',
   },
   {
-    year: '2016',
-    title: 'Legal aid inside Tihar Central Jail',
-    body: 'RKLAF begins one of its most significant initiatives: free legal aid for inmates of Tihar Central Jail.',
+    year: '2016–17',
+    title: 'Justice Behind Prison Walls',
+    body: "RKLAF begins providing free legal aid to inmates of Tihar Central Jail, establishing what would become one of the Foundation's continuing areas of work.",
     side: 'up',
   },
   {
     year: '2017',
-    title: 'Compensation secured for families of workers who never came home',
-    body: 'Within about a year of our founding, RKLAF secures the first of six resolutions in a case for the families of Indian workers who died in 2016 while employed at companies in the UAE. Across all six cases, spanning families from Uttar Pradesh to Tamil Nadu, RKLAF helps secure a combined INR 3.5 crore in compensation, entirely free of cost.',
+    title: 'Legal Assistance to the Families of Indian Workers Abroad',
+    body: 'RKLAF secures the first of six resolutions for families of Indian workers who died in 2016 while employed by companies in the Middle East. Across the six matters, involving families from Uttar Pradesh to Tamil Nadu, RKLAF assisted with the documentation and processes required to pursue their claims, entirely free of cost.',
     chip: '21 January 2017',
     side: 'down',
   },
   {
-    year: '2017',
-    title: 'RKLAF proposes the Checklist to Delhi Police',
-    body: 'RKLAF writes to the Government of India and the Commissioner of Delhi Police, proposing that every Investigating Officer be equipped with a Checklist for Police Investigation.',
+    year: '2018',
+    title: 'Strengthening the Investigation Process',
+    body: 'RKLAF develops a General Police Investigation Checklist alongside Specific Checklists for different stages and aspects of investigation, providing Investigating Officers with a structured framework from FIR registration through the filing of a chargesheet. The Delhi Police Legal Cell recognises the checklists as useful and considers them for inclusion in the Basic Training Course of the Delhi Police.',
     side: 'up',
   },
   {
-    year: '2017',
-    title: 'Delhi Police requests our Checklist',
-    body: 'Delhi Police writes back to RKLAF, requesting that the checklist be shared for consideration in officer training.',
-    chip: '18 December 2017',
+    year: '2018',
+    title: 'Recognition as a Delhi Prisons Legal Aid Provider',
+    body: 'RKLAF is officially recognised by Delhi Prisons as an approved legal-aid provider. The recognition has continued to be renewed, including in 2022 and 2023, across Jails 1, 2, 6, 7, 8/9, 10, 14 and 16.',
     side: 'down',
-  },
-  {
-    year: '2018',
-    title: 'Checklist shared with Delhi Police',
-    body: 'RKLAF shares its completed General and Specific Checklists with Delhi Police for consideration in officer training.',
-    chip: '19 February 2018',
-    side: 'up',
-  },
-  {
-    year: '2018',
-    title: 'Checklist recognized by Delhi Police',
-    body: "The Delhi Police Legal Cell confirms receipt of RKLAF's checklist, calls its suggestions useful, and notes it is being analysed for inclusion in the Basic Training Course of Delhi Police — appreciating RKLAF's effort.",
-    chip: '26 March 2018',
-    side: 'down',
-  },
-  {
-    year: '2018',
-    title: 'Recognized by Delhi Prisons',
-    body: 'RKLAF is officially recognized by Delhi Prisons as an approved legal aid provider, a recognition renewed every year since, including 2022 and 2023, across Jails 1, 2, 6, 7, 8/9, 10, 14 & 16.',
-    side: 'up',
   },
   {
     year: '2019',
-    title: 'Ghar Ghar Nyaya, Legal Aid Camps & Community Outreach',
-    body: 'The offline arm of our Know Your Rights campaign begins — door-to-door legal awareness, legal aid camps, and on-ground community outreach, carried out by our interns and volunteers, taking legal literacy and on-the-spot legal aid directly to homes and communities across Delhi.',
+    title: 'Ghar Ghar Nyaya and Community Legal Outreach',
+    body: 'RKLAF takes legal awareness beyond the courtroom and into communities through door to door outreach, legal aid camps and on ground assistance across Delhi. Lawyers, interns and volunteers work directly with communities, bringing legal information and assistance closer to the people who need it.',
     chip: 'Ongoing',
-    side: 'down',
+    side: 'up',
   },
   {
     year: '2020',
     title: 'Landmark advocacy before a Constitution Bench of the Supreme Court',
-    body: 'We appear before a five-judge Constitution Bench of the Supreme Court of India in Mukesh Singh vs. State (Narcotic Branch of Delhi), among the rarest and most significant forms a case can take, reserved for questions of genuine national importance.',
+    body: 'We appear before a five-judge Constitution Bench of the Supreme Court of India in Mukesh Singh vs. State (Narcotic Branch of Delhi), among the rarest and most significant forms a case can take, reflecting the Foundation\'s growing engagement with questions of constitutional and wider public importance.',
     chip: '31 August 2020',
-    side: 'up',
-  },
-  {
-    year: 'Ongoing',
-    title: 'Major court representations',
-    body: "Alongside this landmark matter, RKLAF's litigation record includes 1,315+ vacancies for job-seekers, 50+ recruitment rights cases won at the Delhi High Court, and 100+ bails secured — a sample of the case record, not the full picture, which continues to grow with every matter we take on.",
-    chip: 'Ongoing',
     side: 'down',
   },
   {
     year: '2022',
-    title: 'Branch office opens in Imphal',
-    body: 'RKLAF opens its first office outside Delhi, in Imphal, extending free legal aid into the North East.',
+    title: 'Establishment of the Imphal Office',
+    body: 'RKLAF opens its first office outside Delhi in Imphal, Manipur, extending its work in free legal aid and access to justice to the North East.',
+    side: 'up',
+  },
+  {
+    year: '2023',
+    title: 'Recruitment Rights and Age Relaxation',
+    body: 'In Sachin & Ors. v. CRPF, the Delhi High Court grants a three-year age relaxation to candidates aspiring to recruitment as Head Constable (Ministerial) in the CRPF. The matter had implications extending far beyond the individual candidates before the Court.',
+    chip: '20 January 2023',
+    side: 'down',
+  },
+  {
+    year: '2024',
+    title: 'First Public Interest Litigation',
+    body: "RKLAF files its first Public Interest Litigation before the Delhi High Court, marking an important step in the Foundation's evolution from individual legal representation towards addressing issues affecting wider sections of society.",
     side: 'up',
   },
   {
     year: '2025',
-    title: 'Digital Know Your Rights',
-    body: 'Our Know Your Rights Campaign goes digital — an ongoing stream of practical guides, explainer videos, condensed visual guides, and podcasts published on our social media channels, taking legal literacy beyond in-person sessions.',
+    title: 'Know Your Rights Goes Digital',
+    body: "RKLAF's Know Your Rights campaign expands into digital spaces through practical legal guides, explainer videos, visual resources and podcasts, taking legal literacy beyond in-person sessions and making it accessible wherever people are.",
     chip: 'Ongoing',
     side: 'down',
   },
   {
     year: '2026',
-    title: 'The Safe School Project: our first RTI & social survey initiative',
-    body: "Launched on Republic Day, this two-pronged institutional accountability drive combined 86 RTI applications across 10 States/UTs and 19 districts with offline and digital social surveys reaching 1,700+ students, parents, and teachers, examining whether legal child-safety protections actually reach the schools and communities meant to use them. Findings were compiled into the Foundation's report, The National Child Safety Audit 2026.",
+    title: 'From Awareness to Accountability',
+    body: 'RKLAF launches the Safe School Project, its first RTI and social-survey initiative. The project combines 86 RTI applications across 10 States/UTs and 19 districts with surveys reaching 1,700+ students, parents and teachers, examining whether legal child-safety protections are actually reaching the schools and communities they are intended to protect. The findings are compiled in The National Child Safety Audit 2026.',
     chip: '26 January 2026',
     side: 'up',
   },
   {
     year: '2026',
-    title: '10 years completed',
-    body: "A decade since RKLAF's founding in November 2016 — a decade of free, pro bono legal aid, and the foundation for everything still ahead.",
-    chip: '10 years',
+    title: 'A Decade of RKLAF',
+    body: 'A decade of legal aid, pro-bono representation, public-interest work, legal awareness and community engagement, and a foundation for everything that lies ahead.',
+    chip: 'November 2026',
     side: 'down',
-  },
-  {
-    year: 'Ongoing',
-    title: "People we've reached, across every program",
-    body: '1,000+ individuals and families directly assisted through case representation; 100,000+ people reached and helped through our dedicated programs and free phone consultations; 25,000+ hours of free legal aid dedicated in defense of the underserved; and officially recognized by Delhi Prisons as an approved legal aid provider since 2018.',
-    chip: 'Ongoing',
-    side: 'up',
   },
   {
     year: 'Next',
-    title: 'International programme',
-    body: 'Extending the same model of free legal aid and legal awareness to Indians and their families abroad.',
-    chip: 'Launching soon',
-    side: 'down',
+    title: 'International Legal Aid Programme',
+    body: 'RKLAF is preparing to extend its work further, with a forthcoming international programme aimed at providing legal aid, assistance and awareness to Indians and their families abroad. The work continues—reaching more people, entering new spaces, and creating new avenues for those who need legal aid and assistance.',
+    chip: 'Coming soon',
+    side: 'up',
     soon: true,
   },
 ];
 
 const stats = [
   {
-    label: 'Since 2016',
-    end: 1000,
-    suffix: '+',
-    desc: 'individuals and families directly assisted through case representation',
-  },
-  {
-    label: 'Reach',
-    end: 100000,
-    suffix: '+',
-    desc: 'people reached and helped through our dedicated programs and free phone consultations',
-  },
-  {
     label: 'Pro bono',
     end: 25000,
     suffix: '+',
-    desc: 'hours of free legal aid dedicated in defense of the underserved',
+    desc: 'Hours of Pro Bono Legal Service — time spent researching, preparing, representing and assisting, provided without charge to those seeking legal aid.',
   },
   {
-    label: 'Since 2018',
-    end: 2018,
-    suffix: '',
-    desc: 'officially recognized by Delhi Prisons as an approved legal aid provider',
+    label: 'Assisted',
+    end: 2750,
+    suffix: '+',
+    desc: "Individuals & Families Assisted — people who have received direct assistance through RKLAF's legal representation and casework.",
+  },
+  {
+    label: 'Reached',
+    end: 23100,
+    suffix: '+',
+    desc: 'People Reached Through Our Programmes — legal-aid camps, community outreach, legal awareness initiatives, free consultations and other programmes.',
   },
 ];
 
@@ -280,14 +252,11 @@ export default function Impact() {
         <div className="container impact-hero__inner">
           <Reveal as="div" className="impact-hero__copy" variant="up">
             <span className="impact-dash" aria-hidden="true" />
-            <h1>The Impact</h1>
+            <h1>Our Impact</h1>
             <p>
-              Twelve years, thirty-eight districts, one promise kept: nobody loses a case because they could
-              not afford to fight it. This is what that looks like on the ground.
+              The Work. The Cases. The Difference. Since 2016, RKLAF has worked across courtrooms, prisons,
+              communities and institutions to make justice more accessible. This is our record.
             </p>
-            <a href="#litigation" className="impact-film">
-              <i aria-hidden="true">▶</i> Watch our story
-            </a>
           </Reveal>
         </div>
         <svg className="impact-tear" viewBox="0 0 1240 120" preserveAspectRatio="none" aria-hidden="true">
@@ -315,12 +284,13 @@ export default function Impact() {
           <Reveal as="div" className="impact-mhead" variant="up">
             <div>
               <span className="impact-dash" aria-hidden="true" />
-              <h2>Key Milestones</h2>
+              <h2>Our Journey</h2>
             </div>
             <div>
               <p>
-                From registration in 2016 to a decade of free legal aid — courts, prisons, police reform,
-                community outreach, and the work still ahead.
+                A Decade of Legal Aid, Advocacy and Public Service. What began in November 2016 as an
+                institutional expression of a commitment to legal aid has grown across courtrooms, prisons,
+                communities, schools and institutions.
               </p>
               <p className="impact-mstamp">Registered 25 November 2016</p>
             </div>
@@ -352,7 +322,7 @@ export default function Impact() {
         <div className="container">
           <Reveal as="header" variant="up">
             <span className="impact-dash impact-dash--gold" aria-hidden="true" />
-            <h2>Who we helped, counted honestly</h2>
+            <h2>A Decade of Work. Measured in People, Matters and Hours</h2>
           </Reveal>
           <div className="impact-numgrid">
             {stats.map((s, i) => (
@@ -377,15 +347,18 @@ export default function Impact() {
             <span className="impact-dash" aria-hidden="true" />
             <h2>Impact through litigation</h2>
             <p className="impact-lead">
-              Every matter here sits in a physical register at the office. Three kinds of work: the cases we
-              argue and document in full, the smaller ones we simply put on record, and the ones still running
-              in court.
+              Since 2016, RKLAF has represented matters concerning individual rights to questions of wider
+              public importance and pursued their legal issues across courts and tribunals. This section brings
+              together that record across three categories: matters currently pending before the Hon&apos;ble
+              Courts, cases documented in full, and additional orders preserved as part of RKLAF&apos;s wider
+              legal record. Client confidentiality remains central to our work; certain case details, client
+              identities and documents may be withheld or anonymised.
             </p>
           </Reveal>
 
           <Strand
-            label="Running now · criminal relief sought"
-            note="Pending matters where the prosecution is live. Nothing here is claimed as a win until the order is on paper."
+            label="Ongoing Matters · Cases Pending Before the Hon’ble Courts"
+            note="Matters in which proceedings are currently ongoing and the legal issues remain before the court. RKLAF does not describe a pending matter as a success or outcome until the court has passed an order."
           />
           {runningNow.length ? (
             <div className="impact-live-grid">
@@ -471,8 +444,8 @@ export default function Impact() {
 
           <div id="stories">
             <Strand
-              label="Argued in full"
-              note="The complete record: what walked in, what we filed, what the order finally said."
+              label="Beyond the Order · The Complete Legal Record"
+              note="Some matters illustrate questions of greater legal or public importance and merit a fuller account. These cases are presented from beginning to end — the issue, the proceedings, the legal intervention and the final order."
             />
             {stories.length ? (
               <div className="impact-story-grid">
@@ -524,8 +497,8 @@ export default function Impact() {
           </div>
 
           <Strand
-            label="Also on record"
-            note="Smaller matters that ended without a fight worth retelling. Listed because they still counted for someone."
+            label="Also on Record · Every Matter Has a Place in the Record"
+            note="Not every matter requires a detailed case study. Some are best preserved through the orders and judgments that form their official record. This section provides access to such matters, allowing the work to speak through the documents themselves."
           />
           {alsoOnRecord.length ? (
             <div className="impact-ledger">
@@ -566,10 +539,12 @@ export default function Impact() {
         <div className="container">
           <Reveal as="header" variant="up">
             <span className="impact-dash" aria-hidden="true" />
-            <h2>Press mentions</h2>
+            <h2>Beyond Litigation</h2>
             <p className="impact-intro">
-              Coverage of our filings, camps and orders in national and regional press. Clippings are archived
-              at the office and linked here where the paper keeps an online edition.
+              Taking the work beyond the courtroom. This section brings together podcasts, webinars, panels,
+              interviews and other institutional engagements involving RKLAF, its founder and members, alongside
+              media coverage and instances where the Foundation&apos;s work, research or initiatives have been
+              featured, cited or recognised.
             </p>
           </Reveal>
           {pressMentions.length ? (

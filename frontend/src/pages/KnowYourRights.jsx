@@ -23,28 +23,28 @@ const doors = [
   {
     icon: 'book',
     title: 'Legal Glossary',
-    desc: 'Plain definitions for the words that show up in FIRs, petitions, and orders.',
+    desc: 'START WITH THE LAW. KNOW WHAT IT MEANS. Legal words shouldn\'t stand between people and their rights. Find plain language definitions of the terms that appear in FIRs, petitions, court orders and everyday legal processes.',
     cta: 'Browse A to Z →',
     href: '#glossary',
   },
   {
     icon: 'compass',
     title: 'Practical Guides',
-    desc: 'Short reads for one situation at a time — what to do, who to call, what to bring.',
+    desc: 'KNOW WHAT TO DO. Short, practical guides built around one situation at a time — what your rights are, what steps you can take, what documents you may need, and where to seek help.',
     cta: 'Read a guide →',
     href: '#guides',
   },
   {
     icon: 'film',
     title: 'Explainer Videos',
-    desc: 'Two-minute explainers in Hindi and English, for camps and first-time readers.',
+    desc: 'SEE THE LAW, EXPLAINED. Short, accessible explainers in Hindi and English that break down legal concepts and everyday rights, designed especially for first time readers, community outreach and legal-aid camps.',
     cta: 'Watch now →',
     href: '#videos',
   },
   {
     icon: 'phone',
     title: 'Emergency Contacts',
-    desc: 'Helplines to save before you need them — ours and the national numbers.',
+    desc: 'KNOW WHERE TO TURN. Important helplines and support numbers to keep within reach — from national emergency and assistance services to legal-aid contacts.',
     cta: 'Save numbers →',
     href: '#emergency',
   },
@@ -440,11 +440,13 @@ export default function KnowYourRights() {
           <Reveal as="div" className="kyr-hero__copy" variant="up">
             <span className="kyr-rule" aria-hidden="true" />
             <h1>
-              Rights begin where <em>confusion</em> ends
+              Know the Law. Know Your Rights. Know Your <em>Next Step</em>.
             </h1>
             <p className="kyr-hero__lead">
-              Everything on this page is written for first-time readers: plain words, short reads, real
-              examples. Start anywhere. The law belongs to you.
+              “A right can only be exercised when it is known.” Legal awareness should not begin after a
+              problem has become a crisis. Know Your Rights is RKLAF&apos;s effort to make the law easier to
+              understand, easier to access, and easier to use — so people can recognise when their rights are
+              being affected, and know what steps they can take.
             </p>
             <div className="kyr-hero__actions">
               <a href="#glossary" className="kyr-pill">
@@ -469,7 +471,7 @@ export default function KnowYourRights() {
         <div className="container">
           <Reveal as="header" className="kyr-center-head" variant="up">
             <p className="kyr-label">How this hub helps</p>
-            <h2>Four doors into the law</h2>
+            <h2>Law, Without the Legalese.</h2>
           </Reveal>
 
           <div className="kyr-doors__grid">
@@ -498,10 +500,11 @@ export default function KnowYourRights() {
         <div className="container kyr-glossary__inner">
           <Reveal as="header" className="kyr-glossary__head" variant="up">
             <p className="kyr-label">Legal glossary</p>
-            <h2>Words that stop scaring you once you know them</h2>
+            <h2>Legal words, made easier to understand.</h2>
             <p className="kyr-glossary__lede">
-              Pick a letter. Every term is explained in one line, in the sense it is actually used at a
-              police station or in court.
+              Legal words can be confusing when they appear in an FIR, petition, notice or a court order. This
+              glossary explains them in plain language and in their practical legal context. Pick a letter to
+              begin.
             </p>
           </Reveal>
 
@@ -600,7 +603,7 @@ export default function KnowYourRights() {
         <div className="container">
           <Reveal as="header" className="kyr-guides__head" variant="up">
             <span className="kyr-rule" aria-hidden="true" />
-            <h2>Practical guides, one situation at a time</h2>
+            <h2>When you need to know what to do.</h2>
             <p>Open any handbook to preview, zoom, and download the PDF.</p>
           </Reveal>
 
@@ -691,11 +694,12 @@ export default function KnowYourRights() {
         <section id="decks" className="kyr-decks">
           <div className="container">
             <Reveal as="header" className="kyr-center-head" variant="up">
-              <p className="kyr-label">The same guides, as decks</p>
-              <h2>Made to be shown, not only read</h2>
+              <p className="kyr-label">Practical guides, made visual</p>
+              <h2>The law, in a format you can see and share.</h2>
               <p className="kyr-decks__intro">
-                Short slide decks you can project at camps or send before a hearing — pick a guide
-                below to preview and download the PDF.
+                Our practical legal guides are also available as short, visual slide decks, designed to make
+                legal information easier to follow, present and share at legal aid camps, community sessions,
+                classrooms or before a hearing. Pick a guide below to preview and download the PDF.
               </p>
             </Reveal>
 
@@ -877,7 +881,7 @@ export default function KnowYourRights() {
         <div className="container">
           <Reveal as="header" className="kyr-center-head" variant="up">
             <p className="kyr-label">Explainer videos</p>
-            <h2>Watch it in two minutes</h2>
+            <h2>The law, explained simply.</h2>
           </Reveal>
 
           <div className="kyr-videos__scroll" role="region" aria-label="Explainer videos carousel">
@@ -961,7 +965,7 @@ export default function KnowYourRights() {
         <div className="container">
           <Reveal as="header" variant="up">
             <p className="kyr-label kyr-label--on-dark">Emergency contacts</p>
-            <h2>Save these before you need them</h2>
+            <h2>Know where to turn.</h2>
           </Reveal>
 
           <div className="kyr-emergency__grid">
@@ -997,10 +1001,11 @@ export default function KnowYourRights() {
           <div className="kyr-ask__panel">
             <Reveal as="div" className="kyr-ask__copy" variant="up">
               <span className="kyr-rule" aria-hidden="true" />
-              <h2>Can&apos;t find what you&apos;re looking for?</h2>
+              <h2>Still have a question?</h2>
               <p>
-                Ask us directly. A volunteer reads every message and replies within 24 hours, and your
-                question may become our next guide.
+                Ask us. We&apos;ll help you find your way forward. If you cannot find what you are looking for,
+                reach out to us directly. Our team reviews your questions and helps point you towards the
+                information or assistance you may need. Your question could become someone else&apos;s answer.
               </p>
               <div className="kyr-ask__actions">
                 <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="kyr-pill">

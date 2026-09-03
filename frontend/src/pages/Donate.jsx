@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import CountUp from '../components/motion/CountUp';
 import Reveal from '../components/motion/Reveal';
 import { submitContact } from '../lib/submitContact';
 import { startDonationCheckout } from '../lib/razorpayCheckout';
@@ -9,27 +8,27 @@ import './Donate.css';
 const programs = [
   {
     id: 'needed',
-    title: "Where it's needed most",
-    desc: "We route funds to the month's most urgent cases.",
+    title: 'Provide Legal Aid',
+    desc: 'Support individuals and families who need legal assistance and representation but may not be able to afford it.',
     icon: 'scales',
   },
   {
-    id: 'seniors',
-    title: 'Senior Citizens Desk',
-    desc: 'Elder maintenance and property protection.',
-    icon: 'elder',
-  },
-  {
     id: 'camps',
-    title: 'Legal Aid Camps',
-    desc: 'On-the-spot advice where no lawyer practices.',
+    title: 'Take Legal Aid to Communities',
+    desc: 'Help us conduct legal-aid camps, outreach programmes and initiatives that bring legal assistance closer to people.',
     icon: 'sprout',
   },
   {
     id: 'literacy',
-    title: 'Literacy & RTI Drives',
-    desc: 'Modules, videos and student-led RTI work.',
+    title: 'Make Legal Knowledge Accessible',
+    desc: 'Support our Know Your Rights initiatives, including practical guides, legal explainers and other legal-awareness resources.',
     icon: 'grad',
+  },
+  {
+    id: 'research',
+    title: 'Research & Public Interest Work',
+    desc: 'Help sustain research, RTI initiatives, social surveys and interventions that examine and address wider barriers to justice.',
+    icon: 'elder',
   },
 ];
 
@@ -38,22 +37,26 @@ const amounts = [500, 1500, 5000, 10000];
 const impactCopy = {
   500: (
     <>
-      ₹500 covers <strong>one hour of a village rights camp</strong> — intake desk, forms, and follow-up.
+      Every contribution helps sustain the work — whether it supports a legal-aid matter, a community camp, a
+      research initiative or accessible legal resources.
     </>
   ),
   1500: (
     <>
-      ₹1,500 covers <strong>one complete case filing</strong>, from drafting to court fee.
+      Every contribution helps sustain the work — whether it supports a legal-aid matter, a community camp, a
+      research initiative or accessible legal resources.
     </>
   ),
   5000: (
     <>
-      ₹5,000 funds <strong>three case filings</strong> or a full day of camp counsel.
+      Every contribution helps sustain the work — whether it supports a legal-aid matter, a community camp, a
+      research initiative or accessible legal resources.
     </>
   ),
   10000: (
     <>
-      ₹10,000 sustains <strong>a week of Senior Citizens Desk</strong> casework and hearings.
+      Every contribution helps sustain the work — whether it supports a legal-aid matter, a community camp, a
+      research initiative or accessible legal resources.
     </>
   ),
 };
@@ -268,17 +271,19 @@ export default function Donate() {
             <span className="donate__label-rule" aria-hidden="true" />
             Donate
           </p>
-          <h1>Fund someone&apos;s day in court</h1>
+          <h1>Help Keep Justice Within Reach.</h1>
           <p className="donate__lead">
-            100% of public donations go to casework and camps. Every receipt links to our public
-            ledger.
+            For many people, a legal problem is not only a question of rights, it is also a question of whether
+            they can afford to pursue them. Your contribution helps RKLAF continue providing free legal aid and
+            representation to people who need it, while sustaining the research, legal awareness, community
+            outreach and public-interest initiatives through which we work to make justice more accessible.
           </p>
         </Reveal>
 
         <div className="donate__layout">
           <Reveal as="div" className="donate__main" variant="up" delay={60}>
             <form className="donate__card" onSubmit={onSubmit}>
-              <h2>Choose where your gift goes</h2>
+              <h2>Your Support Helps Us</h2>
               <div className="donate__programs" role="radiogroup" aria-label="Donation programme">
                 {programs.map((p) => (
                   <button
@@ -300,7 +305,8 @@ export default function Donate() {
                 ))}
               </div>
 
-              <h2 className="donate__section-title">Choose an amount</h2>
+              <h2 className="donate__section-title">Every Contribution Helps Sustain the Work.</h2>
+              <p className="donate__amount-hint">Choose an amount that works for you.</p>
               <div className="donate__amounts" role="group" aria-label="Suggested amounts">
                 {amounts.map((amt) => (
                   <button
@@ -420,14 +426,10 @@ export default function Donate() {
               <span className="donate__side-icon" aria-hidden="true">
                 <SideIcon name="receipt" />
               </span>
-              <h3>Where the money went last year</h3>
+              <h3>Support the Work. Strengthen Access to Justice.</h3>
               <p>
-                <CountUp as="span" end={62} suffix="%" duration={1400} className="donate__pct" />{' '}
-                direct casework ·{' '}
-                <CountUp as="span" end={24} suffix="%" duration={1400} className="donate__pct" />{' '}
-                camps and helpline ·{' '}
-                <CountUp as="span" end={14} suffix="%" duration={1400} className="donate__pct" />{' '}
-                literacy hub. Audited statements published every April.
+                RKLAF is built on the belief that the ability to seek justice should not depend on the ability
+                to pay for it. Your contribution helps us keep that belief in practice.
               </p>
             </Reveal>
 
@@ -435,13 +437,12 @@ export default function Donate() {
               <span className="donate__side-icon" aria-hidden="true">
                 <SideIcon name="quote" />
               </span>
-              <h3>A donor&apos;s note</h3>
+              <h3>Donations note</h3>
               <blockquote>
                 <p>
-                  “I sponsored 12 filings last year. RKLAF sent me the outcome of each one. I have
-                  never seen giving feel this concrete.”
+                  Donations are subject to applicable laws, regulations and RKLAF&apos;s donation policies.
+                  Appropriate receipts and tax documentation, where applicable, will be provided.
                 </p>
-                <footer>— Priya S., monthly member since 2023</footer>
               </blockquote>
             </Reveal>
 

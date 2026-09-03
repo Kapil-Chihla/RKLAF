@@ -86,9 +86,17 @@ const snapshotsRow2 = Array.from({ length: 10 }, (_, i) => {
 const introStats = [
   {
     header: 'Since 2016',
-    end: 1000,
+    end: 30000,
     suffix: '+',
-    label: 'Individuals and families directly assisted through case representation',
+    label: 'Hours of Pro Bono Legal Service',
+    icon: 'scales',
+    duration: 2200,
+  },
+  {
+    header: 'Assisted',
+    end: 12750,
+    suffix: '+',
+    label: 'Individuals & Families assisted through direct legal representation and free consultation',
     icon: 'people',
     duration: 2000,
   },
@@ -96,25 +104,10 @@ const introStats = [
     header: 'Reach',
     end: 100000,
     suffix: '+',
-    label: 'People reached and helped through our dedicated programs and free phone consultations',
+    label:
+      'People reached and benefited through our litigation, our jail visits, legal aid camps, outreach and other programmes.',
     icon: 'heart',
     duration: 2200,
-  },
-  {
-    header: 'Pro bono',
-    end: 25000,
-    suffix: '+',
-    label: 'Hours of free legal aid dedicated in defense of the underserved',
-    icon: 'scales',
-    duration: 2200,
-  },
-  {
-    header: 'Since 2018',
-    end: 2018,
-    suffix: '',
-    label: 'Officially recognized by Delhi Prisons as an approved legal aid provider',
-    icon: 'gavel',
-    duration: 1800,
   },
 ];
 
@@ -261,14 +254,16 @@ const expertise = [
 
 const resourceShelves = [
   {
-    title: 'Academics',
-    sub: 'Blogs · Research · Papers',
+    title: 'Academic',
+    sub: 'Research · Publications · Reports',
     icon: 'grad',
     image: academicsHomeImg,
     imageAlt: 'Academics — blogs, research and papers',
     imagePosition: 'down',
-    links: ['Field notes from camps', 'Research & papers', 'Policy briefs'],
-    cta: 'Open Academics',
+    links: [
+      'Research, publications, reports and academic resources for those looking to explore law and public policy in greater depth.',
+    ],
+    cta: 'Explore Academic Resources',
     href: '/academics',
   },
   {
@@ -278,8 +273,10 @@ const resourceShelves = [
     image: knowYourRightsHomeImg,
     imageAlt: 'Know Your Rights — guides, glossary and videos',
     imagePosition: 'down',
-    links: ['Downloadable guides', 'Legal glossary', 'Emergency contacts'],
-    cta: 'Open Rights Desk',
+    links: [
+      'Practical, accessible and simplified legal information explaining the rights and remedies that affect people in everyday life.',
+    ],
+    cta: 'Know Your Rights',
     href: '/know-your-rights',
   },
   {
@@ -288,8 +285,10 @@ const resourceShelves = [
     icon: 'books',
     image: libraryHomeImg,
     imageAlt: 'Library — podcast, films and socials',
-    links: ['Noted judgments', 'Media coverage', 'Annual reports'],
-    cta: 'Open Library',
+    links: [
+      'A growing collection of legal and educational resources bringing together materials for learning, research and public awareness.',
+    ],
+    cta: 'Visit the Library',
     href: '/library',
   },
 ];
@@ -414,10 +413,10 @@ function WhoWeAreFilm() {
           </button>
         ) : null}
       </div>
-      <p className="home-film__caption">The first clinic, told in three minutes.</p>
+      <p className="home-film__caption">With You. For You. Nyaya Tak.</p>
       {!playing ? (
         <aside className="home-film__quote">
-          “No one else’s story ends in the queue.”
+          “Justice must remain within the reach of those who need it, not only those who can afford it.”
         </aside>
       ) : null}
     </div>
@@ -544,14 +543,30 @@ export default function Home() {
         <div className="container home-who__grid">
           <Reveal as="div" className="home-who__copy" variant="up">
             <p className="home-eyebrow">Who we are</p>
-            <h2 className="home-display">A people’s law foundation, since 2016</h2>
+            <h2 className="home-display">
+              “Justice must remain within the reach of those who need it, not only those who can afford it.”
+            </h2>
             <p>
-              Radhey Krishna Legal Aid Foundation removes the barriers that keep justice out of reach —
-              paperwork, fees, fear, and distance from the courthouse.
+              “RKLAF was founded in the loving memory of my parents, Late Sh. R.S. Garg, Advocate, and Late
+              Smt. Krishna Garg, whose lives embodied the belief that law must remain accessible to those who
+              need it most.
             </p>
             <p>
-              We stand with elders, workers, women, and families who cannot afford private counsel —
-              from first consultation to the order that changes a life.
+              Since 2016, RKLAF has carried that belief forward through free legal aid, public-interest
+              litigation, legal literacy, community outreach, research, and institutional interventions. Our
+              work is guided by a simple conviction: access to justice should never depend on one&apos;s
+              ability to pay.
+            </p>
+            <p>
+              We hope this platform helps more people understand their rights, discover that help is
+              available, and join us in the continuing pursuit of justice for all.”
+            </p>
+            <p className="home-who__byline">
+              — Mr. Ajay Garg
+              <br />
+              Advocate, Supreme Court of India &amp; Delhi High Court
+              <br />
+              Founder, Radhey Krishna Legal Aid Foundation
             </p>
             <a href="/about" className="home-text-link">
               Read our full story →
@@ -721,7 +736,12 @@ export default function Home() {
         <div className="container">
           <header className="home-resources__head">
             <p className="home-eyebrow">Resources</p>
-            <h2 className="home-display">Three shelves, always open.</h2>
+            <h2 className="home-display">Knowledge Should Be Accessible.</h2>
+            <p className="home-resources__lede">
+              Legal knowledge should not remain confined to courtrooms, textbooks or legal databases. RKLAF
+              creates and curates resources that help students, researchers, professionals and members of the
+              public understand the law and engage with issues that affect society.
+            </p>
           </header>
 
           <div className="home-resources__grid">
@@ -765,14 +785,17 @@ export default function Home() {
             <svg className="home-cta__mark" viewBox="0 0 64 64" aria-hidden="true">
               <path fill="currentColor" d="M32 10c-6 8-14 14-14 24a14 14 0 0028 0c0-10-8-16-14-24z" opacity=".18" />
             </svg>
-            <h2 className="home-display">Need help now?</h2>
-            <p>Message us on WhatsApp or visit a camp. A volunteer triages every request within 24 hours.</p>
+            <h2 className="home-display">Have a Question? Need Assistance? Let&apos;s Talk.</h2>
+            <p>
+              Whether you are seeking legal assistance, have a question about our programmes, wish to
+              collaborate, or simply want to learn more about RKLAF, we welcome you to reach out.
+            </p>
             <div className="home-cta__actions">
               <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="home-pill home-pill--light">
-                WhatsApp us
+                Request Legal Assistance
               </a>
               <Link to="/contact" className="home-pill home-pill--light">
-                Contact us
+                Contact Us
               </Link>
             </div>
           </article>
@@ -781,29 +804,30 @@ export default function Home() {
             <svg className="home-cta__mark" viewBox="0 0 64 64" aria-hidden="true">
               <path fill="none" stroke="currentColor" strokeWidth="2" d="M18 34c4-8 10-12 14-12s10 4 14 12M22 38h20" opacity=".35" />
             </svg>
-            <h2 className="home-display">Join us</h2>
+            <h2 className="home-display">There Is a Place for You in This Work.</h2>
             <p>
-              Volunteer from 2 hours a week, intern in a 4 to 12 week cohort, or become a member from ₹500 a month.
+              Justice is built by people who choose to contribute their time, knowledge, skills and resources.
+              Volunteer, intern, become a member, or partner with us.
             </p>
-            <Link to="/join-us" className="home-pill home-pill--dark">Get involved →</Link>
+            <Link to="/join-us" className="home-pill home-pill--dark">Find Your Way to Contribute →</Link>
           </article>
         </div>
 
         <div className="container">
           <article id="donate" className="home-donate">
             <div>
-              <h2 className="home-display">Your donation funds someone’s day in court</h2>
+              <h2 className="home-display">Justice Should Never Depend on What Someone Can Afford.</h2>
               <p>
-                ₹1,500 covers one full case filing. ₹500 runs a village rights camp for an hour.
-                Every rupee is accounted for in our{' '}
-                <Link to="/our-work/reports">public ledger</Link>.
+                Your contribution helps RKLAF continue providing free legal aid, legal awareness, community
+                outreach, research and public-interest initiatives to those who need them. A contribution to
+                RKLAF is support for the principle that legal protection should be available to everyone.
               </p>
             </div>
             <Link to="/donate" className="home-pill home-pill--light home-donate__btn">
               <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
                 <path fill="currentColor" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
               </svg>
-              Donate now →
+              Donate to RKLAF →
             </Link>
           </article>
         </div>

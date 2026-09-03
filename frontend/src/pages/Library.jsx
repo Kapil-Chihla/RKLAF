@@ -36,55 +36,59 @@ const audioPlatforms = [{ label: 'Spotify', href: SPOTIFY_PROFILE_URL, icon: '�
 
 const socialShelves = [
   {
-    name: 'LinkedIn',
-    sub: 'Articles & threads',
-    cta: 'Follow →',
-    href: socialLinks.find((s) => s.name === 'LinkedIn')?.href || '#',
-    icon: 'in',
-    tone: 'li',
-    preview: 'Latest post preview',
+    name: 'Instagram',
+    sub: 'Legal explainers, visual stories, campaigns and updates from our work.',
+    cta: 'Follow RKLAF →',
+    href: socialLinks.find((s) => s.name === 'Instagram')?.href || '#',
+    icon: '◎',
+    tone: 'ig',
+    preview: 'Latest reel cover',
     links: [
-      'Why 94% of our maintenance orders get paid',
-      'Annual impact report, the thread',
-      'Hiring: 2026 internship cohort',
+      'Legal explainers & visual stories',
+      'Campaigns and updates from our work',
+      'Rights cards you can share',
     ],
   },
   {
-    name: 'YouTube',
-    sub: 'Films & explainers',
-    cta: 'Subscribe →',
-    href: YOUTUBE_CHANNEL_URL,
-    icon: '▶',
-    tone: 'yt',
-    preview: 'Latest video thumbnail',
-    links: ['The Senior Citizens Act in 8 minutes', 'Your first day in court', 'How legal aid camps work'],
-  },
-  {
     name: 'Facebook',
-    sub: 'Community & camps',
-    cta: 'Follow →',
+    sub: 'Community updates, initiatives, events and accessible legal information.',
+    cta: 'Follow RKLAF →',
     href: socialLinks.find((s) => s.name === 'Facebook')?.href || '#',
     icon: 'f',
     tone: 'fb',
     preview: 'Latest post preview',
     links: [
-      'Camp announcements, district by district',
-      'Live Q&A every second Sunday',
-      'Photo albums from oath day',
+      'Community updates and initiatives',
+      'Events and accessible legal information',
+      'Camp and programme announcements',
     ],
   },
   {
-    name: 'Instagram',
-    sub: 'Reels & rights cards',
-    cta: 'Follow →',
-    href: 'https://www.instagram.com/rklegalaidfoundation',
-    icon: '◎',
-    tone: 'ig',
-    preview: 'Latest reel cover',
+    name: 'LinkedIn',
+    sub: 'Institutional updates, research, collaborations, opportunities and professional developments.',
+    cta: 'Follow RKLAF →',
+    href: socialLinks.find((s) => s.name === 'LinkedIn')?.href || '#',
+    icon: 'in',
+    tone: 'li',
+    preview: 'Latest post preview',
     links: [
-      '3 documents every tenant must keep',
-      'Rights card: pension edition',
-      'Volunteer diaries, week 12',
+      'Institutional updates and research',
+      'Collaborations and opportunities',
+      'Professional developments',
+    ],
+  },
+  {
+    name: 'YouTube',
+    sub: 'Nyaya Tak, legal explainers, conversations, discussions and other video content from RKLAF.',
+    cta: 'Follow RKLAF →',
+    href: YOUTUBE_CHANNEL_URL,
+    icon: '▶',
+    tone: 'yt',
+    preview: 'Latest video thumbnail',
+    links: [
+      'Nyaya Tak conversations',
+      'Legal explainers and discussions',
+      'Video content from RKLAF',
     ],
   },
 ];
@@ -286,15 +290,14 @@ export default function Library() {
       <header className="lib-hero">
         <div className="container lib-hero__grid">
           <Reveal as="div" className="lib-hero__copy" variant="up">
-            <p className="lib-label lib-label--on-dark">Our podcast</p>
+            <p className="lib-label lib-label--on-dark">The Library</p>
             <h1>
-              Nyay Ki Baat,
-              <br />
-              law for <em>curious minds</em>
+              Knowledge. Conversations. <em>Ideas.</em>
             </h1>
             <p className="lib-hero__lead">
-              Plain-spoken conversations on the rights that shape everyday life, recorded with advocates,
-              tribunal members and the people we serve.
+              The law does not exist only in statutes and judgments. The RKLAF Library brings together the
+              conversations, ideas and resources through which we explore that relationship — making legal
+              knowledge more accessible and creating space to question, discuss and engage with the law.
             </p>
             <div className="lib-platforms">
               {platforms.map((p) => (
@@ -389,18 +392,20 @@ export default function Library() {
               </Reveal>
 
               <Reveal as="div" className="lib-welcome__copy" variant="up" delay={40}>
-                <p className="lib-label">Welcome</p>
-                <h2>A library you can listen to</h2>
+                <p className="lib-label">Nyaya Tak</p>
+                <h2>Law, Beyond the Law Books.</h2>
                 <p className="lib-welcome__italic">
-                  Our pick of episodes and posts covering rights, rulings and life around the courts.
+                  Nyaya Tak is RKLAF&apos;s podcast bringing law into conversation with the world around us.
                 </p>
                 <p className="lib-welcome__body">
                   <span className="lib-drop" aria-hidden="true">
-                    P
+                    T
                   </span>
-                  odcasts travel where pamphlets cannot. A daughter in Dubai shares an episode with her mother
-                  in Mathura; a rickshaw driver listens between fares. Every episode is short, in plain Hindi
-                  and English, and ends with one thing you can do this week.
+                  hrough audio and video, Nyaya Tak explores how law intersects with everyday life, society and
+                  the professions and experiences that shape it. We speak with people from different fields,
+                  perspectives and walks of life, asking where the law meets their world. The purpose remains
+                  the same: to ask better questions, bring different perspectives together, and understand where
+                  law meets life.
                 </p>
                 <Link to="/contact" className="lib-pill">
                   Get in touch →
@@ -575,7 +580,12 @@ export default function Library() {
         <div className="container">
           <Reveal as="header" className="lib-socials__head" variant="up">
             <p className="lib-label">Our socials</p>
-            <h2>The same knowledge, wherever you scroll</h2>
+            <h2>The Work, As It Happens.</h2>
+            <p className="lib-socials__lede">
+              Our social platforms are where RKLAF&apos;s work enters the everyday digital space. Follow us for
+              legal awareness, updates from our work, public-interest initiatives, research, campaigns,
+              programmes, opportunities, events and conversations from the Foundation.
+            </p>
           </Reveal>
 
           <div className="lib-socials__grid">

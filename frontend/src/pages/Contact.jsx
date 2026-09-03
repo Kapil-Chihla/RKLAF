@@ -109,10 +109,10 @@ export default function Contact() {
               <span className="contact__label-rule" aria-hidden="true" />
               Contact us
             </p>
-            <h1>Talk to a human, today</h1>
+            <h1>Have a Question? Need Assistance? Let&apos;s Talk.</h1>
             <p className="contact__lead">
-              Every message gets a reply within 24 hours. Urgent matters are routed straight to a duty
-              advocate.
+              Whether you are seeking legal assistance, have a question about our programmes, wish to
+              collaborate, or simply want to learn more about RKLAF, we welcome you to reach out.
             </p>
           </Reveal>
 
@@ -169,9 +169,11 @@ export default function Contact() {
 
         <Reveal as="div" className="contact__form-wrap" variant="up" delay={60}>
           <form className="contact__form" onSubmit={onSubmit}>
-            <h2>Send us your matter</h2>
+            <h2>Legal Assistance &amp; General Enquiries</h2>
             <p className="contact__form-lead">
-              Share only what you&apos;re comfortable with. Everything is confidential. Messages go to{' '}
+              If you or someone you know requires legal assistance, share details of the matter. For questions
+              relating to RKLAF, programmes, internships, volunteering, membership or partnerships, write to us
+              here. Everything is confidential. Messages go to{' '}
               {CONTACT_EMAIL}.
             </p>
 

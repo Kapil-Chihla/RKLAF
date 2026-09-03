@@ -88,6 +88,13 @@
   margin-top: 1.75rem;
 }
 
+.donate__amount-hint {
+  margin: -0.35rem 0 1rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
 .donate__programs {
   display: grid;
   grid-template-columns: 1fr 1fr;

@@ -418,13 +418,67 @@ button.about-vid__play:hover span {
   z-index: 2;
 }
 
+.about-phil__stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem 1.75rem;
+  margin-top: 2.4rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid rgba(216, 201, 174, 0.28);
+  position: relative;
+  z-index: 2;
+}
+
+.about-phil-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.about-phil-stat__header {
+  font-family: var(--au-sans);
+  font-size: 0.72rem;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #c4a97a;
+}
+
+.about-phil-stat__value {
+  font-family: var(--au-serif);
+  font-size: clamp(1.85rem, 3.2vw, 2.55rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: #efe7d6;
+}
+
+.about-phil-stat__label {
+  font-family: var(--au-sans);
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: rgba(239, 231, 214, 0.68);
+  max-width: 28ch;
+}
+
 .about-pillars {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.9rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
   margin-top: 2.75rem;
   position: relative;
   z-index: 2;
+}
+
+@media (max-width: 1100px) {
+  .about-phil__stats {
+    gap: 1.25rem 1.4rem;
+  }
+
+  .about-pillars {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .about-pillar {
@@ -1214,6 +1268,11 @@ button.about-vid__play:hover span {
 
   .about-hero__photo {
     min-height: 0;
+  }
+
+  .about-phil__stats {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
   }
 
   .about-pillars {

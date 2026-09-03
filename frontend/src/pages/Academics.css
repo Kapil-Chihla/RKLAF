@@ -20,49 +20,47 @@
   padding: clamp(2.75rem, 6vw, 4rem) 1.25rem;
 }
 
+.acad-banner__inner {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .acad-banner h1 {
-  margin: 0 0 1rem;
+  margin: 0 0 0.75rem;
   font-family: var(--font-serif);
   font-size: clamp(2.4rem, 5vw, 3.75rem);
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: #fff;
+  text-align: center;
+  width: 100%;
 }
 
-.acad-banner__cats {
-  margin: 0;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 0.15rem 0;
-  font-size: 0.9rem;
+.acad-banner__tagline {
+  margin: 0 auto 0.85rem;
+  max-width: 36rem;
+  font-family: var(--font-serif);
+  font-size: clamp(1.2rem, 2.4vw, 1.55rem);
   font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.72);
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: rgba(255, 255, 255, 0.95);
+  text-align: center;
 }
 
-.acad-banner__cats button {
-  border: 0;
-  background: transparent;
-  color: inherit;
-  font: inherit;
-  letter-spacing: inherit;
-  text-transform: inherit;
-  cursor: pointer;
-  padding: 0.2rem 0.15rem;
-}
-
-.acad-banner__cats button:hover,
-.acad-banner__cats button.is-active {
-  color: #fff;
-}
-
-.acad-banner__dot {
-  opacity: 0.55;
-  padding: 0 0.35rem;
+.acad-banner__lede {
+  margin: 0 auto;
+  max-width: 40rem;
+  font-size: 0.98rem;
+  line-height: 1.65;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: rgba(255, 255, 255, 0.78);
+  text-align: center;
 }
 
 /* ─── Browse ─── */

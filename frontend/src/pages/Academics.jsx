@@ -180,24 +180,12 @@ export default function Academics() {
       <header className="acad-banner">
         <div className="container acad-banner__inner">
           <h1>Academics</h1>
-          <p className="acad-banner__cats">
-            {CATEGORIES.map((c, i) => (
-              <span key={c.id}>
-                {i > 0 ? (
-                  <span className="acad-banner__dot" aria-hidden="true">
-                    {' '}
-                    ·{' '}
-                  </span>
-                ) : null}
-                <button
-                  type="button"
-                  className={active === c.id ? 'is-active' : ''}
-                  onClick={() => setActive(c.id)}
-                >
-                  {c.label}
-                </button>
-              </span>
-            ))}
+          <p className="acad-banner__tagline">Don&apos;t Just Know the Law. Question It.</p>
+          <p className="acad-banner__lede">
+            The RKLAF Academic section is a space for thought, inquiry and critical engagement with the law.
+            Through Blogs, Research, Experiences from the Ground and White Papers, it goes beyond simply
+            understanding or applying the law — asking why the law is what it is, who it serves, where it
+            falls short, and what could be different.
           </p>
         </div>
       </header>
