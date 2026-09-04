@@ -200,27 +200,15 @@
   isolation: isolate;
 }
 
-.home-hero__media,
-.home-hero__video {
+.home-hero__media {
   grid-area: 1 / 1;
   position: relative;
   z-index: 2;
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  object-position: center center;
   background: var(--hero-plate);
-  /*
-   * New hero clip (IMG_9334) is live footage, not pre-drawn ink.
-   * Push it toward a pencil/ink plate, then multiply so paper shows through
-   * the same way the old sketch video did.
-   */
-  filter: grayscale(1) contrast(1.95) brightness(1.42);
-  mix-blend-mode: multiply;
-  pointer-events: none;
-  user-select: none;
-  -webkit-user-select: none;
+  isolation: auto;
   /* Punch sketch ink out under the tagline — size from --hero-mask-* */
   -webkit-mask-image: radial-gradient(
     ellipse var(--hero-mask-w) var(--hero-mask-h) at 54% 66%,
@@ -236,6 +224,52 @@
     #000 88%,
     #000 100%
   );
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.home-hero__video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center center;
+  background: transparent;
+  /*
+   * Live footage → pencil/ink plate. Multiply lives on the wrapper so
+   * Chrome keeps the paper knock-out; Safari gets a separate path below.
+   */
+  filter: grayscale(1) contrast(1.95) brightness(1.42);
+  mix-blend-mode: normal;
+  pointer-events: none;
+}
+
+/* Safari / iOS: filter+multiply on <video> vanishes; native play overlay appears */
+.home-hero__media--safari {
+  mix-blend-mode: normal;
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+.home-hero__media--safari .home-hero__video {
+  /* Opaque sketch plate that still reads as ink on paper without multiply */
+  filter: grayscale(1) contrast(1.85) brightness(1.2);
+  opacity: 0.92;
+  background: var(--hero-plate);
+}
+
+.home-hero__video::-webkit-media-controls,
+.home-hero__video::-webkit-media-controls-enclosure,
+.home-hero__video::-webkit-media-controls-start-playback-button,
+.home-hero__video::-webkit-media-controls-overlay-play-button {
+  display: none !important;
+  -webkit-appearance: none !important;
+  opacity: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+  pointer-events: none !important;
 }
 
 /* Gap between left group and suited figure — same % on every screen */
@@ -1390,14 +1424,22 @@ a.home-story--link:hover .home-story__more {
   }
 
   .home-hero__media,
-  .home-hero__video {
+  .home-hero__media--safari {
     background: #ffffff;
     mix-blend-mode: normal;
-    /* Sketch look without multiply (multiply washed out on small screens) */
-    filter: grayscale(1) contrast(1.7) brightness(1.12);
-    /* Remove soft mask hole — it read as a blur smudge on mobile */
     -webkit-mask-image: none;
     mask-image: none;
+  }
+
+  .home-hero__video {
+    background: #ffffff;
+    /* Sketch look without multiply (multiply washed out on small screens) */
+    filter: grayscale(1) contrast(1.7) brightness(1.12);
+  }
+
+  .home-hero__media--safari .home-hero__video {
+    filter: grayscale(1) contrast(1.7) brightness(1.12);
+    opacity: 1;
   }
 
   .home-hero__tagline {
