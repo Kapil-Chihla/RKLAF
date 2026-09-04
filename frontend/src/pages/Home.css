@@ -211,8 +211,12 @@
   object-fit: contain;
   object-position: center center;
   background: var(--hero-plate);
-  /* Mild lift only — high brightness looked shiny on phone screens */
-  filter: brightness(1.28) contrast(1.12);
+  /*
+   * New hero clip (IMG_9334) is live footage, not pre-drawn ink.
+   * Push it toward a pencil/ink plate, then multiply so paper shows through
+   * the same way the old sketch video did.
+   */
+  filter: grayscale(1) contrast(1.95) brightness(1.42);
   mix-blend-mode: multiply;
   pointer-events: none;
   user-select: none;
@@ -1389,8 +1393,8 @@ a.home-story--link:hover .home-story__more {
   .home-hero__video {
     background: #ffffff;
     mix-blend-mode: normal;
-    /* Lift baked-in beige toward white so plate ≠ muddy on phones */
-    filter: brightness(1.52) saturate(0.72) contrast(1.06);
+    /* Sketch look without multiply (multiply washed out on small screens) */
+    filter: grayscale(1) contrast(1.7) brightness(1.12);
     /* Remove soft mask hole — it read as a blur smudge on mobile */
     -webkit-mask-image: none;
     mask-image: none;
