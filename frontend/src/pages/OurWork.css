@@ -230,6 +230,11 @@
   grid-template-columns: minmax(140px, 0.55fr) minmax(0, 1.2fr);
 }
 
+.work-prog__copy {
+  min-width: 0;
+  text-align: start;
+}
+
 .work-prog--flip .work-prog__copy {
   order: 2;
 }
@@ -273,6 +278,8 @@
   font-size: 1.1rem;
   line-height: 1.7;
   color: var(--muted);
+  text-align: start;
+  hyphens: none;
 }
 
 .work-prog__desc:last-child {

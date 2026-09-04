@@ -477,10 +477,25 @@
   color: var(--muted);
   font-size: 1.15rem;
   line-height: 1.75;
-  max-width: 34rem;
+  max-width: none;
   text-align: justify;
   text-justify: inter-word;
-  hyphens: auto;
+  hyphens: none;
+}
+
+.home-who__quote {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(1.15rem, 2vw, 1.35rem);
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.45;
+  margin: 0 0 1.35rem;
+  max-width: none;
+  border-left: 2px solid var(--accent, #8a6a3c);
+  padding-left: 1rem;
+  text-align: start;
+  hyphens: none;
 }
 
 .home-who__byline {
@@ -1128,6 +1143,12 @@ a.home-story--link:hover .home-story__more {
   align-items: flex-start;
 }
 
+.home-cta .home-display {
+  max-width: none;
+  width: 100%;
+  padding-right: 3.5rem;
+}
+
 .home-cta__mark {
   position: absolute;
   top: 1rem;
@@ -1145,11 +1166,13 @@ a.home-story--link:hover .home-story__more {
 .home-cta--tan { background: var(--tan); color: var(--charcoal); }
 
 .home-cta p {
-  max-width: 28rem;
+  max-width: none;
+  width: 100%;
   margin: 0 0 1.25rem;
   font-size: 1.1rem;
   line-height: 1.6;
   opacity: 0.9;
+  hyphens: none;
 }
 
 .home-cta__actions {
@@ -1160,18 +1183,26 @@ a.home-story--link:hover .home-story__more {
 }
 
 .home-donate {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: space-between;
-  gap: 1.5rem;
+  gap: clamp(1.25rem, 3vw, 2.5rem);
   padding: clamp(1.5rem, 3vw, 2.1rem) clamp(1.4rem, 3vw, 2.25rem);
   border-radius: var(--radius);
   background: var(--olive);
   color: #fff;
 }
 
+.home-donate > div {
+  min-width: 0;
+}
+
 .home-donate .home-display,
 .home-donate p { color: #fff; }
+
+.home-donate .home-display {
+  max-width: none;
+}
 
 .home-donate p a {
   color: #fff;
@@ -1185,10 +1216,11 @@ a.home-story--link:hover .home-story__more {
 
 .home-donate p {
   margin: 0;
-  max-width: 40rem;
+  max-width: none;
   opacity: 0.9;
   font-size: 1.05rem;
   line-height: 1.55;
+  hyphens: none;
 }
 
 .home-donate__btn { flex-shrink: 0; }
@@ -1422,7 +1454,7 @@ a.home-story--link:hover .home-story__more {
   }
 
   .home-donate {
-    flex-direction: column;
+    grid-template-columns: 1fr;
     align-items: flex-start;
   }
 }

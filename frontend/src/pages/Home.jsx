@@ -543,9 +543,9 @@ export default function Home() {
         <div className="container home-who__grid">
           <Reveal as="div" className="home-who__copy" variant="up">
             <p className="home-eyebrow">Who we are</p>
-            <h2 className="home-display">
+            <blockquote className="home-who__quote">
               “Justice must remain within the reach of those who need it, not only those who can afford it.”
-            </h2>
+            </blockquote>
             <p>
               “RKLAF was founded in the loving memory of my parents, Late Sh. R.S. Garg, Advocate, and Late
               Smt. Krishna Garg, whose lives embodied the belief that law must remain accessible to those who
@@ -562,7 +562,7 @@ export default function Home() {
               available, and join us in the continuing pursuit of justice for all.”
             </p>
             <p className="home-who__byline">
-              — Mr. Ajay Garg
+              Mr. Ajay Garg
               <br />
               Advocate, Supreme Court of India &amp; Delhi High Court
               <br />

@@ -234,26 +234,84 @@
   list-style: none;
   margin: 0 0 1.15rem;
   padding: 0;
+  display: grid;
+  gap: 0.4rem;
+  counter-reset: join-point;
 }
 
 .join-card__list li {
-  padding: 0.55rem 0;
-  border-top: 1px solid var(--line);
-  font-size: 1.05rem;
-  line-height: 1.45;
+  counter-increment: join-point;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.85rem minmax(0, 1fr);
+  align-items: start;
+  gap: 0.7rem;
+  margin: 0;
+  padding: 0.62rem 0.75rem 0.62rem 0.65rem;
+  border: 1px solid rgba(43, 34, 26, 0.1);
+  border-radius: 10px;
+  background:
+    linear-gradient(135deg, rgba(176, 138, 60, 0.07), transparent 42%),
+    rgba(255, 255, 255, 0.55);
+  font-size: 1.02rem;
+  line-height: 1.4;
   color: inherit;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.join-card__list li::before {
+  content: counter(join-point, decimal-leading-zero);
+  font-family: var(--font-serif);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  line-height: 1.35;
+  padding-top: 0.12rem;
+}
+
+.join-card__list li::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55rem;
+  bottom: 0.55rem;
+  width: 2px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--accent), rgba(176, 138, 60, 0.15));
+  opacity: 0.85;
+}
+
+.join-card__list li:hover {
+  transform: translateX(2px);
+  border-color: rgba(176, 138, 60, 0.35);
+  box-shadow: 0 6px 16px rgba(43, 34, 26, 0.06);
 }
 
 .join-card--dark .join-card__list li {
-  border-top-color: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.12);
+  background:
+    linear-gradient(135deg, rgba(196, 169, 122, 0.14), transparent 45%),
+    rgba(255, 255, 255, 0.04);
 }
 
-.join-card__list li:last-child {
-  border-bottom: 1px solid var(--line);
+.join-card--dark .join-card__list li::before {
+  color: #d4b87a;
 }
 
-.join-card--dark .join-card__list li:last-child {
-  border-bottom-color: rgba(255, 255, 255, 0.14);
+.join-card--dark .join-card__list li::after {
+  background: linear-gradient(180deg, #d4b87a, rgba(212, 184, 122, 0.12));
+}
+
+.join-card--dark .join-card__list li:hover {
+  border-color: rgba(212, 184, 122, 0.4);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+}
+
+.join-card--tan .join-card__list li {
+  background:
+    linear-gradient(135deg, rgba(176, 138, 60, 0.1), transparent 42%),
+    rgba(255, 255, 255, 0.35);
 }
 
 .join-card__know {

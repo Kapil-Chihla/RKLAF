@@ -225,7 +225,7 @@ function TrackCard({ track }) {
       <p className="join-card__section">{track.listTitle}</p>
       <ul className="join-card__list">
         {track.list.map((item) => (
-          <li key={item}>— {item}</li>
+          <li key={item}>{item}</li>
         ))}
       </ul>
 

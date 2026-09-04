@@ -34,7 +34,7 @@ const areas = [
     num: '03',
     stripe: 'brown',
     meta: 'Flagship · Prison Legal Aid · Since 2018',
-    title: 'Legal Aid Program — Delhi Prisons',
+    title: 'Legal Aid Program · Delhi Prisons',
     paragraphs: [
       'In-jail legal consultations, full case representation, and rights awareness for undertrials and inmates, twice a week, inside the jail.',
     ],
@@ -127,7 +127,7 @@ export default function OurWork() {
           </div>
 
           <Reveal as="p" className="work-areas__note" variant="up">
-            These areas work together, not in isolation — our Delhi Prisons program, for instance,
+            These areas work together, not in isolation. Our Delhi Prisons program, for instance,
             combines case representation with legal awareness and institutional partnership all at once.
             Explore each programme on{' '}
             <Link to="/our-work/programmes">Programmes &amp; Initiatives</Link> for the full picture.

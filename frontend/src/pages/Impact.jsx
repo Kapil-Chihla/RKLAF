@@ -130,7 +130,7 @@ const milestones = [
   {
     year: 'Next',
     title: 'International Legal Aid Programme',
-    body: 'RKLAF is preparing to extend its work further, with a forthcoming international programme aimed at providing legal aid, assistance and awareness to Indians and their families abroad. The work continues—reaching more people, entering new spaces, and creating new avenues for those who need legal aid and assistance.',
+    body: 'RKLAF is preparing to extend its work further, with a forthcoming international programme aimed at providing legal aid, assistance and awareness to Indians and their families abroad. The work continues, reaching more people, entering new spaces, and creating new avenues for those who need legal aid and assistance.',
     chip: 'Coming soon',
     side: 'up',
     soon: true,
@@ -140,21 +140,21 @@ const milestones = [
 const stats = [
   {
     label: 'Pro bono',
-    end: 25000,
+    end: 30000,
     suffix: '+',
-    desc: 'Hours of Pro Bono Legal Service — time spent researching, preparing, representing and assisting, provided without charge to those seeking legal aid.',
+    desc: 'Hours of Pro Bono Legal Service. Time spent researching, preparing, representing and assisting, provided without charge to those seeking legal aid.',
   },
   {
     label: 'Assisted',
-    end: 2750,
+    end: 12750,
     suffix: '+',
-    desc: "Individuals & Families Assisted — people who have received direct assistance through RKLAF's legal representation and casework.",
+    desc: 'Individuals & Families Assisted. People who have received direct assistance through RKLAF’s legal representation, casework and free consultation.',
   },
   {
     label: 'Reached',
-    end: 23100,
+    end: 100000,
     suffix: '+',
-    desc: 'People Reached Through Our Programmes — legal-aid camps, community outreach, legal awareness initiatives, free consultations and other programmes.',
+    desc: 'People reached and benefited through our litigation, our jail visits, legal aid camps, outreach and other programmes.',
   },
 ];
 
@@ -348,18 +348,34 @@ export default function Impact() {
             <h2>Impact through litigation</h2>
             <p className="impact-lead">
               Since 2016, RKLAF has represented matters concerning individual rights to questions of wider
-              public importance and pursued their legal issues across courts and tribunals. This section brings
-              together that record across three categories: matters currently pending before the Hon&apos;ble
-              Courts, cases documented in full, and additional orders preserved as part of RKLAF&apos;s wider
-              legal record. Client confidentiality remains central to our work; certain case details, client
-              identities and documents may be withheld or anonymised.
+              public importance and pursued their legal issues across courts and tribunals.
+            </p>
+            <p className="impact-lead">
+              This section brings together that record across three categories: matters currently pending
+              before the Hon&apos;ble Courts, cases documented in full, and additional orders preserved as
+              part of RKLAF&apos;s wider legal record.
+            </p>
+            <p className="impact-lead">
+              Some matters are still ongoing. Some have changed the course of an individual&apos;s life.
+              Others are recorded simply because they mattered.
+            </p>
+            <p className="impact-aside-note">
+              <strong>Confidentiality &amp; Publication Note.</strong> Client confidentiality remains central
+              to our work. Therefore, certain case details, client identities and documents may be withheld or
+              anonymised. Where a matter is not in the public domain, names may be changed and identifying
+              details omitted. Court orders and judgments are reproduced or linked only where they are publicly
+              available or where publication is otherwise appropriate.
             </p>
           </Reveal>
 
           <Strand
             label="Ongoing Matters · Cases Pending Before the Hon’ble Courts"
-            note="Matters in which proceedings are currently ongoing and the legal issues remain before the court. RKLAF does not describe a pending matter as a success or outcome until the court has passed an order."
+            note="Matters in which proceedings are currently ongoing and the legal issues remain before the court."
           />
+          <p className="impact-aside-note impact-aside-note--tight">
+            RKLAF does not describe a pending matter as a success or outcome until the court has passed an
+            order.
+          </p>
           {runningNow.length ? (
             <div className="impact-live-grid">
               {runningNow.map((item, i) => (
@@ -445,8 +461,12 @@ export default function Impact() {
           <div id="stories">
             <Strand
               label="Beyond the Order · The Complete Legal Record"
-              note="Some matters illustrate questions of greater legal or public importance and merit a fuller account. These cases are presented from beginning to end — the issue, the proceedings, the legal intervention and the final order."
+              note="Some matters illustrate questions of greater legal or public importance and merit a fuller account. These cases are presented from beginning to end, the issue, the proceedings, the legal intervention and the final order, to show not only the outcome, but the legal journey that led to it."
             />
+            <p className="impact-aside-note impact-aside-note--tight">
+              Client identities are withheld unless disclosure has been expressly authorised or the legal
+              record is under public domain.
+            </p>
             {stories.length ? (
               <div className="impact-story-grid">
                 {stories.map((story, i) => {
@@ -540,11 +560,18 @@ export default function Impact() {
           <Reveal as="header" variant="up">
             <span className="impact-dash" aria-hidden="true" />
             <h2>Beyond Litigation</h2>
+            <p className="impact-kicker">Taking the work beyond the courtroom.</p>
             <p className="impact-intro">
-              Taking the work beyond the courtroom. This section brings together podcasts, webinars, panels,
-              interviews and other institutional engagements involving RKLAF, its founder and members, alongside
-              media coverage and instances where the Foundation&apos;s work, research or initiatives have been
-              featured, cited or recognised.
+              RKLAF&apos;s work extends beyond litigation into public conversations, professional forums and
+              wider communities.
+            </p>
+            <p className="impact-intro">
+              This section brings together podcasts, webinars, panels, interviews and other institutional
+              engagements involving RKLAF, its founder and members, alongside media coverage and instances where
+              the Foundation&apos;s work, research or initiatives have been featured, cited or recognised.
+            </p>
+            <p className="impact-intro impact-intro--cue">
+              Explore our public engagements, features and appearances.
             </p>
           </Reveal>
           {pressMentions.length ? (

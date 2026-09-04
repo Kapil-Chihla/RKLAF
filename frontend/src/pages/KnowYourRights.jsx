@@ -32,7 +32,7 @@ const doors = [
     icon: 'compass',
     title: 'Practical Guides',
     tagline: 'KNOW WHAT TO DO.',
-    desc: 'Short, practical guides built around one situation at a time — what your rights are, what steps you can take, what documents you may need, and where to seek help.',
+    desc: 'Short, practical guides built around one situation at a time: what your rights are, what steps you can take, what documents you may need, and where to seek help.',
     cta: 'Read a guide →',
     href: '#guides',
   },
@@ -48,7 +48,7 @@ const doors = [
     icon: 'phone',
     title: 'Emergency Contacts',
     tagline: 'KNOW WHERE TO TURN.',
-    desc: 'Important helplines and support numbers to keep within reach — from national emergency and assistance services to legal-aid contacts.',
+    desc: 'Important helplines and support numbers to keep within reach, from national emergency and assistance services to legal-aid contacts.',
     cta: 'Save numbers →',
     href: '#emergency',
   },
@@ -450,11 +450,13 @@ export default function KnowYourRights() {
                 Know Your <em>Next Step</em>
               </span>
             </h1>
+            <blockquote className="kyr-hero__quote">
+              “A right can only be exercised when it is known.”
+            </blockquote>
             <p className="kyr-hero__lead">
-              “A right can only be exercised when it is known.” Legal awareness should not begin after a
-              problem has become a crisis. Know Your Rights is RKLAF&apos;s effort to make the law easier to
-              understand, easier to access, and easier to use — so people can recognise when their rights are
-              being affected, and know what steps they can take.
+              Legal awareness should not begin after a problem has become a crisis. Know Your Rights is
+              RKLAF&apos;s effort to make the law easier to understand, easier to access, and easier to use, so
+              people can recognise when their rights are being affected, and know what steps they can take.
             </p>
             <div className="kyr-hero__actions">
               <a href="#glossary" className="kyr-pill">
@@ -615,7 +617,7 @@ export default function KnowYourRights() {
             <p className="kyr-label">Practical Guides</p>
             <h2>When you need to know what to do.</h2>
             <p>
-              Each guide takes one legal situation at a time and turns it into clear, practical steps — what
+              Each guide takes one legal situation at a time and turns it into clear, practical steps: what
               you need to know, what you can do, and where to seek help. Explore a guide to preview and
               download the PDF.
             </p>
@@ -986,7 +988,7 @@ export default function KnowYourRights() {
             <p className="kyr-label kyr-label--on-dark">Emergency contacts</p>
             <h2 className="kyr-section-tagline kyr-section-tagline--on-dark">KNOW WHERE TO TURN.</h2>
             <p className="kyr-emergency__lede">
-              Important helplines and support numbers to keep within reach — from national emergency and
+              Important helplines and support numbers to keep within reach, from national emergency and
               assistance services to legal-aid contacts.
             </p>
           </Reveal>

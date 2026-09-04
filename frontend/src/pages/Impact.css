@@ -176,8 +176,8 @@
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 36px;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(1.25rem, 3vw, 2.25rem);
   align-items: end;
 }
 
@@ -196,9 +196,8 @@
   color: var(--soft);
   max-width: 52ch;
   line-height: 1.55;
-  text-align: justify;
-  text-justify: inter-word;
-  hyphens: auto;
+  text-align: start;
+  hyphens: none;
 }
 
 .impact-mstamp {
@@ -216,12 +215,13 @@
 .impact-hrail {
   position: relative;
   z-index: 2;
-  margin-top: 34px;
+  margin-top: clamp(1.5rem, 3vw, 2.15rem);
   overflow-x: auto;
   /* padding absorbs hover lift + card chips so nothing clips at the edges */
   padding-block: 10px 18px;
   scroll-snap-type: x proximity;
   scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
 }
 
 .impact-hrail::-webkit-scrollbar {
@@ -236,10 +236,14 @@
 .impact-htrack {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: minmax(280px, 300px);
+  grid-auto-columns: clamp(15.75rem, 78vw, 18.5rem);
+  gap: 0;
   position: relative;
   min-width: min-content;
   align-items: stretch;
+  /* Shared row heights so every card box matches across the rail */
+  grid-template-rows: minmax(11.5rem, 1fr) 2.5rem minmax(11.5rem, 1fr);
+  min-height: clamp(26rem, 58vh, 32rem);
 }
 
 .impact-htrack::before {
@@ -247,18 +251,19 @@
   position: absolute;
   left: 0;
   right: 0;
-  top: calc(50% - 1px);
+  top: 50%;
+  transform: translateY(-50%);
   border-top: 1.5px dashed #b49b72;
   opacity: 0.9;
 }
 
 .impact-hitem {
   display: grid;
-  /* Equal flexible bands keep the dashed spine centered while cards grow with text */
-  grid-template-rows: 1fr 40px 1fr;
-  min-height: 380px;
+  grid-template-rows: subgrid;
+  grid-row: 1 / -1;
+  min-height: 0;
   height: 100%;
-  padding: 0 12px;
+  padding: 0 clamp(0.55rem, 1.5vw, 0.75rem);
   scroll-snap-align: center;
   position: relative;
   align-self: stretch;
@@ -268,10 +273,15 @@
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: 14px;
-  padding: 15px 17px;
-  transition: 0.25s;
-  /* Full readable copy — never clip titles, body, or chips */
-  overflow: visible;
+  padding: clamp(0.85rem, 2vw, 1.05rem) clamp(0.9rem, 2vw, 1.1rem);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-height: 0;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .impact-hcard:hover {
@@ -281,48 +291,69 @@
 
 .impact-hitem.up .impact-hcard {
   grid-row: 1;
-  align-self: end;
+  align-self: stretch;
 }
 
 .impact-hitem.down .impact-hcard {
   grid-row: 3;
-  align-self: start;
+  align-self: stretch;
 }
 
 .impact-hcard b {
   display: block;
   font-family: var(--font-serif);
-  font-size: 1.1rem;
+  font-size: clamp(1rem, 1.6vw, 1.1rem);
   font-weight: 600;
   line-height: 1.3;
   color: var(--ink);
+  flex: 0 0 auto;
+  text-wrap: balance;
 }
 
 .impact-hcard span {
   display: block;
-  font-size: 0.9rem;
+  font-size: clamp(0.84rem, 1.35vw, 0.92rem);
   color: var(--soft);
-  margin-top: 6px;
-  line-height: 1.45;
+  margin-top: 0;
+  line-height: 1.5;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  text-align: start;
+  hyphens: none;
+  padding-right: 0.15rem;
+}
+
+.impact-hcard span::-webkit-scrollbar {
+  width: 4px;
+}
+
+.impact-hcard span::-webkit-scrollbar-thumb {
+  background: rgba(140, 111, 78, 0.35);
+  border-radius: 999px;
 }
 
 .impact-hcard em {
   font-style: normal;
   display: inline-block;
-  margin-top: 9px;
-  font-size: 0.85rem;
+  margin-top: auto;
+  font-size: 0.78rem;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--gold);
   background: var(--sand);
   border: 1px solid var(--line);
   border-radius: 999px;
-  padding: 4px 9px;
+  padding: 0.3rem 0.65rem;
   max-width: 100%;
   white-space: normal;
   overflow-wrap: break-word;
   line-height: 1.35;
+  flex: 0 0 auto;
+  align-self: flex-start;
 }
 
 .impact-hnode {
@@ -352,7 +383,7 @@
 .impact-hyear {
   position: absolute;
   font-family: var(--font-serif);
-  font-size: 1.05rem;
+  font-size: clamp(0.95rem, 1.5vw, 1.05rem);
   font-weight: 600;
   color: var(--gold);
   white-space: nowrap;
@@ -391,6 +422,19 @@
   letter-spacing: 0.1em;
   color: var(--taupe);
   margin: 0;
+}
+
+@supports not (grid-template-rows: subgrid) {
+  .impact-htrack {
+    grid-template-rows: none;
+    min-height: 0;
+  }
+
+  .impact-hitem {
+    grid-template-rows: minmax(11.5rem, 1fr) 2.5rem minmax(11.5rem, 1fr);
+    grid-row: auto;
+    min-height: clamp(26rem, 58vh, 32rem);
+  }
 }
 
 /* ─── Numbers ─── */
@@ -530,7 +574,37 @@
   line-height: 1.6;
   text-align: justify;
   text-justify: inter-word;
-  hyphens: auto;
+  hyphens: none;
+}
+
+.impact-aside-note {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.02rem;
+  color: var(--taupe);
+  max-width: 58ch;
+  margin: 1.15rem 0 0;
+  line-height: 1.55;
+  text-align: start;
+  hyphens: none;
+}
+
+.impact-aside-note strong {
+  font-style: normal;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--brown);
+  display: block;
+  margin-bottom: 0.35rem;
+}
+
+.impact-aside-note--tight {
+  margin-top: 0.35rem;
+  margin-bottom: 1rem;
+  max-width: 52ch;
 }
 
 .impact-strand {
@@ -1023,12 +1097,28 @@ a.impact-lrow:hover {
 .impact-intro {
   font-size: 1rem;
   color: var(--soft);
-  max-width: 52ch;
+  max-width: 58ch;
   margin: 10px 0 0;
   line-height: 1.55;
   text-align: justify;
   text-justify: inter-word;
-  hyphens: auto;
+  hyphens: none;
+}
+
+.impact-kicker {
+  margin: 0.65rem 0 0;
+  font-family: var(--font-serif);
+  font-size: clamp(1.15rem, 2vw, 1.35rem);
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.35;
+  max-width: 40ch;
+}
+
+.impact-intro--cue {
+  font-style: italic;
+  text-align: start;
+  color: var(--taupe);
 }
 
 .impact-press-grid {
@@ -1189,8 +1279,10 @@ a.impact-clip:hover {
     align-items: start;
   }
 
-  .impact-hitem {
-    min-height: 420px;
+  .impact-htrack {
+    grid-auto-columns: min(17.25rem, 82vw);
+    min-height: clamp(24rem, 64vh, 30rem);
+    grid-template-rows: minmax(10.5rem, 1fr) 2.5rem minmax(10.5rem, 1fr);
   }
 
   .impact-numgrid {
@@ -1246,6 +1338,19 @@ a.impact-clip:hover {
 }
 
 @media (max-width: 560px) {
+  .impact-htrack {
+    grid-auto-columns: min(16.25rem, 86vw);
+    min-height: clamp(23rem, 68vh, 28rem);
+    grid-template-rows: minmax(9.75rem, 1fr) 2.35rem minmax(9.75rem, 1fr);
+  }
+
+  @supports not (grid-template-rows: subgrid) {
+    .impact-hitem {
+      min-height: clamp(23rem, 68vh, 28rem);
+      grid-template-rows: minmax(9.75rem, 1fr) 2.35rem minmax(9.75rem, 1fr);
+    }
+  }
+
   .impact-numgrid,
   .impact-story-grid,
   .impact-live-grid,

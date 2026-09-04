@@ -37,25 +37,25 @@ const amounts = [500, 1500, 5000, 10000];
 const impactCopy = {
   500: (
     <>
-      Every contribution helps sustain the work — whether it supports a legal-aid matter, a community camp, a
+      Every contribution helps sustain the work, whether it supports a legal-aid matter, a community camp, a
       research initiative or accessible legal resources.
     </>
   ),
   1500: (
     <>
-      Every contribution helps sustain the work — whether it supports a legal-aid matter, a community camp, a
+      Every contribution helps sustain the work, whether it supports a legal-aid matter, a community camp, a
       research initiative or accessible legal resources.
     </>
   ),
   5000: (
     <>
-      Every contribution helps sustain the work — whether it supports a legal-aid matter, a community camp, a
+      Every contribution helps sustain the work, whether it supports a legal-aid matter, a community camp, a
       research initiative or accessible legal resources.
     </>
   ),
   10000: (
     <>
-      Every contribution helps sustain the work — whether it supports a legal-aid matter, a community camp, a
+      Every contribution helps sustain the work, whether it supports a legal-aid matter, a community camp, a
       research initiative or accessible legal resources.
     </>
   ),

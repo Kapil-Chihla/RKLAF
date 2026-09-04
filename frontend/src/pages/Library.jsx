@@ -37,59 +37,39 @@ const audioPlatforms = [{ label: 'Spotify', href: SPOTIFY_PROFILE_URL, icon: '�
 const socialShelves = [
   {
     name: 'Instagram',
-    sub: 'Legal explainers, visual stories, campaigns and updates from our work.',
+    blurb: 'Legal explainers, visual stories, campaigns and updates from our work.',
     cta: 'Follow RKLAF →',
     href: socialLinks.find((s) => s.name === 'Instagram')?.href || '#',
     icon: '◎',
     tone: 'ig',
     preview: 'Latest reel cover',
-    links: [
-      'Legal explainers & visual stories',
-      'Campaigns and updates from our work',
-      'Rights cards you can share',
-    ],
   },
   {
     name: 'Facebook',
-    sub: 'Community updates, initiatives, events and accessible legal information.',
+    blurb: 'Community updates, initiatives, events and accessible legal information.',
     cta: 'Follow RKLAF →',
     href: socialLinks.find((s) => s.name === 'Facebook')?.href || '#',
     icon: 'f',
     tone: 'fb',
     preview: 'Latest post preview',
-    links: [
-      'Community updates and initiatives',
-      'Events and accessible legal information',
-      'Camp and programme announcements',
-    ],
   },
   {
     name: 'LinkedIn',
-    sub: 'Institutional updates, research, collaborations, opportunities and professional developments.',
+    blurb: 'Institutional updates, research, collaborations, opportunities and professional developments.',
     cta: 'Follow RKLAF →',
     href: socialLinks.find((s) => s.name === 'LinkedIn')?.href || '#',
     icon: 'in',
     tone: 'li',
     preview: 'Latest post preview',
-    links: [
-      'Institutional updates and research',
-      'Collaborations and opportunities',
-      'Professional developments',
-    ],
   },
   {
     name: 'YouTube',
-    sub: 'Nyaya Tak, legal explainers, conversations, discussions and other video content from RKLAF.',
+    blurb: 'Nyaya Tak, legal explainers, conversations, discussions and other video content from RKLAF.',
     cta: 'Follow RKLAF →',
     href: YOUTUBE_CHANNEL_URL,
     icon: '▶',
     tone: 'yt',
     preview: 'Latest video thumbnail',
-    links: [
-      'Nyaya Tak conversations',
-      'Legal explainers and discussions',
-      'Video content from RKLAF',
-    ],
   },
 ];
 
@@ -296,7 +276,7 @@ export default function Library() {
             </h1>
             <p className="lib-hero__lead">
               The law does not exist only in statutes and judgments. The RKLAF Library brings together the
-              conversations, ideas and resources through which we explore that relationship — making legal
+              conversations, ideas and resources through which we explore that relationship, making legal
               knowledge more accessible and creating space to question, discuss and engage with the law.
             </p>
             <div className="lib-platforms">
@@ -595,23 +575,12 @@ export default function Library() {
                   <span className={`lib-social__icon lib-social__icon--${s.tone}`} aria-hidden="true">
                     {s.icon}
                   </span>
-                  <div>
-                    <h3>{s.name}</h3>
-                    <p>{s.sub}</p>
-                  </div>
+                  <h3>{s.name}</h3>
                 </header>
                 <div className="lib-social__preview" aria-hidden="true">
                   <span>{s.preview}</span>
                 </div>
-                <ul>
-                  {s.links.map((link) => (
-                    <li key={link}>
-                      <a href={s.href}>
-                        <span aria-hidden="true">↗</span> {link}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
+                <p className="lib-social__blurb">{s.blurb}</p>
                 <a
                   href={s.href}
                   className="lib-social__cta"

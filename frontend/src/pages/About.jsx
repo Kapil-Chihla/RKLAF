@@ -101,7 +101,7 @@ const LINEAGE = [
     photo: null,
     photoFit: 'cover',
     photoHint: 'Legal aid outreach and Tihar Central Jail visits',
-    text: "RKLAF's work has evolved with the understanding that access to justice cannot stop at individual representation. Some matters require a lawyer beside an individual. Others require a question to be taken to a court, an institution to be held accountable, a community to understand its rights, or a systemic gap to be identified and challenged. Our work therefore operates across two connected dimensions: Individual Justice — providing legal assistance, representation and guidance to people facing barriers to justice; and Systemic Justice — taking up issues of wider public importance through litigation, research, legal awareness, institutional engagement and public interest interventions. Our lawyers have represented individuals and communities before District Courts across Delhi, the Delhi High Court and the Supreme Court of India, while our programmes and initiatives take legal awareness and research beyond the courtroom. The scale of the work has changed over the years. The principle has not.",
+    text: "RKLAF's work has evolved with the understanding that access to justice cannot stop at individual representation. Some matters require a lawyer beside an individual. Others require a question to be taken to a court, an institution to be held accountable, a community to understand its rights, or a systemic gap to be identified and challenged. Our work therefore operates across two connected dimensions: Individual Justice, providing legal assistance, representation and guidance to people facing barriers to justice; and Systemic Justice, taking up issues of wider public importance through litigation, research, legal awareness, institutional engagement and public interest interventions. Our lawyers have represented individuals and communities before District Courts across Delhi, the Delhi High Court and the Supreme Court of India, while our programmes and initiatives take legal awareness and research beyond the courtroom. The scale of the work has changed over the years. The principle has not.",
   },
 ];
 
@@ -515,7 +515,7 @@ export default function About() {
             <div>
               <b>International programme</b>
               <span>
-                Coming soon — expanding our reach and creating new avenues of legal aid, assistance and
+                Coming soon, expanding our reach and creating new avenues of legal aid, assistance and
                 awareness for people and communities who need support, wherever they may be.
               </span>
             </div>
