@@ -20,6 +20,10 @@ import { displayText } from '../lib/displayText';
 import { renderRichText } from '../lib/richText';
 import libraryBanner from '../assets/librarybanner.jpeg';
 import libraryPlaceholder from '../assets/libraryplaceholder.jpeg';
+import libraryYoutube from '../assets/libraryyoutube.jpeg';
+import libraryLinkedin from '../assets/librarylinkedin.jpeg';
+import libraryFacebook from '../assets/libraryfacebook.jpeg';
+import libraryInstagram from '../assets/libraryinstagram.jpeg';
 import './Library.css';
 
 const LIB_BROWSE = [
@@ -43,6 +47,7 @@ const socialShelves = [
     icon: '◎',
     tone: 'ig',
     preview: 'Latest reel cover',
+    previewImage: libraryInstagram,
   },
   {
     name: 'Facebook',
@@ -52,6 +57,7 @@ const socialShelves = [
     icon: 'f',
     tone: 'fb',
     preview: 'Latest post preview',
+    previewImage: libraryFacebook,
   },
   {
     name: 'LinkedIn',
@@ -61,6 +67,7 @@ const socialShelves = [
     icon: 'in',
     tone: 'li',
     preview: 'Latest post preview',
+    previewImage: libraryLinkedin,
   },
   {
     name: 'YouTube',
@@ -70,6 +77,7 @@ const socialShelves = [
     icon: '▶',
     tone: 'yt',
     preview: 'Latest video thumbnail',
+    previewImage: libraryYoutube,
   },
 ];
 
@@ -135,7 +143,7 @@ function PodcastMedia({ item, className = '', autoplay = false, compact = false 
           src={playUrl}
           playsInline
           preload="metadata"
-          poster={assetUrl(item.thumbnail) || undefined}
+          poster={assetUrl(item.thumbnail) || (item.kind === 'video' ? libraryYoutube : undefined)}
         >
           Your browser does not support video playback.
         </video>
@@ -168,7 +176,7 @@ function PodcastMedia({ item, className = '', autoplay = false, compact = false 
 }
 
 function Thumb({ item, label = 'EP' }) {
-  const src = assetUrl(item?.thumbnail);
+  const src = assetUrl(item?.thumbnail) || (item?.kind === 'video' ? libraryYoutube : null);
   if (src) {
     return <img src={src} alt="" className="lib-thumb-img" />;
   }
@@ -591,8 +599,12 @@ export default function Library() {
                   </span>
                   <h3>{s.name}</h3>
                 </header>
-                <div className="lib-social__preview" aria-hidden="true">
-                  <span>{s.preview}</span>
+                <div className={`lib-social__preview${s.previewImage ? ' lib-social__preview--img' : ''}`} aria-hidden="true">
+                  {s.previewImage ? (
+                    <img src={s.previewImage} alt="" />
+                  ) : (
+                    <span>{s.preview}</span>
+                  )}
                 </div>
                 <p className="lib-social__blurb">{s.blurb}</p>
                 <a
