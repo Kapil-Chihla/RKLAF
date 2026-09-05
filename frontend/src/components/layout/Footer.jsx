@@ -59,7 +59,8 @@ export default function Footer() {
           <Brand variant="footer" />
           <p className="footer-v2__tagline">With You. For You. Nyaya Tak.</p>
           <p className="footer-v2__blurb">
-            Democratizing access to justice for every citizen — from first consultation to the order that changes a life.
+            Since 2016, RKLAF has worked to provide free legal aid and assistance, make legal knowledge
+            accessible, and bring access to justice within the reach of those who need it.
           </p>
           <div className="footer-v2__social" aria-label="Social links">
             {socialLinks.map((link) => (
@@ -97,6 +98,17 @@ export default function Footer() {
           </ul>
         </div>
 
+        <div className="footer-v2__col">
+          <h4>Legal</h4>
+          <ul>
+            <li><Link to="/legal/privacy">Privacy</Link></li>
+            <li><Link to="/legal/terms">Terms &amp; conditions</Link></li>
+            <li><Link to="/legal/refund">Refund and cancellation policy</Link></li>
+            <li><Link to="/legal/disclaimer">Disclaimer</Link></li>
+            <li><Link to="/our-work/reports">Public ledger</Link></li>
+          </ul>
+        </div>
+
         <div className="footer-v2__col footer-v2__col--contact">
           <h4>Contact</h4>
           <ul>
@@ -128,13 +140,6 @@ export default function Footer() {
       <div className="footer-v2__bottom">
         <div className="container footer-v2__bottom-inner">
           <p>© {new Date().getFullYear()} · Registered charitable trust · 80G certified</p>
-          <div className="footer-v2__legal">
-            <a href="#contact-home">Privacy</a>
-            <span aria-hidden="true">·</span>
-            <a href="#contact-home">Terms</a>
-            <span aria-hidden="true">·</span>
-            <Link to="/our-work/reports">Public ledger</Link>
-          </div>
         </div>
       </div>
     </footer>

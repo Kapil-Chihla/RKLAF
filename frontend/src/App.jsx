@@ -16,6 +16,7 @@ import SuccessStoryDetail from './pages/SuccessStoryDetail';
 import JoinUs from './pages/JoinUs';
 import Contact from './pages/Contact';
 import Donate from './pages/Donate';
+import Legal from './pages/Legal';
 
 function DeskSlugRedirect() {
   const { slug } = useParams();
@@ -49,6 +50,8 @@ export default function App() {
           <Route path="join-us" element={<JoinUs />} />
           <Route path="donate" element={<Donate />} />
           <Route path="contact" element={<Contact />} />
+          <Route path="legal" element={<Navigate to="/legal/privacy" replace />} />
+          <Route path="legal/:slug" element={<Legal />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />

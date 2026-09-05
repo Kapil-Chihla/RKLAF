@@ -553,7 +553,7 @@ export default function Home() {
       <section id="stories" className="home-stories-wrap">
         <div className="container">
           <header className="home-section-head home-section-head--stack">
-            <div>
+            <div className="home-section-head__copy">
               <p className="home-eyebrow">Impact through Litigation</p>
               <h2 className="home-display">Justice Through Legal Action.</h2>
               <p className="home-section-lede">
@@ -565,10 +565,10 @@ export default function Home() {
                 matters ranging from criminal justice and recruitment rights to constitutional and public-interest
                 issues.
               </p>
+              <Link to="/impact#stories" className="home-pill home-section-head__cta">
+                Explore our litigation →
+              </Link>
             </div>
-            <Link to="/impact#stories" className="home-pill">
-              Explore our litigation →
-            </Link>
           </header>
 
           <div className="home-stories__grid">
@@ -648,7 +648,7 @@ export default function Home() {
       <section id="programmes" className="home-impact">
         <div className="container">
           <header className="home-section-head home-section-head--stack">
-            <div>
+            <div className="home-section-head__copy">
               <p className="home-eyebrow">Programmes &amp; Initiatives</p>
               <h2 className="home-display">Justice Beyond the Courtroom.</h2>
               <p className="home-section-lede">
@@ -656,10 +656,10 @@ export default function Home() {
                 community outreach, Know Your Rights, research, RTI initiatives and other public-interest
                 programmes, RKLAF works to make legal knowledge, assistance and accountability more accessible.
               </p>
+              <Link to="/our-work/programmes" className="home-pill home-section-head__cta">
+                Explore our programmes →
+              </Link>
             </div>
-            <Link to="/our-work/programmes" className="home-pill">
-              Explore our programmes →
-            </Link>
           </header>
 
           <div className="home-impact__grid">
