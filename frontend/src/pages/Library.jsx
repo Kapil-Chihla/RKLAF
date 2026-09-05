@@ -372,8 +372,8 @@ export default function Library() {
               </Reveal>
 
               <Reveal as="div" className="lib-welcome__copy" variant="up" delay={40}>
-                <p className="lib-label">Nyaya Tak</p>
                 <h2>Law, Beyond the Law Books.</h2>
+                <p className="lib-label">Nyaya Tak</p>
                 <p className="lib-welcome__italic">
                   Nyaya Tak is RKLAF&apos;s podcast bringing law into conversation with the world around us.
                 </p>

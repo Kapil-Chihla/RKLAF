@@ -72,7 +72,6 @@ app.use('/api/guide-categories', require('./routes/guideCategories'));
 app.use('/api/desk-stories', require('./routes/deskStories'));
 app.use('/api/success-stories', require('./routes/successStories'));
 app.use('/api/running-now', require('./routes/runningNow'));
-app.use('/api/told-in-full', require('./routes/toldInFull'));
 app.use('/api/also-on-record', require('./routes/alsoOnRecord'));
 app.use('/api/press-mentions', require('./routes/pressMentions'));
 app.use('/api/papers', require('./routes/papers'));

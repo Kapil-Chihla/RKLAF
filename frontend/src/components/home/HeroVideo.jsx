@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import heroVideoSrc from '../../assets/IMG_9334.mp4';
+/* H.264 — Safari will not muted-autoplay the HEVC/QuickTime source (IMG_9334.mp4) */
+import heroVideoSrc from '../../assets/IMG_9334.h264.mp4';
 
 /** Safari/WebKit mishandles filter + mix-blend-mode on <video>. */
 function isSafariLike() {
@@ -12,8 +13,9 @@ function isSafariLike() {
 }
 
 /**
- * Hero media — autoplays muted once. No loop, no controls.
- * Wrapper keeps Chrome sketch multiply; Safari uses filter-only path.
+ * Hero media — muted autoplay once. No loop, no controls.
+ * Chrome: filtered <video> + multiply wrapper.
+ * Safari: same H.264 file, filter-only path (no multiply).
  */
 export default function HeroVideo({ className = '' }) {
   const ref = useRef(null);
@@ -23,8 +25,21 @@ export default function HeroVideo({ className = '' }) {
     const el = ref.current;
     if (!el) return undefined;
 
+    el.controls = false;
+    el.removeAttribute('controls');
+    el.disablePictureInPicture = true;
+    if ('disableRemotePlayback' in el) el.disableRemotePlayback = true;
+    el.muted = true;
+    el.defaultMuted = true;
+    el.setAttribute('muted', '');
+    el.playsInline = true;
+    el.setAttribute('playsinline', '');
+    el.setAttribute('webkit-playsinline', '');
+
     const tryPlay = () => {
       if (el.ended) return;
+      el.controls = false;
+      el.removeAttribute('controls');
       el.muted = true;
       el.defaultMuted = true;
       el.setAttribute('muted', '');
@@ -37,11 +52,14 @@ export default function HeroVideo({ className = '' }) {
     el.addEventListener('loadeddata', tryPlay);
     el.addEventListener('canplay', tryPlay);
     el.addEventListener('canplaythrough', tryPlay);
+    el.addEventListener('playing', () => {
+      el.controls = false;
+      el.removeAttribute('controls');
+    });
 
     const onVisibility = () => {
       if (document.visibilityState === 'visible') tryPlay();
     };
-
     const onPause = () => {
       if (el.ended) return;
       if (document.visibilityState === 'visible') tryPlay();
@@ -76,13 +94,16 @@ export default function HeroVideo({ className = '' }) {
         autoPlay
         muted
         playsInline
+        controls={false}
         preload="auto"
         disablePictureInPicture
-        controlsList="nodownload nofullscreen noremoteplayback"
+        disableRemotePlayback
+        controlsList="nodownload nofullscreen noremoteplayback noplaybackrate"
         tabIndex={-1}
         aria-hidden="true"
         onContextMenu={(e) => e.preventDefault()}
       />
+      <span className="home-hero__media-shield" aria-hidden="true" />
     </div>
   );
 }

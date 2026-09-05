@@ -13,7 +13,6 @@ import AcademicPostDetail from './pages/AcademicPostDetail';
 import Library from './pages/Library';
 import Impact from './pages/Impact';
 import SuccessStoryDetail from './pages/SuccessStoryDetail';
-import ToldInFullDetail from './pages/ToldInFullDetail';
 import JoinUs from './pages/JoinUs';
 import Contact from './pages/Contact';
 import Donate from './pages/Donate';
@@ -44,7 +43,6 @@ export default function App() {
           <Route path="know-your-rights" element={<KnowYourRights />} />
           <Route path="impact" element={<Impact />} />
           <Route path="impact/stories/:slug" element={<SuccessStoryDetail />} />
-          <Route path="impact/told/:slug" element={<ToldInFullDetail />} />
           <Route path="library" element={<Library />} />
           <Route path="academics" element={<Academics />} />
           <Route path="academics/post/:slug" element={<AcademicPostDetail />} />

@@ -158,13 +158,6 @@ const stats = [
   },
 ];
 
-const prisonStats = [
-  { value: '318', desc: 'undertrials interviewed inside the wards since 2021' },
-  { value: '127', desc: 'released on bail after we filed and argued the application' },
-  { value: '46', desc: 'freed under Section 479 BNSS for time already served' },
-  { value: '0', desc: 'rupees charged to any prisoner or their family, ever' },
-];
-
 function TornMini() {
   return (
     <svg className="impact-tornmini" viewBox="0 0 400 26" preserveAspectRatio="none" aria-hidden="true">
@@ -220,7 +213,6 @@ function Strand({ label, note }) {
 export default function Impact() {
   const [stories, setStories] = useState([]);
   const [runningNow, setRunningNow] = useState([]);
-  const [toldInFull, setToldInFull] = useState([]);
   const [alsoOnRecord, setAlsoOnRecord] = useState([]);
   const [pressMentions, setPressMentions] = useState([]);
 
@@ -230,9 +222,6 @@ export default function Impact() {
     }).catch(() => {});
     publicApi.get('/running-now').then((r) => {
       if (Array.isArray(r.data)) setRunningNow(r.data);
-    }).catch(() => {});
-    publicApi.get('/told-in-full').then((r) => {
-      if (Array.isArray(r.data)) setToldInFull(r.data);
     }).catch(() => {});
     publicApi.get('/also-on-record').then((r) => {
       if (Array.isArray(r.data)) setAlsoOnRecord(r.data);
@@ -253,9 +242,10 @@ export default function Impact() {
           <Reveal as="div" className="impact-hero__copy" variant="up">
             <span className="impact-dash" aria-hidden="true" />
             <h1>Our Impact</h1>
+            <p className="impact-hero__leadline">The Work. The Cases. The Difference.</p>
             <p>
-              The Work. The Cases. The Difference. Since 2016, RKLAF has worked across courtrooms, prisons,
-              communities and institutions to make justice more accessible. This is our record.
+              Since 2016, RKLAF has worked across courtrooms, prisons, communities and institutions to make
+              justice more accessible. This is our record.
             </p>
           </Reveal>
         </div>
@@ -287,10 +277,10 @@ export default function Impact() {
               <h2>Our Journey</h2>
             </div>
             <div>
+              <h3 className="impact-mhead__decade">A Decade of Legal Aid, Advocacy and Public Service</h3>
               <p>
-                A Decade of Legal Aid, Advocacy and Public Service. What began in November 2016 as an
-                institutional expression of a commitment to legal aid has grown across courtrooms, prisons,
-                communities, schools and institutions.
+                What began in November 2016 as an institutional expression of a commitment to legal aid has
+                grown across courtrooms, prisons, communities, schools and institutions.
               </p>
               <p className="impact-mstamp">Registered 25 November 2016</p>
             </div>
@@ -398,66 +388,6 @@ export default function Impact() {
             <p className="impact-empty">No pending matters published yet.</p>
           )}
 
-          <Strand
-            label="Delhi prisons programme · relief secured"
-            note="Legal aid inside Tihar and Mandoli. Undertrials who had no lawyer, no bail application and often no idea what they were charged with."
-          />
-          <div className="impact-prison">
-            <div className="impact-pgrid">
-              {prisonStats.map((s) => (
-                <div key={s.value + s.desc} className="impact-pstat">
-                  <b>{s.value}</b>
-                  <span>{s.desc}</span>
-                </div>
-              ))}
-            </div>
-
-            <div className="impact-psub" id="told">
-              <b>Told in full</b>
-              <span>Matters where the person agreed to have their story recorded.</span>
-            </div>
-            {toldInFull.length ? (
-              <div className="impact-pcases">
-                {toldInFull.map((story, i) => {
-                  const href = story.slug ? `/impact/told/${story.slug}` : null;
-                  const inner = (
-                    <div className="impact-sbody">
-                      {story.tag ? <span className="impact-tag">{story.tag}</span> : null}
-                      <h3>{displayText(story.title)}</h3>
-                      {story.caseLine ? <span className="impact-caseline">{story.caseLine}</span> : null}
-                      <ParRows
-                        rows={[
-                          ['Problem', story.problem],
-                          ['Action', story.action],
-                          ['Result', story.result],
-                        ]}
-                      />
-                      {href ? <span className="impact-readmore">Read more →</span> : null}
-                    </div>
-                  );
-                  return (
-                    <Reveal key={story.id} variant="up" delay={i * 40}>
-                      {href ? (
-                        <Link to={href} className="impact-pstory impact-pstory--link">
-                          {inner}
-                        </Link>
-                      ) : (
-                        <article className="impact-pstory">{inner}</article>
-                      )}
-                    </Reveal>
-                  );
-                })}
-              </div>
-            ) : (
-              <p className="impact-empty">No prison stories published yet.</p>
-            )}
-
-            <p className="impact-pnote">
-              Weekly legal aid desk inside the jail, run with the prison legal aid clinic. Photography is not
-              permitted inside, so this section stays on the record alone.
-            </p>
-          </div>
-
           <div id="stories">
             <Strand
               label="Beyond the Order · The Complete Legal Record"
@@ -541,10 +471,6 @@ export default function Impact() {
           ) : (
             <p className="impact-empty">No records published yet.</p>
           )}
-          <p className="impact-ledger-note">
-            Full list of 1,390+ files available on request. Names withheld unless the client asked for them to
-            appear.
-          </p>
         </div>
       </section>
 

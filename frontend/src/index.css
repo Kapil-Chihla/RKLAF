@@ -87,6 +87,13 @@ h1, h2, h3, h4, h5, h6 {
   text-wrap: balance;
 }
 
+/* CTA bands: never balance — it shrinks the used width of the heading */
+.home-cta .home-display,
+.home-donate .home-display,
+.join-cta__band h2 {
+  text-wrap: wrap !important;
+}
+
 p {
   margin: 0 0 1rem;
   font-family: var(--font-body);
@@ -123,7 +130,6 @@ p {
 .home-donate p,
 .home-story__body p,
 .home-card__body p,
-.join-hero__lead,
 .join-card__blurb,
 .join-step p,
 .join-cta__band p,
@@ -201,6 +207,10 @@ p {
 .about-outlook__card h2,
 .join-how__head .join-label,
 .join-how__head h2,
+.join-hero .join-label,
+.join-hero h1,
+.join-hero__stats,
+.join-hero__lead,
 .kyr-center-head .kyr-label,
 .kyr-center-head h2,
 .kyr-glossary__head .kyr-label,

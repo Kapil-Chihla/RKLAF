@@ -15,7 +15,6 @@ const {
   LibraryPodcast,
   Contact,
   RunningNow,
-  ToldInFull,
   AlsoOnRecord,
   PressMention,
 } = require('../models');
@@ -41,7 +40,6 @@ router.get('/stats', protect, contentManagers, async (req, res) => {
     contacts,
     unreadContacts,
     runningNow,
-    toldInFull,
     alsoOnRecord,
     pressMentions,
   ] = await Promise.all([
@@ -61,7 +59,6 @@ router.get('/stats', protect, contentManagers, async (req, res) => {
     Contact.countDocuments(),
     Contact.countDocuments({ read: { $ne: true } }),
     RunningNow.countDocuments(),
-    ToldInFull.countDocuments(),
     AlsoOnRecord.countDocuments(),
     PressMention.countDocuments(),
   ]);
@@ -83,7 +80,6 @@ router.get('/stats', protect, contentManagers, async (req, res) => {
     contacts,
     unreadContacts,
     runningNow,
-    toldInFull,
     alsoOnRecord,
     pressMentions,
   });

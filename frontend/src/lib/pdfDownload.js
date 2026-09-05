@@ -41,16 +41,6 @@ export function successDocumentDownloadUrl(storyIdOrSlug, docId) {
   return `${API_BASE}/success-stories/${encodeURIComponent(storyIdOrSlug)}/documents/${encodeURIComponent(docId)}/download`;
 }
 
-export function toldDocumentDownloadUrl(storyIdOrSlug, docId) {
-  if (!storyIdOrSlug || !docId) return '#';
-  return `${API_BASE}/told-in-full/${encodeURIComponent(storyIdOrSlug)}/documents/${encodeURIComponent(docId)}/download`;
-}
-
-export function toldDocumentViewUrl(storyIdOrSlug, docId) {
-  if (!storyIdOrSlug || !docId) return '#';
-  return `${API_BASE}/told-in-full/${encodeURIComponent(storyIdOrSlug)}/documents/${encodeURIComponent(docId)}/view`;
-}
-
 export function alsoOnRecordPdfDownloadUrl(recordId) {
   if (!recordId) return '#';
   return `${API_BASE}/also-on-record/${encodeURIComponent(recordId)}/download`;

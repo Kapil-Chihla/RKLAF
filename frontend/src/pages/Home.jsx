@@ -562,11 +562,13 @@ export default function Home() {
               available, and join us in the continuing pursuit of justice for all.”
             </p>
             <p className="home-who__byline">
-              Mr. Ajay Garg
-              <br />
-              Advocate, Supreme Court of India &amp; Delhi High Court
-              <br />
-              Founder, Radhey Krishna Legal Aid Foundation
+              <span className="home-who__byline-name">~ Mr. Ajay Garg</span>
+              <span className="home-who__byline-role">
+                Advocate, Supreme Court of India &amp; Delhi High Court
+              </span>
+              <span className="home-who__byline-role">
+                Founder, Radhey Krishna Legal Aid Foundation
+              </span>
             </p>
             <a href="/about" className="home-text-link">
               Read our full story →

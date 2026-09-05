@@ -10,7 +10,6 @@ import ArticlesManage from './pages/ArticlesManage';
 import DeskStoriesManage from './pages/DeskStoriesManage';
 import SuccessStoriesManage from './pages/SuccessStoriesManage';
 import RunningNowManage from './pages/RunningNowManage';
-import ToldInFullManage from './pages/ToldInFullManage';
 import AlsoOnRecordManage from './pages/AlsoOnRecordManage';
 import PressMentionsManage from './pages/PressMentionsManage';
 import PapersManage from './pages/PapersManage';
@@ -35,7 +34,6 @@ export default function AdminRoutes() {
           <Route path="desk" element={<Navigate to="/admin/programmes" replace />} />
           <Route path="success-stories" element={<SuccessStoriesManage />} />
           <Route path="running-now" element={<RunningNowManage />} />
-          <Route path="told-in-full" element={<ToldInFullManage />} />
           <Route path="also-on-record" element={<AlsoOnRecordManage />} />
           <Route path="press-mentions" element={<PressMentionsManage />} />
           <Route path="camps" element={<Navigate to="/admin/dashboard" replace />} />

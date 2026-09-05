@@ -251,25 +251,57 @@
   mix-blend-mode: normal;
   -webkit-mask-image: none;
   mask-image: none;
+  /* Keep WebKit chrome inside this box so it can be clipped/covered */
+  overflow: hidden;
+  isolation: isolate;
+  transform: translateZ(0);
 }
 
 .home-hero__media--safari .home-hero__video {
-  /* Opaque sketch plate that still reads as ink on paper without multiply */
   filter: grayscale(1) contrast(1.85) brightness(1.2);
-  opacity: 0.92;
+  opacity: 1;
   background: #ffffff;
+  pointer-events: none;
+  /* Avoid Safari painting a floating play/pause control above the plate */
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+.home-hero__media-shield {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: block;
+  pointer-events: auto;
+  background: transparent;
+  cursor: default;
+  -webkit-touch-callout: none;
+  touch-action: none;
+}
+
+.home-hero__media--safari .home-hero__media-shield {
+  /* Slight opaque hit target so Safari doesn’t treat the video as interactive media */
+  background: rgba(255, 255, 255, 0.01);
 }
 
 .home-hero__video::-webkit-media-controls,
 .home-hero__video::-webkit-media-controls-enclosure,
+.home-hero__video::-webkit-media-controls-panel,
+.home-hero__video::-webkit-media-controls-panel-container,
 .home-hero__video::-webkit-media-controls-start-playback-button,
-.home-hero__video::-webkit-media-controls-overlay-play-button {
+.home-hero__video::-webkit-media-controls-overlay-play-button,
+.home-hero__video::-webkit-media-controls-overlay-enclosure,
+.home-hero__video::-webkit-media-controls-play-button {
   display: none !important;
   -webkit-appearance: none !important;
+  appearance: none !important;
   opacity: 0 !important;
   width: 0 !important;
   height: 0 !important;
+  max-width: 0 !important;
+  max-height: 0 !important;
   pointer-events: none !important;
+  overflow: hidden !important;
 }
 
 /* Gap between left group and suited figure — same % on every screen */
@@ -340,8 +372,13 @@
 .home-hero__stats-row {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.25rem 1.5rem;
+  gap: 1.25rem clamp(0.85rem, 2vw, 1.5rem);
   align-items: start;
+  /* Clear fixed mail/WhatsApp floats so REACH isn’t clipped on Safari */
+  padding-inline-end: clamp(3.75rem, 6vw, 5.25rem);
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
 }
 
 .home-stat {
@@ -353,6 +390,8 @@
   border: 0;
   border-radius: 0;
   box-shadow: none;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .home-stat__icon {
@@ -423,8 +462,13 @@
   display: block;
   margin-top: 0.35rem;
   font-size: 1rem;
-  line-height: 1.35;
+  line-height: 1.4;
   color: var(--muted);
+  text-align: start;
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: manual;
+  max-width: 100%;
 }
 
 /* Right rail — fixed outside content flow (no layout shift / left-bias) */
@@ -537,12 +581,27 @@
 }
 
 .home-who__byline {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
   margin-top: 0.75rem;
   color: var(--ink) !important;
   font-size: 0.98rem !important;
   font-style: italic;
   line-height: 1.55 !important;
   text-align: start !important;
+}
+
+.home-who__byline-name {
+  font-style: italic;
+  font-weight: 600;
+}
+
+.home-who__byline-role {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--muted);
+  font-size: 0.92rem;
 }
 
 .home-film { position: relative; }
@@ -1178,13 +1237,18 @@ a.home-story--link:hover .home-story__more {
   min-height: 230px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  /* stretch so heading/body use full card width (flex-start was shrink-wrapping) */
+  align-items: stretch;
 }
 
 .home-cta .home-display {
-  max-width: none;
+  max-width: none !important;
   width: 100%;
-  padding-right: 3.5rem;
+  box-sizing: border-box;
+  padding-right: 3.25rem;
+  text-wrap: wrap !important;
+  text-align: start;
+  overflow-wrap: break-word;
 }
 
 .home-cta__mark {
@@ -1204,13 +1268,16 @@ a.home-story--link:hover .home-story__more {
 .home-cta--tan { background: var(--tan); color: var(--charcoal); }
 
 .home-cta p {
-  max-width: none;
+  max-width: none !important;
   width: 100%;
+  box-sizing: border-box;
   margin: 0 0 1.25rem;
   font-size: 1.1rem;
   line-height: 1.6;
   opacity: 0.9;
-  hyphens: none;
+  hyphens: manual;
+  text-align: start;
+  overflow-wrap: break-word;
 }
 
 .home-cta__actions {
@@ -1218,6 +1285,7 @@ a.home-story--link:hover .home-story__more {
   flex-wrap: wrap;
   gap: 0.6rem;
   margin-top: auto;
+  align-self: flex-start;
 }
 
 .home-donate {
@@ -1233,13 +1301,19 @@ a.home-story--link:hover .home-story__more {
 
 .home-donate > div {
   min-width: 0;
+  width: 100%;
+  max-width: none;
 }
 
 .home-donate .home-display,
 .home-donate p { color: #fff; }
 
 .home-donate .home-display {
-  max-width: none;
+  max-width: none !important;
+  width: 100%;
+  text-wrap: wrap !important;
+  text-align: start;
+  overflow-wrap: break-word;
 }
 
 .home-donate p a {
@@ -1254,11 +1328,14 @@ a.home-story--link:hover .home-story__more {
 
 .home-donate p {
   margin: 0;
-  max-width: none;
+  max-width: none !important;
+  width: 100%;
   opacity: 0.9;
   font-size: 1.05rem;
   line-height: 1.55;
-  hyphens: none;
+  hyphens: manual;
+  text-align: start;
+  overflow-wrap: break-word;
 }
 
 .home-donate__btn { flex-shrink: 0; }
@@ -1475,6 +1552,7 @@ a.home-story--link:hover .home-story__more {
   .home-contact__grid,
   .home-hero__stats-row {
     grid-template-columns: 1fr;
+    padding-inline-end: 0;
   }
 
   .home-section-head {

@@ -20,12 +20,6 @@ const SECTIONS = [
         statKey: 'runningNow',
       },
       {
-        to: '/admin/told-in-full',
-        label: 'Told in full',
-        desc: 'Delhi prisons programme stories on Impact (problem / action / result).',
-        statKey: 'toldInFull',
-      },
-      {
         to: '/admin/success-stories',
         label: 'Argued in full',
         desc: 'Impact success stories — problem / action / result and full story pages.',

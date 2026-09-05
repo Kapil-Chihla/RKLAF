@@ -12,7 +12,6 @@ const NAV_GROUPS = [
     items: [
       { to: '/admin/programmes', label: 'Programmes & Initiatives' },
       { to: '/admin/running-now', label: 'Running now' },
-      { to: '/admin/told-in-full', label: 'Told in full' },
       { to: '/admin/success-stories', label: 'Argued in full' },
       { to: '/admin/also-on-record', label: 'Also on record' },
       { to: '/admin/press-mentions', label: 'Press mentions' },

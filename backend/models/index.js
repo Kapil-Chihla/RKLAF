@@ -15,7 +15,6 @@ module.exports = {
   RightsDeck: require('./RightsDeck'),
   LibraryPodcast: require('./LibraryPodcast'),
   RunningNow: require('./RunningNow'),
-  ToldInFull: require('./ToldInFull'),
   AlsoOnRecord: require('./AlsoOnRecord'),
   PressMention: require('./PressMention'),
 };
