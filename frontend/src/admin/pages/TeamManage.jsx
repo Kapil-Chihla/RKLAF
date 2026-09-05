@@ -4,7 +4,7 @@ import { useAuth } from '../AuthContext';
 import AdminImageHint from '../components/AdminImageHint';
 import AdminRichHint from '../components/AdminRichHint';
 
-const emptyForm = { name: '', role: '', bio: '' };
+const emptyForm = { name: '', role: '', subtitle: '', bio: '', sortOrder: '0' };
 
 export default function TeamManage() {
   const { canDelete, canManageContent } = useAuth();
@@ -32,7 +32,9 @@ export default function TeamManage() {
     setForm({
       name: item.name || '',
       role: item.role || '',
+      subtitle: item.subtitle || '',
       bio: item.bio || '',
+      sortOrder: String(item.sortOrder ?? 0),
     });
     setImage(null);
     setMsg('');
@@ -46,7 +48,9 @@ export default function TeamManage() {
     const fd = new FormData();
     fd.append('name', form.name);
     fd.append('role', form.role);
+    fd.append('subtitle', form.subtitle);
     fd.append('bio', form.bio);
+    fd.append('sortOrder', form.sortOrder);
     if (image) fd.append('image', image);
     try {
       if (editingId) {
@@ -68,8 +72,8 @@ export default function TeamManage() {
       <div className="admin-card">
         <h2>{editingId ? 'Edit team member' : 'Public team profiles'}</h2>
         <p style={{ color: '#5a6f82', marginTop: 0 }}>
-          Name, role, bio, and photo for the public About / team section.
-          {editingId ? ' Leave image empty to keep the current photo.' : ''}
+          Shown on About → Our Team (up to 4 cards per row; add as many people as you need).
+          {editingId ? ' Leave photo empty to keep the current image.' : ''}
         </p>
         {msg && (
           <div
@@ -84,26 +88,54 @@ export default function TeamManage() {
           <form className="admin-form" onSubmit={handleSubmit}>
             <label>
               Name
-              <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+              <input
+                required
+                value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                placeholder="Mr. Ajay Garg, Advocate"
+              />
             </label>
             <label>
-              Role
+              Role (eyebrow)
               <input
                 required
                 value={form.role}
                 onChange={(e) => setForm({ ...form, role: e.target.value })}
-                placeholder="Founder & Managing Trustee"
+                placeholder="Founder"
               />
             </label>
             <label>
-              Bio
+              Subtitle (optional)
+              <input
+                value={form.subtitle}
+                onChange={(e) => setForm({ ...form, subtitle: e.target.value })}
+                placeholder="Founder · Supreme Court of India & Delhi High Court"
+              />
+            </label>
+            <label>
+              Sort order
+              <input
+                type="number"
+                value={form.sortOrder}
+                onChange={(e) => setForm({ ...form, sortOrder: e.target.value })}
+                placeholder="0"
+              />
+              <span style={{ display: 'block', marginTop: '0.35rem', color: '#5a6f82', fontSize: '0.9rem' }}>
+                Lower numbers appear first (e.g. 1, 2, 3…).
+              </span>
+            </label>
+            <label>
+              Bio / description
               <AdminRichHint />
-              <textarea rows={4} value={form.bio} onChange={(e) => setForm({ ...form, bio: e.target.value })} />
+              <textarea rows={5} value={form.bio} onChange={(e) => setForm({ ...form, bio: e.target.value })} />
             </label>
             <label>
               Photo {editingId ? '(leave empty to keep current)' : ''}
               <input type="file" accept="image/*" onChange={(e) => setImage(e.target.files?.[0] || null)} />
-              <AdminImageHint size="800×1000 px" note="3:4 portrait headshot" />
+              <AdminImageHint
+                size="800×1000 px"
+                note="3:4 portrait · face centered · shows in About team grid (4 per row)"
+              />
             </label>
             <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
               <button type="submit" className="admin-btn admin-btn--primary">
@@ -127,6 +159,7 @@ export default function TeamManage() {
           <table className="admin-table">
             <thead>
               <tr>
+                <th>#</th>
                 <th>Name</th>
                 <th>Role</th>
                 <th>Photo</th>
@@ -136,6 +169,7 @@ export default function TeamManage() {
             <tbody>
               {items.map((m) => (
                 <tr key={m.id}>
+                  <td>{m.sortOrder ?? 0}</td>
                   <td>{m.name}</td>
                   <td>{m.role}</td>
                   <td>{m.image ? 'Yes' : '—'}</td>

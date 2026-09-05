@@ -1213,6 +1213,13 @@ select,
   color: rgba(255, 255, 255, 0.45) !important;
 }
 
+.footer-v2__address {
+  display: block;
+  font-size: 1rem !important;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.78) !important;
+}
+
 .footer-v2__col--contact li {
   margin-bottom: 0.85rem;
 }

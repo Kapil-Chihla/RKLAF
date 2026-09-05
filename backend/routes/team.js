@@ -8,7 +8,7 @@ const { uploadBuffer } = require('../lib/cloudinaryUpload');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-  const team = await TeamMember.find().sort({ name: 1 }).lean();
+  const team = await TeamMember.find().sort({ sortOrder: 1, name: 1 }).lean();
   res.json(team);
 });
 
@@ -19,7 +19,7 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', protect, contentManagers, uploadImage.single('image'), async (req, res) => {
-  const { name, role, bio } = req.body;
+  const { name, role, bio, subtitle, sortOrder } = req.body;
   if (!name || !role) return res.status(400).json({ message: 'Name and role are required' });
   let image = null;
   if (req.file) image = await uploadBuffer(req.file, 'team');
@@ -27,8 +27,10 @@ router.post('/', protect, contentManagers, uploadImage.single('image'), async (r
     id: generateId('team'),
     name,
     role,
+    subtitle: subtitle || '',
     bio: bio || '',
     image,
+    sortOrder: Number.isFinite(Number(sortOrder)) ? Number(sortOrder) : 0,
   });
   res.status(201).json(member.toObject());
 });
@@ -37,10 +39,15 @@ router.put('/:id', protect, contentManagers, uploadImage.single('image'), async 
   const member = await TeamMember.findOne({ id: req.params.id });
   if (!member) return res.status(404).json({ message: 'Team member not found' });
 
-  const { name, role, bio, clearImage } = req.body;
+  const { name, role, bio, subtitle, sortOrder, clearImage } = req.body;
   if (name?.trim()) member.name = name.trim();
   if (role?.trim()) member.role = role.trim();
+  if (subtitle !== undefined) member.subtitle = subtitle;
   if (bio !== undefined) member.bio = bio;
+  if (sortOrder !== undefined && sortOrder !== '') {
+    const n = Number(sortOrder);
+    if (Number.isFinite(n)) member.sortOrder = n;
+  }
   if (clearImage === 'true') member.image = null;
   if (req.file) member.image = await uploadBuffer(req.file, 'team');
 

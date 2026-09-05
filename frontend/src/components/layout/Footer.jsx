@@ -1,5 +1,14 @@
 import { Link } from 'react-router-dom';
-import { navItems, socialLinks, WHATSAPP_DISPLAY, WHATSAPP_URL, CONTACT_EMAIL, CONTACT_MAILTO, OFFICE_DELHI } from '../../data/navigation';
+import {
+  navItems,
+  socialLinks,
+  WHATSAPP_DISPLAY,
+  WHATSAPP_URL,
+  CONTACT_EMAIL,
+  CONTACT_MAILTO,
+  OFFICE_DELHI,
+  OFFICE_IMPHAL,
+} from '../../data/navigation';
 import Brand from './Brand';
 import SocialIcon from '../icons/SocialIcons';
 
@@ -106,6 +115,12 @@ export default function Footer() {
                 <small>Open map</small>
               </a>
             </li>
+            <li>
+              <span className="footer-v2__label">Branch office — Imphal</span>
+              <span className="footer-v2__address">
+                {OFFICE_IMPHAL.lines.join(', ')}
+              </span>
+            </li>
           </ul>
         </div>
       </div>
@@ -119,8 +134,6 @@ export default function Footer() {
             <a href="#contact-home">Terms</a>
             <span aria-hidden="true">·</span>
             <Link to="/our-work/reports">Public ledger</Link>
-            <span aria-hidden="true">·</span>
-            <Link to="/admin/login">Admin</Link>
           </div>
         </div>
       </div>
