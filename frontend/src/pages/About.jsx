@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { OFFICE_DELHI, OFFICE_IMPHAL } from '../data/navigation';
 import Reveal from '../components/motion/Reveal';
 import photoDada from '../assets/_unused/dada.jpeg';
@@ -6,6 +6,9 @@ import photoDadi from '../assets/_unused/dadi.jpeg';
 import photoAjayHero from '../assets/aboutusbanner.jpeg';
 import photoAjayStory from '../assets/_unused/father.jpeg';
 import officeVideo from '../assets/officevideo.mp4';
+import publicApi from '../lib/publicApi';
+import { assetUrl } from '../lib/api';
+import { renderRichText } from '../lib/richText';
 import './About.css';
 
 const LINEAGE = [
@@ -14,7 +17,8 @@ const LINEAGE = [
     mark: false,
     disc: photoDada,
     discLabel: 'R.S. GARG',
-    discPos: 'center 22%',
+    discPos: 'center 30%',
+    discZoom: 1.72,
     label: 'Late Sh. R.S. Garg',
     tag: 'Where it began',
     role: 'Where it began',
@@ -30,7 +34,8 @@ const LINEAGE = [
     mark: false,
     disc: photoDadi,
     discLabel: 'KRISHNA GARG',
-    discPos: 'center 22%',
+    discPos: 'center 32%',
+    discZoom: 1.72,
     label: 'Late Smt. Krishna Garg',
     tag: 'Beside him',
     role: 'Beside him, always',
@@ -63,30 +68,30 @@ const LINEAGE = [
     discLabel: 'AJAY GARG',
     discPos: 'left center',
     label: 'Mr. Ajay Garg',
-    tag: 'Chief Trustee',
+    tag: 'Founder',
     role: 'The people carrying it forward',
-    name: 'Ajay Garg, Advocate',
-    sub: 'Chief Trustee · Supreme Court of India & Delhi High Court',
+    name: 'Mr. Ajay Garg, Advocate',
+    sub: 'Founder · Supreme Court of India & Delhi High Court',
     photo: photoAjayStory,
     photoFit: 'cover',
     photoPos: 'left center',
     photoHint: 'Mr. Ajay Garg, Advocate',
-    text: "A graduate of the Campus Law Centre, University of Delhi, Mr. Ajay Garg has over three decades of experience as a practising Advocate before the Supreme Court of India and the Delhi High Court. Alongside his professional practice, he has personally undertaken numerous pro bono matters before the Supreme Court and the Delhi High Court, several of which have resulted in reported judgments. As Chief Trustee, he continues to guide the Foundation's work and carry forward the legacy upon which RKLAF was founded.",
+    text: "A graduate of the Campus Law Centre, University of Delhi, Mr. Ajay Garg has over three decades of experience as a practising Advocate before the Supreme Court of India and the Delhi High Court. Alongside his professional practice, he has personally undertaken numerous pro bono matters before the Supreme Court and the Delhi High Court, several of which have resulted in reported judgments. As Founder, he continues to guide the Foundation's work and carry forward the legacy upon which RKLAF was founded.",
   },
   {
     id: 'ruchi-garg',
     mark: false,
     disc: null,
     discLabel: 'RUCHI GARG',
-    label: 'Ms. Ruchi Garg',
+    label: 'Mrs. Ruchi Garg',
     tag: 'Trustee',
     role: 'Trustee',
-    name: 'Ruchi Garg',
+    name: 'Mrs. Ruchi Garg',
     sub: 'Trustee',
     photo: null,
     photoFit: 'cover',
-    photoHint: 'Ms. Ruchi Garg',
-    text: "Ms. Ruchi Garg serves as a Trustee of the Foundation and has been an integral part of carrying its work forward. Her involvement reflects the same spirit of partnership that has been part of the Foundation's story from the beginning.",
+    photoHint: 'Mrs. Ruchi Garg',
+    text: "Mrs. Ruchi Garg serves as a Trustee of the Foundation and has been an integral part of carrying its work forward. Her involvement reflects the same spirit of partnership that has been part of the Foundation's story from the beginning.",
   },
   {
     id: 'today',
@@ -165,6 +170,39 @@ const WORK_MODES = [
     body: 'Using research, RTIs, social surveys and institutional engagement to identify gaps between legal safeguards and their implementation and work towards better systems.',
   },
 ];
+
+/** Fallback when CMS team list is empty */
+const FALLBACK_TEAM = [
+  {
+    id: 'ajay-garg',
+    name: 'Mr. Ajay Garg, Advocate',
+    role: 'Founder',
+    subtitle: 'Founder · Supreme Court of India & Delhi High Court',
+    bio: "A graduate of the Campus Law Centre, University of Delhi, Mr. Ajay Garg has over three decades of experience as a practising Advocate before the Supreme Court of India and the Delhi High Court. Alongside his professional practice, he has personally undertaken numerous pro bono matters before the Supreme Court and the Delhi High Court, several of which have resulted in reported judgments. As Founder, he continues to guide the Foundation's work and carry forward the legacy upon which RKLAF was founded.",
+    image: photoAjayStory,
+    photoPos: 'left center',
+  },
+  {
+    id: 'ruchi-garg',
+    name: 'Mrs. Ruchi Garg',
+    role: 'Trustee',
+    subtitle: 'Trustee',
+    bio: "Mrs. Ruchi Garg serves as a Trustee of the Foundation and has been an integral part of carrying its work forward. Her involvement reflects the same spirit of partnership that has been part of the Foundation's story from the beginning.",
+    image: null,
+  },
+];
+
+function mapTeamMember(m) {
+  return {
+    id: m.id,
+    name: m.name,
+    role: m.role,
+    subtitle: m.subtitle || m.role || '',
+    bio: m.bio || '',
+    image: m.image ? assetUrl(m.image) : null,
+    photoPos: 'center center',
+  };
+}
 
 const COURTS = [
   'District Courts of Delhi',
@@ -281,7 +319,19 @@ function VideoCard({ tag, label, hint, image, src }) {
 
 export default function About() {
   const [cur, setCur] = useState(0);
+  const [team, setTeam] = useState(FALLBACK_TEAM);
   const chapter = LINEAGE[cur];
+
+  useEffect(() => {
+    publicApi
+      .get('/team')
+      .then((r) => {
+        if (Array.isArray(r.data) && r.data.length) {
+          setTeam(r.data.map(mapTeamMember));
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const step = (d) => setCur((i) => (i + d + LINEAGE.length) % LINEAGE.length);
 
@@ -397,7 +447,11 @@ export default function About() {
                     <img
                       src={node.disc}
                       alt=""
-                      style={node.discPos ? { objectPosition: node.discPos } : undefined}
+                      className={node.discZoom ? 'about-node__disc-img--zoom' : undefined}
+                      style={{
+                        ...(node.discPos && { objectPosition: node.discPos }),
+                        ...(node.discZoom && { '--disc-zoom': String(node.discZoom) }),
+                      }}
                     />
                   ) : (
                     <span className="about-node__initials">{node.discLabel}</span>
@@ -442,15 +496,49 @@ export default function About() {
         <p className="about-hint">Click a face or a marker to follow the thread</p>
       </section>
 
+      {/* 4b · OUR TEAM — CMS-driven, 4 per row, grows with uploads */}
+      <section className="about-team" id="team">
+        <Reveal as="header" className="about-team__head" variant="up">
+          <span className="about-kicker">Our Team</span>
+          <h2>The people carrying it forward</h2>
+        </Reveal>
+        <div className="about-team__grid">
+          {team.map((person, i) => (
+            <Reveal key={person.id || person.name} as="article" className="about-team__card" variant="up" delay={Math.min(i, 7) * 40}>
+              {person.image ? (
+                <div
+                  className="about-team__photo"
+                  style={{
+                    backgroundImage: `url(${person.image})`,
+                    backgroundPosition: person.photoPos || 'center center',
+                  }}
+                  role="img"
+                  aria-label={person.name}
+                />
+              ) : (
+                <div className="about-team__photo about-team__photo--empty" aria-hidden="true">
+                  <span>{(person.name || '?').split(' ').slice(0, 2).join(' ')}</span>
+                </div>
+              )}
+              <p className="about-team__role">{person.role}</p>
+              <h3>{person.name}</h3>
+              {person.subtitle ? <p className="about-team__sub">{person.subtitle}</p> : null}
+              {person.bio ? <p>{renderRichText(person.bio)}</p> : null}
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
       {/* 5 · OFFICE */}
       <section className="about-office" id="office">
         <Reveal as="div" variant="up">
           <span className="about-kicker">Inside our office</span>
           <h2>Where the work actually happens</h2>
           <p>
-            The work continues through people. RKLAF&apos;s work is supported by its trustees, practising
-            advocates, law students, interns, volunteers and collaborators who contribute their time, knowledge
-            and skills to the Foundation&apos;s work.
+            Behind every case, programme and initiative is a team of people working to make it happen. RKLAF
+            brings together trustees, practising advocates, law students, interns, volunteers and collaborators
+            who contribute their time, knowledge and skills across legal aid, litigation, research, outreach and
+            public-interest work.
           </p>
         </Reveal>
         <Reveal as="div" variant="up" delay={80}>

@@ -183,9 +183,16 @@ export default function Academics() {
           <p className="acad-banner__tagline">Don&apos;t Just Know the Law. Question It.</p>
           <p className="acad-banner__lede">
             The RKLAF Academic section is a space for thought, inquiry and critical engagement with the law.
-            Through Blogs, Research, Experiences from the Ground and White Papers, it goes beyond simply
-            understanding or applying the law, asking why the law is what it is, who it serves, where it
-            falls short, and what could be different.
+          </p>
+          <p className="acad-banner__lede">
+            It brings together contributions from our members, interns, volunteers and collaborators, inviting
+            them to examine legal questions, challenge assumptions, analyse developments and explore how the law
+            operates in practice.
+          </p>
+          <p className="acad-banner__lede">
+            Through Blogs, Research, Experiences from the Ground and White Papers, the section goes beyond
+            simply understanding, knowing or applying the law. It is about asking why the law is what it is, who
+            it serves, where it falls short, and what could be different.
           </p>
         </div>
       </header>

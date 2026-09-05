@@ -27,7 +27,8 @@ function listingParas(story) {
  * Every CMS programme uses this same composition (not only the first).
  */
 export function DeskSpotlight({ story, index }) {
-  const num = String(story.number || index + 1).padStart(2, '0');
+  // Always show 01, 02, 03… in page order (ascending)
+  const num = String(index + 1).padStart(2, '0');
   const title = displayText(story.fullHeader || story.title, 'Programme');
   const kicker = displayText(story.kicker, 'Programmes & Initiatives');
   const paras = listingParas(story);

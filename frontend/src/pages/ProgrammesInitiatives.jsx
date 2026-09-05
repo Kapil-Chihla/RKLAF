@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import WorkBrowse from '../components/our-work/WorkBrowse';
 import { DeskSpotlight, WorkPageBanner } from '../components/our-work/WorkParts';
 import publicApi from '../lib/publicApi';
-import { FALLBACK_DESK, sortDeskStoriesLatest } from '../data/deskStories';
+import { FALLBACK_DESK, sortDeskStoriesByNumber } from '../data/deskStories';
 import './OurWork.css';
 
 export default function ProgrammesInitiatives() {
@@ -12,7 +12,7 @@ export default function ProgrammesInitiatives() {
     publicApi
       .get('/desk-stories')
       .then((r) => {
-        if (Array.isArray(r.data) && r.data.length) setDeskStories(sortDeskStoriesLatest(r.data));
+        if (Array.isArray(r.data) && r.data.length) setDeskStories(sortDeskStoriesByNumber(r.data));
       })
       .catch(() => {});
   }, []);

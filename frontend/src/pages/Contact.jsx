@@ -6,6 +6,7 @@ import {
   CONTACT_EMAIL,
   CONTACT_MAILTO,
   OFFICE_DELHI,
+  OFFICE_IMPHAL,
 } from '../data/navigation';
 import { submitContact } from '../lib/submitContact';
 import './Contact.css';
@@ -15,7 +16,7 @@ const channels = [
     id: 'whatsapp',
     icon: 'chat',
     title: 'WhatsApp',
-    detail: `${WHATSAPP_DISPLAY} · voice notes welcome`,
+    detail: WHATSAPP_DISPLAY,
     href: WHATSAPP_URL,
     external: true,
   },
@@ -23,16 +24,24 @@ const channels = [
     id: 'email',
     icon: 'mail',
     title: 'Email',
-    detail: `${CONTACT_EMAIL} · replies within one working day`,
+    detail: CONTACT_EMAIL,
     href: CONTACT_MAILTO,
   },
+];
+
+const offices = [
   {
-    id: 'office',
-    icon: 'pin',
-    title: OFFICE_DELHI.title,
-    detail: OFFICE_DELHI.short,
-    href: OFFICE_DELHI.mapsUrl,
-    external: true,
+    id: 'delhi',
+    title: 'Head Office - New Delhi',
+    address: 'B-5/152, Basement, Safdarjung Enclave, New Delhi – 110029',
+    mapsUrl: OFFICE_DELHI.mapsUrl,
+  },
+  {
+    id: 'imphal',
+    title: 'Branch Office - Imphal, Manipur',
+    address:
+      'Kwakeithel Thiyam Leikai, Near St. Peter’s High School, Imphal West District, Manipur-795001',
+    mapsUrl: OFFICE_IMPHAL.mapsUrl || null,
   },
 ];
 
@@ -71,6 +80,7 @@ export default function Contact() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [enquiry, setEnquiry] = useState('');
   const [matter, setMatter] = useState('');
   const [busy, setBusy] = useState(false);
   const [sent, setSent] = useState(false);
@@ -85,6 +95,7 @@ export default function Contact() {
         name: name.trim(),
         email: email.trim(),
         phone: phone.trim(),
+        subject: enquiry.trim(),
         message: matter.trim(),
         source: 'contact',
       });
@@ -92,6 +103,7 @@ export default function Contact() {
       setName('');
       setEmail('');
       setPhone('');
+      setEnquiry('');
       setMatter('');
     } catch (err) {
       setError(err.response?.data?.message || 'Could not send. Please try WhatsApp or email us directly.');
@@ -109,43 +121,72 @@ export default function Contact() {
               <span className="contact__label-rule" aria-hidden="true" />
               Contact us
             </p>
-            <h1>Have a Question? Need Assistance? Let&apos;s Talk.</h1>
+            <h1>Need Legal Assistance? Have a Question? Reach Out.</h1>
             <p className="contact__lead">
-              Whether you are seeking legal assistance, have a question about our programmes, wish to
-              collaborate, or simply want to learn more about RKLAF, we welcome you to reach out.
+              Whether you are seeking legal assistance, want to know more about our work, wish to
+              collaborate, or simply have a question, we welcome you to get in touch.
             </p>
           </Reveal>
 
-          <Reveal as="ul" className="contact__channels" variant="up" delay={40}>
-            {channels.map((c) => {
-              const body = (
-                <>
-                  <span className="contact__channel-icon">
-                    <ChannelIcon name={c.icon} />
-                  </span>
-                  <span className="contact__channel-text">
-                    <strong>{c.title}</strong>
-                    <small>{c.detail}</small>
-                  </span>
-                </>
-              );
+          <Reveal as="section" className="contact__touch" variant="up" delay={20}>
+            <h2 id="contact-get-in-touch" className="contact__section-label">
+              Get in touch
+            </h2>
+            <ul className="contact__channels">
+              {channels.map((c) => {
+                const body = (
+                  <>
+                    <span className="contact__channel-icon">
+                      <ChannelIcon name={c.icon} />
+                    </span>
+                    <span className="contact__channel-text">
+                      <strong>{c.title}</strong>
+                      <small>{c.detail}</small>
+                    </span>
+                  </>
+                );
 
-              return (
-                <li key={c.id}>
-                  {c.href ? (
+                return (
+                  <li key={c.id}>
+                    {c.href ? (
+                      <a
+                        href={c.href}
+                        className="contact__channel"
+                        {...(c.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                      >
+                        {body}
+                      </a>
+                    ) : (
+                      <div className="contact__channel">{body}</div>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </Reveal>
+
+          <Reveal as="section" className="contact__offices" variant="up" delay={40}>
+            <h2 id="contact-our-offices" className="contact__section-label">
+              Our offices
+            </h2>
+            <ul className="contact__office-list">
+              {offices.map((office) => (
+                <li key={office.id} className="contact__office">
+                  <strong>{office.title}</strong>
+                  <p>{office.address}</p>
+                  {office.mapsUrl ? (
                     <a
-                      href={c.href}
-                      className="contact__channel"
-                      {...(c.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                      className="contact__office-map"
+                      href={office.mapsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
                     >
-                      {body}
+                      Open in Google Maps →
                     </a>
-                  ) : (
-                    <div className="contact__channel">{body}</div>
-                  )}
+                  ) : null}
                 </li>
-              );
-            })}
+              ))}
+            </ul>
           </Reveal>
 
           <Reveal as="div" className="contact__map" variant="up" delay={80}>
@@ -171,10 +212,13 @@ export default function Contact() {
           <form className="contact__form" onSubmit={onSubmit}>
             <h2>Legal Assistance &amp; General Enquiries</h2>
             <p className="contact__form-lead">
-              If you or someone you know requires legal assistance, share details of the matter. For questions
-              relating to RKLAF, programmes, internships, volunteering, membership or partnerships, write to us
-              here. Everything is confidential. Messages go to{' '}
-              {CONTACT_EMAIL}.
+              If you or someone you know needs legal assistance, you can share the details of the matter
+              with us. For enquiries relating to RKLAF, our programmes, internships, volunteering,
+              membership or partnerships, you can reach out here as well.
+            </p>
+            <p className="contact__form-lead contact__form-lead--follow">
+              Please provide sufficient information for our team to understand your query and direct it
+              appropriately.
             </p>
 
             {error ? <p className="contact__form-error" role="alert">{error}</p> : null}
@@ -186,7 +230,7 @@ export default function Contact() {
 
             <div className="contact__fields">
               <label>
-                Full name
+                Full Name
                 <input
                   type="text"
                   value={name}
@@ -198,7 +242,7 @@ export default function Contact() {
                 />
               </label>
               <label>
-                Phone
+                Phone Number
                 <input
                   type="tel"
                   value={phone}
@@ -212,7 +256,7 @@ export default function Contact() {
             </div>
 
             <label>
-              Email
+              Email Address
               <input
                 type="email"
                 value={email}
@@ -223,8 +267,20 @@ export default function Contact() {
               />
             </label>
 
+            <label>
+              Nature of Enquiry
+              <input
+                type="text"
+                value={enquiry}
+                onChange={(e) => setEnquiry(e.target.value)}
+                placeholder="e.g. Legal assistance, internship, partnership"
+                required
+                disabled={busy}
+              />
+            </label>
+
             <label className="contact__matter">
-              What&apos;s going on?
+              Briefly Describe Your Legal Matter/Query
               <textarea
                 rows={5}
                 value={matter}
@@ -238,6 +294,12 @@ export default function Contact() {
             <button type="submit" className="contact__submit" disabled={busy}>
               {busy ? 'Sending…' : sent ? 'Send another message →' : 'Send message →'}
             </button>
+
+            <p className="contact__form-note">
+              Information shared with us is treated with appropriate confidentiality. Submission of an
+              enquiry does not by itself create an advocate–client relationship or guarantee legal
+              representation.
+            </p>
           </form>
         </Reveal>
       </div>

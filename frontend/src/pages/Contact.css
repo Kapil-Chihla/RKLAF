@@ -58,10 +58,69 @@
   text-align: justify;
 }
 
+.contact__section-label {
+  margin: 0 0 0.85rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.contact__touch {
+  margin: 0 0 1.75rem;
+}
+
 .contact__channels {
   list-style: none;
-  margin: 0 0 1.75rem;
+  margin: 0;
   padding: 0;
+}
+
+.contact__offices {
+  margin: 0 0 1.75rem;
+}
+
+.contact__office-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1.15rem;
+}
+
+.contact__office {
+  padding: 1rem 0 0;
+  border-top: 1px solid var(--line);
+}
+
+.contact__office strong {
+  display: block;
+  margin: 0 0 0.35rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.contact__office p {
+  margin: 0 0 0.55rem;
+  font-size: 1.02rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.contact__office-map {
+  display: inline-block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.contact__office-map:hover {
+  color: var(--accent);
 }
 
 .contact__channels > li {
@@ -212,6 +271,17 @@ a.contact__channel:hover strong {
 .contact__form-lead {
   margin: 0 0 1.35rem;
   font-size: 1.1rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.contact__form-lead--follow {
+  margin-top: -0.65rem;
+}
+
+.contact__form-note {
+  margin: 1.1rem 0 0;
+  font-size: 0.92rem;
   line-height: 1.55;
   color: var(--muted);
 }

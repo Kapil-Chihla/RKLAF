@@ -107,6 +107,20 @@
   margin-bottom: clamp(1.75rem, 4vw, 2.5rem);
 }
 
+.home-section-head--stack {
+  align-items: flex-start;
+}
+
+.home-section-lede {
+  margin: 0.75rem 0 0;
+  max-width: 42rem;
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: var(--muted);
+  text-align: justify;
+  text-justify: inter-word;
+}
+
 /* Placeholder media (no photos yet) */
 .home-ph {
   position: relative;
@@ -142,14 +156,14 @@
 .home-hero {
   /* Match video plate white so Safari/Chrome gutters don't show cream edges */
   --hero-plate: #ffffff;
-  /* Visible soft blur under tagline — scales with viewport */
-  --hero-blur-pad-x: clamp(0.85em, 0.4em + 2.2vw, 1.9em);
-  --hero-blur-pad-y: clamp(0.55em, 0.3em + 1.4vw, 1.35em);
-  --hero-blur-soft: clamp(10px, 0.55vw + 9px, 20px);
-  --hero-blur-opacity: 0.78;
+  /* Soft white blur under tagline — must fully wrap “With You. For You. Nyaya Tak.” */
+  --hero-blur-pad-x: clamp(2.4em, 1.4em + 3.2vw, 4.75em);
+  --hero-blur-pad-y: clamp(0.95em, 0.55em + 1.4vw, 1.85em);
+  --hero-blur-soft: clamp(14px, 0.7vw + 11px, 24px);
+  --hero-blur-opacity: 0.92;
   --hero-blur-color: #ffffff;
-  --hero-mask-w: clamp(36%, 32% + 5vw, 56%);
-  --hero-mask-h: clamp(12%, 11% + 1.8vw, 22%);
+  --hero-mask-w: clamp(52%, 46% + 7vw, 72%);
+  --hero-mask-h: clamp(18%, 15% + 3vw, 30%);
   --hero-stats-h: 7.25rem;
   --hero-art-max-h: calc(100svh - var(--header-h, 96px) - var(--hero-stats-h) - 0.75rem);
   --hero-ar-w: 1126;
@@ -313,18 +327,18 @@
   transform: translate(-50%, -50%);
   z-index: 3;
   width: max-content;
-  max-width: 48%;
+  max-width: 92%;
   margin: 0;
-  padding: 0.2em 0.45em;
+  padding: 0.35em 0.55em;
   text-align: center;
   white-space: nowrap;
   pointer-events: none;
   opacity: 1;
   line-height: 1.12;
-  /* No solid/white plate — text sits on the clear hole in the sketch */
+  isolation: isolate;
 }
 
-/* Soft white blur behind text — visible over sketch lines, sized from text */
+/* Soft white blur behind text — sized larger than the full tagline */
 .home-hero__tagline::before {
   content: '';
   position: absolute;
@@ -333,22 +347,43 @@
   transform: translate(-50%, -50%);
   width: calc(100% + var(--hero-blur-pad-x));
   height: calc(100% + var(--hero-blur-pad-y));
+  min-width: 100%;
+  min-height: 100%;
   z-index: -1;
   pointer-events: none;
   border-radius: 999px;
   background: var(--hero-blur-color, #fff);
   opacity: var(--hero-blur-opacity);
   filter: blur(var(--hero-blur-soft));
+  box-shadow: 0 0 calc(var(--hero-blur-soft) * 1.4) calc(var(--hero-blur-soft) * 0.35)
+    color-mix(in srgb, var(--hero-blur-color, #fff) 85%, transparent);
+}
+
+/* Extra soft halo so edges of the line don’t peek past the pill */
+.home-hero__tagline::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100% + var(--hero-blur-pad-x) + 1.1em);
+  height: calc(100% + var(--hero-blur-pad-y) + 0.7em);
+  z-index: -2;
+  pointer-events: none;
+  border-radius: 999px;
+  background: var(--hero-blur-color, #fff);
+  opacity: calc(var(--hero-blur-opacity) * 0.55);
+  filter: blur(calc(var(--hero-blur-soft) * 1.45));
 }
 
 .home-hero__with,
 .home-hero__for,
 .home-hero__nyay {
   font-family: var(--font-serif);
-  font-size: clamp(0.92rem, 1.65vw + 0.55rem, 2.75rem);
+  font-size: clamp(1.35rem, 2.4vw + 0.75rem, 3.35rem);
   font-weight: 700;
   letter-spacing: -0.02em;
-  color: var(--ink);
+  color: #111;
 }
 
 .home-hero__nyay {
@@ -874,7 +909,7 @@ a.home-card--link:hover {
 .home-polaroid {
   width: clamp(168px, 19vw, 220px);
   margin: 0;
-  padding: 0.65rem 0.65rem 0.9rem;
+  padding: 0.55rem;
   background: #fff;
   border-radius: 4px;
   box-shadow: 0 10px 24px rgba(26, 21, 16, 0.08);
@@ -905,15 +940,6 @@ a.home-card--link:hover {
   height: 100%;
   object-fit: cover;
   object-position: center center;
-}
-
-.home-polaroid figcaption {
-  margin-top: 0.5rem;
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: 1rem;
-  color: var(--muted);
-  text-align: center;
 }
 
 .home-stories__grid {
@@ -1438,23 +1464,23 @@ a.home-story--link:hover .home-story__more {
 
 @media (max-width: 1280px) {
   .home-hero {
-    --hero-blur-pad-x: clamp(0.9em, 0.45em + 1.6vw, 1.6em);
-    --hero-blur-pad-y: clamp(0.6em, 0.3em + 1vw, 1.15em);
-    --hero-blur-soft: 15px;
-    --hero-blur-opacity: 0.8;
-    --hero-mask-w: 40%;
-    --hero-mask-h: 14%;
+    --hero-blur-pad-x: clamp(2.2em, 1.3em + 2.8vw, 4em);
+    --hero-blur-pad-y: clamp(0.9em, 0.5em + 1.2vw, 1.7em);
+    --hero-blur-soft: 18px;
+    --hero-blur-opacity: 0.93;
+    --hero-mask-w: 58%;
+    --hero-mask-h: 22%;
   }
 }
 
 @media (max-width: 1100px) {
   .home-hero {
-    --hero-blur-pad-x: 1.25em;
-    --hero-blur-pad-y: 0.95em;
-    --hero-blur-soft: 13px;
-    --hero-blur-opacity: 0.82;
-    --hero-mask-w: 42%;
-    --hero-mask-h: 15%;
+    --hero-blur-pad-x: 2.6em;
+    --hero-blur-pad-y: 1.15em;
+    --hero-blur-soft: 17px;
+    --hero-blur-opacity: 0.94;
+    --hero-mask-w: 62%;
+    --hero-mask-h: 24%;
   }
 }
 
@@ -1472,12 +1498,12 @@ a.home-story--link:hover .home-story__more {
      * the lifted beige and wash the clip toward white.
      */
     --hero-blur-color: #e4e1d8;
-    --hero-blur-pad-x: 1.15em;
-    --hero-blur-pad-y: 0.85em;
-    --hero-blur-soft: 14px;
-    --hero-blur-opacity: 0.9;
-    --hero-mask-w: 50%;
-    --hero-mask-h: 17%;
+    --hero-blur-pad-x: 2.2em;
+    --hero-blur-pad-y: 1em;
+    --hero-blur-soft: 16px;
+    --hero-blur-opacity: 0.95;
+    --hero-mask-w: 68%;
+    --hero-mask-h: 26%;
     padding-top: 0.35rem;
     background: #ffffff;
   }
@@ -1522,26 +1548,18 @@ a.home-story--link:hover .home-story__more {
   .home-hero__tagline {
     left: 52%;
     top: 72%;
-    max-width: 88%;
-    padding: 0.12em 0.3em;
-  }
-
-  /* Kill every blur layer on mobile */
-  .home-hero__tagline::before,
-  .home-hero__tagline::after {
-    content: none !important;
-    display: none !important;
-    opacity: 0 !important;
-    filter: none !important;
-    background: none !important;
-    width: 0 !important;
-    height: 0 !important;
+    max-width: 94%;
+    padding: 0.28em 0.4em;
+    --hero-blur-pad-x: 2em;
+    --hero-blur-pad-y: 0.9em;
+    --hero-blur-soft: 16px;
+    --hero-blur-opacity: 0.95;
   }
 
   .home-hero__with,
   .home-hero__for,
   .home-hero__nyay {
-    font-size: clamp(0.95rem, 4.6vw, 1.55rem);
+    font-size: clamp(1.15rem, 5.2vw, 1.85rem);
   }
 
   .home-who__grid,
@@ -1634,12 +1652,6 @@ a.home-story--link:hover .home-story__more {
     font-size: clamp(0.9rem, 2.8vw, 1rem);
     letter-spacing: 0.08em;
     line-height: 1.2;
-  }
-
-  .home-polaroid figcaption {
-    margin-top: 0.45rem;
-    font-size: clamp(0.95rem, 2.8vw, 1.05rem);
-    line-height: 1.3;
   }
 }
 

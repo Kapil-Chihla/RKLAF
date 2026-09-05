@@ -85,7 +85,7 @@
 }
 
 .lib-hero__lead {
-  margin: 0 0 1.5rem;
+  margin: 0 0 0.85rem;
   max-width: 34rem;
   font-size: 1.05rem;
   line-height: 1.65;
@@ -93,6 +93,10 @@
   text-align: justify;
   text-justify: inter-word;
   hyphens: auto;
+}
+
+.lib-hero__lead + .lib-platforms {
+  margin-top: 0.65rem;
 }
 
 .lib-platforms {
@@ -578,17 +582,23 @@
 .lib-dot--a { top: 14%; left: -2%; background: var(--charcoal); }
 .lib-dot--b { top: 22%; right: -4%; background: #5a6b42; }
 
-.lib-welcome__copy h2 {
-  margin: 0 0 0.4rem;
-  font-family: var(--font-serif);
-  font-size: clamp(1.85rem, 3.4vw, 2.65rem);
-  font-weight: 700;
-  line-height: 1.15;
-  color: var(--ink);
+.lib-welcome__copy .lib-welcome__eyebrow {
+  margin: 0 0 0.45rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: none;
+  color: var(--muted);
 }
 
-.lib-welcome__copy .lib-label {
+.lib-welcome__copy h2 {
   margin: 0 0 0.65rem;
+  font-family: var(--font-serif);
+  font-size: clamp(2.15rem, 4vw, 3.1rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: #111;
+  letter-spacing: -0.02em;
 }
 
 .lib-welcome__italic {
@@ -601,7 +611,7 @@
 }
 
 .lib-welcome__body {
-  margin: 0 0 1.35rem;
+  margin: 0 0 0.9rem;
   max-width: 32rem;
   font-size: 1.1rem;
   line-height: 1.7;
@@ -609,6 +619,10 @@
   text-align: justify;
   text-justify: inter-word;
   hyphens: auto;
+}
+
+.lib-welcome__body:last-of-type {
+  margin-bottom: 1.35rem;
 }
 
 .lib-drop {
@@ -638,9 +652,11 @@
 .lib-episodes__head h2 {
   margin: 0;
   font-family: var(--font-serif);
-  font-size: clamp(1.75rem, 3.2vw, 2.4rem);
+  font-size: clamp(2.15rem, 4vw, 3.1rem);
   font-weight: 700;
-  color: var(--ink);
+  color: #111;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
 }
 
 .lib-episodes__grid {

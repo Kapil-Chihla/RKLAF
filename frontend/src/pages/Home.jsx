@@ -24,30 +24,6 @@ function snapSrc(n) {
   return snapModules[`../assets/${n}.jpeg`];
 }
 
-const SNAP_CAPTIONS = [
-  'On the ground',
-  'Together at camp',
-  'Rights in practice',
-  'Community day',
-  'Listening first',
-  'Relief in hand',
-  'At the hearing',
-  'Side by side',
-  'Village intake',
-  'Order in hand',
-  'Helpline shift',
-  'Tribunal steps',
-  'Camp morning',
-  'Rights workshop',
-  'Family counsel',
-  'Volunteer desk',
-  'Court corridor',
-  'Field visit',
-  'Community hall',
-  'Case follow-up',
-];
-
-/** Prefer faces / subjects for tall phone shots cropped into the square frame. */
 const SNAP_FOCUS = {
   1: 'center 28%',
   2: 'center 22%',
@@ -68,7 +44,6 @@ const snapshots = Array.from({ length: 10 }, (_, i) => {
   return {
     src: snapSrc(n),
     label: `Field snapshot ${n}`,
-    caption: SNAP_CAPTIONS[i],
     focus: SNAP_FOCUS[n] || 'center center',
   };
 });
@@ -78,7 +53,6 @@ const snapshotsRow2 = Array.from({ length: 10 }, (_, i) => {
   return {
     src: snapSrc(n),
     label: `Field snapshot ${n}`,
-    caption: SNAP_CAPTIONS[i + 10],
     focus: SNAP_FOCUS[n] || 'center center',
   };
 });
@@ -114,7 +88,7 @@ const introStats = [
 const sideNav = [
   { id: 'who-we-are', label: 'Who We Are' },
   { id: 'stories', label: 'What we do' },
-  { id: 'expertise', label: 'Expertise' },
+  { id: 'expertise', label: 'Areas of Work' },
   { id: 'resources', label: 'Resources' },
   { id: 'join-help', label: 'Join Us & Help' },
 ];
@@ -414,11 +388,6 @@ function WhoWeAreFilm() {
         ) : null}
       </div>
       <p className="home-film__caption">With You. For You. Nyaya Tak.</p>
-      {!playing ? (
-        <aside className="home-film__quote">
-          “Justice must remain within the reach of those who need it, not only those who can afford it.”
-        </aside>
-      ) : null}
     </div>
   );
 }
@@ -583,13 +552,22 @@ export default function Home() {
 
       <section id="stories" className="home-stories-wrap">
         <div className="container">
-          <header className="home-section-head">
+          <header className="home-section-head home-section-head--stack">
             <div>
               <p className="home-eyebrow">Impact through Litigation</p>
-              <h2 className="home-display">Real people. Real orders. Real relief.</h2>
+              <h2 className="home-display">Justice Through Legal Action.</h2>
+              <p className="home-section-lede">
+                From individual legal-aid matters to cases raising questions of wider public importance, RKLAF
+                uses litigation to protect rights, secure relief and challenge barriers to justice.
+              </p>
+              <p className="home-section-lede">
+                Our work spans the District Courts, High Courts, the Supreme Court and other legal forums, with
+                matters ranging from criminal justice and recruitment rights to constitutional and public-interest
+                issues.
+              </p>
             </div>
             <Link to="/impact#stories" className="home-pill">
-              View all stories →
+              Explore our litigation →
             </Link>
           </header>
 
@@ -659,7 +637,6 @@ export default function Home() {
                     ) : (
                       <MediaPlaceholder label={shot.label} />
                     )}
-                    <figcaption>{shot.caption}</figcaption>
                   </figure>
                 ))}
               </div>
@@ -670,13 +647,18 @@ export default function Home() {
 
       <section id="programmes" className="home-impact">
         <div className="container">
-          <header className="home-section-head">
+          <header className="home-section-head home-section-head--stack">
             <div>
-              <p className="home-eyebrow">Our Work</p>
-              <h2 className="home-display">Programmes &amp; Initiatives</h2>
+              <p className="home-eyebrow">Programmes &amp; Initiatives</p>
+              <h2 className="home-display">Justice Beyond the Courtroom.</h2>
+              <p className="home-section-lede">
+                Access to justice requires more than representation. Through legal-aid camps, prison legal aid,
+                community outreach, Know Your Rights, research, RTI initiatives and other public-interest
+                programmes, RKLAF works to make legal knowledge, assistance and accountability more accessible.
+              </p>
             </div>
             <Link to="/our-work/programmes" className="home-pill">
-              View all programmes →
+              Explore our programmes →
             </Link>
           </header>
 
@@ -715,7 +697,7 @@ export default function Home() {
       <section id="expertise" className="home-expertise">
         <div className="container home-expertise__grid">
           <Reveal as="div" className="home-expertise__intro" variant="up">
-            <p className="home-eyebrow">Expertise</p>
+            <p className="home-eyebrow">Areas of Work</p>
             <h2 className="home-display">Where we can step in</h2>
           </Reveal>
 

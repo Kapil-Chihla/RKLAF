@@ -272,12 +272,21 @@ export default function Library() {
           <Reveal as="div" className="lib-hero__copy" variant="up">
             <p className="lib-label lib-label--on-dark">The Library</p>
             <h1>
-              Knowledge. Conversations. <em>Ideas.</em>
+              Knowledge.
+              <br />
+              Conversations.
+              <br />
+              <em>Ideas.</em>
             </h1>
             <p className="lib-hero__lead">
-              The law does not exist only in statutes and judgments. The RKLAF Library brings together the
-              conversations, ideas and resources through which we explore that relationship, making legal
-              knowledge more accessible and creating space to question, discuss and engage with the law.
+              The law does not exist only in statutes and judgments. It shapes how we work, learn, raise
+              our children, exercise our rights, interact with institutions and understand the world
+              around us.
+            </p>
+            <p className="lib-hero__lead">
+              The RKLAF Library brings together the conversations, ideas and resources through which we
+              explore that relationship, making legal knowledge more accessible and creating space to
+              question, discuss and engage with the law.
             </p>
             <div className="lib-platforms">
               {platforms.map((p) => (
@@ -372,24 +381,31 @@ export default function Library() {
               </Reveal>
 
               <Reveal as="div" className="lib-welcome__copy" variant="up" delay={40}>
-                <h2>Law, Beyond the Law Books.</h2>
-                <p className="lib-label">Nyaya Tak</p>
+                <p className="lib-label lib-welcome__eyebrow">Law, Beyond the Law Books.</p>
+                <h2>Nyaya Tak</h2>
                 <p className="lib-welcome__italic">
                   Nyaya Tak is RKLAF&apos;s podcast bringing law into conversation with the world around us.
                 </p>
                 <p className="lib-welcome__body">
-                  <span className="lib-drop" aria-hidden="true">
-                    T
-                  </span>
-                  hrough audio and video, Nyaya Tak explores how law intersects with everyday life, society and
-                  the professions and experiences that shape it. We speak with people from different fields,
-                  perspectives and walks of life, asking where the law meets their world. The purpose remains
-                  the same: to ask better questions, bring different perspectives together, and understand where
+                  Through audio and video, Nyaya Tak explores how law intersects with everyday life,
+                  society and the professions and experiences that shape it. We speak with people from
+                  different fields, perspectives and walks of life, asking where the law meets their
+                  world.
+                </p>
+                <p className="lib-welcome__body">
+                  At the same time, Nyaya Tak creates a space for RKLAF&apos;s interns, volunteers and
+                  members to engage with the legal questions of their time, through conversations,
+                  debates and the exchange of differing views on current legal developments, rights and
+                  issues affecting society.
+                </p>
+                <p className="lib-welcome__body">
+                  The conversations may take different forms, but the purpose remains the same:
+                  to ask better questions, bring different perspectives together, and understand where
                   law meets life.
                 </p>
-                <Link to="/contact" className="lib-pill">
-                  Get in touch →
-                </Link>
+                <a href="#audio" className="lib-pill">
+                  Watch · Listen →
+                </a>
               </Reveal>
             </div>
           </div>
@@ -399,8 +415,7 @@ export default function Library() {
           <div className="container">
             <div className="lib-episodes__head">
               <div>
-                <p className="lib-label">Listen</p>
-                <h2>The audio podcast</h2>
+                <h2>Listen</h2>
                 <p className="lib-episodes__lede">
                   Conversations recorded at the office and in the field, for listening on the way to work.
                 </p>
@@ -459,8 +474,7 @@ export default function Library() {
           <div className="container">
             <div className="lib-episodes__head">
               <div>
-                <p className="lib-label">Watch</p>
-                <h2>The video podcast</h2>
+                <h2>Watch</h2>
                 <p className="lib-episodes__lede">
                   Full episodes filmed in the studio, plus short explainers you can send to someone who needs
                   the answer today.

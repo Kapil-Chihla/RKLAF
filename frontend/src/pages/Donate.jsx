@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
 import Reveal from '../components/motion/Reveal';
 import { submitContact } from '../lib/submitContact';
 import { startDonationCheckout } from '../lib/razorpayCheckout';
@@ -132,49 +131,6 @@ function SideIcon({ name }) {
     <svg {...common}>
       <rect x="5" y="3" width="14" height="18" rx="2" />
       <path d="M8 8h8M8 12h8M8 16h5" />
-    </svg>
-  );
-}
-
-function TrustIcon({ name }) {
-  const common = {
-    viewBox: '0 0 24 24',
-    fill: 'none',
-    stroke: 'currentColor',
-    strokeWidth: '1.6',
-    strokeLinecap: 'round',
-    strokeLinejoin: 'round',
-    'aria-hidden': true,
-  };
-
-  if (name === 'lock') {
-    return (
-      <svg {...common}>
-        <rect x="5" y="11" width="14" height="10" rx="2" />
-        <path d="M8 11V8a4 4 0 018 0v3" />
-      </svg>
-    );
-  }
-  if (name === 'doc') {
-    return (
-      <svg {...common}>
-        <path d="M7 3h7l5 5v13a1 1 0 01-1 1H7a1 1 0 01-1-1V4a1 1 0 011-1z" />
-        <path d="M14 3v5h5M9 13h6M9 17h4" />
-      </svg>
-    );
-  }
-  if (name === 'ledger') {
-    return (
-      <svg {...common}>
-        <path d="M4 19V5a1 1 0 011-1h4l2 2h8a1 1 0 011 1v12a1 1 0 01-1 1H5a1 1 0 01-1-1z" />
-        <path d="M8 12h8M8 15h5" />
-      </svg>
-    );
-  }
-  return (
-    <svg {...common}>
-      <path d="M4 12a8 8 0 0114.5-4.5M20 12a8 8 0 01-14.5 4.5" />
-      <path d="M18.5 3.5V7.5H14.5M5.5 20.5V16.5H9.5" />
     </svg>
   );
 }
@@ -399,25 +355,6 @@ export default function Donate() {
                     ? 'Donation received →'
                     : `Donate ₹${formatInr(effectiveAmount)} securely →`}
               </button>
-
-              <ul className="donate__trust">
-                <li>
-                  <TrustIcon name="lock" />
-                  <span>256-bit encrypted</span>
-                </li>
-                <li>
-                  <TrustIcon name="doc" />
-                  <span>80G tax exemption</span>
-                </li>
-                <li>
-                  <TrustIcon name="ledger" />
-                  <Link to="/our-work/reports">Public ledger</Link>
-                </li>
-                <li>
-                  <TrustIcon name="refund" />
-                  <span>7-day refund window</span>
-                </li>
-              </ul>
             </form>
           </Reveal>
 
@@ -444,14 +381,6 @@ export default function Donate() {
                   Appropriate receipts and tax documentation, where applicable, will be provided.
                 </p>
               </blockquote>
-            </Reveal>
-
-            <Reveal as="div" className="donate__photo" variant="up" delay={200}>
-              <span className="donate__photo-icon" aria-hidden="true">
-                📷
-              </span>
-              <p>Photo placeholder</p>
-              <small>Client thanking case officer outside tribunal</small>
             </Reveal>
           </aside>
         </div>

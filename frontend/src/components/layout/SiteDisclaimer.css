@@ -1,0 +1,66 @@
+.site-disclaimer {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+  background: rgba(26, 21, 16, 0.55);
+  backdrop-filter: blur(4px);
+}
+
+.site-disclaimer__panel {
+  width: min(100%, 34rem);
+  max-height: min(88vh, 40rem);
+  overflow: auto;
+  padding: 1.75rem 1.6rem 1.5rem;
+  border-radius: 18px;
+  background: #f7f2ea;
+  color: #1a1510;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+}
+
+.site-disclaimer__eyebrow {
+  margin: 0 0 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #8a7355;
+}
+
+.site-disclaimer__panel h2 {
+  margin: 0 0 1rem;
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: clamp(1.45rem, 3vw, 1.85rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: #111;
+}
+
+.site-disclaimer__panel p {
+  margin: 0 0 0.85rem;
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: #3a322a;
+}
+
+.site-disclaimer__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.65rem;
+  min-height: 48px;
+  padding: 0.75rem 1.35rem;
+  border: 0;
+  border-radius: 999px;
+  background: #1a1510;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.site-disclaimer__btn:hover {
+  background: #2c2620;
+}

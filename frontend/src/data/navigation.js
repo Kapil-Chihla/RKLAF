@@ -72,6 +72,7 @@ export const aboutSectionLinks = [
   { label: 'About Us', path: '/about#about-hero' },
   { label: 'Our Philosophy', path: '/about#philosophy' },
   { label: 'Our Story', path: '/about#story' },
+  { label: 'Our Team', path: '/about#team' },
   { label: 'What We Do', path: '/about#work' },
   { label: 'Where We Work', path: '/about#where' },
   { label: 'Vision & Looking Ahead', path: '/about#outlook' },

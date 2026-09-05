@@ -480,8 +480,14 @@ export default function KnowYourRights() {
       <section id="doors" className="kyr-doors">
         <div className="container">
           <Reveal as="header" className="kyr-center-head" variant="up">
-            <p className="kyr-label">How this hub helps</p>
+            <p className="kyr-label">How this hub works</p>
             <h2>Law, Without the Legalese.</h2>
+            <p className="kyr-center-head__lede">
+              Our resources are created for people who may not have a legal background. Through
+              practical guides, visual explainers, legal glossaries, articles and other accessible
+              formats, we translate complex legal provisions into practical, accessible information
+              that people can actually use.
+            </p>
           </Reveal>
 
           <div className="kyr-doors__grid">
@@ -511,12 +517,12 @@ export default function KnowYourRights() {
         <div className="container kyr-glossary__inner">
           <Reveal as="header" className="kyr-glossary__head" variant="up">
             <p className="kyr-label">Legal glossary</p>
-            <h2 className="kyr-section-tagline">START WITH THE LAW. KNOW WHAT IT MEANS.</h2>
+            <h2>Legal words, made easier to understand.</h2>
             <p className="kyr-glossary__lede">
-              Legal words shouldn&apos;t stand between people and their rights. Find plain language definitions
-              of the terms that appear in FIRs, petitions, court orders and everyday legal processes. This
-              glossary explains them in plain language and in their practical legal context. Pick a letter to
-              begin.
+              Legal words can be confusing when they appear in an FIR, petition, notice or a court
+              order. This glossary explains them in plain language and in their practical legal
+              context, so you can understand what a term means when it actually matters. Pick a
+              letter to begin.
             </p>
           </Reveal>
 

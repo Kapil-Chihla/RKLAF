@@ -38,3 +38,15 @@ export function sortDeskStoriesLatest(list) {
     return (Number(b?.number) || 0) - (Number(a?.number) || 0);
   });
 }
+
+/** Project order ascending: 01, 02, 03, 04… */
+export function sortDeskStoriesByNumber(list) {
+  return [...(list || [])].sort((a, b) => {
+    const na = Number(a?.number) || 0;
+    const nb = Number(b?.number) || 0;
+    if (na !== nb) return na - nb;
+    const da = Date.parse(a?.createdAt) || 0;
+    const db = Date.parse(b?.createdAt) || 0;
+    return da - db;
+  });
+}

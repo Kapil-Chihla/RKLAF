@@ -5,6 +5,7 @@ import ScrollToTop from './ScrollToTop';
 import SideTabs from './SideTabs';
 import ContactFloats from './ContactFloats';
 import GoogleTranslateHost from './GoogleTranslateHost';
+import SiteDisclaimer from './SiteDisclaimer';
 import useAutoReveal from '../../hooks/useAutoReveal';
 
 export default function Layout() {
@@ -14,6 +15,7 @@ export default function Layout() {
     <div className="site-wrapper site-wrapper--v2">
       <ScrollToTop />
       <GoogleTranslateHost />
+      <SiteDisclaimer />
       <SideTabs />
       <ContactFloats />
       <div className="site-shell">

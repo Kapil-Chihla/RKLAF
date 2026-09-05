@@ -266,13 +266,16 @@ export default function JoinUs() {
             </div>
             <p className="join-label">Join us</p>
             <h1>
-              Be Part of the <em>Work</em>
+              Be Part of the <em>Work.</em>
             </h1>
             <p className="join-hero__lead">
               Justice is not created by institutions alone. It is built by people who choose to contribute
-              their time, knowledge, skills, and resources. Whether you are a student looking to learn, a
-              professional looking to contribute, an organisation looking to collaborate, or simply someone
-              who believes that access to justice should be universal, there is a place for you at RKLAF.
+              their time, knowledge, skills, and resources.
+            </p>
+            <p className="join-hero__lead">
+              Whether you are a student looking to learn, a professional looking to contribute, an organisation
+              looking to collaborate, or simply someone who believes that access to justice should be universal,
+              there is a place for you at RKLAF.
             </p>
             <p className="join-hero__stats">Choose how you want to contribute.</p>
           </Reveal>
