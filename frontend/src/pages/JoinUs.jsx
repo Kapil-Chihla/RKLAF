@@ -117,7 +117,7 @@ const tracks = [
     id: 'collaborate',
     num: '04',
     tone: 'dashed',
-    title: 'Partner with Us',
+    title: 'Partner/Collaborate with us',
     who: "Let's Create Greater Impact, Together.",
     blurb:
       'Some challenges cannot be solved by one institution alone. RKLAF collaborates with lawyers, law firms, educational institutions, NGOs, civil-society organisations, corporations, researchers, government and public institutions, and other stakeholders.',
