@@ -127,9 +127,7 @@ export default function OurWork() {
           </div>
 
           <Reveal as="p" className="work-areas__note" variant="up">
-            These areas work together, not in isolation. Our Delhi Prisons program, for instance,
-            combines case representation with legal awareness and institutional partnership all at once.
-            Explore each programme on{' '}
+            These areas work together, not in isolation. Explore each programme on{' '}
             <Link to="/our-work/programmes">Programmes &amp; Initiatives</Link> for the full picture.
           </Reveal>
         </div>
