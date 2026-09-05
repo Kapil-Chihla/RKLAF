@@ -140,8 +140,8 @@
 
 /* Hero — aspect-locked frame so sketch + tagline match on every screen */
 .home-hero {
-  /* Match page paper */
-  --hero-plate: var(--paper, #faf8f4);
+  /* Match video plate white so Safari/Chrome gutters don't show cream edges */
+  --hero-plate: #ffffff;
   /* Visible soft blur under tagline — scales with viewport */
   --hero-blur-pad-x: clamp(0.85em, 0.4em + 2.2vw, 1.9em);
   --hero-blur-pad-y: clamp(0.55em, 0.3em + 1.4vw, 1.35em);
@@ -161,7 +161,7 @@
   height: calc(100svh - var(--header-h, 96px));
   max-height: calc(100svh - var(--header-h, 96px));
   padding: 0.25rem 0 0.75rem;
-  background: var(--hero-plate);
+  background: #ffffff;
   box-sizing: border-box;
   width: 100%;
 }
@@ -257,7 +257,7 @@
   /* Opaque sketch plate that still reads as ink on paper without multiply */
   filter: grayscale(1) contrast(1.85) brightness(1.2);
   opacity: 0.92;
-  background: var(--hero-plate);
+  background: #ffffff;
 }
 
 .home-hero__video::-webkit-media-controls,
