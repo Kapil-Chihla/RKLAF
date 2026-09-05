@@ -49,7 +49,6 @@ const tracks = [
     id: 'internship',
     num: '02',
     tone: 'dark',
-    popular: true,
     title: 'Internship',
     who: 'Learn Law Beyond the Classroom.',
     blurb:
@@ -209,7 +208,6 @@ function TrackIcon({ name }) {
 function TrackCard({ track }) {
   return (
     <article className={`join-card join-card--${track.tone}`} id={track.id}>
-      {track.popular ? <span className="join-card__popular">Most popular</span> : null}
       <div className="join-card__top">
         <span className="join-card__icon" aria-hidden="true">
           <TrackIcon name={track.icon} />
@@ -240,7 +238,6 @@ function TrackCard({ track }) {
       </div>
 
       <div className="join-card__foot">
-        <span className="join-card__badge">{track.badge}</span>
         <a
           href={track.href}
           className="join-card__cta"
