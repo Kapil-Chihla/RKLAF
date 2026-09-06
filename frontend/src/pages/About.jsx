@@ -249,51 +249,44 @@ function PhBox({ label, hint, dark, image, fit = 'cover', position, className = 
 
 function VideoCard({ tag, label, hint, image, src }) {
   const videoRef = useRef(null);
-  const [playing, setPlaying] = useState(false);
+  const [started, setStarted] = useState(false);
 
   const start = () => {
     const el = videoRef.current;
     if (!el || !src) return;
     el.muted = false;
     el.play()
-      .then(() => setPlaying(true))
+      .then(() => setStarted(true))
       .catch(() => {
         el.muted = true;
         el.play()
           .then(() => {
-            setPlaying(true);
+            setStarted(true);
             el.muted = false;
           })
           .catch(() => {});
       });
   };
 
-  const onEnded = () => setPlaying(false);
-  const onPause = () => {
-    const el = videoRef.current;
-    if (el && el.paused && !el.ended) setPlaying(false);
-  };
-
   if (src) {
     return (
-      <div className={`about-vid about-vid--player${playing ? ' is-playing' : ''}`}>
-        {tag && !playing ? <span className="about-vid__tag">{tag}</span> : null}
+      <div className={`about-vid about-vid--player${started ? ' is-playing' : ''}`}>
+        {tag && !started ? <span className="about-vid__tag">{tag}</span> : null}
         <div className="about-vid__frame">
           <video
             ref={videoRef}
             className="about-vid__video"
             src={src}
             poster={image || undefined}
-            controls={playing}
+            controls={started}
             controlsList="nodownload"
             playsInline
             preload="auto"
-            onEnded={onEnded}
-            onPause={onPause}
-            onPlay={() => setPlaying(true)}
+            onEnded={() => setStarted(false)}
+            onPlay={() => setStarted(true)}
           />
         </div>
-        {!playing ? (
+        {!started ? (
           <button type="button" className="about-vid__play" onClick={start} aria-label={label || 'Play video'}>
             <span>
               <PlayIcon />

@@ -342,19 +342,21 @@ function MediaPlaceholder({ label, caption, ratio = '4 / 3' }) {
 
 function WhoWeAreFilm() {
   const videoRef = useRef(null);
-  const [playing, setPlaying] = useState(false);
+  // Once started, keep native controls mounted — seek scrub fires pause and
+  // must not tear down controls / show the overlay mid-playback.
+  const [started, setStarted] = useState(false);
 
   const start = () => {
     const el = videoRef.current;
     if (!el) return;
     el.muted = false;
     el.play()
-      .then(() => setPlaying(true))
+      .then(() => setStarted(true))
       .catch(() => {
         el.muted = true;
         el.play()
           .then(() => {
-            setPlaying(true);
+            setStarted(true);
             el.muted = false;
           })
           .catch(() => {});
@@ -362,26 +364,22 @@ function WhoWeAreFilm() {
   };
 
   return (
-    <div className={`home-film${playing ? ' is-playing' : ''}`}>
+    <div className={`home-film${started ? ' is-playing' : ''}`}>
       <div className="home-film__frame">
         <video
           ref={videoRef}
           className="home-film__video"
           src={whoWeAreFilm}
           poster={whoWeArePoster}
-          controls={playing}
+          controls={started}
           controlsList="nodownload"
           playsInline
           preload="metadata"
-          onEnded={() => setPlaying(false)}
-          onPause={() => {
-            const el = videoRef.current;
-            if (el && el.paused && !el.ended) setPlaying(false);
-          }}
-          onPlay={() => setPlaying(true)}
+          onEnded={() => setStarted(false)}
+          onPlay={() => setStarted(true)}
         />
-        {!playing ? <span className="home-film__badge">Film · 3 min</span> : null}
-        {!playing ? (
+        {!started ? <span className="home-film__badge">Film · 3 min</span> : null}
+        {!started ? (
           <button type="button" className="home-film__play" onClick={start} aria-label="Play film">
             <span />
           </button>
