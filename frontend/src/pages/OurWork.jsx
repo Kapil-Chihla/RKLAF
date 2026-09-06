@@ -13,7 +13,6 @@ const areas = [
     paragraphs: [
       'Free, pro bono representation across Criminal Law, Service Law, Labour & Employment Law, Consumer Protection, and PILs, Writ Petitions & Civil Liberties Matters, from Delhi’s District Courts to the Delhi High Court and the Supreme Court of India.',
     ],
-    highlights: ['500+ cases handled', '100% pro bono, every case', '10+ yrs of continuous work'],
     href: '/impact',
     flip: false,
   },
@@ -39,8 +38,7 @@ const areas = [
       'In-jail legal consultations, full case representation, and rights awareness for undertrials and inmates, twice a week, inside the jail.',
     ],
     highlights: [
-      '500+ inmates assisted',
-      'officially recognized by Delhi Prisons',
+      'Recognized legal aid provider',
       'visits twice a week',
     ],
     href: '/our-work/desk/delhi-prison-programme',

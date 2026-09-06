@@ -69,7 +69,7 @@ const LINEAGE = [
     discPos: 'left center',
     label: 'Mr. Ajay Garg',
     tag: 'Founder',
-    role: 'The people carrying it forward',
+    role: 'Founder',
     name: 'Mr. Ajay Garg, Advocate',
     sub: 'Founder · Supreme Court of India & Delhi High Court',
     photo: photoAjayStory,
@@ -500,7 +500,6 @@ export default function About() {
       <section className="about-team" id="team">
         <Reveal as="header" className="about-team__head" variant="up">
           <span className="about-kicker">Our Team</span>
-          <h2>The people carrying it forward</h2>
         </Reveal>
         <div className="about-team__grid">
           {team.map((person, i) => (
