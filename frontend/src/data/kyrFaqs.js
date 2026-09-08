@@ -75,7 +75,7 @@ export const kyrFaqs = [
     id: 'kyr-13',
     question: 'I cannot find an answer to my question.',
     answer:
-      "We're here to help. Complete the enquiry form at the bottom of this page, email us, or call +91 98111 09663. If your question is commonly asked, we'll consider adding it to this FAQ to help others.",
+      "We're here to help. Complete the enquiry form at the bottom of this page, email us, or call +91 92206 60501 / +91 92206 60502. If your question is commonly asked, we'll consider adding it to this FAQ to help others.",
   },
   {
     id: 'kyr-14',

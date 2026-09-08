@@ -32,7 +32,7 @@ router.get('/', async (req, res) => {
   const filter = {};
   if (req.query.all !== 'true') filter.published = { $ne: false };
   const items = await ExplainerVideo.find(filter)
-    .sort({ sortOrder: 1, createdAt: -1 })
+    .sort({ createdAt: -1, sortOrder: 1 })
     .lean();
   res.json(items);
 });

@@ -15,10 +15,22 @@ export const SPOTIFY_PROFILE_URL =
   'https://open.spotify.com/user/31weviexrzxc6u4wzye6k6h55jwy';
 export const YOUTUBE_CHANNEL_URL = 'https://www.youtube.com/@radheykrishnalegalaid';
 
-/** Canonical contact — use these everywhere (tel / WhatsApp / mailto). */
-export const CONTACT_PHONE_E164 = '919811109663';
-export const CONTACT_PHONE_TEL = '+919811109663';
-export const CONTACT_PHONE_DISPLAY = '+91 98111 09663';
+/** Canonical contact — WhatsApp business first; remaining lines are voice-only. */
+export const CONTACT_WHATSAPP_E164 = '919220660500';
+export const CONTACT_WHATSAPP_TEL = '+919220660500';
+export const CONTACT_WHATSAPP_DISPLAY = '+91 92206 60500';
+
+/** @deprecated Prefer CONTACT_WHATSAPP_* — kept as aliases for older imports */
+export const CONTACT_PHONE_E164 = CONTACT_WHATSAPP_E164;
+export const CONTACT_PHONE_TEL = CONTACT_WHATSAPP_TEL;
+export const CONTACT_PHONE_DISPLAY = CONTACT_WHATSAPP_DISPLAY;
+
+/** Voice / call lines (not WhatsApp). */
+export const CONTACT_CALL_PHONES = [
+  { e164: '919220660501', tel: '+919220660501', display: '+91 92206 60501' },
+  { e164: '919220660502', tel: '+919220660502', display: '+91 92206 60502' },
+];
+
 export const CONTACT_EMAIL = 'radheykrishnalegalaid@gmail.com';
 export const CONTACT_MAILTO = `mailto:${CONTACT_EMAIL}`;
 
@@ -52,8 +64,8 @@ export const OFFICE_IMPHAL = {
 
 const WHATSAPP_PREFILL =
   'Hello, I am contacting Radhey Krishna Legal Aid Foundation from your website.';
-export const WHATSAPP_URL = `https://wa.me/${CONTACT_PHONE_E164}?text=${encodeURIComponent(WHATSAPP_PREFILL)}`;
-export const WHATSAPP_DISPLAY = CONTACT_PHONE_DISPLAY;
+export const WHATSAPP_URL = `https://wa.me/${CONTACT_WHATSAPP_E164}?text=${encodeURIComponent(WHATSAPP_PREFILL)}`;
+export const WHATSAPP_DISPLAY = CONTACT_WHATSAPP_DISPLAY;
 
 /** Header + footer Explore — Contact lives via Get in Touch → /contact */
 export const navItems = [
@@ -73,6 +85,7 @@ export const aboutSectionLinks = [
   { label: 'Our Philosophy', path: '/about#philosophy' },
   { label: 'Our Story', path: '/about#story' },
   { label: 'Our Team', path: '/about#team' },
+  { label: 'All team members', path: '/about/team' },
   { label: 'What We Do', path: '/about#work' },
   { label: 'Where We Work', path: '/about#where' },
   { label: 'Vision & Looking Ahead', path: '/about#outlook' },

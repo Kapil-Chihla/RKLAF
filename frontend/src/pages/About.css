@@ -1436,3 +1436,48 @@ button.about-vid__play:hover span {
     transition: none !important;
   }
 }
+
+.about-team__more {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.about-team__more-btn {
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--au-brown, #8a6a2c);
+  border-bottom: 1.5px solid rgba(138, 106, 44, 0.4);
+  padding-bottom: 0.15rem;
+}
+
+.about-team__more-btn:hover {
+  color: var(--au-ink, #1f1c19);
+}
+
+.about-team-page .about-team {
+  padding: clamp(2.5rem, 6vw, 4rem) 0 clamp(3rem, 7vw, 5rem);
+}
+
+.about-team__back {
+  display: inline-block;
+  margin-bottom: 0.85rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--au-brown, #8a6a2c);
+}
+
+.about-team__lede {
+  max-width: 40rem;
+  margin: 0.65rem auto 0;
+  text-align: justify;
+  hyphens: none;
+}
+
+.about-team--full .about-team__head h1 {
+  margin: 0.35rem 0 0;
+  font-family: var(--au-serif, var(--font-serif));
+  font-size: clamp(1.75rem, 3.2vw, 2.4rem);
+}

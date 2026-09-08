@@ -5,6 +5,7 @@ import {
   WHATSAPP_URL,
   CONTACT_EMAIL,
   CONTACT_MAILTO,
+  CONTACT_CALL_PHONES,
   OFFICE_DELHI,
   OFFICE_IMPHAL,
 } from '../data/navigation';
@@ -19,6 +20,13 @@ const channels = [
     detail: WHATSAPP_DISPLAY,
     href: WHATSAPP_URL,
     external: true,
+  },
+  {
+    id: 'call',
+    icon: 'phone',
+    title: 'Call',
+    detail: CONTACT_CALL_PHONES.map((p) => p.display).join(' · '),
+    href: CONTACT_CALL_PHONES[0].tel,
   },
   {
     id: 'email',

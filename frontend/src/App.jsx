@@ -12,11 +12,13 @@ import Academics from './pages/Academics';
 import AcademicPostDetail from './pages/AcademicPostDetail';
 import Library from './pages/Library';
 import Impact from './pages/Impact';
+import ImpactCollection from './pages/ImpactCollection';
 import SuccessStoryDetail from './pages/SuccessStoryDetail';
 import JoinUs from './pages/JoinUs';
 import Contact from './pages/Contact';
 import Donate from './pages/Donate';
 import Legal from './pages/Legal';
+import TeamPage from './pages/TeamPage';
 
 function DeskSlugRedirect() {
   const { slug } = useParams();
@@ -35,6 +37,7 @@ export default function App() {
         <Route element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="about" element={<About />} />
+          <Route path="about/team" element={<TeamPage />} />
           <Route path="our-work" element={<OurWork />} />
           <Route path="our-work/programmes" element={<ProgrammesInitiatives />} />
           <Route path="our-work/reports" element={<AnnualReports />} />
@@ -43,6 +46,7 @@ export default function App() {
           <Route path="desk/:slug" element={<DeskSlugRedirect />} />
           <Route path="know-your-rights" element={<KnowYourRights />} />
           <Route path="impact" element={<Impact />} />
+          <Route path="impact/browse/:section" element={<ImpactCollection />} />
           <Route path="impact/stories/:slug" element={<SuccessStoryDetail />} />
           <Route path="library" element={<Library />} />
           <Route path="academics" element={<Academics />} />

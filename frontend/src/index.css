@@ -61,7 +61,10 @@ body {
   font-weight: 400;
   font-optical-sizing: auto;
   text-align: start;
-  overflow-wrap: break-word;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+  -webkit-hyphens: none;
 }
 
 a {
@@ -81,9 +84,10 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0 0 0.75rem;
   color: var(--blue);
   text-align: start;
-  overflow-wrap: break-word;
+  overflow-wrap: normal;
   word-break: normal;
-  hyphens: manual;
+  hyphens: none;
+  -webkit-hyphens: none;
   text-wrap: balance;
 }
 
@@ -100,7 +104,10 @@ p {
   font-size: 1.1rem;
   color: var(--text-muted);
   text-align: start;
-  overflow-wrap: break-word;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+  -webkit-hyphens: none;
 }
 
 .site-wrapper,
@@ -109,7 +116,7 @@ p {
   font-size: 1.1rem;
 }
 
-/* Long-form body copy — justify for readability; never on headings / chrome */
+/* Long-form body copy — justify; never hyphenate mid-word */
 .story-detail__body p,
 .blog-article__content p,
 .blog-detail__body p,
@@ -124,15 +131,20 @@ p {
 .about-carry,
 .about-pillar p,
 .about-mode p,
+.about-team__card p,
 .home-who__copy > p,
 .home-resources__lede,
 .home-cta p,
 .home-donate p,
 .home-story__body p,
 .home-card__body p,
+.home-litigation__lede,
+.home-programmes__lede,
+.home-expertise__copy,
 .join-card__blurb,
 .join-step p,
 .join-cta__band p,
+.join-know__body,
 .donate__lead,
 .donate__impact p,
 .donate__side-card p,
@@ -143,6 +155,13 @@ p {
 .impact-lead,
 .impact-intro,
 .impact-pnote,
+.impact-aside-note,
+.impact-hero__copy > p,
+.impact-strand span,
+.impact-sbody p,
+.impact-live p,
+.impact-lrow span:not(.impact-lrow__yr):not(.impact-lrow__frm):not(.impact-chip),
+.impact-par dd,
 .kyr-hero__lead,
 .kyr-glossary__lede,
 .kyr-guides__head p,
@@ -151,6 +170,7 @@ p {
 .kyr-emergency__lede,
 .kyr-door__desc,
 .kyr-az__card dd,
+.kyr-pdf__desc,
 .faq-accordion__panel p,
 .lib-hero__lead,
 .lib-welcome__body,
@@ -158,10 +178,16 @@ p {
 .lib-episodes__lede,
 .lib-socials__lede,
 .lib-donate__lede,
-.acad-banner__lede {
+.acad-banner__lede,
+.work-prog__desc,
+.work-areas__note,
+.legal-page__body p {
   text-align: justify;
   text-justify: inter-word;
-  hyphens: auto;
+  hyphens: none;
+  -webkit-hyphens: none;
+  overflow-wrap: normal;
+  word-break: normal;
 }
 
 /* Centered section intros: keep the block centered; body still justified inside */

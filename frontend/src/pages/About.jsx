@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { OFFICE_DELHI, OFFICE_IMPHAL } from '../data/navigation';
 import Reveal from '../components/motion/Reveal';
 import photoDada from '../assets/_unused/dada.jpeg';
@@ -489,13 +490,13 @@ export default function About() {
         <p className="about-hint">Click a face or a marker to follow the thread</p>
       </section>
 
-      {/* 4b · OUR TEAM — CMS-driven, 4 per row, grows with uploads */}
+      {/* 4b · OUR TEAM — CMS preview; full list at /about/team */}
       <section className="about-team" id="team">
         <Reveal as="header" className="about-team__head" variant="up">
           <span className="about-kicker">Our Team</span>
         </Reveal>
         <div className="about-team__grid">
-          {team.map((person, i) => (
+          {team.slice(0, 8).map((person, i) => (
             <Reveal key={person.id || person.name} as="article" className="about-team__card" variant="up" delay={Math.min(i, 7) * 40}>
               {person.image ? (
                 <div
@@ -519,6 +520,19 @@ export default function About() {
             </Reveal>
           ))}
         </div>
+        {team.length > 8 ? (
+          <div className="about-team__more">
+            <Link to="/about/team" className="about-team__more-btn">
+              Show all team members ({team.length}) →
+            </Link>
+          </div>
+        ) : team.length > 0 ? (
+          <div className="about-team__more">
+            <Link to="/about/team" className="about-team__more-btn">
+              View team page →
+            </Link>
+          </div>
+        ) : null}
       </section>
 
       {/* 5 · OFFICE */}

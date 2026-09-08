@@ -6,6 +6,7 @@ import {
   WHATSAPP_URL,
   CONTACT_EMAIL,
   CONTACT_MAILTO,
+  CONTACT_CALL_PHONES,
   OFFICE_DELHI,
   OFFICE_IMPHAL,
 } from '../../data/navigation';
@@ -115,6 +116,17 @@ export default function Footer() {
             <li>
               <span className="footer-v2__label">WhatsApp</span>
               <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">{WHATSAPP_DISPLAY}</a>
+            </li>
+            <li>
+              <span className="footer-v2__label">Call</span>
+              <span className="footer-v2__address">
+                {CONTACT_CALL_PHONES.map((p, i) => (
+                  <span key={p.tel}>
+                    {i > 0 ? ' · ' : null}
+                    <a href={`tel:${p.tel}`}>{p.display}</a>
+                  </span>
+                ))}
+              </span>
             </li>
             <li>
               <span className="footer-v2__label">Email</span>

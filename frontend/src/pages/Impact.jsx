@@ -10,6 +10,25 @@ import { renderRichText } from '../lib/richText';
 import impactBanner from '../assets/impactbanner2.jpeg';
 import './Impact.css';
 
+/** Preview caps on Impact home — full lists live under /impact/browse/:section */
+const PREVIEW = {
+  ongoing: 4,
+  stories: 6,
+  records: 6,
+  press: 6,
+};
+
+function ShowAllLink({ to, total, preview }) {
+  if (!total || total <= preview) return null;
+  return (
+    <div className="impact-showall">
+      <Link to={to} className="impact-showall__btn">
+        Show all ({total}) →
+      </Link>
+    </div>
+  );
+}
+
 /** Turn YouTube / Vimeo watch URLs into embeddable iframe srcs (no autoplay on mosaic). */
 function embedUrl(url) {
   if (!url) return null;
@@ -367,23 +386,30 @@ export default function Impact() {
             order.
           </p>
           {runningNow.length ? (
-            <div className="impact-live-grid">
-              {runningNow.map((item, i) => (
-                <Reveal key={item.id} as="article" className="impact-live" variant="up" delay={i * 40}>
-                  <span className="impact-live__status">
-                    <i /> {item.status || 'In trial'}
-                  </span>
-                  <h3>{displayText(item.title)}</h3>
-                  <ParRows
-                    rows={[
-                      ['Allegation', item.allegation],
-                      ['Relief sought', item.reliefSought],
-                      ['Stage', item.stage],
-                    ]}
-                  />
-                </Reveal>
-              ))}
-            </div>
+            <>
+              <div className="impact-live-grid">
+                {runningNow.slice(0, PREVIEW.ongoing).map((item, i) => (
+                  <Reveal key={item.id} as="article" className="impact-live" variant="up" delay={i * 40}>
+                    <span className="impact-live__status">
+                      <i /> {item.status || 'In trial'}
+                    </span>
+                    <h3>{displayText(item.title)}</h3>
+                    <ParRows
+                      rows={[
+                        ['Allegation', item.allegation],
+                        ['Relief sought', item.reliefSought],
+                        ['Stage', item.stage],
+                      ]}
+                    />
+                  </Reveal>
+                ))}
+              </div>
+              <ShowAllLink
+                to="/impact/browse/ongoing"
+                total={runningNow.length}
+                preview={PREVIEW.ongoing}
+              />
+            </>
           ) : (
             <p className="impact-empty">No pending matters published yet.</p>
           )}
@@ -398,49 +424,52 @@ export default function Impact() {
               record is under public domain.
             </p>
             {stories.length ? (
-              <div className="impact-story-grid">
-                {stories.map((story, i) => {
-                  const href = story.slug ? `/impact/stories/${story.slug}` : null;
-                  const photo = story.heroImage ? assetUrl(story.heroImage) : null;
-                  const inner = (
-                    <>
-                      <PhotoBox
-                        image={photo}
-                        label="Portrait"
-                        caption={story.caption}
-                        className="impact-phbox--flush impact-phbox--story"
-                        fit="contain"
-                        position="center center"
-                      />
-                      <TornMini />
-                      <div className="impact-sbody">
-                        {story.tag ? <span className="impact-tag">{story.tag}</span> : null}
-                        <h3>{displayText(story.title)}</h3>
-                        {story.caseLine ? <span className="impact-caseline">{story.caseLine}</span> : null}
-                        <ParRows
-                          rows={[
-                            ['Problem', story.problem],
-                            ['Action', story.action],
-                            ['Result', story.result],
-                          ]}
+              <>
+                <div className="impact-story-grid">
+                  {stories.slice(0, PREVIEW.stories).map((story, i) => {
+                    const href = story.slug ? `/impact/stories/${story.slug}` : null;
+                    const photo = story.heroImage ? assetUrl(story.heroImage) : null;
+                    const inner = (
+                      <>
+                        <PhotoBox
+                          image={photo}
+                          label="Portrait"
+                          caption={story.caption}
+                          className="impact-phbox--flush impact-phbox--story"
+                          fit="contain"
+                          position="center center"
                         />
-                        {href ? <span className="impact-readmore">Read more →</span> : null}
-                      </div>
-                    </>
-                  );
-                  return (
-                    <Reveal key={story.id || story.title} variant="up" delay={i * 40}>
-                      {href ? (
-                        <Link to={href} className="impact-story">
-                          {inner}
-                        </Link>
-                      ) : (
-                        <article className="impact-story">{inner}</article>
-                      )}
-                    </Reveal>
-                  );
-                })}
-              </div>
+                        <TornMini />
+                        <div className="impact-sbody">
+                          {story.tag ? <span className="impact-tag">{story.tag}</span> : null}
+                          <h3>{displayText(story.title)}</h3>
+                          {story.caseLine ? <span className="impact-caseline">{story.caseLine}</span> : null}
+                          <ParRows
+                            rows={[
+                              ['Problem', story.problem],
+                              ['Action', story.action],
+                              ['Result', story.result],
+                            ]}
+                          />
+                          {href ? <span className="impact-readmore">Read more →</span> : null}
+                        </div>
+                      </>
+                    );
+                    return (
+                      <Reveal key={story.id || story.title} variant="up" delay={i * 40}>
+                        {href ? (
+                          <Link to={href} className="impact-story">
+                            {inner}
+                          </Link>
+                        ) : (
+                          <article className="impact-story">{inner}</article>
+                        )}
+                      </Reveal>
+                    );
+                  })}
+                </div>
+                <ShowAllLink to="/impact/browse/stories" total={stories.length} preview={PREVIEW.stories} />
+              </>
             ) : (
               <p className="impact-empty">No argued-in-full stories published yet.</p>
             )}
@@ -451,23 +480,30 @@ export default function Impact() {
             note="Not every matter requires a detailed case study. Some are best preserved through the orders and judgments that form their official record. This section provides access to such matters, allowing the work to speak through the documents themselves."
           />
           {alsoOnRecord.length ? (
-            <div className="impact-ledger">
-              {alsoOnRecord.map((row) => {
-                const href = row.file ? alsoOnRecordPdfDownloadUrl(row.id) : null;
-                const Row = href ? 'a' : 'div';
-                const rowProps = href
-                  ? { href, className: 'impact-lrow', target: '_blank', rel: 'noreferrer' }
-                  : { className: 'impact-lrow' };
-                return (
-                  <Row key={row.id} {...rowProps}>
-                    <span className="impact-lrow__yr">{row.year}</span>
-                    <span className="impact-lrow__frm">{row.header}</span>
-                    <span>{renderRichText(row.description)}</span>
-                    {row.statusChip ? <span className="impact-chip">{row.statusChip}</span> : <span />}
-                  </Row>
-                );
-              })}
-            </div>
+            <>
+              <div className="impact-ledger">
+                {alsoOnRecord.slice(0, PREVIEW.records).map((row) => {
+                  const href = row.file ? alsoOnRecordPdfDownloadUrl(row.id) : null;
+                  const Row = href ? 'a' : 'div';
+                  const rowProps = href
+                    ? { href, className: 'impact-lrow', target: '_blank', rel: 'noreferrer' }
+                    : { className: 'impact-lrow' };
+                  return (
+                    <Row key={row.id} {...rowProps}>
+                      <span className="impact-lrow__yr">{row.year}</span>
+                      <span className="impact-lrow__frm">{row.header}</span>
+                      <span>{renderRichText(row.description)}</span>
+                      {row.statusChip ? <span className="impact-chip">{row.statusChip}</span> : <span />}
+                    </Row>
+                  );
+                })}
+              </div>
+              <ShowAllLink
+                to="/impact/browse/records"
+                total={alsoOnRecord.length}
+                preview={PREVIEW.records}
+              />
+            </>
           ) : (
             <p className="impact-empty">No records published yet.</p>
           )}
@@ -501,8 +537,9 @@ export default function Impact() {
             </p>
           </Reveal>
           {pressMentions.length ? (
-            <div className="impact-press-grid">
-              {pressMentions.map((item, i) => {
+            <>
+              <div className="impact-press-grid">
+                {pressMentions.slice(0, PREVIEW.press).map((item, i) => {
                 if (item.layout === 'quote') {
                   return (
                     <Reveal key={item.id} variant="up" delay={i * 30}>
@@ -623,7 +660,9 @@ export default function Impact() {
                   </Reveal>
                 );
               })}
-            </div>
+              </div>
+              <ShowAllLink to="/impact/browse/press" total={pressMentions.length} preview={PREVIEW.press} />
+            </>
           ) : (
             <p className="impact-empty">No press mentions published yet.</p>
           )}

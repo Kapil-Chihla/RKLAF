@@ -551,7 +551,7 @@
   line-height: 1.5;
   text-align: justify;
   text-justify: inter-word;
-  hyphens: auto;
+  hyphens: none;
 }
 
 .impact-num em {
@@ -1370,4 +1370,79 @@ a.impact-clip:hover {
   .impact-prison {
     padding: 18px;
   }
+}
+
+/* Show all — Impact previews */
+.impact-showall {
+  margin-top: 1.35rem;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.impact-showall__btn {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brown, #8a6a2c);
+  border-bottom: 1.5px solid rgba(138, 106, 44, 0.45);
+  padding-bottom: 0.15rem;
+}
+
+.impact-showall__btn:hover {
+  color: var(--ink, #1f1c19);
+  border-color: rgba(31, 28, 25, 0.45);
+}
+
+.impact-collection__head {
+  padding: clamp(2.5rem, 6vw, 4rem) 0 1.5rem;
+  background: var(--paper, #faf8f4);
+  border-bottom: 1px solid rgba(31, 28, 25, 0.08);
+}
+
+.impact-collection__eyebrow {
+  margin: 0 0 0.45rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--taupe, #8a7355);
+}
+
+.impact-collection__head h1 {
+  margin: 0 0 0.85rem;
+  font-family: var(--font-serif);
+  font-size: clamp(1.75rem, 3.5vw, 2.6rem);
+}
+
+.impact-collection__back {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--brown, #8a6a2c);
+}
+
+.impact-collection__body {
+  padding: clamp(2rem, 4vw, 3rem) 0 clamp(3rem, 6vw, 4.5rem);
+}
+
+.impact-hero p,
+.impact-mhead p,
+.impact-lead,
+.impact-intro,
+.impact-aside-note {
+  text-align: justify !important;
+  text-justify: inter-word;
+  hyphens: none !important;
+  -webkit-hyphens: none !important;
+}
+
+.impact-num span {
+  hyphens: none;
+  -webkit-hyphens: none;
+}
+
+.impact-intro--cue {
+  text-align: justify;
 }

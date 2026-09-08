@@ -65,7 +65,10 @@
 .site-main dd,
 .site-main td,
 .site-main th {
-  overflow-wrap: break-word;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+  -webkit-hyphens: none;
   max-width: 100%;
 }
 
@@ -77,7 +80,8 @@
 .site-main h5,
 .site-main h6 {
   text-align: start;
-  hyphens: manual;
+  hyphens: none;
+  -webkit-hyphens: none;
 }
 
 .site-main .work-desk__title {

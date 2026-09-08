@@ -264,6 +264,7 @@ export default function KnowYourRights() {
   const [activeVideo, setActiveVideo] = useState(null);
   const [glossaryLetter, setGlossaryLetter] = useState('A');
   const glossaryTrackRef = useRef(null);
+  const videosScrollRef = useRef(null);
   const decksScrollRef = useRef(null);
   const deckTabClickRef = useRef(false);
 
@@ -304,6 +305,13 @@ export default function KnowYourRights() {
     const el = glossaryTrackRef.current;
     if (!el) return;
     const step = Math.max(220, Math.round(el.clientWidth * 0.72));
+    el.scrollBy({ left: dir * step, behavior: 'smooth' });
+  };
+
+  const scrollVideos = (dir) => {
+    const el = videosScrollRef.current;
+    if (!el) return;
+    const step = Math.max(260, Math.round(el.clientWidth * 0.8));
     el.scrollBy({ left: dir * step, behavior: 'smooth' });
   };
 
@@ -376,16 +384,24 @@ export default function KnowYourRights() {
       .get('/explainer-videos')
       .then((r) => {
         if (!Array.isArray(r.data) || !r.data.length) return;
-        setVideoList(
-          r.data.map((v, i) => ({
-            id: v.id || v.slug || `video-${i}`,
-            title: v.title,
-            meta: v.meta || '',
-            thumbnail: v.thumbnail ? assetUrl(v.thumbnail) : null,
-            video: v.video ? assetUrl(v.video) : null,
-            externalUrl: v.externalUrl || null,
-          })),
-        );
+        const mapped = r.data.map((v, i) => ({
+          id: v.id || v.slug || `video-${i}`,
+          title: v.title,
+          meta: v.meta || '',
+          thumbnail: v.thumbnail ? assetUrl(v.thumbnail) : null,
+          video: v.video ? assetUrl(v.video) : null,
+          externalUrl: v.externalUrl || null,
+          createdAt: v.createdAt || '',
+          sortOrder: Number(v.sortOrder) || 0,
+        }));
+        // Newest first (createdAt desc); stable for missing dates
+        mapped.sort((a, b) => {
+          if (a.createdAt && b.createdAt && a.createdAt !== b.createdAt) {
+            return a.createdAt < b.createdAt ? 1 : -1;
+          }
+          return a.sortOrder - b.sortOrder;
+        });
+        setVideoList(mapped);
       })
       .catch(() => {});
   }, []);
@@ -911,35 +927,51 @@ export default function KnowYourRights() {
             </p>
           </Reveal>
 
-          <div className="kyr-videos__scroll" role="region" aria-label="Explainer videos carousel">
-            <div className="kyr-videos__track">
-              {videoList.map((v, i) => {
-                const playable = Boolean(v.video || v.externalUrl);
-                return (
-                  <Reveal key={v.id} as="article" className="kyr-video" variant="up" delay={Math.min(i * 40, 160)}>
-                    <button
-                      type="button"
-                      className="kyr-video__thumb"
-                      aria-label={playable ? `Play: ${v.title}` : v.title}
-                      disabled={!playable}
-                      onClick={() => openVideo(v)}
-                    >
-                      {v.thumbnail ? (
-                        <img src={v.thumbnail} alt="" className="kyr-video__img" loading="lazy" />
-                      ) : (
-                        <span className="kyr-video__ph">Video thumbnail</span>
-                      )}
-                      <span className="kyr-video__play" aria-hidden="true">
-                        ▶
-                      </span>
-                    </button>
-                    <div className="kyr-video__meta">
-                      <h3>{displayText(v.title)}</h3>
-                      {v.meta ? <p>{v.meta}</p> : null}
-                    </div>
-                  </Reveal>
-                );
-              })}
+          <div className="kyr-videos__carousel">
+            <div className="kyr-videos__nav" aria-hidden={videoList.length <= 3}>
+              <button type="button" className="kyr-videos__arrow" onClick={() => scrollVideos(-1)} aria-label="Previous videos">
+                ←
+              </button>
+              <button type="button" className="kyr-videos__arrow" onClick={() => scrollVideos(1)} aria-label="Next videos">
+                →
+              </button>
+            </div>
+            <p className="kyr-videos__hint">Scroll sideways for more explainers →</p>
+            <div
+              ref={videosScrollRef}
+              className="kyr-videos__scroll"
+              role="region"
+              aria-label="Explainer videos carousel"
+            >
+              <div className="kyr-videos__track">
+                {videoList.map((v, i) => {
+                  const playable = Boolean(v.video || v.externalUrl);
+                  return (
+                    <Reveal key={v.id} as="article" className="kyr-video" variant="up" delay={Math.min(i * 40, 160)}>
+                      <button
+                        type="button"
+                        className="kyr-video__thumb"
+                        aria-label={playable ? `Play: ${v.title}` : v.title}
+                        disabled={!playable}
+                        onClick={() => openVideo(v)}
+                      >
+                        {v.thumbnail ? (
+                          <img src={v.thumbnail} alt="" className="kyr-video__img" loading="lazy" />
+                        ) : (
+                          <span className="kyr-video__ph">Video thumbnail</span>
+                        )}
+                        <span className="kyr-video__play" aria-hidden="true">
+                          ▶
+                        </span>
+                      </button>
+                      <div className="kyr-video__meta">
+                        <h3>{displayText(v.title)}</h3>
+                        {v.meta ? <p>{v.meta}</p> : null}
+                      </div>
+                    </Reveal>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>

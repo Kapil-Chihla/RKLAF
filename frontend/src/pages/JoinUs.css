@@ -467,7 +467,7 @@
   color: var(--muted);
   text-align: justify;
   text-justify: inter-word;
-  hyphens: auto;
+  hyphens: none;
 }
 
 .join-step__arrow {
