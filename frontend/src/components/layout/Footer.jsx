@@ -12,6 +12,7 @@ import {
 } from '../../data/navigation';
 import Brand from './Brand';
 import SocialIcon from '../icons/SocialIcons';
+import VisitMeter from './VisitMeter';
 
 function FooterNavLink({ item }) {
   if (item.children?.length) {
@@ -152,6 +153,7 @@ export default function Footer() {
       <div className="footer-v2__bottom">
         <div className="container footer-v2__bottom-inner">
           <p>© {new Date().getFullYear()} · Registered charitable trust · 80G certified</p>
+          <VisitMeter />
         </div>
       </div>
     </footer>

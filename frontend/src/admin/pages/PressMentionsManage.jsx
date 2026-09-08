@@ -5,8 +5,8 @@ import { assetUrl } from '../../lib/api';
 import AdminImageHint from '../components/AdminImageHint';
 
 const LAYOUTS = [
-  { value: 'clip', label: 'Article clip (outlet + headline + optional link/image)' },
-  { value: 'link', label: 'Press link (external URL required)' },
+  { value: 'clip', label: 'Article clip (photo + headline + description + optional link)' },
+  { value: 'link', label: 'Press / article link (URL required; photo + description optional)' },
   { value: 'image', label: 'Image / clipping scan' },
   { value: 'quote', label: 'Quote card' },
   { value: 'video', label: 'Video (upload and/or YouTube / Vimeo)' },
@@ -18,6 +18,7 @@ const emptyForm = {
   outlet: '',
   title: '',
   meta: '',
+  description: '',
   url: '',
   imageCaption: '',
   quote: '',
@@ -69,6 +70,7 @@ export default function PressMentionsManage() {
       outlet: item.outlet || '',
       title: item.title || '',
       meta: item.meta || '',
+      description: item.description || '',
       url: item.url || '',
       imageCaption: item.imageCaption || '',
       quote: item.quote || '',
@@ -159,10 +161,11 @@ export default function PressMentionsManage() {
   return (
     <div>
       <div className="admin-card">
-        <h2>{editing ? 'Edit press mention' : 'Impact — Press mentions'}</h2>
+        <h2>{editing ? 'Edit Beyond Litigation item' : 'Impact — Beyond Litigation'}</h2>
         <p style={{ color: '#5a6f82', marginTop: 0 }}>
-          Full media support: article clips, press links, images, quotes, uploaded video, YouTube/Vimeo, and
-          PDFs. Pick a layout, then fill the matching fields.
+          Articles, press links, images, quotes, video and PDFs for the Impact → Beyond Litigation section.
+          For articles: use <strong>Article clip</strong> or <strong>Press / article link</strong>, upload a photo,
+          and add a description so it shows on the website.
         </p>
         {msg && (
           <div
@@ -215,6 +218,18 @@ export default function PressMentionsManage() {
             />
           </label>
 
+          {['clip', 'link', 'video', 'pdf', 'image'].includes(form.layout) ? (
+            <label>
+              Description / blurb (shown on the website)
+              <textarea
+                rows={4}
+                placeholder="Short summary of the article, feature or engagement…"
+                value={form.description}
+                onChange={(e) => setForm({ ...form, description: e.target.value })}
+              />
+            </label>
+          ) : null}
+
           {showUrlField ? (
             <label>
               External press / article URL {form.layout === 'link' ? '(required)' : '(optional)'}
@@ -250,7 +265,7 @@ export default function PressMentionsManage() {
             </>
           ) : null}
 
-          {form.layout === 'image' || form.layout === 'clip' ? (
+          {['image', 'clip', 'link'].includes(form.layout) ? (
             <label>
               Image caption
               <input
@@ -284,9 +299,9 @@ export default function PressMentionsManage() {
 
           {showImageField ? (
             <label>
-              Image {form.layout === 'image' && !editing ? '(required)' : '(optional / leave empty to keep)'}
+              Cover image {form.layout === 'image' && !editing ? '(required)' : '(recommended for articles — leave empty to keep)'}
               <input type="file" accept="image/*" onChange={(e) => setImage(e.target.files?.[0] || null)} />
-              <AdminImageHint size="900×1200 px" note="3:4 portrait — Impact press mosaic tiles" />
+              <AdminImageHint size="900×1200 px" note="3:4 portrait — Impact Beyond Litigation tiles" />
             </label>
           ) : null}
 

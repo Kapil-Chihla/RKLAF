@@ -17,4 +17,5 @@ module.exports = {
   RunningNow: require('./RunningNow'),
   AlsoOnRecord: require('./AlsoOnRecord'),
   PressMention: require('./PressMention'),
+  SiteStat: require('./SiteStat'),
 };

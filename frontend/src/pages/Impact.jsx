@@ -4,9 +4,10 @@ import Reveal from '../components/motion/Reveal';
 import CountUp from '../components/motion/CountUp';
 import publicApi from '../lib/publicApi';
 import { assetUrl } from '../lib/api';
-import { alsoOnRecordPdfDownloadUrl, pressMentionPdfDownloadUrl } from '../lib/pdfDownload';
+import { alsoOnRecordPdfDownloadUrl } from '../lib/pdfDownload';
 import { displayText } from '../lib/displayText';
 import { renderRichText } from '../lib/richText';
+import PressMentionCard from '../components/impact/PressMentionCard';
 import impactBanner from '../assets/impactbanner2.jpeg';
 import './Impact.css';
 
@@ -27,30 +28,6 @@ function ShowAllLink({ to, total, preview }) {
       </Link>
     </div>
   );
-}
-
-/** Turn YouTube / Vimeo watch URLs into embeddable iframe srcs (no autoplay on mosaic). */
-function embedUrl(url) {
-  if (!url) return null;
-  try {
-    const u = new URL(url);
-    const host = u.hostname.replace(/^www\./, '');
-    if (host === 'youtu.be') {
-      const id = u.pathname.slice(1).split('/')[0];
-      return id ? `https://www.youtube.com/embed/${id}` : null;
-    }
-    if (host === 'youtube.com' || host === 'm.youtube.com' || host === 'youtube-nocookie.com') {
-      const id = u.searchParams.get('v') || u.pathname.match(/\/embed\/([^/]+)/)?.[1];
-      return id ? `https://www.youtube.com/embed/${id}` : null;
-    }
-    if (host === 'vimeo.com') {
-      const id = u.pathname.split('/').filter(Boolean)[0];
-      return id ? `https://player.vimeo.com/video/${id}` : null;
-    }
-  } catch {
-    /* not a URL */
-  }
-  return null;
 }
 
 const milestones = [
@@ -539,127 +516,9 @@ export default function Impact() {
           {pressMentions.length ? (
             <>
               <div className="impact-press-grid">
-                {pressMentions.slice(0, PREVIEW.press).map((item, i) => {
-                if (item.layout === 'quote') {
-                  return (
-                    <Reveal key={item.id} variant="up" delay={i * 30}>
-                      <blockquote className="impact-vquote">
-                        <p>{item.quote || item.title}</p>
-                        {item.quoteAttribution ? <span>{item.quoteAttribution}</span> : null}
-                      </blockquote>
-                    </Reveal>
-                  );
-                }
-
-                if (item.layout === 'image') {
-                  return (
-                    <Reveal key={item.id} variant="up" delay={i * 30}>
-                      <PhotoBox
-                        image={item.image ? assetUrl(item.image) : null}
-                        label="Clipping scan"
-                        caption={item.imageCaption || item.title}
-                        className="impact-phbox--tall"
-                      />
-                    </Reveal>
-                  );
-                }
-
-                if (item.layout === 'video') {
-                  const yt = embedUrl(item.youtubeUrl);
-                  const file = item.video ? assetUrl(item.video) : null;
-                  const thumb = item.thumbnail ? assetUrl(item.thumbnail) : null;
-                  return (
-                    <Reveal key={item.id} variant="up" delay={i * 30}>
-                      <article className="impact-press-media">
-                        <div className="impact-press-media__frame">
-                          {yt ? (
-                            <iframe
-                              src={yt}
-                              title={item.title}
-                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                              allowFullScreen
-                            />
-                          ) : file ? (
-                            <video controls preload="metadata" poster={thumb || undefined} src={file}>
-                              <track kind="captions" />
-                            </video>
-                          ) : (
-                            <PhotoBox image={thumb} label="Video" caption={item.title} />
-                          )}
-                        </div>
-                        <div className="impact-press-media__body">
-                          {item.outlet ? <span className="impact-clip__outlet">{item.outlet}</span> : null}
-                          <h3>{displayText(item.title)}</h3>
-                          {item.meta ? <span className="impact-clip__meta">{item.meta}</span> : null}
-                        </div>
-                      </article>
-                    </Reveal>
-                  );
-                }
-
-                if (item.layout === 'pdf') {
-                  const pdfHref = item.pdf ? pressMentionPdfDownloadUrl(item.id) : item.url || null;
-                  return (
-                    <Reveal key={item.id} variant="up" delay={i * 30}>
-                      {pdfHref ? (
-                        <a
-                          href={pdfHref}
-                          className="impact-clip impact-clip--pdf"
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          <div>
-                            {item.outlet ? <span className="impact-clip__outlet">{item.outlet}</span> : null}
-                            <h3>{displayText(item.title)}</h3>
-                          </div>
-                          <div>
-                            {item.meta ? <span className="impact-clip__meta">{item.meta}</span> : null}
-                            <div className="impact-clip__read">Download PDF ↗</div>
-                          </div>
-                        </a>
-                      ) : (
-                        <article className="impact-clip impact-clip--pdf">
-                          <div>
-                            {item.outlet ? <span className="impact-clip__outlet">{item.outlet}</span> : null}
-                            <h3>{displayText(item.title)}</h3>
-                          </div>
-                          {item.meta ? <span className="impact-clip__meta">{item.meta}</span> : null}
-                        </article>
-                      )}
-                    </Reveal>
-                  );
-                }
-
-                // clip + link (and any unknown) — outlet / headline / external URL
-                const href = item.url || null;
-                const clipInner = (
-                  <>
-                    <div>
-                      {item.outlet ? <span className="impact-clip__outlet">{item.outlet}</span> : null}
-                      <h3>{displayText(item.title)}</h3>
-                    </div>
-                    <div>
-                      {item.meta ? <span className="impact-clip__meta">{item.meta}</span> : null}
-                      {href ? (
-                        <div className="impact-clip__read">
-                          {item.layout === 'link' ? 'Open link →' : 'Read the report →'}
-                        </div>
-                      ) : null}
-                    </div>
-                  </>
-                );
-                return (
-                  <Reveal key={item.id} variant="up" delay={i * 30}>
-                    {href ? (
-                      <a href={href} className="impact-clip" target="_blank" rel="noreferrer">
-                        {clipInner}
-                      </a>
-                    ) : (
-                      <article className="impact-clip">{clipInner}</article>
-                    )}
-                  </Reveal>
-                );
-              })}
+                {pressMentions.slice(0, PREVIEW.press).map((item, i) => (
+                  <PressMentionCard key={item.id} item={item} delay={i * 30} />
+                ))}
               </div>
               <ShowAllLink to="/impact/browse/press" total={pressMentions.length} preview={PREVIEW.press} />
             </>

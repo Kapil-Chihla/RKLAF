@@ -3,33 +3,11 @@ import { Link, Navigate, useParams } from 'react-router-dom';
 import Reveal from '../components/motion/Reveal';
 import publicApi from '../lib/publicApi';
 import { assetUrl } from '../lib/api';
-import { alsoOnRecordPdfDownloadUrl, pressMentionPdfDownloadUrl } from '../lib/pdfDownload';
+import { alsoOnRecordPdfDownloadUrl } from '../lib/pdfDownload';
 import { displayText } from '../lib/displayText';
 import { renderRichText } from '../lib/richText';
+import PressMentionCard from '../components/impact/PressMentionCard';
 import './Impact.css';
-
-function embedUrl(url) {
-  if (!url) return null;
-  try {
-    const u = new URL(url);
-    const host = u.hostname.replace(/^www\./, '');
-    if (host === 'youtu.be') {
-      const id = u.pathname.slice(1).split('/')[0];
-      return id ? `https://www.youtube.com/embed/${id}` : null;
-    }
-    if (host === 'youtube.com' || host === 'm.youtube.com' || host === 'youtube-nocookie.com') {
-      const id = u.searchParams.get('v') || u.pathname.match(/\/embed\/([^/]+)/)?.[1];
-      return id ? `https://www.youtube.com/embed/${id}` : null;
-    }
-    if (host === 'vimeo.com') {
-      const id = u.pathname.split('/').filter(Boolean)[0];
-      return id ? `https://player.vimeo.com/video/${id}` : null;
-    }
-  } catch {
-    /* ignore */
-  }
-  return null;
-}
 
 const SECTIONS = {
   ongoing: {
@@ -198,106 +176,9 @@ export default function ImpactCollection() {
 
           {section === 'press' && items.length ? (
             <div className="impact-press-grid">
-              {items.map((item, i) => {
-                if (item.layout === 'quote') {
-                  return (
-                    <Reveal key={item.id} variant="up" delay={Math.min(i, 8) * 30}>
-                      <blockquote className="impact-vquote">
-                        <p>{item.quote || item.title}</p>
-                        {item.quoteAttribution ? <span>{item.quoteAttribution}</span> : null}
-                      </blockquote>
-                    </Reveal>
-                  );
-                }
-                if (item.layout === 'image') {
-                  const img = item.image ? assetUrl(item.image) : null;
-                  return (
-                    <Reveal key={item.id} variant="up" delay={Math.min(i, 8) * 30}>
-                      <div className="impact-phbox impact-phbox--tall">
-                        {img ? <img src={img} alt="" /> : <span>{item.title}</span>}
-                      </div>
-                    </Reveal>
-                  );
-                }
-                if (item.layout === 'video') {
-                  const yt = embedUrl(item.youtubeUrl);
-                  const file = item.video ? assetUrl(item.video) : null;
-                  const thumb = item.thumbnail ? assetUrl(item.thumbnail) : null;
-                  return (
-                    <Reveal key={item.id} variant="up" delay={Math.min(i, 8) * 30}>
-                      <article className="impact-press-media">
-                        <div className="impact-press-media__frame">
-                          {yt ? (
-                            <iframe
-                              src={yt}
-                              title={item.title}
-                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                              allowFullScreen
-                            />
-                          ) : file ? (
-                            <video controls preload="metadata" poster={thumb || undefined} src={file}>
-                              <track kind="captions" />
-                            </video>
-                          ) : (
-                            <div className="impact-phbox">{thumb ? <img src={thumb} alt="" /> : item.title}</div>
-                          )}
-                        </div>
-                        <div className="impact-press-media__body">
-                          {item.outlet ? <span className="impact-clip__outlet">{item.outlet}</span> : null}
-                          <h3>{displayText(item.title)}</h3>
-                          {item.meta ? <span className="impact-clip__meta">{item.meta}</span> : null}
-                        </div>
-                      </article>
-                    </Reveal>
-                  );
-                }
-                if (item.layout === 'pdf') {
-                  const pdfHref = item.pdf ? pressMentionPdfDownloadUrl(item.id) : item.url || null;
-                  return (
-                    <Reveal key={item.id} variant="up" delay={Math.min(i, 8) * 30}>
-                      {pdfHref ? (
-                        <a href={pdfHref} className="impact-clip impact-clip--pdf" target="_blank" rel="noreferrer">
-                          <div>
-                            {item.outlet ? <span className="impact-clip__outlet">{item.outlet}</span> : null}
-                            <h3>{displayText(item.title)}</h3>
-                          </div>
-                          <div>
-                            {item.meta ? <span className="impact-clip__meta">{item.meta}</span> : null}
-                            <div className="impact-clip__read">Download PDF ↗</div>
-                          </div>
-                        </a>
-                      ) : (
-                        <article className="impact-clip impact-clip--pdf">
-                          <div>
-                            {item.outlet ? <span className="impact-clip__outlet">{item.outlet}</span> : null}
-                            <h3>{displayText(item.title)}</h3>
-                          </div>
-                          {item.meta ? <span className="impact-clip__meta">{item.meta}</span> : null}
-                        </article>
-                      )}
-                    </Reveal>
-                  );
-                }
-                const href = item.url || null;
-                return (
-                  <Reveal key={item.id} variant="up" delay={Math.min(i, 8) * 30}>
-                    {href ? (
-                      <a href={href} className="impact-clip" target="_blank" rel="noreferrer">
-                        {item.outlet ? <span className="impact-clip__outlet">{item.outlet}</span> : null}
-                        <h3>{displayText(item.title)}</h3>
-                        {item.meta ? <span className="impact-clip__meta">{item.meta}</span> : null}
-                        <div className="impact-clip__read">Read ↗</div>
-                      </a>
-                    ) : (
-                      <article className="impact-clip">
-                        {item.outlet ? <span className="impact-clip__outlet">{item.outlet}</span> : null}
-                        <h3>{displayText(item.title)}</h3>
-                        {item.meta ? <span className="impact-clip__meta">{item.meta}</span> : null}
-                      </article>
-                    )}
-                  </Reveal>
-                );
-              })}
+              {items.map((item, i) => (
+                <PressMentionCard key={item.id} item={item} delay={Math.min(i, 8) * 30} />
+              ))}
             </div>
           ) : null}
         </div>

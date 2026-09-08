@@ -10,6 +10,31 @@ const NAV = [
   { slug: 'disclaimer', label: 'Disclaimer' },
 ];
 
+function LegalBlocks({ blocks }) {
+  return blocks.map((block, i) => {
+    const key = `${block.type}-${i}`;
+    if (block.type === 'h2') return <h2 key={key}>{block.text}</h2>;
+    if (block.type === 'h3') return <h3 key={key}>{block.text}</h3>;
+    if (block.type === 'ul') {
+      return (
+        <ul key={key} className="legal__list">
+          {(block.items || []).map((item) => (
+            <li key={item.slice(0, 48)}>{item}</li>
+          ))}
+        </ul>
+      );
+    }
+    if (block.type === 'note') {
+      return (
+        <p key={key} className="legal__note">
+          {block.text}
+        </p>
+      );
+    }
+    return <p key={key}>{block.text}</p>;
+  });
+}
+
 export default function Legal() {
   const { slug } = useParams();
   const page = LEGAL_PAGES[slug];
@@ -41,10 +66,16 @@ export default function Legal() {
         <Reveal as="article" className="legal__body" variant="up">
           <p className="legal__eyebrow">{page.eyebrow}</p>
           <h1>{page.title}</h1>
+          {page.lastUpdated ? (
+            <p className="legal__updated">Last updated: {page.lastUpdated}</p>
+          ) : null}
           {page.lead ? <p className="legal__lead">{page.lead}</p> : null}
-          {page.paras.map((p) => (
-            <p key={p.slice(0, 40)}>{p}</p>
-          ))}
+          {page.blocks ? <LegalBlocks blocks={page.blocks} /> : null}
+          {page.paras
+            ? page.paras.map((p) => (
+                <p key={p.slice(0, 40)}>{p}</p>
+              ))
+            : null}
         </Reveal>
       </div>
     </div>

@@ -1,9 +1,29 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SITE_DISCLAIMER_PARAS } from '../../data/legalPages';
 import './SiteDisclaimer.css';
 
+const STORAGE_KEY = 'rklaf-disclaimer-accepted-v2';
+
 export default function SiteDisclaimer() {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    try {
+      if (window.localStorage.getItem(STORAGE_KEY) === '1') return;
+    } catch {
+      /* ignore */
+    }
+    setOpen(true);
+  }, []);
+
+  const accept = () => {
+    try {
+      window.localStorage.setItem(STORAGE_KEY, '1');
+    } catch {
+      /* ignore */
+    }
+    setOpen(false);
+  };
 
   if (!open) return null;
 
@@ -15,7 +35,7 @@ export default function SiteDisclaimer() {
         {SITE_DISCLAIMER_PARAS.map((p) => (
           <p key={p.slice(0, 48)}>{p}</p>
         ))}
-        <button type="button" className="site-disclaimer__btn" onClick={() => setOpen(false)}>
+        <button type="button" className="site-disclaimer__btn" onClick={accept}>
           I Acknowledge &amp; Continue
         </button>
       </div>

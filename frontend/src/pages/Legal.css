@@ -84,13 +84,54 @@
   color: var(--ink, #1a1510);
 }
 
-.legal__body > p {
+.legal__updated {
+  margin: -0.35rem 0 1.25rem;
+  font-size: 0.92rem;
+  color: var(--muted, #5a4f44);
+}
+
+.legal__body > p,
+.legal__list li {
   margin: 0 0 0.95rem;
   font-size: 1.05rem;
   line-height: 1.7;
   color: var(--muted, #5a4f44);
   text-align: justify;
   text-justify: inter-word;
+  hyphens: none;
+}
+
+.legal__body > h2 {
+  margin: 1.75rem 0 0.75rem;
+  font-family: var(--font-serif);
+  font-size: clamp(1.2rem, 2.2vw, 1.45rem);
+  font-weight: 700;
+  color: var(--ink, #1a1510);
+  text-align: start;
+}
+
+.legal__body > h3 {
+  margin: 1.15rem 0 0.55rem;
+  font-family: var(--font-sans, inherit);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--ink, #1a1510);
+  text-align: start;
+}
+
+.legal__list {
+  margin: 0 0 1rem;
+  padding-left: 1.25rem;
+}
+
+.legal__list li {
+  margin-bottom: 0.45rem;
+  padding-left: 0.15rem;
+}
+
+.legal__note {
+  font-style: italic;
 }
 
 @media (max-width: 800px) {

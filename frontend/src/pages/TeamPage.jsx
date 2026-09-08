@@ -53,9 +53,6 @@ export default function TeamPage() {
             </Link>
             <span className="about-kicker">Our Team</span>
             <h1>All team members</h1>
-            <p className="about-team__lede">
-              Every profile published from the admin CMS appears here. Add or edit people under Admin → Team.
-            </p>
           </Reveal>
           <div className="about-team__grid">
             {team.map((person, i) => (

@@ -96,6 +96,7 @@ router.post('/', protect, contentManagers, uploadPressMedia, async (req, res) =>
       outlet,
       title,
       meta,
+      description,
       url,
       imageCaption,
       quote,
@@ -146,6 +147,7 @@ router.post('/', protect, contentManagers, uploadPressMedia, async (req, res) =>
       outlet: outlet || '',
       title: title.trim(),
       meta: meta || '',
+      description: description || '',
       url: url || '',
       image,
       imageCaption: imageCaption || '',
@@ -175,6 +177,7 @@ router.put('/:id', protect, contentManagers, uploadPressMedia, async (req, res) 
       outlet,
       title,
       meta,
+      description,
       url,
       imageCaption,
       quote,
@@ -192,6 +195,7 @@ router.put('/:id', protect, contentManagers, uploadPressMedia, async (req, res) 
     if (title?.trim()) item.title = title.trim();
     if (outlet !== undefined) item.outlet = outlet;
     if (meta !== undefined) item.meta = meta;
+    if (description !== undefined) item.description = description;
     if (url !== undefined) item.url = url;
     if (imageCaption !== undefined) item.imageCaption = imageCaption;
     if (quote !== undefined) item.quote = quote;

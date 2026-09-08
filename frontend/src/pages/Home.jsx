@@ -681,7 +681,6 @@ export default function Home() {
                       ) : (
                         <MediaPlaceholder label={item.visual} caption={item.caption} />
                       )}
-                      <span className="home-card__num">{item.num}</span>
                     </div>
                     <div className="home-card__body">
                       <span className="home-card__tag">{item.tag}</span>

@@ -24,7 +24,10 @@ const pressMentionSchema = new mongoose.Schema(
     },
     outlet: { type: String, default: '' },
     title: { type: String, required: true },
+    /** Short meta line (e.g. “National · November 2024”) */
     meta: { type: String, default: '' },
+    /** Longer body / blurb shown on Beyond Litigation cards */
+    description: { type: String, default: '' },
     /** External article / press URL */
     url: { type: String, default: '' },
     image: { type: String, default: null },

@@ -1,0 +1,24 @@
+.visit-meter {
+  margin: 0;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  font-size: 0.88rem;
+  color: rgba(247, 244, 238, 0.72);
+}
+
+.visit-meter__label {
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  color: rgba(216, 201, 174, 0.9);
+}
+
+.visit-meter__count {
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #f7f4ee;
+  font-variant-numeric: tabular-nums;
+}

@@ -83,6 +83,7 @@ app.use('/api/camps', require('./routes/camps'));
 app.use('/api/contact', require('./routes/contact'));
 app.use('/api/payment', require('./routes/payment'));
 app.use('/api/team', require('./routes/team'));
+app.use('/api/visits', require('./routes/visits'));
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok', message: 'Server running' }));
 
