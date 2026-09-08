@@ -1692,6 +1692,8 @@
   margin: 0.85rem 0 0;
   color: rgba(255, 255, 255, 0.88);
   font-size: 1.1rem;
+  text-align: start;
+  overflow-wrap: break-word;
 }
 
 /* ─── Emergency ─── */

@@ -78,7 +78,26 @@
 .site-main h3,
 .site-main h4,
 .site-main h5,
-.site-main h6 {
+.site-main h6,
+.site-main .home-expertise__title,
+.site-main .home-card__body h3,
+.site-main .home-story__body h3,
+.site-main .kyr-deck-card__title,
+.site-main .kyr-deck-card__meta-title,
+.site-main .kyr-video-modal__title,
+.site-main .kyr-video__meta h3,
+.site-main .work-prog__title,
+.site-main .work-desk__kicker,
+.site-main .about-team__role,
+.site-main .about-team__sub,
+.site-main .blogs-card__title,
+.site-main .camp-card__title,
+.site-main .impact-clip h3,
+.site-main .impact-press-media__body h3,
+.site-main .impact-kicker,
+.site-main .impact-hero__leadline,
+.site-main .lib-player__body h2,
+.site-main .story-detail__doc-name {
   text-align: start;
   hyphens: none;
   -webkit-hyphens: none;

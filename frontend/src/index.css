@@ -131,7 +131,7 @@ p {
 .about-carry,
 .about-pillar p,
 .about-mode p,
-.about-team__card p,
+.about-team__card > p:not(.about-team__role):not(.about-team__sub),
 .home-who__copy > p,
 .home-resources__lede,
 .home-cta p,

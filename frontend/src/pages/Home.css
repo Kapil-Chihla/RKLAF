@@ -1135,6 +1135,7 @@ a.home-story--link:hover .home-story__more {
   font-family: var(--font-serif);
   font-weight: 700;
   color: var(--ink);
+  text-align: start;
 }
 
 .home-expertise__desc {

@@ -1016,7 +1016,7 @@ export default function KnowYourRights() {
                 </a>
               ) : null}
             </div>
-            <p className="kyr-video-modal__title">{activeVideo.title}</p>
+            <p className="kyr-video-modal__title">{displayText(activeVideo.title)}</p>
           </div>
         </div>
       ) : null}

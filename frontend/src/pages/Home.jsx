@@ -7,6 +7,7 @@ import { WHATSAPP_URL } from '../data/navigation';
 import publicApi from '../lib/publicApi';
 import { assetUrl } from '../lib/api';
 import { renderRichText } from '../lib/richText';
+import { displayText } from '../lib/displayText';
 import { sortDeskStoriesLatest } from '../data/deskStories';
 import academicsHomeImg from '../assets/academicshomebanner.jpeg';
 import knowYourRightsHomeImg from '../assets/kyrhomebanner.jpeg';
@@ -588,7 +589,7 @@ export default function Home() {
                   )}
                   <div className="home-story__body">
                     <span className="home-story__tag">{story.tag}</span>
-                    <h3>{story.title}</h3>
+                    <h3>{displayText(story.title)}</h3>
                     {story.desc ? <p>{renderRichText(story.desc)}</p> : null}
                     {href ? <span className="home-story__more">Read more →</span> : null}
                   </div>
@@ -684,7 +685,7 @@ export default function Home() {
                     </div>
                     <div className="home-card__body">
                       <span className="home-card__tag">{item.tag}</span>
-                      <h3>{item.title}</h3>
+                      <h3>{displayText(item.title)}</h3>
                       {item.desc ? <p>{renderRichText(item.desc)}</p> : null}
                     </div>
                   </Link>
@@ -707,7 +708,7 @@ export default function Home() {
               <li key={item.title}>
                 <a href="#expertise" className="home-expertise__row">
                   <span className="home-expertise__num">{String(i + 1).padStart(2, '0')}</span>
-                  <span className="home-expertise__title">{item.title}</span>
+                  <span className="home-expertise__title">{displayText(item.title)}</span>
                   <span className="home-expertise__desc">{renderRichText(item.desc)}</span>
                   <span className="home-expertise__arrow" aria-hidden="true">→</span>
                 </a>

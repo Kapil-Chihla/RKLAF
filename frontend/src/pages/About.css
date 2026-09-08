@@ -843,6 +843,7 @@ button.about-vid__play:hover span {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--au-khaki, #b08a3c);
+  text-align: start;
 }
 
 .about-team__card h3 {
@@ -860,9 +861,10 @@ button.about-vid__play:hover span {
   font-size: 0.88rem;
   line-height: 1.35;
   color: var(--au-soft);
+  text-align: start;
 }
 
-.about-team__card > p:last-child {
+.about-team__card > p:not(.about-team__role):not(.about-team__sub) {
   margin: 0;
   font-size: 0.92rem;
   line-height: 1.55;
