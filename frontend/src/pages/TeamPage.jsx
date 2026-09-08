@@ -4,20 +4,8 @@ import Reveal from '../components/motion/Reveal';
 import publicApi from '../lib/publicApi';
 import { assetUrl } from '../lib/api';
 import { renderRichText } from '../lib/richText';
-import photoAjayStory from '../assets/_unused/father.jpeg';
+import { FALLBACK_TEAM } from '../data/fallbackTeam';
 import './About.css';
-
-const FALLBACK_TEAM = [
-  {
-    id: 'ajay-garg',
-    name: 'Mr. Ajay Garg, Advocate',
-    role: 'Founder',
-    subtitle: 'Founder · Supreme Court of India & Delhi High Court',
-    bio: "A graduate of the Campus Law Centre, University of Delhi, Mr. Ajay Garg has over three decades of experience as a practising Advocate before the Supreme Court of India and the Delhi High Court.",
-    image: photoAjayStory,
-    photoPos: '28% 20%',
-  },
-];
 
 function mapTeamMember(m) {
   return {
