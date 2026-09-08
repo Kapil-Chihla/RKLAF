@@ -1166,7 +1166,8 @@ a.impact-lrow:hover {
 }
 
 .impact-press-media__frame {
-  flex: 1;
+  flex: 0 0 auto;
+  aspect-ratio: 16 / 9;
   min-height: 140px;
   background: #1a1612;
   position: relative;
@@ -1174,7 +1175,8 @@ a.impact-lrow:hover {
 
 .impact-press-media__frame iframe,
 .impact-press-media__frame video,
-.impact-press-media__frame .impact-phbox {
+.impact-press-media__frame .impact-phbox,
+.impact-press-media__frame .impact-press-media__poster {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -1182,6 +1184,20 @@ a.impact-lrow:hover {
   border: 0;
   object-fit: cover;
   border-radius: 0;
+}
+
+.impact-press-media__empty {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: rgba(247, 244, 238, 0.65);
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 1rem;
+  text-align: center;
 }
 
 .impact-press-media__body {
