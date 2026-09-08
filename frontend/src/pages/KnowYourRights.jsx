@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import Reveal from '../components/motion/Reveal';
 import FaqAccordion from '../components/FaqAccordion';
 import { WHATSAPP_URL } from '../data/navigation';
@@ -475,13 +476,13 @@ export default function KnowYourRights() {
               people can recognise when their rights are being affected, and know what steps they can take.
             </p>
             <div className="kyr-hero__actions">
-              <a href="#glossary" className="kyr-pill">
-                Open the glossary
+              <a href="#doors" className="kyr-pill">
+                Explore our resources
               </a>
-              <a href="#ask" className="kyr-pill kyr-pill--ghost">
+              <Link to="/contact" className="kyr-pill kyr-pill--ghost">
                 <span className="kyr-pill__dot" aria-hidden="true" />
-                Get free legal aid
-              </a>
+                Get legal assistance
+              </Link>
             </div>
           </Reveal>
 
