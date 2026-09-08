@@ -153,7 +153,7 @@ export default function PressMentionsManage() {
     }
   };
 
-  const showImageField = ['clip', 'link', 'image'].includes(form.layout);
+  const showImageField = ['clip', 'link', 'image', 'pdf'].includes(form.layout);
   const showVideoFields = form.layout === 'video';
   const showPdfField = form.layout === 'pdf';
   const showUrlField = ['clip', 'link', 'image', 'video', 'pdf'].includes(form.layout);
@@ -299,7 +299,12 @@ export default function PressMentionsManage() {
 
           {showImageField ? (
             <label>
-              Cover image {form.layout === 'image' && !editing ? '(required)' : '(recommended for articles — leave empty to keep)'}
+              Cover image{' '}
+              {form.layout === 'image' && !editing
+                ? '(required)'
+                : form.layout === 'pdf'
+                  ? '(optional cover for the PDF card)'
+                  : '(recommended for articles — leave empty to keep)'}
               <input type="file" accept="image/*" onChange={(e) => setImage(e.target.files?.[0] || null)} />
               <AdminImageHint size="900×1200 px" note="3:4 portrait — Impact Beyond Litigation tiles" />
             </label>

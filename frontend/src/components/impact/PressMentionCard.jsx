@@ -15,7 +15,8 @@ export function pressEmbedUrl(url) {
       return id ? `https://www.youtube.com/embed/${id}` : null;
     }
     if (host === 'youtube.com' || host === 'm.youtube.com' || host === 'youtube-nocookie.com') {
-      const id = u.searchParams.get('v') || u.pathname.match(/\/embed\/([^/]+)/)?.[1];
+      const short = u.pathname.match(/\/(?:shorts|live|embed)\/([^/?]+)/)?.[1];
+      const id = u.searchParams.get('v') || short;
       return id ? `https://www.youtube.com/embed/${id}` : null;
     }
     if (host === 'vimeo.com') {
@@ -28,20 +29,39 @@ export function pressEmbedUrl(url) {
   return null;
 }
 
-function PhotoBox({ image, label, caption, className = '', fit = 'cover', position = 'center' }) {
-  if (image) {
-    return (
-      <div className={`impact-phbox impact-phbox--media ${className}`.trim()}>
-        <img src={image} alt={caption || label || ''} style={{ objectFit: fit, objectPosition: position }} />
-        {caption ? <span className="impact-phbox__cap">{caption}</span> : null}
-      </div>
-    );
-  }
+function ClipBody({ item, img, cta }) {
   return (
-    <div className={`impact-phbox ${className}`.trim()}>
-      <span>{label}</span>
-      {caption ? <small>{caption}</small> : null}
-    </div>
+    <>
+      {img ? (
+        <div className="impact-clip__media">
+          <img src={img} alt={item.imageCaption || item.title || ''} />
+        </div>
+      ) : null}
+      <div className="impact-clip__copy">
+        {item.outlet ? <span className="impact-clip__outlet">{item.outlet}</span> : null}
+        <h3>{displayText(item.title)}</h3>
+        {item.meta ? <span className="impact-clip__meta">{item.meta}</span> : null}
+        {item.description ? <p className="impact-clip__desc">{renderRichText(item.description)}</p> : null}
+        {!item.description && item.imageCaption ? (
+          <p className="impact-clip__desc">{renderRichText(item.imageCaption)}</p>
+        ) : null}
+        {cta ? <div className="impact-clip__read">{cta}</div> : null}
+      </div>
+    </>
+  );
+}
+
+function ClipShell({ href, className, children, delay }) {
+  return (
+    <Reveal variant="up" delay={delay}>
+      {href ? (
+        <a href={href} className={className} target="_blank" rel="noreferrer">
+          {children}
+        </a>
+      ) : (
+        <article className={className}>{children}</article>
+      )}
+    </Reveal>
   );
 }
 
@@ -61,22 +81,19 @@ export default function PressMentionCard({ item, delay = 0 }) {
   }
 
   if (layout === 'image') {
+    const img = item.image ? assetUrl(item.image) : null;
+    const href = item.url || null;
     return (
-      <Reveal variant="up" delay={delay}>
-        <PhotoBox
-          image={item.image ? assetUrl(item.image) : null}
-          label="Clipping scan"
-          caption={item.imageCaption || item.title}
-          className="impact-phbox--tall"
-        />
-      </Reveal>
+      <ClipShell href={href} className="impact-clip impact-clip--article impact-clip--image" delay={delay}>
+        <ClipBody item={item} img={img} cta={href ? 'Open link →' : null} />
+      </ClipShell>
     );
   }
 
   if (layout === 'video') {
-    const yt = pressEmbedUrl(item.youtubeUrl);
+    const yt = pressEmbedUrl(item.youtubeUrl) || pressEmbedUrl(item.url);
     const file = item.video ? assetUrl(item.video) : null;
-    const thumb = item.thumbnail ? assetUrl(item.thumbnail) : null;
+    const thumb = item.thumbnail ? assetUrl(item.thumbnail) : item.image ? assetUrl(item.image) : null;
     return (
       <Reveal variant="up" delay={delay}>
         <article className="impact-press-media">
@@ -89,11 +106,11 @@ export default function PressMentionCard({ item, delay = 0 }) {
                 allowFullScreen
               />
             ) : file ? (
-              <video controls preload="metadata" poster={thumb || undefined} src={file}>
-                <track kind="captions" />
-              </video>
+              <video controls preload="metadata" playsInline poster={thumb || undefined} src={file} />
+            ) : thumb ? (
+              <img src={thumb} alt={item.title || ''} className="impact-press-media__poster" />
             ) : (
-              <PhotoBox image={thumb} label="Video" caption={item.title} />
+              <div className="impact-press-media__empty">Video unavailable</div>
             )}
           </div>
           <div className="impact-press-media__body">
@@ -109,69 +126,28 @@ export default function PressMentionCard({ item, delay = 0 }) {
 
   if (layout === 'pdf') {
     const pdfHref = item.pdf ? pressMentionPdfDownloadUrl(item.id) : item.url || null;
-    const thumb = item.image ? assetUrl(item.image) : null;
-    const body = (
-      <>
-        {thumb ? (
-          <div className="impact-clip__media" aria-hidden="true">
-            <img src={thumb} alt="" />
-          </div>
-        ) : null}
-        <div className="impact-clip__copy">
-          {item.outlet ? <span className="impact-clip__outlet">{item.outlet}</span> : null}
-          <h3>{displayText(item.title)}</h3>
-          {item.meta ? <span className="impact-clip__meta">{item.meta}</span> : null}
-          {item.description ? <p className="impact-clip__desc">{renderRichText(item.description)}</p> : null}
-          {pdfHref ? <div className="impact-clip__read">Download PDF ↗</div> : null}
-        </div>
-      </>
-    );
+    const img = item.image ? assetUrl(item.image) : null;
     return (
-      <Reveal variant="up" delay={delay}>
-        {pdfHref ? (
-          <a href={pdfHref} className="impact-clip impact-clip--article impact-clip--pdf" target="_blank" rel="noreferrer">
-            {body}
-          </a>
-        ) : (
-          <article className="impact-clip impact-clip--article impact-clip--pdf">{body}</article>
-        )}
-      </Reveal>
+      <ClipShell
+        href={pdfHref}
+        className="impact-clip impact-clip--article impact-clip--pdf"
+        delay={delay}
+      >
+        <ClipBody item={item} img={img} cta={pdfHref ? 'Download PDF →' : null} />
+      </ClipShell>
     );
   }
 
-  // clip + link (and any unknown) — show image, description, link
+  // clip + link (and any unknown)
   const href = item.url || null;
   const img = item.image ? assetUrl(item.image) : null;
-  const clipInner = (
-    <>
-      {img ? (
-        <div className="impact-clip__media">
-          <img src={img} alt={item.imageCaption || item.title || ''} />
-        </div>
-      ) : null}
-      <div className="impact-clip__copy">
-        {item.outlet ? <span className="impact-clip__outlet">{item.outlet}</span> : null}
-        <h3>{displayText(item.title)}</h3>
-        {item.meta ? <span className="impact-clip__meta">{item.meta}</span> : null}
-        {item.description ? <p className="impact-clip__desc">{renderRichText(item.description)}</p> : null}
-        {href ? (
-          <div className="impact-clip__read">
-            {layout === 'link' ? 'Open article →' : 'Read the article →'}
-          </div>
-        ) : null}
-      </div>
-    </>
-  );
-
   return (
-    <Reveal variant="up" delay={delay}>
-      {href ? (
-        <a href={href} className="impact-clip impact-clip--article" target="_blank" rel="noreferrer">
-          {clipInner}
-        </a>
-      ) : (
-        <article className="impact-clip impact-clip--article">{clipInner}</article>
-      )}
-    </Reveal>
+    <ClipShell href={href} className="impact-clip impact-clip--article" delay={delay}>
+      <ClipBody
+        item={item}
+        img={img}
+        cta={href ? (layout === 'link' ? 'Open article →' : 'Read the article →') : null}
+      />
+    </ClipShell>
   );
 }
