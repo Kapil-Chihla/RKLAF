@@ -1,5 +1,5 @@
 import photoAjayStory from '../assets/_unused/father.jpeg';
-import photoRuchi from '../assets/imageruchi.PNG';
+import photoRuchi from '../assets/imageruchi.jpg';
 
 export { photoRuchi };
 

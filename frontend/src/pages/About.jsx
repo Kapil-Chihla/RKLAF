@@ -10,7 +10,8 @@ import officeVideo from '../assets/officevideo.mp4';
 import publicApi from '../lib/publicApi';
 import { assetUrl } from '../lib/api';
 import { renderRichText } from '../lib/richText';
-import { FALLBACK_TEAM, photoRuchi, teamMemberImage } from '../data/fallbackTeam';
+import { FALLBACK_TEAM, teamMemberImage } from '../data/fallbackTeam';
+import photoRuchi from '../assets/imageruchi.jpg';
 import './About.css';
 
 const LINEAGE = [
@@ -417,22 +418,26 @@ export default function About() {
                 className={`about-node${node.mark ? ' about-node--mark' : ''}${i === cur ? ' is-on' : ''}`}
                 onClick={() => setCur(i)}
               >
-                <span className="about-node__disc">
+                <span
+                  className={`about-node__disc${node.disc && !node.mark ? ' about-node__disc--photo' : ''}`}
+                  style={
+                    node.disc && !node.mark
+                      ? {
+                          backgroundImage: `url(${node.disc})`,
+                          backgroundPosition: node.discPos || 'center center',
+                          backgroundSize: node.discZoom
+                            ? `${Math.round(node.discZoom * 100)}%`
+                            : 'cover',
+                        }
+                      : undefined
+                  }
+                  aria-hidden={node.disc && !node.mark ? true : undefined}
+                >
                   {node.mark ? (
                     <span className="about-node__mark-glyph" aria-hidden="true">
                       {node.discLabel}
                     </span>
-                  ) : node.disc ? (
-                    <img
-                      src={node.disc}
-                      alt=""
-                      className={node.discZoom ? 'about-node__disc-img--zoom' : undefined}
-                      style={{
-                        ...(node.discPos && { objectPosition: node.discPos }),
-                        ...(node.discZoom && { '--disc-zoom': String(node.discZoom) }),
-                      }}
-                    />
-                  ) : (
+                  ) : node.disc ? null : (
                     <span className="about-node__initials">{node.discLabel}</span>
                   )}
                 </span>

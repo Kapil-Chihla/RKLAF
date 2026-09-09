@@ -600,6 +600,11 @@ button.about-vid__play:hover span {
   mask-image: radial-gradient(circle, #000 99%, transparent 100%);
 }
 
+.about-node__disc--photo {
+  background-repeat: no-repeat;
+  background-color: #ebe4d6;
+}
+
 .about-node__disc img {
   display: block;
   width: 100%;
