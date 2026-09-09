@@ -4,7 +4,7 @@ import Reveal from '../components/motion/Reveal';
 import publicApi from '../lib/publicApi';
 import { assetUrl } from '../lib/api';
 import { renderRichText } from '../lib/richText';
-import { FALLBACK_TEAM } from '../data/fallbackTeam';
+import { FALLBACK_TEAM, teamMemberImage } from '../data/fallbackTeam';
 import './About.css';
 
 function mapTeamMember(m) {
@@ -14,8 +14,10 @@ function mapTeamMember(m) {
     role: m.role,
     subtitle: m.subtitle || m.role || '',
     bio: m.bio || '',
-    image: m.image ? assetUrl(m.image) : null,
-    photoPos: 'center center',
+    image: m.image ? assetUrl(m.image) : teamMemberImage(m),
+    photoPos: m.id === 'ruchi-garg' || String(m.name || '').toLowerCase().includes('ruchi')
+      ? 'center 20%'
+      : 'center center',
   };
 }
 

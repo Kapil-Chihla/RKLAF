@@ -10,7 +10,7 @@ import officeVideo from '../assets/officevideo.mp4';
 import publicApi from '../lib/publicApi';
 import { assetUrl } from '../lib/api';
 import { renderRichText } from '../lib/richText';
-import { FALLBACK_TEAM } from '../data/fallbackTeam';
+import { FALLBACK_TEAM, photoRuchi, teamMemberImage } from '../data/fallbackTeam';
 import './About.css';
 
 const LINEAGE = [
@@ -83,15 +83,18 @@ const LINEAGE = [
   {
     id: 'ruchi-garg',
     mark: false,
-    disc: null,
+    disc: photoRuchi,
     discLabel: 'RUCHI GARG',
+    discPos: 'center 22%',
+    discZoom: 1.55,
     label: 'Mrs. Ruchi Garg',
     tag: 'Trustee',
     role: 'Trustee',
     name: 'Mrs. Ruchi Garg',
     sub: 'Trustee',
-    photo: null,
+    photo: photoRuchi,
     photoFit: 'cover',
+    photoPos: 'center 20%',
     photoHint: 'Mrs. Ruchi Garg',
     text: "Mrs. Ruchi Garg serves as a Trustee of the Foundation and has been an integral part of carrying its work forward. Her involvement reflects the same spirit of partnership that has been part of the Foundation's story from the beginning.",
   },
@@ -180,8 +183,10 @@ function mapTeamMember(m) {
     role: m.role,
     subtitle: m.subtitle || m.role || '',
     bio: m.bio || '',
-    image: m.image ? assetUrl(m.image) : null,
-    photoPos: 'center center',
+    image: m.image ? assetUrl(m.image) : teamMemberImage(m),
+    photoPos: m.id === 'ruchi-garg' || String(m.name || '').toLowerCase().includes('ruchi')
+      ? 'center 20%'
+      : 'center center',
   };
 }
 

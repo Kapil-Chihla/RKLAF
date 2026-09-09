@@ -518,29 +518,19 @@
   min-width: 0;
 }
 
-/* In-flow number + copy column (matches mockup — full 01 beside label) */
+/* Copy column (programme numbers removed) */
 .work-desk__lead {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  column-gap: clamp(0.75rem, 2vw, 1.35rem);
-  align-items: start;
+  display: block;
+  min-width: 0;
 }
 
 .work-desk__num {
-  font-family: var(--font-serif);
-  font-size: clamp(4.5rem, 11vw, 7.5rem);
-  font-weight: 700;
-  line-height: 0.92;
-  letter-spacing: -0.04em;
-  color: rgba(43, 34, 26, 0.1);
-  user-select: none;
-  padding: 0.04em 0.02em 0;
-  margin-top: -0.05em;
+  display: none;
 }
 
 .work-desk__lead-text {
   min-width: 0;
-  padding-top: clamp(0.85rem, 2vw, 1.35rem);
+  padding-top: 0;
 }
 
 .work-desk__kicker {

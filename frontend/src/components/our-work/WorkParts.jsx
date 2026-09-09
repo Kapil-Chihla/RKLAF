@@ -27,8 +27,6 @@ function listingParas(story) {
  * Every CMS programme uses this same composition (not only the first).
  */
 export function DeskSpotlight({ story, index }) {
-  // Always show 01, 02, 03… in page order (ascending)
-  const num = String(index + 1).padStart(2, '0');
   const title = displayText(story.fullHeader || story.title, 'Programme');
   const kicker = displayText(story.kicker, 'Programmes & Initiatives');
   const paras = listingParas(story);
@@ -53,8 +51,7 @@ export function DeskSpotlight({ story, index }) {
         <div className="work-desk__banner-inner">
           <h2 className={`work-desk__title ${titleSize}`.trim()}>{title}</h2>
           <p className="work-desk__sub">
-            <span aria-hidden="true">—</span> {kicker} · Project {num}{' '}
-            <span aria-hidden="true">—</span>
+            <span aria-hidden="true">—</span> {kicker} <span aria-hidden="true">—</span>
           </p>
           <span className="work-desk__star" aria-hidden="true">
             ✦
@@ -70,9 +67,6 @@ export function DeskSpotlight({ story, index }) {
         <div className={`container work-desk__body${!hero ? ' work-desk__body--text-only' : ''}`}>
           <div className="work-desk__copy">
             <div className="work-desk__lead">
-              <span className="work-desk__num" aria-hidden="true">
-                {num}
-              </span>
               <div className="work-desk__lead-text">
                 <p className="work-desk__kicker">{kicker}</p>
                 {paras.map((p, i) => (
