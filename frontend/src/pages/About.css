@@ -823,6 +823,7 @@ button.about-vid__play:hover span {
   aspect-ratio: 3 / 4;
   max-height: 220px;
   border-radius: 10px;
+  background-color: #ebe4d6;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;

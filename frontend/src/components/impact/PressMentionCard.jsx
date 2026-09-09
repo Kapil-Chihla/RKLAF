@@ -29,22 +29,45 @@ export function pressEmbedUrl(url) {
   return null;
 }
 
+function cardBodyText(item) {
+  if (item.description) return item.description;
+  if (item.imageCaption) return item.imageCaption;
+  return '';
+}
+
+function CardHeader({ item, titleTag: TitleTag = 'h3', titleClassName = '' }) {
+  const title = displayText(item.title);
+  return (
+    <>
+      {item.outlet ? <span className="impact-clip__outlet">{displayText(item.outlet)}</span> : null}
+      {title ? (
+        <TitleTag className={titleClassName || undefined}>{title}</TitleTag>
+      ) : null}
+      {item.meta ? <span className="impact-clip__meta">{displayText(item.meta)}</span> : null}
+    </>
+  );
+}
+
+function CardBody({ item }) {
+  const body = cardBodyText(item);
+  if (!body) return null;
+  return <p className="impact-clip__desc">{renderRichText(body)}</p>;
+}
+
 function ClipBody({ item, img, cta }) {
+  const hasBody = Boolean(cardBodyText(item));
+  const copyClass = `impact-clip__copy${hasBody ? '' : ' impact-clip__copy--compact'}`;
+
   return (
     <>
       {img ? (
         <div className="impact-clip__media">
-          <img src={img} alt={item.imageCaption || item.title || ''} />
+          <img src={img} alt={displayText(item.imageCaption || item.title, 'Press mention')} />
         </div>
       ) : null}
-      <div className="impact-clip__copy">
-        {item.outlet ? <span className="impact-clip__outlet">{item.outlet}</span> : null}
-        <h3>{displayText(item.title)}</h3>
-        {item.meta ? <span className="impact-clip__meta">{item.meta}</span> : null}
-        {item.description ? <p className="impact-clip__desc">{renderRichText(item.description)}</p> : null}
-        {!item.description && item.imageCaption ? (
-          <p className="impact-clip__desc">{renderRichText(item.imageCaption)}</p>
-        ) : null}
+      <div className={copyClass}>
+        <CardHeader item={item} />
+        <CardBody item={item} />
         {cta ? <div className="impact-clip__read">{cta}</div> : null}
       </div>
     </>
@@ -70,11 +93,27 @@ export default function PressMentionCard({ item, delay = 0 }) {
   const layout = item.layout || 'clip';
 
   if (layout === 'quote') {
+    const quoteText = displayText(item.quote) || displayText(item.title);
+    const title = displayText(item.title);
+    const showTitle = Boolean(title && title !== quoteText);
+
     return (
       <Reveal variant="up" delay={delay}>
         <blockquote className="impact-vquote">
-          <p>{item.quote || item.title}</p>
-          {item.quoteAttribution ? <span>{item.quoteAttribution}</span> : null}
+          <div className="impact-vquote__copy">
+            {item.outlet ? <span className="impact-clip__outlet">{displayText(item.outlet)}</span> : null}
+            {showTitle ? (
+              <cite className="impact-vquote__title">{title}</cite>
+            ) : null}
+            {item.meta ? <span className="impact-clip__meta">{displayText(item.meta)}</span> : null}
+            {quoteText ? <p className="impact-vquote__quote">{quoteText}</p> : null}
+            {item.description ? (
+              <p className="impact-vquote__desc">{renderRichText(item.description)}</p>
+            ) : null}
+            {item.quoteAttribution ? (
+              <span className="impact-vquote__attr">{displayText(item.quoteAttribution)}</span>
+            ) : null}
+          </div>
         </blockquote>
       </Reveal>
     );
@@ -94,6 +133,9 @@ export default function PressMentionCard({ item, delay = 0 }) {
     const yt = pressEmbedUrl(item.youtubeUrl) || pressEmbedUrl(item.url);
     const file = item.video ? assetUrl(item.video) : null;
     const thumb = item.thumbnail ? assetUrl(item.thumbnail) : item.image ? assetUrl(item.image) : null;
+    const href = item.url || item.youtubeUrl || null;
+    const hasBody = Boolean(cardBodyText(item));
+
     return (
       <Reveal variant="up" delay={delay}>
         <article className="impact-press-media">
@@ -101,23 +143,28 @@ export default function PressMentionCard({ item, delay = 0 }) {
             {yt ? (
               <iframe
                 src={yt}
-                title={item.title}
+                title={displayText(item.title, 'Video')}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
               />
             ) : file ? (
               <video controls preload="metadata" playsInline poster={thumb || undefined} src={file} />
             ) : thumb ? (
-              <img src={thumb} alt={item.title || ''} className="impact-press-media__poster" />
+              <img src={thumb} alt={displayText(item.title, 'Video')} className="impact-press-media__poster" />
             ) : (
               <div className="impact-press-media__empty">Video unavailable</div>
             )}
           </div>
-          <div className="impact-press-media__body">
-            {item.outlet ? <span className="impact-clip__outlet">{item.outlet}</span> : null}
-            <h3>{displayText(item.title)}</h3>
-            {item.meta ? <span className="impact-clip__meta">{item.meta}</span> : null}
-            {item.description ? <p className="impact-clip__desc">{renderRichText(item.description)}</p> : null}
+          <div className={`impact-press-media__body${hasBody ? '' : ' impact-press-media__body--compact'}`}>
+            <CardHeader item={item} titleTag="h3" />
+            <CardBody item={item} />
+            {href && !yt ? (
+              <div className="impact-clip__read">
+                <a href={href} target="_blank" rel="noreferrer">
+                  Open link →
+                </a>
+              </div>
+            ) : null}
           </div>
         </article>
       </Reveal>

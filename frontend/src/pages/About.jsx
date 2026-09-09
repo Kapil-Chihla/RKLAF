@@ -10,7 +10,7 @@ import officeVideo from '../assets/officevideo.mp4';
 import publicApi from '../lib/publicApi';
 import { assetUrl } from '../lib/api';
 import { renderRichText } from '../lib/richText';
-import { FALLBACK_TEAM, teamMemberImage } from '../data/fallbackTeam';
+import { FALLBACK_TEAM, teamMemberImage, teamPhotoCrop } from '../data/fallbackTeam';
 import photoRuchi from '../assets/imageruchi.jpg';
 import './About.css';
 
@@ -178,6 +178,7 @@ const WORK_MODES = [
 ];
 
 function mapTeamMember(m) {
+  const crop = teamPhotoCrop(m);
   return {
     id: m.id,
     name: m.name,
@@ -185,9 +186,8 @@ function mapTeamMember(m) {
     subtitle: m.subtitle || m.role || '',
     bio: m.bio || '',
     image: m.image ? assetUrl(m.image) : teamMemberImage(m),
-    photoPos: m.id === 'ruchi-garg' || String(m.name || '').toLowerCase().includes('ruchi')
-      ? 'center 32%'
-      : 'center center',
+    photoPos: crop.photoPos,
+    photoZoom: crop.photoZoom,
   };
 }
 
@@ -494,6 +494,9 @@ export default function About() {
                   style={{
                     backgroundImage: `url(${person.image})`,
                     backgroundPosition: person.photoPos || 'center center',
+                    ...(person.photoZoom
+                      ? { backgroundSize: `${Math.round(person.photoZoom * 100)}% auto` }
+                      : null),
                   }}
                   role="img"
                   aria-label={person.name}

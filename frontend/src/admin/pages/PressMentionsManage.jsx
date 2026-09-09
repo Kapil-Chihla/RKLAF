@@ -197,7 +197,7 @@ export default function PressMentionsManage() {
             <input required value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
           </label>
 
-          {['clip', 'link', 'video', 'pdf'].includes(form.layout) ? (
+          {['clip', 'link', 'video', 'pdf', 'quote'].includes(form.layout) ? (
             <label>
               Outlet
               <input
@@ -218,7 +218,7 @@ export default function PressMentionsManage() {
             />
           </label>
 
-          {['clip', 'link', 'video', 'pdf', 'image'].includes(form.layout) ? (
+          {['clip', 'link', 'video', 'pdf', 'image', 'quote'].includes(form.layout) ? (
             <label>
               Description / blurb (shown on the website)
               <textarea
@@ -245,6 +245,10 @@ export default function PressMentionsManage() {
 
           {form.layout === 'quote' ? (
             <>
+              <p style={{ margin: '0 0 0.5rem', fontSize: '0.85rem', color: '#5a6f82' }}>
+                On the website, outlet, title and meta appear above the quote; description and attribution
+                appear below it.
+              </p>
               <label>
                 Quote
                 <textarea
