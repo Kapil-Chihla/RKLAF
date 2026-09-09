@@ -21,8 +21,7 @@ export const FALLBACK_TEAM = [
     subtitle: 'Trustee',
     bio: "Mrs. Ruchi Garg serves as a Trustee of the Foundation and has been an integral part of carrying its work forward. Her involvement reflects the same spirit of partnership that has been part of the Foundation's story from the beginning.",
     image: photoRuchi,
-    photoPos: 'center 24%',
-    photoZoom: 0.8,
+    photoPos: 'center 28%',
   },
 ];
 
@@ -35,16 +34,14 @@ export function isRuchiMember(m) {
 /** Prefer CMS image; otherwise local Ruchi portrait for known id / name. */
 export function teamMemberImage(m) {
   if (m?.image) return m.image;
-  const id = String(m?.id || '').toLowerCase();
-  const name = String(m?.name || '').toLowerCase();
   if (isRuchiMember(m)) return photoRuchi;
   return null;
 }
 
-/** Team card background crop — Ruchi portrait needs a softer zoom than cover. */
+/** Team card crop — fill frame (cover); Ruchi gets a slightly higher face position. */
 export function teamPhotoCrop(m) {
   if (isRuchiMember(m)) {
-    return { photoPos: m?.photoPos || 'center 24%', photoZoom: m?.photoZoom ?? 0.8 };
+    return { photoPos: m?.photoPos || 'center 28%' };
   }
-  return { photoPos: m?.photoPos || 'center center', photoZoom: m?.photoZoom ?? null };
+  return { photoPos: m?.photoPos || 'center center' };
 }

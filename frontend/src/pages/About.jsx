@@ -187,7 +187,6 @@ function mapTeamMember(m) {
     bio: m.bio || '',
     image: m.image ? assetUrl(m.image) : teamMemberImage(m),
     photoPos: crop.photoPos,
-    photoZoom: crop.photoZoom,
   };
 }
 
@@ -494,9 +493,6 @@ export default function About() {
                   style={{
                     backgroundImage: `url(${person.image})`,
                     backgroundPosition: person.photoPos || 'center center',
-                    ...(person.photoZoom
-                      ? { backgroundSize: `${Math.round(person.photoZoom * 100)}% auto` }
-                      : null),
                   }}
                   role="img"
                   aria-label={person.name}
