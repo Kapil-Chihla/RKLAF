@@ -483,6 +483,11 @@ export default function About() {
       <section className="about-team" id="team">
         <Reveal as="header" className="about-team__head" variant="up">
           <span className="about-kicker">Our Team</span>
+          {team.length > 0 ? (
+            <Link to="/about/team" className="about-team__more-btn">
+              {team.length > 8 ? `Show all team members (${team.length}) →` : 'View team page →'}
+            </Link>
+          ) : null}
         </Reveal>
         <div className="about-team__grid">
           {team.slice(0, 8).map((person, i) => (
@@ -509,19 +514,6 @@ export default function About() {
             </Reveal>
           ))}
         </div>
-        {team.length > 8 ? (
-          <div className="about-team__more">
-            <Link to="/about/team" className="about-team__more-btn">
-              Show all team members ({team.length}) →
-            </Link>
-          </div>
-        ) : team.length > 0 ? (
-          <div className="about-team__more">
-            <Link to="/about/team" className="about-team__more-btn">
-              View team page →
-            </Link>
-          </div>
-        ) : null}
       </section>
 
       {/* 5 · OFFICE */}

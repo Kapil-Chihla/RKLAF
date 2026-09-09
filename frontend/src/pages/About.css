@@ -797,6 +797,15 @@ button.about-vid__play:hover span {
   max-width: 40rem;
 }
 
+.about-team:not(.about-team--full) .about-team__head {
+  max-width: none;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
 .about-team__head h2 {
   font-family: var(--au-serif);
   font-size: clamp(1.5rem, 3vw, 2.15rem);
@@ -1448,17 +1457,19 @@ button.about-vid__play:hover span {
 .about-team__more {
   margin-top: 1.5rem;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
 }
 
 .about-team__more-btn {
-  font-size: 0.92rem;
+  margin-left: auto;
+  font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--au-brown, #8a6a2c);
   border-bottom: 1.5px solid rgba(138, 106, 44, 0.4);
-  padding-bottom: 0.15rem;
+  padding-bottom: 0.1rem;
+  white-space: nowrap;
 }
 
 .about-team__more-btn:hover {
