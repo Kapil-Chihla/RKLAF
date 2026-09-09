@@ -20,8 +20,8 @@ const LINEAGE = [
     mark: false,
     disc: photoDada,
     discLabel: 'R.S. GARG',
-    discPos: 'center 30%',
-    discZoom: 1.72,
+    discPos: 'center 28%',
+    discZoom: 1.32,
     label: 'Late Sh. R.S. Garg',
     tag: 'Where it began',
     role: 'Where it began',
@@ -37,8 +37,8 @@ const LINEAGE = [
     mark: false,
     disc: photoDadi,
     discLabel: 'KRISHNA GARG',
-    discPos: 'center 32%',
-    discZoom: 1.72,
+    discPos: 'center 30%',
+    discZoom: 1.32,
     label: 'Late Smt. Krishna Garg',
     tag: 'Beside him',
     role: 'Beside him, always',
@@ -86,8 +86,8 @@ const LINEAGE = [
     mark: false,
     disc: photoRuchi,
     discLabel: 'RUCHI GARG',
-    discPos: 'center 22%',
-    discZoom: 1.55,
+    discPos: 'center 28%',
+    discZoom: 1.08,
     label: 'Mrs. Ruchi Garg',
     tag: 'Trustee',
     role: 'Trustee',
@@ -95,7 +95,7 @@ const LINEAGE = [
     sub: 'Trustee',
     photo: photoRuchi,
     photoFit: 'cover',
-    photoPos: 'center 20%',
+    photoPos: 'center 32%',
     photoHint: 'Mrs. Ruchi Garg',
     text: "Mrs. Ruchi Garg serves as a Trustee of the Foundation and has been an integral part of carrying its work forward. Her involvement reflects the same spirit of partnership that has been part of the Foundation's story from the beginning.",
   },
@@ -186,7 +186,7 @@ function mapTeamMember(m) {
     bio: m.bio || '',
     image: m.image ? assetUrl(m.image) : teamMemberImage(m),
     photoPos: m.id === 'ruchi-garg' || String(m.name || '').toLowerCase().includes('ruchi')
-      ? 'center 20%'
+      ? 'center 32%'
       : 'center center',
   };
 }

@@ -21,7 +21,7 @@ export const FALLBACK_TEAM = [
     subtitle: 'Trustee',
     bio: "Mrs. Ruchi Garg serves as a Trustee of the Foundation and has been an integral part of carrying its work forward. Her involvement reflects the same spirit of partnership that has been part of the Foundation's story from the beginning.",
     image: photoRuchi,
-    photoPos: 'center 20%',
+    photoPos: 'center 32%',
   },
 ];
 

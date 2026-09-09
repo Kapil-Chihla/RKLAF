@@ -16,7 +16,7 @@ function mapTeamMember(m) {
     bio: m.bio || '',
     image: m.image ? assetUrl(m.image) : teamMemberImage(m),
     photoPos: m.id === 'ruchi-garg' || String(m.name || '').toLowerCase().includes('ruchi')
-      ? 'center 20%'
+      ? 'center 32%'
       : 'center center',
   };
 }
