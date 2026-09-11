@@ -1,5 +1,6 @@
 import { BrowserRouter, Navigate, Routes, Route, useParams } from 'react-router-dom';
 import AdminRoutes from './admin/AdminRoutes';
+import GoogleAnalytics from './components/layout/GoogleAnalytics';
 import Layout from './components/layout/Layout';
 import Home from './pages/Home';
 import About from './pages/About';
@@ -31,6 +32,7 @@ function DeskSlugRedirect() {
 export default function App() {
   return (
     <BrowserRouter>
+      <GoogleAnalytics />
       <Routes>
         <Route path="/admin/*" element={<AdminRoutes />} />
 

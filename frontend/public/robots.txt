@@ -1,0 +1,9 @@
+# https://www.radheykrishnafoundation.org/robots.txt
+User-agent: *
+Allow: /
+
+# Keep admin / auth surfaces out of search indexes
+Disallow: /admin/
+Disallow: /admin
+
+Sitemap: https://www.radheykrishnafoundation.org/sitemap.xml
