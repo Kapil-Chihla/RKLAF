@@ -22,7 +22,7 @@ export default function SiteDisclaimer() {
         <p className="site-disclaimer__eyebrow">Important disclaimer</p>
         <h2 id="site-disclaimer-title">Before you continue</h2>
         {SITE_DISCLAIMER_PARAS.map((p) => (
-          <p key={p.slice(0, 48)}>{p}</p>
+          <p key={p.slice(0, 48)} className="site-disclaimer__body">{p}</p>
         ))}
         <button type="button" className="site-disclaimer__btn" onClick={() => setOpen(false)}>
           I Acknowledge &amp; Continue
